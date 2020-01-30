@@ -1,0 +1,268 @@
+
+<?php 
+
+    if(isset($searchResult)) {
+
+?>
+
+    <script type="text/javascript">
+
+        var searchResult = <?php echo json_encode($searchResult); ?>;
+
+        var searchTemporary = <?php echo $searchTemporary ?>
+
+    </script>
+
+<?php
+    }
+?>
+
+
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="block-header">
+			<h2>Search Product</h2>
+		</div>
+		<div class="row">
+	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Search Criteria</h2>
+                        <form id="form_validation" method="POST" novalidate="novalidate">
+                        <ul class="header-dropdown m-r-0">
+                            <li>
+                                <div class="switch">
+                                    Search type: <label>Manufacturer Products<input name="searchTemporary" class="searchTemporary" type="checkbox"><span class="lever"></span>iCatch Products and Services</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        
+                            <div class="row">
+                                <div class="col-lg-3">
+                                  <input name="searchType" value="product-id" type="radio" id="radio-1" class="with-gap radio-col-light-green" checked>
+                                    <label for="radio-1">Product ID</label>  
+                                </div>
+                                
+                                <div class="col-lg-3">
+                                    <input name="searchType" value="product-id-contains" type="radio" id="radio-2" class="with-gap radio-col-light-green">
+                                    <label for="radio-2">Product ID Contains</label>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <input name="searchType" value="description" type="radio" id="radio-3" class="with-gap radio-col-light-green">
+                                    <label for="radio-3">Description Contains</label>
+                                </div>
+                            </div>
+                            <div class="row m-t-10 hidden" id="searchSingle">
+                                <div class="col-lg-12">
+                                    <input type="text"  name="searchCriteria" class="form-control" placeholder="Search Criteria" required="required" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="row m-t-10" id="searchBulk">
+                                <div class="col-lg-12">
+                                   <textarea name="searchBulk"  class="form-control" placeholder="Bulk Search " ></textarea> 
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-lg-12">
+                                    <button type="submit" id="searchButton" class="btn btn-block btn-lg btn-primary waves-effect search">Search</button>
+                                </div>
+                            </div>
+                            <div class="row <?php echo $_SESSION['login-error-class'];?>" >
+                                <div class="col-lg-12">
+                                    <div class="alert login-error-alert bg-pink alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        <?php echo $errorMessage ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row show-table hidden">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Search Result</h2>
+
+                    </div>
+                    <div class="body">
+                        <table class="results-table table table-striped table-bordered table-hover dt-responsive display">
+                            <thead>
+                                <th></th>
+                                <th>Image</th>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+         <!-- Large Size -->
+        <div class="modal fade" id="categories-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="largeModalLabel">Add Quote to Project</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                                <?php 
+                                    if(!isset($_SESSION['user_access']['client-grid'])) 
+                                    {
+                                ?>
+                                <li role="presentation"><a href="#existingProject" data-toggle="tab">Choose existing project</a></li>
+
+                                <?php }?>
+                                <li role="presentation"  class="active"><a href="#newProject" data-toggle="tab">Add to new project</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade" id="existingProject">
+                                    <table class="projects_table table table-striped table-bordered table-hover dt-responsive display">
+                                        <thead>
+                                            <th></th>
+                                            <th>Project ID</th>
+                                            <th>Project Name</th>
+                                            <th>Project Description</th>
+                                            <th>Owner Id</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in active" id="newProject">
+                                    <form id="addProject" method="POST" action="">
+                                        <div class="alert hidden addProjectForm bg-pink alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            The project could not be added. <b>Please contact the administrator.</b>
+                                        </div>
+                                        <div class="input-group">
+                                            <h3>Add new project</h3>
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" name="project_name" placeholder="Project Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" name="project_description" placeholder="Project Description" required>
+                                            </div>
+                                        </div>
+                                        <div class="alert usersSelectorError hidden bg-pink alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            Users could not be retrieved. <b>Please contact the administrator</b>
+                                        </div>
+                                        <div class="input-group">
+                                            <select class="form-control usersSelector" required name="owner_id">
+                                                <option value="">Select Owner</option>
+                                            </select>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <button class="btn btn-lg btn-block btn-success waves-effect" type="submit">Add New Project & Continue</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Large Size -->
+        <div class="modal fade" id="status-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="statusModalLabel">Quote Creation Status</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert hidden quoteCreation bg-pink alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                           The quote could not be created. <b>Please contact the administrator</b>
+                        </div>
+                        <div class="alert hidden quoteItemsCreation bg-pink alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                           The products could not be added to quote. <b>Please contact the administrator</b>
+                        </div>
+                        <div class="row m-t-20">
+                            <div class="col-lg-4">
+                                <div class="step-wrapper">
+                                    <span class="step-number">1</span>
+                                    <span class="step-label">Project has been chosen</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="step-wrapper">
+                                    <span class="step-number">2</span>
+                                    <span class="step-label">Create Quote</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="step-wrapper">
+                                    <span class="step-number">3</span>
+                                    <span class="step-label">Assign Items to Quote</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active" style="width: 100%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-warning quote-progress progress-bar-striped active" style="width: 30%">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                               <div class="progress">
+                                    <div class="progress-bar items-progress progress-bar-danger progress-bar-striped active" style="width: 3%">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar items-progress progress-bar-info progress-bar-striped active" style="width: 3%">
+                                    
+                                </div>
+                                <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 3%">
+                                    
+                                </div>
+                                <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 3%">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="countdown"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</section>
+

@@ -1,0 +1,108 @@
+ RewriteEngine On
+ RewriteBase /
+
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+ RewriteRule ^auth/login login.php [L]
+ RewriteRule ^dashboard dashboard.php [L]
+ RewriteRule ^cart/search cart-search-product.php [L]
+ RewriteRule ^cart/import-prices import-prices.php [L]
+ RewriteRule ^cart/product/* cart-product.php [L]
+ RewriteRule ^projects/* projects.php [L]
+ RewriteRule ^project/* project.php [L]
+ RewriteRule ^quote/* project.php [L]
+ RewriteRule ^offer/* quote.php [L]
+ RewriteRule ^admin/import/categories import_categories.php [L]
+ RewriteRule ^admin/import/products import_products.php [L]
+ RewriteRule ^admin/import/users import_users.php [L]
+ RewriteRule ^admin/import/clients import_clients.php [L]
+ RewriteRule ^admin/import/designers import_designers.php [L]
+ RewriteRule ^admin/import/projects import_projects.php [L]
+ RewriteRule ^admin/import/scrapping import_scrapping_list.php [L]
+ RewriteRule ^admin/users users.php [L]
+ RewriteRule ^admin/user/* users.php [L]
+ RewriteRule ^admin/clients clients.php [L]
+ RewriteRule ^admin/client/* clients.php [L]
+ RewriteRule ^admin/designers designers.php [L]
+ RewriteRule ^admin/designer/* designers.php [L]
+ RewriteRule ^admin/access/* access_table.php [L]
+ RewriteRule ^404 404.php [L]
+ ErrorDocument 404 /404.php
+
+ RewriteRule ^ajax/getMainCategories modules/admin/import/categories/controllers/get_main_categories.php [L]
+ RewriteRule ^ajax/getCategories modules/admin/import/categories/controllers/get_categories.php [L]
+ RewriteRule ^ajax/getCategoryProducts modules/admin/import/categories/controllers/get_category_products.php [L]
+ RewriteRule ^ajax/insertCategory modules/admin/import/categories/controllers/insert_category.php [L]
+ #RewriteRule ^ajax/getProduct modules/admin/import/products/controllers/get_product.php [L]
+ RewriteRule ^ajax/getProducts modules/admin/import/products/controllers/get_products.php [L]
+ RewriteRule ^ajax/getDesigners modules/admin/controllers/get_designers.php [L]
+ RewriteRule ^ajax/getClients modules/admin/controllers/get_clients.php [L]
+ RewriteRule ^ajax/getProjectStatus modules/admin/controllers/get_project_status.php [L]
+ RewriteRule ^ajax/changeQuoteStatus modules/projects/controllers/change_quote_status.php [L]
+ RewriteRule ^ajax/sendQuoteToClient modules/projects/controllers/send_quote.php [L]
+ RewriteRule ^ajax/getQuotes modules/admin/controllers/get_quotes.php [L]
+ RewriteRule ^ajax/getAccess modules/admin/controllers/get_access.php [L]
+
+ RewriteRule ^ajax/getInsertedProductIDs modules/admin/import/products/controllers/get_inserted_products.php [L]
+
+ RewriteRule ^ajax/getUsers modules/profiles/controllers/get_users.php [L]
+
+ RewriteRule ^ajax/getUserTypes modules/profiles/controllers/get_user_types.php [L]
+
+RewriteRule ^ajax/updatePrices modules/cart/controllers/update_prices.php [L]
+
+RewriteRule ^ajax/addProject modules/projects/controllers/add_project.php [L]
+
+RewriteRule ^ajax/getProjects modules/projects/controllers/get_projects.php [L]
+
+RewriteRule ^ajax/getRejectionReason modules/projects/controllers/get_rejection_reason.php [L]
+
+RewriteRule ^ajax/updateQuantity modules/projects/controllers/update_quantity.php [L]
+
+RewriteRule ^ajax/updateQuote modules/projects/controllers/update_quote.php [L]
+
+RewriteRule ^ajax/updateItems modules/projects/controllers/update_quote_items.php [L]
+
+RewriteRule ^ajax/updateMaster modules/projects/controllers/update_master.php [L]
+
+RewriteRule ^ajax/uploadCustomProductImage modules/projects/controllers/upload_custom_product_image.php [L]
+
+RewriteRule ^ajax/uploadFile common/backend/upload_file.php [L]
+
+RewriteRule ^ajax/getImageBase common/backend/get_image_base.php [L]
+
+RewriteRule ^ajax/createQuote modules/projects/controllers/create_quote.php [L]
+
+RewriteRule ^ajax/addItemsToQuote modules/projects/controllers/add_quote_items.php [L]
+
+RewriteRule ^ajax/addTemporaryItemsToQuote modules/projects/controllers/add_temporary_quote_items.php [L]
+
+RewriteRule ^ajax/removeItemsFromQuote modules/projects/controllers/remove_quote_items.php [L]
+
+RewriteRule ^ajax/logout modules/auth/controllers/logout-controller.php [L]
+
+RewriteRule ^ajax/addUsers modules/admin/import/elements/controllers/add_users.php [L]
+
+RewriteRule ^ajax/addClients modules/admin/import/elements/controllers/add_clients.php [L]
+
+RewriteRule ^ajax/addDesigners modules/admin/import/elements/controllers/add_designers.php [L]
+
+RewriteRule ^ajax/importProject modules/admin/import/elements/controllers/add_projects.php [L]
+
+RewriteRule ^ajax/importScrapping modules/admin/import/elements/controllers/add_scrapping_list.php [L]
+
+RewriteRule ^ajax/getDashboardProjects modules/dashboard/controllers/get_projects_data.php [L]
+
+RewriteRule ^ajax/getDashboardQuotes modules/dashboard/controllers/get_quotes_data.php [L]
+
+RewriteRule ^ajax/confirmQuote modules/projects/controllers/confirm_quote.php [L]
+
+RewriteRule ^ajax/addComment modules/projects/controllers/add_comment.php [L]
+
+RewriteRule ^ajax/getComments modules/projects/controllers/get_comments.php [L]
