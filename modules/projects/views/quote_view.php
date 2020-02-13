@@ -23,7 +23,6 @@ else
     else {
         $client_email = 0;
     }
-
 ?>
 
     <script type="text/javascript">
@@ -34,7 +33,7 @@ else
 
         var quoteId = <?php echo $quote['id']?>;
 
-        var clientId =  <?php echo $client_id ?> ;
+        var clientId =  "<?php echo $client_id ?>" ;
 
         var assigneeId = <?php echo $quote['assignee_id']?>;
 
@@ -95,25 +94,35 @@ else
                             </button>
                         </li>
                         <li>
-                            <button class="btn btn-lg btn-default waves-effect viewComments" data-toggle="modal"data-target="#viewComments-modal" data-quote="<?php echo $quote['id']?>">
+                            <button class="btn btn-lg btn-default waves-effect viewComments" data-quote="<?php echo $quote['id']?>">
                             Comments
                             </button>
                         </li>
+                        
+                        <!--  <li>
+                            <button class="btn btn-lg btn-default waves-effect offerConditions" data-toggle="modal"data-target="#offerConditions-modal">
+                            Update conditions
+                            </button>
+                        </li> -->
                         <?php }?>
-
+                        <li>
+                            <button class="btn btn-lg btn-default waves-effect viewFiles"  data-quote="<?php echo $quote['id']?>">
+                            Files
+                            </button>
+                        </li>
                         <?php 
-                            if(!$quote['client_approved']) 
+                        //var_dump($quote['']);
+                            if(!$quote['client_approved'] && !$quote['offer_rejected'] && isset($_SESSION['user_access']['client-grid'])) 
                             {
                         ?>
                         <li>
                             <button class="btn btn-lg btn-success waves-effect clientConfirm" data-quote="<?php echo $quote['id']?>">
-                            Client Confirm & Send To Sales
+                            Click here to Accept Offer
                             </button>
                         </li>
-                        <?php } else { ?>
                         <li>
-                            <button class="btn btn-lg btn-success waves-effect clientConfirm" data-quote="<?php echo $quote['id']?>" disabled>
-                            Client has Confirmed quote
+                            <button class="btn btn-lg btn-default waves-effect clientReject" data-quote="<?php echo $quote['id']?>" >
+                            Reject Offer
                             </button>
                         </li>
                         <?php
@@ -139,11 +148,11 @@ else
                                 <th>Total power consumption (W)</th>
                                 <th>Colour temperature (K)</th>
                                 <th>Fixture luminous flux (lm)</th>
-                                <th>Acquisition Price</th>
+                                <th>Aq Price</th>
                                 <th>Min Price</th>
-                                <th>List Price</th>
+                                <th>Euro</th>
                                 <th>Discount</th>
-                                <th>Unit Price</th>
+                                <th>Eur/pcs</th>
                                 <th>Profit</th>
                                 <th>Profit %</th>
                                 <th>QTY</th>
@@ -158,7 +167,12 @@ else
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>N/A</th>
+                                    <th>
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                 <input type="number"min=0 class="form-control extraDiscount" name="extradiscount" placeholder="" data-quote="<?php echo $quote['id'] ?>" value ="<?php echo $quote['extra_discount'] ?>"/></th>
+                                            </div>
+                                        </div>
                                     <th>N/A</th>
                                     <th></th>
                                     <th></th>
@@ -168,11 +182,11 @@ else
                                 </tr>
                                 <tr>
                                     
-                                    <th >Acquisition Price</th>
+                                    <th >Aq</th>
                                     <th>Min Price</th>
-                                    <th>List Price</th>
-                                    <th>Discount</th>
-                                    <th>Unit Price</th>
+                                    <th>Euro</th>
+                                    <th>Extra Discount</th>
+                                    <th>E/pcs</th>
                                     <th>Profit</th>
                                     <th>Profit %</th>
                                     <th>QTY</th>
@@ -196,32 +210,65 @@ else
                 </div>
             </div>
             <div class="header bg-blue-grey">
-                <h2>Quote Status: <?php echo $GetDetails->quoteStatus($quote['quote_status'])?>
-                    <div class="status-wrapper m-t-10" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" data-status="4" class="btn btn-default waves-effect">Work in progress</button>
-                            <button type="button" data-status="7" disabled class="btn btn-default waves-effect">Admin Approval</button>
-                            <button type="button" data-status="3" disabled class="btn btn-default waves-effect">Sent to Client</button>
-                            <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
-                            <button type="button" data-status="5" class="btn btn-default waves-effect">Contracting</button>
-                            <button type="button" data-status="2" class="btn btn-default waves-effect">Delivering</button>
-                        </div>
-                    </div>
-                </h2>
-                <?php 
-                    if(isset($_SESSION['user_access']['sales-grid'])) 
+                <h2>Quote Status: <?php echo $GetDetails->quoteStatus($quote['quote_status'])?></h2>
+                 <?php 
+                 //var_dump($_SESSION);
+                    if($_SESSION['name'] !== "Visitor") 
                     {
                 ?>
-                <ul class="header-dropdown m-r-0">
-                    <li>
-                        <button class="btn btn-lg btn-default waves-effect nextStep" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
-                        ?>" data-quote='<?php echo $quote['id']?>' >
-                            Next Step
-                        </button>
-                    </li>
-                    
-                </ul>
-            <?php }?>
+                    <div class="row m-t-10">
+                        <div class="col-lg-7">
+                            <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" data-status="4" class="btn btn-default waves-effect">Work in progress</button>
+                                    <button type="button" data-status="7" disabled class="btn btn-default waves-effect">Admin Approval</button>
+                                    <button type="button" data-status="3" class="btn btn-default waves-effect">Solution Finalized</button>
+                                    <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
+                                    <button type="button" data-status="5" class="btn btn-default waves-effect">Contracting</button>
+                                    <button type="button" data-status="2" class="btn btn-default waves-effect">Delivering</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-right">
+                            <button class="btn btn-default waves-effect nextStep" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
+                            ?>" data-quote='<?php echo $quote['id']?>' >
+                                Next status
+                            </button>
+                        </div>
+                    </div> 
+                    <?php if( $quote['quote_status'] != 4 ) { ?>
+
+                        <div class="m-t-20">
+                            <h2 >Quote Flags</h2>
+                            <small >Press on the button to activate the flag.</h2>
+                        </div>
+                        
+                        <div class="row m-t-10">
+                            <div class="col-lg-9">
+                                <div class="flags-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <button type="button" data-flag="afterApprove" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Admin Approved</button>
+                                        <button type="button" data-flag="offer_sent" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Offer Sent</button>
+                                        <button type="button" data-flag="offer_opened" class="btn btn-default waves-effect" disabled><i class="material-icons">check_box_outline_blank</i>Offer Opened</button>
+                                        <button type="button" data-flag="client_approved" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Offer Approved</button>
+                                        <button type="button" data-flag="offer_rejected" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Offer Rejected</button>
+                                        <button type="button" data-flag="contract_sent" class="btn btn-default waves-effect" disabled><i class="material-icons">check_box_outline_blank</i>Contract Sent</button>
+                                        <button type="button" data-flag="invoice_sent" class="btn btn-default waves-effect" disabled><i class="material-icons">check_box_outline_blank</i>Invoice Sent</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 text-center">
+                                <?php if($quote['rejection_info']) { ?>
+
+                                 <div class="alert bg-red">
+                                    <b>Rejection Reason:</b> <?php echo $quote['rejection_info']; ?>
+                                </div>
+
+                                <?php } ?>
+                            </div>
+                        </div> 
+                    <?php }?>                    
+                <?php }?>
             </div>
         </div>
     </div>
@@ -236,7 +283,7 @@ else
                     <div class="modal-body">
                         <form id="rejectionForm" method="post" action='' enctype="multipart/form-data" >
                             <div class="input-group">
-                                  <select class="form-control rejectionReason" required name="rejectionReason">
+                                  <select class="form-control rejectionReason" required name="rejected_reason">
                                     <option value="">Select rejection Reason</option>
                                 </select>
                             </div>
@@ -256,11 +303,11 @@ else
         </div>
 
         <!-- Large Size -->
-        <div class="modal fade" id="viewComments-modal" tabindex="-1" role="dialog">
+        <div class="modal fade viewComments-modal" tabindex="-1" role="dialog" data-quote="<?php echo $quote['id']?>">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" >Quote #<?php echo $quote['id']?> Comments</h4>
+                        <h4 class="modal-title" >Quote #<span class="quoteNumberEdit"></span> Comments</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -269,9 +316,10 @@ else
                                     <thead>
                                         <th>ID</th>
                                         <th>User Name</th>
-                                        <th>Comment</th>
                                         <th>Quote Status</th>
+                                        <th>Comment</th>
                                         <th>Date</th>
+
                                     </thead>
                                 </table>
                             </div>
@@ -298,6 +346,57 @@ else
 
             </div>
         </div>
+
+        <!-- Large Size -->
+        <div class="modal fade viewFiles-modal" tabindex="-1" role="dialog" data-quote="<?php echo $quote['id']?>">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >Quote #<span class="quoteNumberEdit"></span>  Files</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <?php  if( !isset($_SESSION['user_access']['client-grid'])) {?>
+                            <div class="col-lg-5">
+                                <div class="dropzone dropzone-doc dz-clickable" data-quote="<?php echo $quote['id']; ?>">
+                                    <div class="dz-message">
+                                        <div class="drag-icon-cph">
+                                            <i class="material-icons">touch_app</i>
+                                        </div>
+                                        <h3>Drop files here or click to upload.</h3>
+
+                                    </div>
+                                    <form class="quoteFilesForm" method="post" action='' enctype="multipart/form-data" >
+                                        <input type="hidden" class="file-name" name="file_name" value="">
+                                        <input type="hidden" class="quote-id" name="quote_id" value="">
+                                        <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Click to save files on Quote</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php }?>
+                            <div class="col-lg-7">
+                                <table class="files_table table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                         <th></th>
+                                        <th>File</th>
+                                        <th>Date</th>
+                                        <th>User</th>
+
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
          <!-- Large Size -->
         <div class="modal fade" id="editItem-modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
@@ -311,10 +410,10 @@ else
                                 <input type="text" class="form-control" name="index" placeholder="Index" required>
                             </div>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="description" placeholder="Customer Description" required>
+                                <input type="text" class="form-control" name="description" placeholder="Customer Description"  maxlength="100" required>
                             </div>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="destination" placeholder="Product Destination" required>
+                                <input type="text" class="form-control" name="destination" placeholder="Product Destination"  maxlength="100" required>
                             </div>
                             <div class="input-group">
                                 <button id="updateQuoteButton" class="btn btn-lg btn-block btn-success waves-effect" type="submit" >Update Quote</button>
@@ -327,3 +426,4 @@ else
                 </div>
             </div>
         </div>
+      

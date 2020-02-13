@@ -99,6 +99,7 @@
                                 <th>Image</th>
                                 <th>Product ID</th>
                                 <th>Product Name</th>
+                                 <th>Aquisition Price</th>
 
                             </thead>
                         </table>

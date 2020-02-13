@@ -14,6 +14,7 @@ $projectID = basename($urlArray['path']);
 //echo $_pageName; 1574978400/1431 / MTU3NDk3ODQwMC8xNDMx
 // echo $_pageName.'wer';
 
+
 if($_pageName == 'offer') {
 
 	if(isset($_GET['hash'])) {
@@ -73,7 +74,7 @@ $conn = $QueryBuilder->dbConnection();
 			)
 		);
 
-		$projectQuery = $projectQuery[0];
+		$projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
 
 		if($projectQuery['master_quote']) {
 			$masterQuote = $QueryBuilder->select(
@@ -98,8 +99,20 @@ $conn = $QueryBuilder->dbConnection();
 		);
 	}
 
+	//Delivered Revenue
+	$projectRevenue = array(
+		"project_profit" => 0,
+		"project_revenue" => 0
+	);
+
 	foreach ($quoteQuery as $key => $quote) {
 		# code...
+		//var_dump($quoteQuery);
+
+		if($quote['quote_status'] == 2) {
+			$projectRevenue['project_profit'] = $projectRevenue['project_profit'] + $quote['profit'];
+			$projectRevenue['project_revenue'] = $projectRevenue['project_revenue'] + $quote['quote_price'];
+		}
 
 		$quoteItemsQuery = $QueryBuilder->select(
 			$conn,
@@ -154,43 +167,44 @@ $conn = $QueryBuilder->dbConnection();
 				$temporary_product = 0;
 			}
 
-			
+
 
 			if($quoteProductDetails) {
 				$quoteProducts['data'][$quoteDetails] = $quoteProductDetails[0];
 			}
 
-			if($temporary_product == 0) {
-				$featuresArray = $QueryBuilder->selectFeatures(
-					$conn, 
-					$quoteValues['product_id'],
-					$keyFeatures = array(
-						"fixture_luminous_flux__lm_", 
-						'total_power_consumption__w_',
-						'colour_temperature__k_'
-
-					)
-				);
-
-				if($featuresArray){
-					foreach ($featuresArray as $featureKey => $featureValue) {
-
-						$quoteProducts['data'][$quoteDetails][$featureValue['id']] = $featureValue['feature_value'];
-					}
-				}
-			}
+			$productInitialPrice = $quoteProducts['data'][$quoteDetails]['initial_price'];
 			
 
+			// if($temporary_product == 0) {
+			// 	$featuresArray = $QueryBuilder->selectFeatures(
+			// 		$conn, 
+			// 		$quoteValues['product_id'],
+			// 		$keyFeatures = array(
+			// 			"fixture_luminous_flux__lm_", 
+			// 			'total_power_consumption__w_',
+			// 			'colour_temperature__k_'
+
+			// 		)
+			// 	);
+
+			// 	if($featuresArray){
+			// 		foreach ($featuresArray as $featureKey => $featureValue) {
+
+			// 			$quoteProducts['data'][$quoteDetails][$featureValue['id']] = $featureValue['feature_value'];
+			// 		}
+			// 	}
+			// }
 			
 
-			$list_price = $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
-			$min_price = $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
+			$list_price = $Pricing->getListPrice($quoteValues['initial_price']);
+			$min_price = $Pricing->getMinPrice($quoteValues['initial_price']);
 
 			$unit_price = $quoteValues['unit_price'] > 0 ? $quoteValues['unit_price'] : $list_price - ($quoteValues['discount'] ? ($list_price * $quoteValues['discount']/100) : 0);
 
 			$unit_price = number_format((float)$unit_price, 2, '.', '');
 
-			$profit =  $unit_price - $quoteProductDetails[0]['initial_price'];
+			$profit =  $unit_price - $quoteValues['initial_price'];
 
 			$profit =  number_format((float)$profit, 2, '.', '');
 
@@ -205,11 +219,17 @@ $conn = $QueryBuilder->dbConnection();
 			if($temporary_product && $quoteProductDetails[0]['product_image']) {
 
 				$quoteProductDetails[0]['product_image'] = $host.'/uploads/'.$quoteProductDetails[0]['product_image'];
+			}  
+			if($_pageName == 'quote'|| $_pageName == 'offer') {
+				$quoteProducts['data'][$quoteDetails]['project_name'] = "";
+			} else {
+				$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name']; 
 			}
-			$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name'];
 			$quoteProducts['data'][$quoteDetails]['quote_item_id'] = $quoteValues['id'];
 			$quoteProducts['data'][$quoteDetails]['product_image'] = getImageBase($quoteProductDetails[0]['product_image']);
 			$quoteProducts['data'][$quoteDetails]['quantity'] = $quoteValues['quantity'];
+			$quoteProducts['data'][$quoteDetails]['initial_price'] = $quoteValues['initial_price'] > 0 ? $quoteValues['initial_price'] : $productInitialPrice;
+
 			$quoteProducts['data'][$quoteDetails]['discount'] = $quoteValues['discount'];
 			$quoteProducts['data'][$quoteDetails]['temporary_product'] = $temporary_product;
 			$quoteProducts['data'][$quoteDetails]['list_price'] = $list_price;
@@ -218,14 +238,13 @@ $conn = $QueryBuilder->dbConnection();
 			$quoteProducts['data'][$quoteDetails]['profit'] =  $profit;
 			$quoteProducts['data'][$quoteDetails]['profit_percent'] =  $profit_percent;
 			$quoteProducts['data'][$quoteDetails]['final_price'] =  $unit_price*$quoteValues['quantity'];
-			$quoteProducts['data'][$quoteDetails]['rejection'] = $quoteValues['rejection_reason'] > 0 ? $rejectionQuery[$quoteValues['rejection_reason']]['name'] : 0;
+			$quoteProducts['data'][$quoteDetails]['rejected_reason'] = $quote['rejected_reason'] > 0 ? $rejectionQuery[$quote['rejected_reason']]['name'] : 0;
 			$quoteProducts['data'][$quoteDetails]['item_status'] = $quoteItemStatusQuery[$quoteValues['quote_item_status']]['name'];
 			$quoteProducts['data'][$quoteDetails]['quote_item_id'] = $quoteValues['id'];
 			$quoteProducts['data'][$quoteDetails]['criteria'] = $quoteValues['criteria'];
 			$quoteProducts['data'][$quoteDetails]['destination'] = $quoteValues['destination'];
 			$quoteProducts['data'][$quoteDetails]['customer_description'] = $quoteValues['customer_description'];
-
-			
+			$quoteProducts['data'][$quoteDetails]['extra_discount'] = $quote['extra_discount'];
 
 		}
 
@@ -240,7 +259,12 @@ $conn = $QueryBuilder->dbConnection();
 		$quoteQuery[$key]['agent_name'] = $GetDetails->userName($quote['assignee_id']);
 		$quoteQuery[$key]['agent_role'] = $GetDetails->userRole($quote['assignee_id']);
 		$quoteQuery[$key]['agent_phone'] = $GetDetails->userPhone($quote['assignee_id']);
-		$quoteQuery[$key]['project_name'] = $projectQuery['project_name'];
+		$quoteQuery[$key]['rejection_info'] = $quote['rejected_reason'] > 0 ? $rejectionQuery[$quote['rejected_reason']]['name'] : 0;
+		if($_pageName == 'quote'|| $_pageName == 'offer') {
+			$quoteQuery[$key]['project_name'] = ""; 
+		} else {
+			$quoteQuery[$key]['project_name'] = $projectQuery['project_name']; 
+		}
 
 		//var_dump($quoteQuery[$key]['agent_email']);
 	}
@@ -249,6 +273,16 @@ $conn = $QueryBuilder->dbConnection();
 	if($_pageName == 'offer') {
 		if(isset($_GET['hash'])) {
 			if($hashArray && $hashArray[0] == strtotime($quoteQuery[0]['offer_date']) ) {
+
+				$quoteUpdate = $QueryBuilder->update(
+					$conn,
+					$options = array(
+						"table" => "quotes",
+						"set" => ["`offer_opened`='1'"],
+						"where" => "id = ".$projectID
+					)
+				);
+
 				include($_MPATH['PROJECTS_VIEWS'].'quote_main_view.php');
 			}
 			else {

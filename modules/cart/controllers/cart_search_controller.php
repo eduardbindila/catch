@@ -91,17 +91,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 	if(is_string($query)) {
 		$_SESSION['login-error-class'] = 'loggin-error';
 		$errorMessage = $query;
-	
+		
 	} else if(sizeof($query) == 0){
+		
 
 		$_SESSION['login-error-class'] = 'loggin-error';
 		$errorMessage = 'No product has been found';
 	} else {
+		
 		$_SESSION['login-error-class'] = '';
 
 		$searchResult = $query;
 	}
-
 
 	$QueryBuilder->closeConnection();
 

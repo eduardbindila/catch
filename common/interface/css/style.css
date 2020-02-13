@@ -8634,3 +8634,15 @@ div.dataTables_wrapper span.select-item {
 /*.projectPage .addToQuote {
   display: inline-block;
 }*/
+
+.label-lg {
+  font-size: 100%;
+}
+
+.card .bg-blue-grey .flags-wrapper .btn-default i.material-icons  {
+  color: #000 !important;
+}
+
+.flags-wrapper i {
+  top: 5px !important;
+}

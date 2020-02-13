@@ -9,8 +9,9 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_items",
-			"column" => "product_id",
-			"in" => $_POST['products']
+			"column" => "id",
+			"in" => $_POST['quote_item_id'],
+			"and" => "quote_id = '".$_POST['quote_id']."'"
 		)
 	);
 	

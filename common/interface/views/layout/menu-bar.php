@@ -105,8 +105,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                     </li>
                     <?php }?>
 
-                    <?php 
-                        if(isset($_SESSION['user_access']['supervisor'])) 
+                     <?php 
+                        if(isset($_SESSION['user_access']['sales-grid'])) 
                         {
                     ?>
                     <li>
@@ -115,19 +115,25 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                             <span>Settings</span>
                         </a>
                         <ul class="ml-menu">
+                            <?php 
+                                if(isset($_SESSION['user_access']['supervisor'])) 
+                                {
+                            ?>
                             <li>
                                 <a href="/admin/users">
                                     <span>Users</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="/admin/clients">
-                                    <span>Clients</span>
-                                </a>
-                            </li>
+                           
                             <li>
                                 <a href="/admin/designers">
                                     <span>Designers</span>
+                                </a>
+                            </li>
+                            <?php }?>
+                             <li>
+                                <a href="/admin/clients">
+                                    <span>Clients</span>
                                 </a>
                             </li>
                             <?php 
@@ -140,6 +146,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                 </a>
                             </li>
                             <?php }?>
+                            
                         </ul>
                     </li>
                     <?php }?>
@@ -161,6 +168,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                             <li>
                                 <a href="/projects/">
                                     <span>Projects</span>
+                                </a>
+                            </li>
+                             <li>
+                                <a href="/quotes/">
+                                    <span>Quotes</span>
                                 </a>
                             </li>
                             <?php }?>

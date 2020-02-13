@@ -15,21 +15,35 @@ $Pricing= new Pricing();
 //Session Handling
 //========================//
 $SessionState = new SessionState(); 
+ini_set('session.gc_maxlifetime', 30000);
 $SessionState->sessionStart();
 
+// var_dump($_SESSION);
 
-if($_subSectionName == "import" && !isset($_SESSION['user_access']['admin']) || $_subSectionName == "admin" && !isset($_SESSION['user_access']['supervisor'])) {
+// echo $_subSectionName;
+
+//echo $_sectionName;
+
+if($_subSectionName == "import" && !isset($_SESSION['user_access']['admin']) || $_sectionName == "admin" && !isset($_SESSION['user_access']['supervisor']) || $_subSectionName == "product" && !isset($_SESSION['user_access']['supervisor'])) {
 	header("HTTP/1.1 301 Moved Permanently");
 	header( 'Location: /404' ) ;
 } 
 
+if($_sectionName == "offer" ) {
+	$SessionState->destroy();
+}
+
+
+
 if(!isset($_SESSION['user_id'])){
-	$_SESSION['isLoggedIn'] = true;
+	$_SESSION['isLoggedIn'] = false;
 	$_SESSION['login-error-class'] = '';
 	$_SESSION['name'] = "Visitor";
 	$_SESSION['user_id'] = 0;
 	$_SESSION['user_type'] = 4;
 	$_SESSION['is_client'] = 0;
+
+// } else {
 
 	$conn = $QueryBuilder->dbConnection();
 
@@ -44,14 +58,14 @@ if(!isset($_SESSION['user_id'])){
 		$returnType = "idAsArray"
 	);
 
-
-
 	$QueryBuilder->closeConnection();
 }
 
+if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote" && $_subSectionName !== "getQuoteFiles") {
+	$SessionState->redirectLogin();
 
+}
 
-// var_dump($_SESSION);
 
 $_clientView = isset($_SESSION['user_access']['client-grid']); 
 
@@ -60,6 +74,7 @@ $_salesView = isset($_SESSION['user_access']['sales-grid']);
 $_supervisorView = isset($_SESSION['user_access']['supervisor']);
 
 $_adminView = isset($_SESSION['user_access']['admin']);
+
 
 
 //var_dump($_SESSION);

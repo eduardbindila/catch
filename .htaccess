@@ -16,6 +16,8 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
  RewriteRule ^cart/product/* cart-product.php [L]
  RewriteRule ^projects/* projects.php [L]
  RewriteRule ^project/* project.php [L]
+ 
+ RewriteRule ^quotes/* quotes.php [L]
  RewriteRule ^quote/* project.php [L]
  RewriteRule ^offer/* quote.php [L]
  RewriteRule ^admin/import/categories import_categories.php [L]
@@ -57,6 +59,8 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 RewriteRule ^ajax/updatePrices modules/cart/controllers/update_prices.php [L]
 
+RewriteRule ^ajax/importProductsCSV modules/cart/controllers/import_products_csv.php [L]
+
 RewriteRule ^ajax/addProject modules/projects/controllers/add_project.php [L]
 
 RewriteRule ^ajax/getProjects modules/projects/controllers/get_projects.php [L]
@@ -85,6 +89,8 @@ RewriteRule ^ajax/addTemporaryItemsToQuote modules/projects/controllers/add_temp
 
 RewriteRule ^ajax/removeItemsFromQuote modules/projects/controllers/remove_quote_items.php [L]
 
+RewriteRule ^ajax/removeFilesFromQuote modules/projects/controllers/remove_quote_files.php [L]
+
 RewriteRule ^ajax/logout modules/auth/controllers/logout-controller.php [L]
 
 RewriteRule ^ajax/addUsers modules/admin/import/elements/controllers/add_users.php [L]
@@ -106,3 +112,16 @@ RewriteRule ^ajax/confirmQuote modules/projects/controllers/confirm_quote.php [L
 RewriteRule ^ajax/addComment modules/projects/controllers/add_comment.php [L]
 
 RewriteRule ^ajax/getComments modules/projects/controllers/get_comments.php [L]
+
+RewriteRule ^ajax/getClientComments modules/admin/controllers/get_client_comments.php [L]
+RewriteRule ^ajax/addClientComment modules/admin/controllers/add_client_comment.php [L]
+
+RewriteRule ^ajax/saveFilesToQuote modules/projects/controllers/save_quote_files.php [L]
+
+RewriteRule ^ajax/getQuoteFiles modules/projects/controllers/get_quote_files.php [L]
+
+
+RewriteRule ^ajax/getProjectComments modules/projects/controllers/get_all_comments.php [L]
+
+RewriteRule ^ajax/duplicateQuoteItems modules/projects/controllers/duplicate_quote_items.php [L]
+

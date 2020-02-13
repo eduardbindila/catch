@@ -1,7 +1,0 @@
-[27-Jan-2020 07:54:13 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427
-[28-Jan-2020 08:14:56 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427
-[28-Jan-2020 11:55:25 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427
-[29-Jan-2020 07:45:11 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427
-[29-Jan-2020 07:45:16 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427
-[29-Jan-2020 07:45:19 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427
-[29-Jan-2020 08:57:16 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 427

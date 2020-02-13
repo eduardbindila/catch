@@ -58,6 +58,8 @@ $(document).ready(function() {
     if(typeof(searchResult) != "undefined") {
         $('.show-table').removeClass('hidden');
 
+        //console.log(searchResult);
+
         var table = $('.results-table').DataTable({
             dom: 'Blfrtip',
             data: searchResult,
@@ -83,7 +85,11 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
-                            selectedProducts.push(selection[i].id);
+                            localArray = {
+                                  'id' : selection[i].id,
+                                  'initial_price' : selection[i].initial_price
+                              };
+                            selectedProducts.push(localArray);
                         }
                     }
                 },
@@ -95,7 +101,11 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
-                            selectedProducts.push(selection[i].id);
+                            localArray = {
+                                  'id' : selection[i].id,
+                                  'initial_price' : selection[i].initial_price
+                              };
+                            selectedProducts.push(localArray);
                         }
 
                         var quoteID = $('#quoteNumber').text();
@@ -111,7 +121,11 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
-                            selectedProducts.push(selection[i].id);
+                            localArray = {
+                                  'id' : selection[i].id,
+                                  'initial_price' : selection[i].initial_price
+                              };
+                            selectedProducts.push(localArray);
                         }
 
                         var projectID = $('#projectNumber').text();
@@ -159,13 +173,25 @@ $(document).ready(function() {
                     "data": "id",
                     className: "product_id",
                     "render" : function(data, type, row) {
-                          return '<a target="blank" href="/cart/product/'+data+'">'+data+'</a>'
+                         if(searchTemporary){
+                                var temp = "?temp=1";
+                            } else {
+
+                              var temp = "";
+                            
+                            }
+                          return '<a href="/cart/product/'+data+temp+'">'+data+'</a>'
                       }
 
                 },
                 { 
                     "data": "product_name",
                     className: "product_name",
+
+                },
+                { 
+                    "data": "initial_price",
+                    className: "initial_price",
 
                 },
             ],
@@ -199,7 +225,7 @@ $(document).ready(function() {
                 }
 
                  if(queryDict.project && queryDict.project !== 'undefined') {
-                   console.log('a')
+                   //console.log('a')
 
                     $('.addToProject').removeClass('hidden');
                     $('.addToQuote').addClass('hidden');
@@ -326,6 +352,7 @@ function createQuote(projectID, products) {
         'project': projectID,
     }
 
+    //console.log(products);
     $.ajax({
         url: "/ajax/createQuote",
         type: "post",
@@ -334,7 +361,12 @@ function createQuote(projectID, products) {
     }).done(function(json){
         $('.quote-progress').css('width', "100%").attr('aria-valuenow', 100);
         $('.item-progress').css('width', "40%").attr('aria-valuenow', 40);
-        addItemsToQuote(projectID, json, products)
+        if(products['duplicate']) {
+            duplicateQuoteItems(projectID, json, products);
+        } else {
+            addItemsToQuote(projectID, json, products)
+        }
+        
 
     }).error(function(xhr, status, error) {
         $('.quoteCreation').removeClass('hidden');
@@ -342,11 +374,35 @@ function createQuote(projectID, products) {
 
 }
 
+function duplicateQuoteItems(projectID, quoteID, quote_items){
+    //console.log('its on');
+
+
+    var quote = {
+            'quote_items': quote_items,
+            'quote_id': quoteID,
+        }
+
+     $.ajax({
+        url: "/ajax/duplicateQuoteItems",
+        type: "post",
+        dataType: "json",
+        data: quote
+    }).done(function(json){
+            $('.items-progress').css('width', "100%").attr('aria-valuenow', 100);
+            redirectCounter(projectID)
+        
+    }).error(function(xhr, status, error) {
+        $('.quoteItemsCreation').removeClass('hidden');
+    })
+}
+
 function addItemsToQuote(projectID, quoteID, products) {
     if(products[0].id) {
          $('#status-modal').modal('show');
         var quote = {
             'products': products,
+            'temporary_products' : searchTemporary,
             'quote_id': quoteID,
             'isMulti': 1
         }
@@ -381,7 +437,7 @@ function addItemsToQuote(projectID, quoteID, products) {
 }
 
 function redirectCounter(projectID){ 
-    var timeleft = 5;
+    var timeleft = 3;
     var downloadTimer = setInterval(function(){
       document.getElementById("countdown").innerHTML = timeleft + " seconds ";
       timeleft -= 1;

@@ -47,17 +47,43 @@ $conn = $QueryBuilder->dbConnection();
 			</html>
 			";
 
+			
+
+
+
 			// Always set content-type when sending HTML email
 			$headers = "MIME-Version: 1.0" . "\r\n";
 			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 			// // More headers
 			$headers .= 'From: <office@icatch.ro>' . "\r\n";
+			if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
+				//var_dump($message);
+				$mailSend = true;
+			} else {
+				$mailSend = mail($to,$subject,$message,$headers);
+			}
 
-			$mailSend = mail($to,$subject,$message,$headers);
+			if($mailSend) {
+				
+				$quoteUpdate = $QueryBuilder->update(
+					$conn,
+					$options = array(
+						"table" => "quotes",
+						"set" => ["`offer_sent`='1'"],
+						"where" => "id = ".$_POST['quote_id']
+					)
+				);
 
-			echo true;
+				if($quoteUpdate) {
+					echo true;
+				} else {
+					echo false;
+				}
 
+			} else {
+				echo false;
+			}
 	}
 	else {
 		echo false;

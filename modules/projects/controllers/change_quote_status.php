@@ -60,7 +60,7 @@ $conn = $QueryBuilder->dbConnection();
 		$offer_date = '';
 	}
 
-	if($_POST['quote_status'] == 7) {
+	if(($_POST['quote_status'] == 7) && isset($_POST['jump_status']) && ($_POST['jump_status'] != 3)) {
 		$afterApprove = 1;
 		$other = ', `afterApprove`=1';
 	} else {

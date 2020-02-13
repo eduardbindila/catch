@@ -50,32 +50,49 @@
                                     include($_MPATH['ADMIN_CONTROLLERS'].'projects_controller.php');
 
                                  ?>
-                               <ul>
-                                    <?php if($projectQuery['master_quote']) {
-                                       ?>
-                                       
-                                    
-                                        <li>
-                                        Master Quote: <?php echo $projectQuery['master_quote']  ?>
-                                        <ul>
-                                            <li>
-                                                Master Profit: <?php echo $masterQuote['profit']  ?>
-                                            </li>
-                                            <li>
-                                                Master Profit Percent: <?php echo $masterQuote['profit_percent']  ?>
-                                            </li>
-                                            <li>
-                                                Master Price: <?php echo $masterQuote['quote_price']  ?>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <?php
-                                    }?>
-                                    
-                               </ul>
                             </div>
                         </div>
                         
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="header">
+                        <h2>Project Revenue Details</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                 <ul> <b>Delivered Quotes</b>
+                                    <li>
+                                        Project Profit: <?php echo $projectRevenue['project_profit']  ?>
+                                    </li>
+                                    <li>
+                                        Project Revenue: <?php echo $projectRevenue['project_revenue']  ?>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="header">
+                        <h2>Project Comments</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="allComments_table table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>User Name</th>
+                                        <th>Quote Status</th>
+                                        <th>Comment</th>
+                                        <th>Date</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -140,7 +157,7 @@
                                             </div>
                                         </div>
                                         <div class="input-group">
-                                            <div class="dropzone dz-clickable">
+                                            <div class="dropzone dropzone-image dz-clickable">
                                                 <div class="dz-message">
                                                     <div class="drag-icon-cph">
                                                         <i class="material-icons">touch_app</i>
@@ -177,7 +194,7 @@
                     <div class="modal-body">
                         <form id="editQuote" method="post" action='' enctype="multipart/form-data" >
                             <div class="input-group">
-                                <input type="text" class="form-control" name="name" placeholder="Name" required>
+                                <input type="text" class="form-control" name="name" placeholder="Name">
                             </div>
                             <div class="alert userTypesSelectorError hidden bg-pink alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -197,6 +214,13 @@
                                     <option value="">Select client</option>
                                 </select>
                             </div>
+                            <!-- <textarea class="tinymce" name="offer_conditions" placeholder="Offer conditions">
+                            'Prețurile sunt în EUR cu Livrare DDU București',
+                                            'Preturile sunt fara TVA si Taxa Verde',
+                                            'Termen de livrare/confirmat la comandă fermă',
+                                            'Modalitate și termen de plată: conform contract',
+                                            'Valabilitate ofertă 30 zile'
+                            </textarea> -->
                             <div class="row">
                                 <div class="col-xs-12">
                                     <button id="submitUserData" class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit quote data</button>
@@ -223,7 +247,7 @@
                         <p><b>From:</b> office@icatch.ro<br/>
                             <b>To:</b> <input id="clientEmail" type="email" class="form-control" name="clientEmail" placeholder="client Email" required></p>
                         <p>Dear client, <br/><br/>
-                        <textarea id="tinymce" name="email_body" placeholder="Email body">
+                        <textarea class="tinymce" name="email_body" placeholder="Email body">
                             <p>
                                 We have finalized your quote. Please click the link attached to check it out and accept it. 
                             </p>

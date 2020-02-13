@@ -4,6 +4,18 @@ require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
+if(isset($_POST['extra_discount'])) {
+		$projectsQuery = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "quotes",
+				"set" => ["`extra_discount`='".$_POST['extra_discount']."'"],
+				"where" => "id = ".$_POST['quote_id']
+			)
+		);
+	} else {
+		
+
 	$client_id = 'NULL';
 
 	if(isset($_POST['options']['client_id'])) {
@@ -13,6 +25,8 @@ $conn = $QueryBuilder->dbConnection();
 			$client_id = $_POST['options']['client_id'];
 		}
 	}
+
+
 
 
 	//var_dump($_POST);
@@ -26,7 +40,7 @@ $conn = $QueryBuilder->dbConnection();
 		)
 	);
 
-
+}
 	echo json_encode($projectsQuery);
 
 	$QueryBuilder->closeConnection();

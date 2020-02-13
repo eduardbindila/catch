@@ -39,8 +39,8 @@
         Clients could not be retrieved. <b>Please contact the administrator</b>
     </div>
      <div class="input-group">
-        <select class="form-control clientSelector" required name="client_id">
-            <option value="">Link client to this user</option>
+        <select class="form-control clientSelector" name="client_id">
+            <option value="">Link client to this user (user when User Type is Self customer)>
         </select>
     </div>
     <div class="row">

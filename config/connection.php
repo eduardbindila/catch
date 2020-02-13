@@ -84,8 +84,13 @@ Class QueryBuilder{
 	}
 
 	function dbConnection(){
-        $conn = mysqli_connect("localhost","eduardbi_icatch","Gkut),1{~R+!","eduardbi_icatchb2b") or die("Couldn't connect");
+		if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
+		 $conn = mysqli_connect("127.0.0.1","root","","icatch_at") or die("Couldn't connect");
 
+		} else {
+			$conn = mysqli_connect("localhost","eduardbi_icatch","Gkut),1{~R+!","eduardbi_icatchb2b") or die("Couldn't connect");
+		}
+        
         return $conn;
     }
 
@@ -122,6 +127,7 @@ Class QueryBuilder{
 			if($returnType == 'array'){
 				$rows = array();
 				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+					$row = array_map('utf8_encode', $row);
 				    array_push($rows, $row);
 				}
 
@@ -226,11 +232,19 @@ Class QueryBuilder{
 
 	function selectQuotesData($conn, $client_id){
 
+		if($client_id == 0) {
+			$where = "";
+		} else {
+			$where = "WHERE quotes.client_id =".$client_id." AND quotes.quote_status != 4";
+		}
+
 		$query = "
 				SELECT 
 		       users.name              AS owner, 
 		       clients.name            AS client, 
 		       quotes.id,
+		       quotes.project_id,
+		       quotes.quote_status,
 		       quotes.start_date, 
 		       quotes.offer_date, 
 		       quotes.quote_price      AS project_value, 
@@ -246,12 +260,11 @@ Class QueryBuilder{
 		       left join specifyer_designer 
 		              ON quotes.specifyer_designer = specifyer_designer.id 
 		       left join clients 
-		              ON quotes.client_id = clients.id
-		WHERE quotes.client_id =".$client_id;
+		              ON quotes.client_id = clients.id ".$where;
 
 		// echo $client_id;
 
-		// echo $query;
+		//echo $query;
 
 		$results = mysqli_query($conn, $query);
 
@@ -316,9 +329,13 @@ Class QueryBuilder{
 
 		$column = $options['column'];
 
+		$and = isset($options['and']) ? 'AND '.$options['and'] : "";
+
 		$where = isset($options['where']) ? 'WHERE '.$options['where'] : "";
 
-		$query = 'DELETE from '.$table.' WHERE '.$column.' IN ('.$in.')';
+		$query = 'DELETE from '.$table.' WHERE '.$column.' IN ('.$in.') '.$and;
+
+		
 
 		$this->logAction("delete", $table, $query, "");
 
@@ -402,14 +419,10 @@ Class SessionState {
 	function sessionStart() {
 		session_start();
 		
-		if($this->pageName  !== 'offer') {
-			if($this->isLoggedIn()){
-				//$this->redirectLoggedIn();
-			}
-			else {
-				$this->redirectLogin();
-			}
-		}
+		// // 
+		// if(($this->pageName  !== 'offer') && ($this->pageName  !== 'updateQuote') && ($this->pageName  !== 'getRejectionReason') && ($this->pageName  !== 'confirmQuote')) {
+		// 	//$this->redirectLogin();
+		// }
 		
 		
 	}
@@ -438,6 +451,21 @@ Class SessionState {
 			return false;
 		}
 	}
+
+
+	function destroy(){
+		//remove PHPSESSID from browser
+		if ( isset( $_COOKIE[session_name()] ) )
+		setcookie( session_name(), "", time()-3600, "/" );
+		//clear session from globals
+		$_SESSION = array();
+		//clear session from disk
+		session_destroy();
+	}
+
+	// function unset() {
+	// 	session_unset();
+	// }
 }
 
 

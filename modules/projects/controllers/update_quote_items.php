@@ -11,7 +11,7 @@ if(isset($_POST['update_description'])) {
 			$conn,
 			$options = array(
 				"table" => "quote_items",
-				"set" => ["`customer_description`='".$_POST['data']['description']."'","`destination`='".$_POST['data']['destination']."'","`criteria`='".$_POST['data']['index']."'"],
+				"set" => ["`customer_description`='".addslashes($_POST['data']['description'])."'","`destination`='".addslashes($_POST['data']['destination'])."'","`criteria`='".$_POST['data']['index']."'"],
 				"where" => "`id` = ".$_POST['quote_item_id']
 			)
 		);
