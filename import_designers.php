@@ -35,9 +35,5 @@ include($_PATH['COMMON_LAYOUT'].'menu-bar.php');
 include($_MPATH['IMPORT_ELEMENTS_CONTROLLERS'].'import_designers_controller.php');
 
 include($_PATH['COMMON_LAYOUT'].'footer.php');
-
-
-
-
 ?>
 
