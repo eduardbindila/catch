@@ -1,0 +1,2 @@
+[12-Feb-2020 21:44:47 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 440
+[13-Feb-2020 08:36:33 UTC] PHP Warning:  session_destroy(): Trying to destroy uninitialized session in /home/eduardbi/21stcreativesoft.com/icatch-b2b/config/connection.php on line 440

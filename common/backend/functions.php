@@ -61,7 +61,7 @@ if(!isset($_SESSION['user_id'])){
 	$QueryBuilder->closeConnection();
 }
 
-if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote" && $_subSectionName !== "getQuoteFiles") {
+if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote") {
 	$SessionState->redirectLogin();
 
 }

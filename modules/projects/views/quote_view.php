@@ -236,7 +236,7 @@ else
                             </button>
                         </div>
                     </div> 
-                    <?php if( $quote['quote_status'] != 4 ) { ?>
+                    <?php if( $quote['quote_status'] != 0 ) { ?>
 
                         <div class="m-t-20">
                             <h2 >Quote Flags</h2>

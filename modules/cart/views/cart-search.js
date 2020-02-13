@@ -85,11 +85,7 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
-                            localArray = {
-                                  'id' : selection[i].id,
-                                  'initial_price' : selection[i].initial_price
-                              };
-                            selectedProducts.push(localArray);
+                            selectedProducts.push(selection[i].id);
                         }
                     }
                 },
@@ -101,11 +97,7 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
-                            localArray = {
-                                  'id' : selection[i].id,
-                                  'initial_price' : selection[i].initial_price
-                              };
-                            selectedProducts.push(localArray);
+                            selectedProducts.push(selection[i].id);
                         }
 
                         var quoteID = $('#quoteNumber').text();
@@ -121,11 +113,7 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
-                            localArray = {
-                                  'id' : selection[i].id,
-                                  'initial_price' : selection[i].initial_price
-                              };
-                            selectedProducts.push(localArray);
+                            selectedProducts.push(selection[i].id);
                         }
 
                         var projectID = $('#projectNumber').text();
@@ -377,10 +365,9 @@ function createQuote(projectID, products) {
 function duplicateQuoteItems(projectID, quoteID, quote_items){
     //console.log('its on');
 
-
     var quote = {
             'quote_items': quote_items,
-            'quote_id': quoteID,
+            'quote_id': quoteID
         }
 
      $.ajax({
@@ -402,7 +389,6 @@ function addItemsToQuote(projectID, quoteID, products) {
          $('#status-modal').modal('show');
         var quote = {
             'products': products,
-            'temporary_products' : searchTemporary,
             'quote_id': quoteID,
             'isMulti': 1
         }

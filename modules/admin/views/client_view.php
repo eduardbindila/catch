@@ -45,46 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Client Details</h2>
-                        <ul class="header-dropdown m-r-0">
-                            <li>
-                               
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table class="comments_table table table-striped table-bordered table-hover dt-responsive display">
-                                    <thead>
-                                        <th>ID</th>
-                                        <th>User Name</th>
-                                        <th>Comment</th>
-                                        <th>Date</th>
-
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <form class="commentForm" method="post" action='' enctype="multipart/form-data" >
-                                    <textarea name="comment" class="form-control" placeholder="Comment"></textarea>
-                                    <!-- <input type="hidden" name="quote_id" value="<?php echo $quote['id']?>"> -->
-                                    <div class="row m-t-10">
-                                        <div class="col-xs-12">
-                                            <button class="btn btn-lg btn-block btn-success waves-effect addComment" type="submit">Submit</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 	</div>
 </section>
-

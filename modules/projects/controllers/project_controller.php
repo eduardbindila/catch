@@ -167,44 +167,43 @@ $conn = $QueryBuilder->dbConnection();
 				$temporary_product = 0;
 			}
 
-
+			
 
 			if($quoteProductDetails) {
 				$quoteProducts['data'][$quoteDetails] = $quoteProductDetails[0];
 			}
 
-			$productInitialPrice = $quoteProducts['data'][$quoteDetails]['initial_price'];
+// 			if($temporary_product == 0) {
+// 				$featuresArray = $QueryBuilder->selectFeatures(
+// 					$conn, 
+// 					$quoteValues['product_id'],
+// 					$keyFeatures = array(
+// 						"fixture_luminous_flux__lm_", 
+// 						'total_power_consumption__w_',
+// 						'colour_temperature__k_'
+
+// 					)
+// 				);
+
+// 				if($featuresArray){
+// 					foreach ($featuresArray as $featureKey => $featureValue) {
+
+// 						$quoteProducts['data'][$quoteDetails][$featureValue['id']] = $featureValue['feature_value'];
+// 					}
+// 				}
+// 			}
 			
 
-			// if($temporary_product == 0) {
-			// 	$featuresArray = $QueryBuilder->selectFeatures(
-			// 		$conn, 
-			// 		$quoteValues['product_id'],
-			// 		$keyFeatures = array(
-			// 			"fixture_luminous_flux__lm_", 
-			// 			'total_power_consumption__w_',
-			// 			'colour_temperature__k_'
-
-			// 		)
-			// 	);
-
-			// 	if($featuresArray){
-			// 		foreach ($featuresArray as $featureKey => $featureValue) {
-
-			// 			$quoteProducts['data'][$quoteDetails][$featureValue['id']] = $featureValue['feature_value'];
-			// 		}
-			// 	}
-			// }
 			
 
-			$list_price = $Pricing->getListPrice($quoteValues['initial_price']);
-			$min_price = $Pricing->getMinPrice($quoteValues['initial_price']);
+			$list_price = $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
+			$min_price = $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
 
 			$unit_price = $quoteValues['unit_price'] > 0 ? $quoteValues['unit_price'] : $list_price - ($quoteValues['discount'] ? ($list_price * $quoteValues['discount']/100) : 0);
 
 			$unit_price = number_format((float)$unit_price, 2, '.', '');
 
-			$profit =  $unit_price - $quoteValues['initial_price'];
+			$profit =  $unit_price - $quoteProductDetails[0]['initial_price'];
 
 			$profit =  number_format((float)$profit, 2, '.', '');
 
@@ -228,8 +227,6 @@ $conn = $QueryBuilder->dbConnection();
 			$quoteProducts['data'][$quoteDetails]['quote_item_id'] = $quoteValues['id'];
 			$quoteProducts['data'][$quoteDetails]['product_image'] = getImageBase($quoteProductDetails[0]['product_image']);
 			$quoteProducts['data'][$quoteDetails]['quantity'] = $quoteValues['quantity'];
-			$quoteProducts['data'][$quoteDetails]['initial_price'] = $quoteValues['initial_price'] > 0 ? $quoteValues['initial_price'] : $productInitialPrice;
-
 			$quoteProducts['data'][$quoteDetails]['discount'] = $quoteValues['discount'];
 			$quoteProducts['data'][$quoteDetails]['temporary_product'] = $temporary_product;
 			$quoteProducts['data'][$quoteDetails]['list_price'] = $list_price;

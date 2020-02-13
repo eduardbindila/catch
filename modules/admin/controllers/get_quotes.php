@@ -11,7 +11,7 @@ $conn = $QueryBuilder->dbConnection();
 		$options = array(
 			"table" => "quotes",
 			"columns" => "*",
-			"where" => "`quote_status` = 7"
+			"where" => "`profit_percent` < 30 AND `quote_status` = 7"
 		)
 	);
 
