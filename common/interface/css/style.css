@@ -8646,3 +8646,7 @@ div.dataTables_wrapper span.select-item {
 .flags-wrapper i {
   top: 5px !important;
 }
+
+small, .small {
+  font-size: 95%;
+}
