@@ -4,6 +4,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 //HTML Artefacts
 
+
 $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/sweetalert/sweetalert.css');
 $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css');
 
