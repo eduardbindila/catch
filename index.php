@@ -11,3 +11,4 @@ include($_PATH['COMMON_LAYOUT'].'head.php');
 include($_PATH['COMMON_LAYOUT'].'footer.php');
 
 ?>
+
