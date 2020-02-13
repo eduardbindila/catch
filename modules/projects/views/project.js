@@ -1726,3 +1726,6 @@ function readFlags(quoteFlags, quoteStatus){
 
     });
 }
+
+
+
