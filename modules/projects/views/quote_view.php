@@ -4,7 +4,10 @@
 $quoteLockedClass = "";
 
 if($_pageName == 'project')
-    $masterQuoteClass = ($quote['id'] == $projectQuery['master_quote'] ? 'bg-green' : '');
+{
+    
+    $masterQuoteClass = ($quote['isMaster'] ? 'bg-green' : '');   
+}   
 else 
     $masterQuoteClass = '';
 
@@ -89,7 +92,7 @@ else
                             </button>
                         </li>
                         <li>
-                            <button class="btn btn-lg btn-default waves-effect grantMaster" data-quote="<?php echo $quote['id']?>">
+                            <button class="btn btn-lg btn-default waves-effect grantMaster" data-quote="<?php echo $quote['id']?>" data-master="<?php echo $quote['isMaster']?>">
                             Grant as Master
                             </button>
                         </li>

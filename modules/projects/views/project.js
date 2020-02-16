@@ -961,12 +961,13 @@ $(document).ready(function() {
         $('.grantMaster').on('click', function(e){
 
             var quoteID = $(this).attr('data-quote');
+            var isMaster = $(this).attr('data-master');
 
             $.ajax({
                 url: "/ajax/updateMaster",
                 type: "post",
                 dataType: "json",
-                data: {'quote_id': quoteID, 'project_id': projectID}
+                data: {'quote_id': quoteID, 'isMaster': isMaster}
            }).success(function(json){
                $('.updateError').addClass('hidden');
                location.reload()

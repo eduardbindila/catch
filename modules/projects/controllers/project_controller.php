@@ -76,18 +76,18 @@ $conn = $QueryBuilder->dbConnection();
 
 		$projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
 
-		if($projectQuery['master_quote']) {
-			$masterQuote = $QueryBuilder->select(
-				$conn,
-				$options = array(
-					"table" => "quotes",
-					"columns" => "*",
-					"where" => "id = '".$projectQuery['master_quote']."'"
-				)
-			);
+		// if($projectQuery['master_quote']) {
+		// 	$masterQuote = $QueryBuilder->select(
+		// 		$conn,
+		// 		$options = array(
+		// 			"table" => "quotes",
+		// 			"columns" => "*",
+		// 			"where" => "id = '".$projectQuery['master_quote']."'"
+		// 		)
+		// 	);
 
-			$masterQuote = $masterQuote[0];
-		}
+		// 	$masterQuote = $masterQuote[0];
+		// }
 
 		$quoteQuery = $QueryBuilder->select(
 			$conn,
