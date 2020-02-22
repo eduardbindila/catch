@@ -37,6 +37,7 @@ $_MPATH["DASHBOARD_VIEWS"] = $_MPATH["MODULES"]."dashboard/views/";
 $_MPATH["ADMIN"] = $_MPATH["MODULES"]."admin/";
 $_MPATH["CART"] = $_MPATH["MODULES"]."cart/";
 $_MPATH["PROJECTS"] = $_MPATH["MODULES"]."projects/";
+$_MPATH["QUOTES"] = $_MPATH["MODULES"]."quotes/";
 $_MPATH["DASHBOARD"] = $_MPATH["MODULES"]."dashboard/";
 
 $_MPATH["IMPORT_CATEGORIES"] = $_MPATH["ADMIN"].'import/categories/'; 
@@ -61,6 +62,9 @@ $_MPATH["CART_CONTROLLERS"] = $_MPATH["CART"]."controllers/";
 $_MPATH["PROJECTS_VIEWS"] = $_MPATH["PROJECTS"]."views/";
 $_MPATH["PROJECTS_CONTROLLERS"] = $_MPATH["PROJECTS"]."controllers/";
 
+$_MPATH["QUOTES_VIEWS"] = $_MPATH["QUOTES"]."views/";
+$_MPATH["QUOTES_CONTROLLERS"] = $_MPATH["QUOTES"]."controllers/";
+
 $_MPATH["DASHBOARD_VIEWS"] = $_MPATH["DASHBOARD"]."views/";
 $_MPATH["DASHBOARD_CONTROLLERS"] = $_MPATH["DASHBOARD"]."controllers/";
 
@@ -83,6 +87,8 @@ $_WMPATH["IMPORT_ELEMENTS_VIEWS"] = $_WMPATH["MODULES"]."admin/import/elements/v
 $_WMPATH["CART_VIEWS"] = $_WMPATH["MODULES"]."cart/views/";
 
 $_WMPATH["PROJECTS_VIEWS"] = $_WMPATH["MODULES"]."projects/views/";
+
+$_WMPATH["QUOTES_VIEWS"] = $_WMPATH["MODULES"]."QUOTES/views/";
 
 $_WMPATH["DASHBOARD_VIEWS"] = $_WMPATH["MODULES"]."dashboard/views/";
 

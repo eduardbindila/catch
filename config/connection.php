@@ -346,6 +346,8 @@ Class QueryBuilder{
 
 		$table = $options['table'];
 
+		$duplicateKey = isset($options['duplicateKey']) ? $options['duplicateKey'] : "";
+
 		$keys = $this->arrayToSql($options['keys'], "`");
 
 		if($multi) {
@@ -373,7 +375,7 @@ Class QueryBuilder{
 			//echo $values;
 		}
 
-		$query = 'INSERT INTO '.$table.' ('.$keys.') VALUES '.$values.'';
+		$query = 'INSERT INTO '.$table.' ('.$keys.') VALUES '.$values.$duplicateKey;
 
 		//echo $query;
 

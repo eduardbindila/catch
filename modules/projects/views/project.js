@@ -99,7 +99,7 @@ $(document).ready(function() {
                 data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': profitLow, 'afterApprove': afterApprove }
            }).success(function(json){
 
-            location.reload();
+            //location.reload();
 
             }).error(function(xhr, status, error) {
                $('.updateError').removeClass('hidden');
@@ -686,6 +686,8 @@ $(document).ready(function() {
                     $('td', row).removeClass('danger');
                     profitLow = 0;
                   }
+
+                  console.log(profitLow);
 
                   
                 },

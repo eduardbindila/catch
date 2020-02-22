@@ -48,10 +48,17 @@ $conn = $QueryBuilder->dbConnection();
             $options = array(
                 "table" => "products",
                 "keys" => ["id", "product_name", "initial_price", "manufacturer"],
-                "values" => $valuesArray
+                "values" => $valuesArray,
+                "duplicateKey" => "ON DUPLICATE KEY UPDATE id=VALUES(id), product_name=VALUES(product_name), initial_price=VALUES(initial_price), manufacturer=VALUES(manufacturer);"
             ),
             $multi = true,
+            
         );
+
+
+
+
+
 
 	echo json_encode($productQuery);
 	

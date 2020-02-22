@@ -6,11 +6,161 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 <!-- Top Bar -->
 <nav class="navbar">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-            <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="/dashboard"><img src="/common/interface/images/icatch-b2b.png"></a>
-        </div>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+               <a class="navbar-brand" href="/dashboard"><img src="/common/interface/images/icatch-b2b.png"></a>
+            </div>
+            <ul class="nav navbar-nav">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li >
+                        <a href="/dashboard">
+                            <i class="material-icons">home</i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+
+                    <?php 
+                        if(isset($_SESSION['user_access']['admin'])) 
+                        {
+                    ?>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">settings</i>
+                            <span>Admin</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="javascript:void(0);" class="menu-toggle toggled">
+                                    <span>Imports</span>
+                                </a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="/admin/import/categories">Categories</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/import/products">Products</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/import/users">Users</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/import/clients">Clients</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/import/designers">Designers</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/import/projects">Projects</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/import/scrapping">Scrapping List</a>
+                                    </li>
+                                    <li>
+                                        <a href="/cart/import-prices">
+                                            <span>Prices</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php }?>
+
+                     <?php 
+                        if(isset($_SESSION['user_access']['sales-grid'])) 
+                        {
+                    ?>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">settings</i>
+                            <span>Settings</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <?php 
+                                if(isset($_SESSION['user_access']['supervisor'])) 
+                                {
+                            ?>
+                            <li>
+                                <a href="/admin/users">
+                                    <span>Users</span>
+                                </a>
+                            </li>
+                           
+                            <li>
+                                <a href="/admin/designers">
+                                    <span>Designers</span>
+                                </a>
+                            </li>
+                            <?php }?>
+                             <li>
+                                <a href="/admin/clients">
+                                    <span>Clients</span>
+                                </a>
+                            </li>
+                            <?php 
+                                if(isset($_SESSION['user_access']['access'])) 
+                                {
+                            ?>
+                            <li>
+                                <a href="/admin/access">
+                                    <span>Access</span>
+                                </a>
+                            </li>
+                            <?php }?>
+                            
+                        </ul>
+                    </li>
+                    <?php }?>
+
+                    <?php 
+                        if(isset($_SESSION['user_access']['cart'])) 
+                        {
+                    ?>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle toggled">
+                            <i class="material-icons">shopping_cart</i>
+                            <span>Cart</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <?php 
+                                if(isset($_SESSION['user_access']['projects'])) 
+                                {
+                            ?>
+                            <li>
+                                <a href="/projects/">
+                                    <span>Projects</span>
+                                </a>
+                            </li>
+                             <li>
+                                <a href="/quotes/">
+                                    <span>Quotes</span>
+                                </a>
+                            </li>
+                            <?php }?>
+
+                            <?php 
+                                if(isset($_SESSION['user_access']['search'])) 
+                                {
+                            ?>
+                            <li>
+                                <a href="/cart/search">
+                                    <span>Search</span>
+                                </a>
+                            </li>
+                            <?php }?>
+                        </ul>
+                    </li>
+                    <?php }?>
+                    <li>
+                        <a href="/ajax/logout">
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+          </div>
+        </nav>
+
         <div class="collapse navbar-collapse" id="navbar-collapse">
             
         </div>

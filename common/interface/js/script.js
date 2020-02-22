@@ -13,5 +13,12 @@ $(document).ready(function() {
 	$('select').before(function(){
 		return '<label>'+$(this).find("option:first-child").text()+'</label>';
 	})
+
+	$('input:not([type="password"])').keyup(function() {
+            if (this.value.match(/[^a-zA-Z0-9,.!?@()_-]/g)) {
+                this.value = this.value.replace(/[^a-zA-Z0-9,.!?@()_-]/g, '');
+            }
+
+	});
 });
 
