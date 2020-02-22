@@ -54,4 +54,4 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 </head>
 
-<body class="theme-<?php echo $_THEME['COLOR']?> <?php $LoadHTMLArtefacts->printBodyClasses()?>">
+<body class="<?php $LoadHTMLArtefacts->printBodyClasses()?>">
