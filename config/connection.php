@@ -85,7 +85,7 @@ Class QueryBuilder{
 
 	function dbConnection(){
 		if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
-		 $conn = mysqli_connect("127.0.0.1","root","","icatch_at") or die("Couldn't connect");
+		 $conn = mysqli_connect("127.0.0.1","root","mysql","icatch_at") or die("Couldn't connect");
 
 		} else {
 			$conn = mysqli_connect("localhost","eduardbi_icatch","Gkut),1{~R+!","eduardbi_icatchb2b") or die("Couldn't connect");

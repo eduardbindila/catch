@@ -5,7 +5,7 @@ $(document).ready(function() {
 
     var quoteFlags = [];
 
-    var profitLow = 0;
+    var profitLow = [];
 
     
 
@@ -96,12 +96,13 @@ $(document).ready(function() {
                 url: "/ajax/changeQuoteStatus",
                 type: "post",
                 dataType: "json",
-                data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': profitLow, 'afterApprove': afterApprove }
+                data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove }
            }).success(function(json){
-
+            
             location.reload();
 
             }).error(function(xhr, status, error) {
+                //console.log(profitLow);
                $('.updateError').removeClass('hidden');
             })
          }
@@ -489,6 +490,8 @@ $(document).ready(function() {
 
             quoteStatus[val['id']] = quoteList[index].quote_status;
 
+            profitLow[val['id']] = { 'extra_discount':"", "rows":[]};
+
             quoteFlags[val['id']] = {
                     "afterApprove" : quoteList[index].afterApprove,
                     "client_approved" : quoteList[index].client_approved,
@@ -629,27 +632,27 @@ $(document).ready(function() {
 
                                 pageTotal = (totalProfit * 100 / totalFinalPrice);
 
-                                if(pageTotal < 30){
-                                    $(this.footer()).addClass('danger');
-                                    profitLow = 1;
-                                }
-                                else {
-                                    $(this.footer()).removeClass('danger');
-                                    profitLow = 0;
-                                }
+                                // if(pageTotal < 30){
+                                //     $(this.footer()).addClass('danger');
+                                //     profitLow[val['id']]['quote'] = 1;
+                                // }
+                                // else {
+                                //     $(this.footer()).removeClass('danger');
+                                //     profitLow[val['id']]['quote'] = 0;
+                                // }
 
                                 
                             }
                             
 
-                            // if((data.length > 0) && (data[0].extra_discount > 0)){
-                            //         $(this.footer()).addClass('danger');
-                            //         profitLow = 1;
-                            //     }
-                            //     else {
-                            //         $(this.footer()).removeClass('danger');
-                            //         profitLow = 0;
-                            //     }
+                            if((data.length > 0) && (data[0].extra_discount > 0)){
+                                    $(this.footer()).addClass('danger');
+                                     profitLow[val['id']]['extra_discount'] = 1;
+                                }
+                                else {
+                                    $(this.footer()).removeClass('danger');
+                                     profitLow[val['id']]['extra_discount'] = 0;
+                                }
 
                             pageTotal = pageTotal.toFixed(2);
 
@@ -679,15 +682,17 @@ $(document).ready(function() {
                   if ( data['profit_percent'] < 30 )
                   {
                     $('td', row).addClass('danger');
-                    profitLow = 1;
+                    //console.log(data);
+                    profitLow[val['id']]['rows'][data['quote_item_id']] = 1;
 
                   } else {
                    
                     $('td', row).removeClass('danger');
-                    profitLow = 0;
+                    //console.log('no-danger');
+                    profitLow[val['id']]['rows'][data['quote_item_id']] = 0;
                   }
 
-                  console.log(profitLow);
+                  //console.log(profitLow);
 
                   
                 },
@@ -1396,7 +1401,7 @@ $(document).ready(function() {
                 url: "/ajax/changeQuoteStatus",
                 type: "post",
                 dataType: "json",
-                data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': profitLow, 'afterApprove': afterApprove, 'jump_status': thisStatus }
+                data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': thisStatus }
            }).success(function(json){
 
                 if(json == 3) {
@@ -1729,3 +1734,23 @@ function readFlags(quoteFlags, quoteStatus){
 
     });
 }
+
+function getProfitLow(profitLowValues) {
+
+    var rowsProfitLow = 0;
+
+    if(profitLowValues['extra_discount'] > 0 || rowsProfitLow > 0) {
+        return 1;
+    }
+    else
+    {
+        for (key in profitLowValues['rows']) {
+          if(profitLowValues['rows'][key] == 1)
+           {
+             rowsProfitLow = 1;
+             return 1;
+           }
+        }
+        return 0;
+    }
+} 
