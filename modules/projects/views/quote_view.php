@@ -58,7 +58,7 @@ $quoteLockedClass = "";
    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header <?php echo $masterQuoteClass?> <?php echo $quoteLockedClass?>">
-                <h2>Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?>
+                <h2><a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
                     <div class="quote-info">
                     <ul class="m-l-0 p-l-0 m-t-10 small">
                         <?php  if(!isset($_SESSION['user_access']['client-grid'])) {?>
