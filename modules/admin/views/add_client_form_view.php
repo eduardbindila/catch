@@ -21,7 +21,7 @@
     </div>
     <div class="input-group">
         <select class="form-control userTypesSelector" required name="user">
-            <option value="">Select user</option>
+            <option value="">Select Sales Agent</option>
         </select>
     </div>
     <div class="input-group">
