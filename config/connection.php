@@ -285,6 +285,46 @@ Class QueryBuilder{
 		}	
 	}
 
+	function selectQuoteData($conn, $quote_id){
+
+
+			$where = "WHERE quotes.id =".$quote_id;
+
+		$query = "
+				SELECT 
+		       users.name              AS owner, 
+		       clients.name            AS client,
+		       quotes.*, 
+		       quote_status.name        AS quote_status_name
+		FROM   quotes
+		       left join users 
+		              ON quotes.assignee_id = users.id 
+		       left join quote_status 
+		              ON quotes.quote_status = quote_status.id 
+		       left join clients 
+		              ON quotes.client_id = clients.id ".$where;
+
+		//echo $query;
+
+		$results = mysqli_query($conn, $query);
+
+		
+
+		if($results) {
+				$rows = array();
+				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				    array_push($rows, $row);
+				}
+
+				$this->logAction("selectQuoteData", "", $query, $rows);
+
+				return $rows;
+		}
+		else {
+			return mysqli_error($conn);
+		}	
+	}
+
 
 	function arrayToSql($thisArray, $sep){
 		$sqlString = '';
