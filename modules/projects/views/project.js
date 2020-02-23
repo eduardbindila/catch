@@ -687,6 +687,8 @@ $(document).ready(function() {
                     profitLow = 0;
                   }
 
+                  console.log(profitLow);
+
                   
                 },
                 data: quoteList[index].quote_products.data,

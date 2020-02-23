@@ -37,6 +37,7 @@ $_MPATH["DASHBOARD_VIEWS"] = $_MPATH["MODULES"]."dashboard/views/";
 $_MPATH["ADMIN"] = $_MPATH["MODULES"]."admin/";
 $_MPATH["CART"] = $_MPATH["MODULES"]."cart/";
 $_MPATH["PROJECTS"] = $_MPATH["MODULES"]."projects/";
+
 $_MPATH["DASHBOARD"] = $_MPATH["MODULES"]."dashboard/";
 
 $_MPATH["IMPORT_CATEGORIES"] = $_MPATH["ADMIN"].'import/categories/'; 
