@@ -2,14 +2,9 @@
 // $quoteLockedClass = $quote['locked']  ? 'hidden' : '';
 
 $quoteLockedClass = "";
-
-if($_pageName == 'project')
-{
-    
+   
     $masterQuoteClass = ($quote['isMaster'] ? 'bg-green' : '');   
-}   
-else 
-    $masterQuoteClass = '';
+
 
   if(isset($quote)) {
 
@@ -66,7 +61,7 @@ else
                 <h2>Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?>
                     <div class="quote-info">
                     <ul class="m-l-0 p-l-0 m-t-10 small">
-                        <?php  if($_pageName == 'project' && !isset($_SESSION['user_access']['client-grid'])) {?>
+                        <?php  if(!isset($_SESSION['user_access']['client-grid'])) {?>
                         <li >
                             Assigned to: <?php echo $GetDetails->userName($quote['assignee_id'])?>
                         </li>
@@ -80,7 +75,7 @@ else
                 </h2>
                 <div class="clearfix">
                     <ul class="header-dropdown m-r-0">
-                        <?php  if($_pageName == 'project' && !isset($_SESSION['user_access']['client-grid'])) {?>
+                        <?php  if(!isset($_SESSION['user_access']['client-grid'])) {?>
                         <li>
                             <button class="btn btn-lg btn-default waves-effect editQuoteTrigger" data-toggle="modal" data-target="#edit-modal" data-quote="<?php echo $quote['id']?>">
                                 Edit

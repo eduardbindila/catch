@@ -289,13 +289,16 @@ $conn = $QueryBuilder->dbConnection();
 		} 
 	}
 
-	if($_pageName == 'quote') {
-		include($_MPATH['PROJECTS_VIEWS'].'quote_main_view.php');
-	}
+	// if($_pageName == 'quote') {
+	// 	include($_MPATH['PROJECTS_VIEWS'].'quote_main_view.php');
+	// }
 
-	if($_pageName == 'project') {
-		include($_MPATH['PROJECTS_VIEWS'].'project_view.php');
-	}
+	// if($_pageName == 'project') {
+	// 	include($_MPATH['PROJECTS_VIEWS'].'project_view.php');
+	// }
+
+	include($_MPATH['PROJECTS_VIEWS'].'project_view.php');
+
 	
 	
 $QueryBuilder->closeConnection();

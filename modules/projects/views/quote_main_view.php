@@ -13,6 +13,8 @@
     var clientEmail = []; 
     var clientName = []; 
     var clientPoi = []; 
+
+    
 </script>
 
 <section class="content projectPage">

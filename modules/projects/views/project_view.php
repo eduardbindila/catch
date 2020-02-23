@@ -18,10 +18,10 @@
 <section class="content projectPage">
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2 id="project" data-project="<?php echo $projectID ?>">Project #<?php echo $projectID ?></h2>
+			<h2 id="project" data-project="<?php echo $quote['project_id'] ?>"><a href="/project/<?php echo $quote['project_id'] ?>/">Project #<?php echo $quote['project_id'] ?></a></h2>
 		</div>
         <?php 
-            if(!isset($_SESSION['user_access']['client-grid'])) 
+            if($_pageName != "quote" && !isset($_SESSION['user_access']['client-grid'])) 
             {
         ?>
 		<div class="row">
