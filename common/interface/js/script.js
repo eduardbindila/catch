@@ -15,8 +15,8 @@ $(document).ready(function() {
 	})
 
 	$('input:not([type="password"])').keyup(function() {
-            if (this.value.match(/[^a-zA-Z0-9,.!?@()_-]/g)) {
-                this.value = this.value.replace(/[^a-zA-Z0-9,.!?@()_-]/g, '');
+            if (this.value.match(/[^a-zA-Z0-9,.!?@()_-\s]/g)) {
+                this.value = this.value.replace(/[^a-zA-Z0-9,.!?@()_-\s]/g, '');
             }
 
 	});
