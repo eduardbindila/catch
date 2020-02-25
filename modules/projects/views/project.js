@@ -307,7 +307,7 @@ $(document).ready(function() {
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: null,
-                               columns: [ 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
+                               columns: [ 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20]
                             },
                             customize: function (doc) {
 
@@ -346,6 +346,12 @@ $(document).ready(function() {
                                     header: {
                                         fontSize: 15,
                                         bold: true
+                                    },
+                                    offerPrice: {
+                                        fontSize: 13,
+                                        bold: true,
+                                        fillColor: '#dbdbdb',
+                                        margin: [7,7,7,7],
                                     },
                                     subheader: {
                                         fontSize: 15,
@@ -407,7 +413,96 @@ $(document).ready(function() {
 
                                 doc.content[1].table.dontBreakRows = true; 
 
+                                var lastRow = doc.content[1].table.body.length-1;
+                                //console.log(doc.content[1].table.body);
+                                var priceBeforeExtraDiscount = 0;
+                                var priceAfterExtraDiscount = 0;
+                                for (var row = 1; row < lastRow; row++) {
+
+                                    var productId = doc.content[1].table.body[row][3];
+
+                                    imageBase = doc.content[1].table.body[row][1].text;
+
+                                    if(imageBase !== 'null') {
+                                        doc.content[1].table.body[row][1] = {image: imageBase, fit: [50, 50], align: 'center', valign: 'center'};
+                                    }
+
+                                    if(doc.content[1].table.body[row][4].text == "null") {
+                                        doc.content[1].table.body[row][4].text  = "n/a"
+                                    }
+
+                                    if(doc.content[1].table.body[row][0].text == "null") {
+                                        doc.content[1].table.body[row][0].text  = "n/a"
+                                    }
+
+                                    if(doc.content[1].table.body[row][5].text == "null") {
+                                        doc.content[1].table.body[row][5].text  = "n/a"
+                                    }
+
+                                    if(doc.content[1].table.body[row][12].text == "0") {
+                                        var linkID = 'https://www.sylvania-lighting.com/product/en-int/products/'+productId.text+'/';
+                                        doc.content[1].table.body[row][2] = {text: "Click", link: linkID, style: 'link'};
+                                    } else {
+                                        doc.content[1].table.body[row][2] = {text: "n/a", style: 'link'};
+                                    }
+
+                                    priceBeforeExtraDiscount = priceBeforeExtraDiscount + parseFloat(doc.content[1].table.body[row][11].text);
+                                    priceAfterExtraDiscount = parseFloat(doc.content[1].table.body[lastRow][11].text);
+                                    
+                                    //doc.content[1].table.body[lastRow][11] = priceBeforeExtraDiscount;
+
+                                    doc.content[1].table.body[row][12] = {};
+
+                                    doc.content[1].table.body[0][12] = {};
+
+                                    doc.content[1].table.body[lastRow][12] = {};
+
+                                    //console.log(quoteList[index]['extra_discount']);
+                                }
+
+                                doc.content[1].table.body.pop();
+
+                                doc.content[1].table.layout = 'lightHorizontalLines';
                                 doc.content[2] = [
+                                {
+                                    canvas: [
+                                        {
+                                            type: 'line',
+                                            x1: 0,
+                                            y1: 0,
+                                            x2: 807,
+                                            y2: 0,
+                                            lineWidth: 0.5
+                                        }
+                                    ] 
+                                },
+                                {
+                                      columns: [
+                                        {
+                                            width: '*',
+                                            style: "bold",
+                                            text: '',
+                                            
+                                        },
+                                        { 
+                                            width: 'auto',
+                                            style: "antent",
+                                            table: {
+                                            body: [
+                                                [{text: 'Total Price:', style: 'bold'}, priceBeforeExtraDiscount],
+                                                [{text: 'Extra Discount:', style: 'bold'}, '-'+ parseFloat(parseFloat(quoteList[index]['extra_discount'])/100*priceBeforeExtraDiscount)],
+                                                [{text: 'Final Offer Price:', style: 'offerPrice'}, {text: priceAfterExtraDiscount, style: 'offerPrice'}]
+                                            ]
+                                            },
+                                            layout: 'noBorders'
+                                        }
+                                      ],
+                                   
+                                    },
+                                
+                                ];
+
+                                doc.content[3] = [
                                     {
                                         ol: [
                                             'The prices are in EUR with Bucharest DDU Delivery',
@@ -438,45 +533,7 @@ $(document).ready(function() {
                                 ];
                                 
 
-                                var lastRow = doc.content[1].table.body.length-1;
-                                //console.log(doc.content[1].table.body);
-                                for (var row = 1; row < lastRow; row++) {
-
-                                    var productId = doc.content[1].table.body[row][3];
-
-                                    imageBase = doc.content[1].table.body[row][1].text;
-
-                                    if(imageBase !== 'null') {
-                                        doc.content[1].table.body[row][1] = {image: imageBase, fit: [50, 50], align: 'center', valign: 'center'};
-                                    }
-
-                                    if(doc.content[1].table.body[row][4].text == "null") {
-                                        doc.content[1].table.body[row][4].text  = "n/a"
-                                    }
-
-                                    if(doc.content[1].table.body[row][0].text == "null") {
-                                        doc.content[1].table.body[row][0].text  = "n/a"
-                                    }
-
-                                    if(doc.content[1].table.body[row][5].text == "null") {
-                                        doc.content[1].table.body[row][5].text  = "n/a"
-                                    }
-
-                                    if(doc.content[1].table.body[row][12].text == "0") {
-                                        var linkID = 'https://www.sylvania-lighting.com/product/en-int/products/'+productId.text+'/';
-                                        doc.content[1].table.body[row][2] = {text: "Click", link: linkID, style: 'link'};
-                                    } else {
-                                        doc.content[1].table.body[row][2] = {text: "n/a", style: 'link'};
-                                    }
-
-                                    doc.content[1].table.body[row][12] = {};
-
-                                    doc.content[1].table.body[0][12] = {};
-
-                                    doc.content[1].table.body[lastRow][12] = {};
-
-                                   
-                                }
+                                
                             }, footer: true
                         }
                     ]
