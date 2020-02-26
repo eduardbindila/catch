@@ -490,7 +490,7 @@ $(document).ready(function() {
                                             table: {
                                             body: [
                                                 [{text: 'Total Price:', style: 'bold'}, priceBeforeExtraDiscount],
-                                                [{text: 'Extra Discount:', style: 'bold'}, '-'+ parseFloat(parseFloat(quoteList[index]['extra_discount'])/100*priceBeforeExtraDiscount)],
+                                                [{text: 'Extra Discount ('+parseFloat(quoteList[index]['extra_discount'])+'%):', style: 'bold'}, '-'+ parseFloat(quoteList[index]['extra_discount'])/100*priceBeforeExtraDiscount],
                                                 [{text: 'Final Offer Price:', style: 'offerPrice'}, {text: priceAfterExtraDiscount, style: 'offerPrice'}]
                                             ]
                                             },
