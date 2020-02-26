@@ -468,7 +468,7 @@ $(document).ready(function() {
 
                                 var extraDiscountArray = ["",""];
 
-                                var priceBeforeArray = ["",""]
+                                var priceBeforeArray = ["",""];
 
                                 if(extraDiscount) {
                                     extraDiscountArray = extraDiscount ? [{text: 'Extra Discount ('+parseFloat(quoteList[index]['extra_discount'])+'%):', style: 'bold'}, '-'+ parseFloat(quoteList[index]['extra_discount'])/100*priceBeforeExtraDiscount] : ['',''];
