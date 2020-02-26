@@ -462,6 +462,21 @@ $(document).ready(function() {
 
                                 doc.content[1].table.body.pop();
 
+
+
+                                var extraDiscount = parseFloat(quoteList[index]['extra_discount']);
+
+                                var extraDiscountArray = ["",""];
+
+                                var priceBeforeArray = ["",""]
+
+                                if(extraDiscount) {
+                                    extraDiscountArray = extraDiscount ? [{text: 'Extra Discount ('+parseFloat(quoteList[index]['extra_discount'])+'%):', style: 'bold'}, '-'+ parseFloat(quoteList[index]['extra_discount'])/100*priceBeforeExtraDiscount] : ['',''];
+                                    priceBeforeArray = [{text: 'Total Price:', style: 'bold'}, priceBeforeExtraDiscount];
+                                }
+
+                                
+
                                 doc.content[1].table.layout = 'lightHorizontalLines';
                                 doc.content[2] = [
                                 {
@@ -489,8 +504,8 @@ $(document).ready(function() {
                                             style: "antent",
                                             table: {
                                             body: [
-                                                [{text: 'Total Price:', style: 'bold'}, priceBeforeExtraDiscount],
-                                                [{text: 'Extra Discount ('+parseFloat(quoteList[index]['extra_discount'])+'%):', style: 'bold'}, '-'+ parseFloat(quoteList[index]['extra_discount'])/100*priceBeforeExtraDiscount],
+                                                priceBeforeArray,
+                                                extraDiscountArray,
                                                 [{text: 'Final Offer Price:', style: 'offerPrice'}, {text: priceAfterExtraDiscount, style: 'offerPrice'}]
                                             ]
                                             },
