@@ -21,7 +21,7 @@
 			<h2 id="project" data-project="<?php echo $quote['project_id'] ?>"><a href="/project/<?php echo $quote['project_id'] ?>/">Project #<?php echo $quote['project_id'] ?></a></h2>
 		</div>
         <?php 
-            if($_pageName != "quote" && !isset($_SESSION['user_access']['client-grid'])) 
+            if($_pageName != "quote" && !isset($_SESSION['user_access']['client-grid']) && isset($_SESSION['user_access']['sales-grid'])) 
             {
         ?>
 		<div class="row">
