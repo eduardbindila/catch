@@ -209,7 +209,31 @@ Class QueryBuilder{
 			$additionalWhere = '';
 		}
 
-		$query = "SELECT projects.id, projects.project_name, project_status.name as project_status, project_status.id as project_status_id, users.name as owner, clients.name as client, projects.legacy_id, projects.parent_id, projects.revision, projects.duplicate, projects.locked, quotes.start_date, quotes.offer_date, quotes.quote_price as project_value, quote_status.name as quote_status, quote_status.id as quote_status_id, specifyer_designer.name as specifyer_designer, quotes.winning_chance FROM projects Left JOIN project_status on projects.project_status = project_status.id Left JOIN users on projects.owner_id = users.id Left JOIN quotes on projects.master_quote = quotes.id Left JOIN quote_status on quotes.quote_status = quote_status.id Left JOIN specifyer_designer on quotes.specifyer_designer = specifyer_designer.id Left JOIN clients on quotes.client_id = clients.id";
+		$query = "SELECT 
+				   projects.id 			   AS project_id,
+			       projects.project_name   AS project_name,
+			       project_status.name     AS project_status, 
+			       project_status.id       AS project_status_id, 
+			       users.name              AS owner, 
+			       clients.name            AS client, 
+			       quotes.*, 
+			       quote_status.name       AS quote_status, 
+			       quote_status.id         AS quote_status_id, 
+			       specifyer_designer.name AS specifyer_designer, 
+			       quotes.winning_chance 
+			FROM   quotes 
+					LEFT JOIN projects 
+			              ON quotes.project_id = projects.id
+			       LEFT JOIN project_status 
+			              ON projects.project_status = project_status.id 
+			       LEFT JOIN users 
+			              ON projects.owner_id = users.id 
+			       LEFT JOIN quote_status 
+			              ON quotes.quote_status = quote_status.id 
+			       LEFT JOIN specifyer_designer 
+			              ON quotes.specifyer_designer = specifyer_designer.id 
+			       LEFT JOIN clients 
+			              ON quotes.client_id = clients.id ";
 
 		$results = mysqli_query($conn, $query);
 

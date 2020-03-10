@@ -15,27 +15,54 @@ $(document).ready(function() {
                 "ordering": true,
                 "searching": true,
             rowId: 'category_slug',
-              
+              rowGroup: {
+                startRender: function ( rows, group ) {
+               
+               var projectName = rows.data()[0].project_name;
+               var projectId = rows.data()[0].project_id;
+               var projectStatus = rows.data()[0].project_status;
+
+               var projectValue = rows.data().pluck('quote_price').reduce(function(a, b, i){
+                var isMaster = rows.data().pluck('isMaster');
+                var quoteId = rows.data().pluck('id');
+                //console.log(quoteId[i], isMaster[i]);
+
+                if(isMaster[i] > 0) {
+
+                    a = a + parseFloat(b);
+                }
+
+                return a;
+
+               }, 0);
+
+ 
+                return $('<tr/>')
+                    .append( '<td> Project:'+ projectId +'</td>')
+                    .append( '<td>'+ projectName +'</td>')
+                    .append( '<td colspan="4"></td>')
+                    .append( '<td>'+ projectStatus +'</td>')
+                    .append( '<td>'+ projectValue +'</td>')
+                    .append( '<td></td>')
+                    .append( '<td>Is Master</td>')
+            },
+                dataSrc: "project_id"
+            },
             responsive: true,
             order: [0],
             "columns": [ 
                 { 
-                    "data": "id",
+                    "data": "project_id",
                     "render" : function(data, type, row) {
                         return '<a href="/project/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
-                      } 
+                      },
+                },
+                
+                { 
+                    "data": "name"
                 },
                 { 
-                    "data": "legacy_id"
-                },
-                { 
-                    "data": "parent_id"
-                },
-                { 
-                    "data": "start_date"
-                },
-                { 
-                    "data": "offer_date"
+                    "data": "id"
                 },
                 { 
                     "data": "owner"
@@ -50,13 +77,20 @@ $(document).ready(function() {
                     "data": "quote_status"
                 },
                 { 
-                    "data": "project_status"
-                },
-                { 
-                    "data": "project_value"
+                    "data": "quote_price"
                 },
                 { 
                     "data": "winning_chance"
+                },
+                { 
+                    "data": "isMaster",
+                    "render" : function(data, type, row) {
+                        if(data > 0)
+                            return '<div class="alert alert-success"><strong>Yes</strong></div>'
+                        else
+                            return '<div ><strong>No</strong></div>'
+
+                      },
                 }
                 
             ],
