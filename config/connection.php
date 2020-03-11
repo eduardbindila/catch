@@ -442,6 +442,11 @@ Class SessionState {
     }
 
 	function sessionStart() {
+		// server should keep session data for AT LEAST 1 hour
+		ini_set('session.gc_maxlifetime', 36000);
+
+		// each client should remember their session id for EXACTLY 1 hour
+		session_set_cookie_params(36000);
 		session_start();
 		
 		// // 
@@ -506,7 +511,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.2');
+		array_push($this->links, $href.'?v=0.1.3');
 	}
 
 
@@ -520,7 +525,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.2');
+		array_push($this->scripts, $src.'?v=0.1.3');
 	}
 
 

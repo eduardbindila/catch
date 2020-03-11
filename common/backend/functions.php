@@ -15,7 +15,7 @@ $Pricing= new Pricing();
 //Session Handling
 //========================//
 $SessionState = new SessionState(); 
-ini_set('session.gc_maxlifetime', 30000);
+
 $SessionState->sessionStart();
 
 // var_dump($_SESSION);
