@@ -43,6 +43,7 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-lg-12">
+                                <canvas id="myChart" width="400" height="50"></canvas>
                                <table class="projects_legacy table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th>Project ID</th>
@@ -55,6 +56,9 @@
                                         <th>Project Value</th>
                                         <th>Winning Chance</th>
                                         <th>Is Master</th>
+                                        <th>Year</th>
+                                        <th>Quarter</th>
+                                        <th>Month</th>
 
                                     </thead>
                                 </table>
@@ -97,3 +101,22 @@
         <?php }?>
 	</div>
 </section>
+<script >
+     var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+                  type: 'horizontalBar',
+                  data: {
+                    labels: ['Quote Value by Quote Status'],
+                    datasets: [
+                      
+                    ]
+                  },
+                  options: {
+                    scales: {
+                      xAxes: [{ stacked: true }],
+                      yAxes: [{ stacked: true }]
+                    },
+                    showDatapoints: true,
+                  }
+                });
+</script>
