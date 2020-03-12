@@ -220,10 +220,20 @@ $conn = $QueryBuilder->dbConnection();
 				$quoteProductDetails[0]['product_image'] = $host.'/uploads/'.$quoteProductDetails[0]['product_image'];
 			}  
 			if($_pageName == 'quote'|| $_pageName == 'offer') {
-				$quoteProducts['data'][$quoteDetails]['project_name'] = "";
+				$projectQuery = $QueryBuilder->select(
+					$conn,
+					$options = array(
+						"table" => "projects",
+						"columns" => "*",
+						"where" => "id = '".$quoteValues['project_id']."'"
+					)
+				);
+				$projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
+				$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name'];
 			} else {
 				$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name']; 
 			}
+
 			$quoteProducts['data'][$quoteDetails]['quote_item_id'] = $quoteValues['id'];
 			$quoteProducts['data'][$quoteDetails]['product_image'] = getImageBase($quoteProductDetails[0]['product_image'], $_pageName);
 			$quoteProducts['data'][$quoteDetails]['quantity'] = $quoteValues['quantity'];
@@ -257,8 +267,18 @@ $conn = $QueryBuilder->dbConnection();
 		$quoteQuery[$key]['agent_role'] = $GetDetails->userRole($quote['assignee_id']);
 		$quoteQuery[$key]['agent_phone'] = $GetDetails->userPhone($quote['assignee_id']);
 		$quoteQuery[$key]['rejection_info'] = $quote['rejected_reason'] > 0 ? $rejectionQuery[$quote['rejected_reason']]['name'] : 0;
+
 		if($_pageName == 'quote'|| $_pageName == 'offer') {
-			$quoteQuery[$key]['project_name'] = ""; 
+			$projectQuery = $QueryBuilder->select(
+					$conn,
+					$options = array(
+						"table" => "projects",
+						"columns" => "*",
+						"where" => "id = '".$quoteQuery[$key]['project_id']."'"
+					)
+				);
+				$projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
+			$quoteQuery[$key]['project_name'] = $projectQuery['project_name'];
 		} else {
 			$quoteQuery[$key]['project_name'] = $projectQuery['project_name']; 
 		}
