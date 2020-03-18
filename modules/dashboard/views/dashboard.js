@@ -12,21 +12,10 @@ $(document).ready(function() {
             searchPanes:{
                 cascadePanes: true,
                 viewTotal: true,
-                // panes: [{
-                //     header: 'Date',
-                //     options: [{
-                //         label: 'Date',
-                //         value: function(rowData, rowIdx){
-                //             var date= new Date(rowData.start_date);
-                          
-                //             return date.getFullYear();
-                //         }
-                //     }]
-                // }]
+                 layout: 'columns-1',
+                 dataLength: 20
             },
-
-            dom: 'Pfrtip',
-        
+            dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',
             pageLength: 100,
                 "paging":   true,
                 "ordering": true,
@@ -120,6 +109,10 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "start_month",
+                    "visible": false
+                },
+                { 
+                    "data": "project_status",
                     "visible": false
                 },
                 

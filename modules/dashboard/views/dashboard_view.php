@@ -59,6 +59,7 @@
                                         <th>Year</th>
                                         <th>Quarter</th>
                                         <th>Month</th>
+                                        <th>Project Status</th>
 
                                     </thead>
                                 </table>
