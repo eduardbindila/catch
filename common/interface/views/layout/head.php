@@ -36,7 +36,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
     <link href="<?php echo $_WPATH['COMMON_INTERFACE']?>css/themes/all-themes.css" rel="stylesheet" />
 
     </script><script src="/common/interface/plugins/chartjs/Chart.bundle.js?v=0.1.4"></script>
-</script><script src="/common/interface/plugins/chartjs/Chart.BarFunnel.js?v=0.1.4"></script>
+</script><script src="/common/interface/plugins/chartjs/chart.funnel.bundled.js?v=0.1.4"></script>
+
 
     
 

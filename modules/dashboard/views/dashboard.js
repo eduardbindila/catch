@@ -125,6 +125,11 @@ $(document).ready(function() {
                 var api = this.api();
                 var filteredData = api.rows( { filter : 'applied'} ).data();
 
+
+                var arrayValues = [0,0,0,0,0,0,0,0];
+
+                var funnelValues = [];
+
                 var chartValues = {
                                 4: {
                                     "label": "",
@@ -156,24 +161,6 @@ $(document).ready(function() {
                                 
                             } 
 
-                // var values = { 
-                //     "total": 0,
-                //     1:0,
-                //     2:0,
-                //     3:0,
-                //     4:0,
-                //     5:0,
-                //     7:0,
-                // };
-
-                // for (row in filteredData) {
-                //     thisRow = filteredData[row];
-
-                //     if(Number.isInteger(parseInt(row))) {
-                //         // values.total = ~~parseFloat(values.total) + ~~parseFloat(thisRow.quote_price);
-                //         values[thisRow.quote_status_id] = ~~parseFloat(values[thisRow.quote_status_id]) + ~~parseFloat(thisRow.quote_price)
-                //     }
-                // }
 
                  for (row in filteredData) {
                     var thisRow = filteredData[row];
@@ -188,13 +175,28 @@ $(document).ready(function() {
 
                         chartValues[thisRow.quote_status_id].label = thisRow.quote_status;
                         chartValues[thisRow.quote_status_id].value = thisValue;
-              
-                        //console.log(chartValues[thisRow.quote_status_id])
+
+                        arrayValues[thisRow.quote_status_id] = thisValue;
                     }
                 }
 
+                
+
+                funnelValues = [
+                    arrayValues[4]+arrayValues[7]+arrayValues[3]+arrayValues[1]+arrayValues[5]+arrayValues[2],
+                    arrayValues[3]+arrayValues[1]+arrayValues[5]+arrayValues[2],
+                    arrayValues[1]+arrayValues[5]+arrayValues[2],
+                    arrayValues[5]+arrayValues[2],
+                    arrayValues[2],
+                ]
+
+                
+
+
                 console.log(chartValues);
                 if(!jQuery.isEmptyObject(chartValues)) {
+
+                    console.log(myChart, myFunnel);
 
                     data = [
                       {
@@ -233,57 +235,39 @@ $(document).ready(function() {
 
                     myChart.update();
 
-                //     var ctx = document.getElementById('myChart').getContext('2d');
+                    //console.log(funnelValues);
+                    console.log(arrayValues);
 
-                // var myChart = new Chart(ctx, {
-                //   type: 'horizontalBar',
-                //   data: {
-                //     labels: ['Quote Value by Quote Status'],
-                //     datasets: [
-                //       {
-                //         label: chartValues[1].label,
-                //         data: [chartValues[1].value],
-                //         backgroundColor: '#D6E9C6',
-                //       },
-                //       {
-                //         label: chartValues[2].label,
-                //         data: [chartValues[2].value],
-                //         backgroundColor: '#FAEBCC',
-                //       },
-                //       {
-                //         label: chartValues[3].label,
-                //         data: [chartValues[3].value],
-                //         backgroundColor: '#EBCCD1',
-                //       },
-                //       {
-                //         label: chartValues[4].label,
-                //         data: [chartValues[4].value],
-                //         backgroundColor: 'red',
-                //       },
-                //       {
-                //         label: chartValues[5].label,
-                //         data: [chartValues[5].value],
-                //         backgroundColor: 'blue',
-                //       },
-                //       {
-                //         label: chartValues[7].label,
-                //         data: [chartValues[7].value],
-                //         backgroundColor: 'green',
-                //       }
-                //     ]
-                //   },
-                //   options: {
-                //     scales: {
-                //       xAxes: [{ stacked: true }],
-                //       yAxes: [{ stacked: true }]
-                //     },
-                //     showDatapoints: true,
-                //   }
-                // });
+                    myFunnel.data.datasets = [{
+                    data: funnelValues,
+                    backgroundColor: [
+                        "#FFF9C4",
+                        "#FFEB3B",
+                        "#8BC34A",
+                        "#4CAF50",
+                        "#388E3C",
+                    ],
+                    hoverBackgroundColor: [
+                        "#FF6384",
+                        "#FFCE56",
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56",
+                    ]
+                }];
 
+                myFunnel.data.labels =  [
+                   "Total Pipeline",
+                    "Offer Sent",
+                    "Advanced, Calibrating",
+                    "Final Negociation",
+                    "Delivering",
+                ];
+
+
+                    myFunnel.update();
               }
 
-              // myChart.update();  
             }
                 
 
