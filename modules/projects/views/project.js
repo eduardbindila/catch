@@ -7,6 +7,8 @@ $(document).ready(function() {
 
     var profitLow = [];
 
+    var hideDiscountDetails = false;
+
     
 
     $.ajax({
@@ -413,11 +415,14 @@ $(document).ready(function() {
 
                                 doc.content[1].table.dontBreakRows = true; 
 
+
                                 var lastRow = doc.content[1].table.body.length-1;
                                 //console.log(doc.content[1].table.body);
                                 var priceBeforeExtraDiscount = 0;
                                 var priceAfterExtraDiscount = 0;
                                 for (var row = 1; row < lastRow; row++) {
+
+                                    
 
                                     var productId = doc.content[1].table.body[row][3];
 
@@ -456,6 +461,23 @@ $(document).ready(function() {
                                     doc.content[1].table.body[0][12] = {};
 
                                     doc.content[1].table.body[lastRow][12] = {};
+
+                                    if(hideDiscountDetails) {
+                                         doc.content[1].table.body[row][8] = {};
+
+                                        doc.content[1].table.body[0][8] = {};
+
+                                        doc.content[1].table.body[lastRow][8] = {};
+
+                                        doc.content[1].table.body[row][7] = {};
+
+                                        doc.content[1].table.body[0][7] = {};
+
+                                        doc.content[1].table.body[lastRow][7] = {};
+                                    }
+
+                                    
+
 
                                     //console.log(quoteList[index]['extra_discount']);
                                 }
@@ -550,6 +572,22 @@ $(document).ready(function() {
 
                                 
                             }, footer: true
+                        },
+                        {
+                            text: 'Hide Discount',
+                            className: 'hideTrigger btn btn-lg btn-primary waves-effect',
+                            action: function ( e, dt, node, config ) {
+                                hideDiscountDetails = !hideDiscountDetails;
+                                
+
+                                if(hideDiscountDetails == true) {
+                                    $('.hideTrigger span').text('Show Discount');
+                                } 
+                                else
+                                 {
+                                    $('.hideTrigger span').text('Hide Discount');
+                                }
+                            }
                         }
                     ]
 
