@@ -1,3 +1,8 @@
+
+<?php if(!isset($quote)){
+    $quote['project_id'] = $projectID;
+}?>
+
 <script type="text/javascript">
     var quoteList = [];
 
