@@ -149,7 +149,7 @@ $quoteLockedClass = "";
                                 <th>Aq Price</th>
                                 <th>Min Price</th>
                                 <th>Euro</th>
-                                <th>Discount</th>
+                                <th>%Discount</th>
                                 <th>Eur/pcs</th>
                                 <th>Profit</th>
                                 <th>Profit %</th>
@@ -432,11 +432,11 @@ $quoteLockedClass = "";
             </div>
         </div>
 
-        <div class="modal fade" id="statusHistory-modal" tabindex="-1" role="dialog">
+        <div class="modal fade" id="statusHistory-modal" tabindex="-1" role="dialog" data-quote="<?php echo $quote['id']?>">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" >Quote #<?php echo $quote['id']?> - Status History<span id="statusHistoryFormHeaer"></span></h4>
+                        <h4 class="modal-title" >Quote #<span class="quoteNumberStatus"> - Status History<span id="statusHistoryFormHeaer"></span></h4>
                     </div>
                     <div class="modal-body">
 

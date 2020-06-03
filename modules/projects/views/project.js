@@ -1225,9 +1225,9 @@ $(document).ready(function() {
 
          $('.statusHistory').on('click', function(){
             var quoteID = $(this).attr('data-quote');
-            $('.quoteNumberEdit').text(quoteID);
+            $('.quoteNumberStatus').text(quoteID);
 
-             // $('.statusHistory-modal[data-quote="'+quoteID+'"]').modal('show');
+             $('.statusHistory-modal[data-quote="'+quoteID+'"]').modal('show');
 
 
 
@@ -1272,6 +1272,19 @@ $(document).ready(function() {
                     }
 
                 });
+
+            $.ajax({
+                url: "/ajax/getQuoteStatusLog",
+                type: "post",
+                dataType: "json",
+                data: {'quote_id': quoteID }
+           }).success(function(json){
+
+            statusTable.clear().rows.add(json).draw();
+
+            }).error(function(xhr, status, error) {
+               $('.messageError').removeClass('hidden');
+            })
         })
 
 
