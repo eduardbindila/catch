@@ -15,6 +15,19 @@ $i = 0;
 
 $valuesArray = [];
 
+function fixProductId($product_id)
+{
+	if(is_numeric($product_id) && strlen($product_id) < 7 )
+	{
+		$zeros = str_repeat("0", 7 - strlen($product_id));
+
+		return $zeros.''.$product_id;
+
+	} else {
+		return $product_id;
+	}
+}
+
 while(! feof($f_pointer)){
 	$product=fgetcsv($f_pointer);
 
@@ -27,9 +40,11 @@ while(! feof($f_pointer)){
 
 		$manufacturer = preg_replace("/[^a-zA-Z 0-9]+/", "",   trim(substr($product[3], 0, 3)));
 
+		//var_dump(fixProductId($product_id));
+
 		$localArray = array(
-			'product' => $product_id,
-			'product_name' => $product_name,
+			'product' => fixProductId($product_id),
+			'product_name' => htmlspecialchars($product_name),
 			'initial_price' =>$initial_price,
 			'manufacturer' => $manufacturer
 		);
@@ -54,9 +69,6 @@ $conn = $QueryBuilder->dbConnection();
             $multi = true,
             
         );
-
-
-
 
 
 

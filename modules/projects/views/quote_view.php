@@ -209,11 +209,15 @@ $quoteLockedClass = "";
             </div>
             <div class="header bg-blue-grey">
                 <h2>Quote Status: <?php echo $GetDetails->quoteStatus($quote['quote_status'])?></h2>
+
                  <?php 
                  //var_dump($_SESSION);
                     if($_SESSION['name'] !== "Visitor") 
                     {
                 ?>
+                    <div class="status-date-wrapper">Status Date: <span class="status-date"></span> 
+                        <!-- | Due Date: <span class="due-date"></span> <button type="button" data-status-id="" class="btn btn-default btn-xs waves-effect">Change due date</button> -->
+                    </div>
                     <div class="row m-t-10">
                         <div class="col-lg-7">
                             <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
@@ -228,6 +232,9 @@ $quoteLockedClass = "";
                             </div>
                         </div>
                         <div class="col-lg-5 text-right">
+                             <button class="btn btn-default waves-effect statusHistory" data-quote='<?php echo $quote['id']?>' data-toggle="modal" data-target="#statusHistory-modal" >
+                                View Status History
+                            </button>
                             <button class="btn btn-default waves-effect nextStep" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
                             ?>" data-quote='<?php echo $quote['id']?>' >
                                 Next status
@@ -417,6 +424,32 @@ $quoteLockedClass = "";
                                 <button id="updateQuoteButton" class="btn btn-lg btn-block btn-success waves-effect" type="submit" >Update Quote</button>
                             </div>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="statusHistory-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >Quote #<?php echo $quote['id']?> - Status History<span id="statusHistoryFormHeaer"></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="status_table table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>User </th>
+                                        <th>Quote Status</th>
+                                        <th>Date</th>
+                                        <th>Due Date</th>
+                                    </thead>
+                                </table>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>

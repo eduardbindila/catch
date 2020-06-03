@@ -1,0 +1,61 @@
+Summary, Description, Issue owner, Assigned team, Account, ProjectID, Reporter, Issue Type
+Payment revised amount by POS (Oney Cards),"""For Oney cards, the POS must revise the amount based on loyalty discount
+Michael: Same as for meal vouchers but different flows in POS side different cards and test cases. Not sure if it can be tested with standard POS""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Payment revised amount by POS (Meal Vouchers),"""For meal vouchers, the POS must revise the initial amount based on only including eligible items (food)
+Michael: For this one I'm worried that it will take time. The flow with ACI is different from C3 I think. Is the flow with C3 well known?""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Partial payment (Amount revised by PSP),"""The POS is able to support a partial payment from the payment system. This means that the transaction is approved with a lower amount than the requested one. The POS will finalize the receipt with a new transaction.
+Michael: This is not what we normally call partial payment. EPS need to handle that the actual amount in reply from C3 is different from the amount requested from POS. Do we have that in C3Adapter?""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Merchant installment (PNF),"""By typing on the PNF button, the operator is able to choose the instalment plan allowed tothe customer (eligibility of the customer - Oney card cardholder - must be primary validated by the payment system).
+""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+DCC,"""Dynamic currency conversion - Ingenico says it doesn't require anything from the integration.But should be known and probably tested anyway. Auchan has not chosen DCC-provider yet, after they have done that Ingenico need to integrate with the chosen DCC provider before doing final delivery of their solution. So might affect the timeplan.
+This might not work and will trigger some other time effort""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Loyalty identification,"""The POS is able to request a loyalty ID to the payment system.
+""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Card Number Alias/Token,"""Not sure if this is separate from loyalty identification or the same? Value in field cPan
+In what field we should receive this info?
+MJ: there is also a separate function GetUCI, should that be implemented in Phase one?""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Customer entries,"""The POS is able to request customer entries on the PED for loyalty authentication, loyaltycode selection (new loyalty account) and parcel delivery.
+Michael: In current C3Adapter don't we receive string from POS and send to C3. Ingenico mentioned this may change. Set new way out of scope?""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Visitors book / customer survey,"""Unsure of the exact flow of the use case, is some variant of customer entry
+Minimum estimation is 25 Depending on how complex is the form""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Stored value cards (Gift Cards) balance inquiry,"""The POS is able to request the balance of a gift cards to the payment system.
+
+Michael: I think that this is changed, aren't we doing purchase of 1 cent today to trigger BI?
+If so it should take some time to change""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Reversal of gift card redemption,"""Reverse a payment with a gift card
+""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Print,"""The POS is able to print the receipts (customer and/or merchant) of a transaction when provided by the payment system.
+Michael: How does receipt printing work today? Auchan want only Instant Print for declined and no Instant Print without request from C3. (Configurable for H&M?)""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Tender ID,"""The POS is able to retrieve the Payment Brand from the payment system.
+What does ""Brand"" stand for?
+Michael: It means CardProductName. Do we get good values from C3?""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Cheque processing,"""The POS is able to request a payment by cheque to the payment system. Reading and printing of the cheque is managed by the payment system.
+MJ: Auchan were not sure this will be handled by Ingenico. Limit scope to this working as before (handled by iIngenico) if not a separate CR is requierd.""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Reports,"""Auchan says no reports required.
+MJ: I think it is a missunderstanding regarding what is implemented as reports
+No
+MJ: AutoTest,Send offline, LocalDownload, TicketReprint, CallTMS imp. as reports?""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Simulator/Training mode (PD),"""In 2014/2015 Auchan requried training mode. This is no longer a requirement from Auchan, but if we do a simulator anyway for automatick unittesting etc. Then Trainingmode is included automatically. I suggest not spending time on simulator over what is allready provided
+Assumption: We will limit to provide what Ingenicos Simulator supports""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Support for unattended mode,"""Need to work in both POS and SCO (does auchan have MPOS or other?) settings in c3 config file to prevent signature transactions and similar in SCO.
+Should be a config in the C3 Driver
+
+This is agreed to be part of Auchans responsibility
+But PD need to know and document it""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Sequence Diagram (PD),"""
+""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Test Case (PD),"""
+""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Linux driver from ingenico - compliant with Auchan SUSE platform? All dependencies supported?,"""
+""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Packaging of Ingeico Software,"""EPS/C3Adapter currently includes and installs the software from Ingenico (excluding USB drivers). It's automatically installed based on the active OS (Win or Linux). Auchan wanted this last time. H&M doesn't use this feature Fujitsu manages Ingenico software manually. Does Auchan still requier it?
+Remove the existing functionality for packaging C3Driver""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Terminal parameter/software updates,"""Current adapter also supports operations for download of parameters and new terminal software. These can also be triggered by different events or scheduled on specific times
+Auchan said Nothing to do by EPS. Should be started by the terminal.
+MJ: Check with Ingenico when to trigger Init, processC3LocalDownload and processC3CallTMS""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Java Version,"""Check which Java versions Ingenico support
+Assumption that C3 runs on Java 8
+Ask Ingenico asap""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story
+Timeout sync,"""Sync with Ingencio regarding all timeouts they have in different cases, specifically abort situations, and try to agree on a short abort-timeout
+Need to discuss with Ingenico regarding timeouts,
+Specifically after abort""", EX-12, EX-12,5667, ERP-34720, eduard.bindila@extendaretail.com, Story

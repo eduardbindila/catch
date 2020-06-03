@@ -83,6 +83,19 @@ $conn = $QueryBuilder->dbConnection();
 		)
 	);
 
+	$quoteJSON = mysqli_real_escape_string($conn, $_POST['quote']);
+
+
+
+	$quoteStatusQuery = $QueryBuilder->insert(
+		$conn,
+		$options = array(
+			"table" => "quote_status_log",
+			"keys" => ["quote_id", "status_id", "date", "quote_log",'user_id'],
+			"values" => [$_POST['quote_id'], $new_status, strtotime('now'),   $quoteJSON,  $_SESSION['user_id']]
+		)
+	);
+
 	if($projectsQuery) {
 		echo json_encode($new_status);
 	} else {

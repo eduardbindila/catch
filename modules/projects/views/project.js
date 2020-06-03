@@ -1223,6 +1223,57 @@ $(document).ready(function() {
             })
         })
 
+         $('.statusHistory').on('click', function(){
+            var quoteID = $(this).attr('data-quote');
+            $('.quoteNumberEdit').text(quoteID);
+
+             // $('.statusHistory-modal[data-quote="'+quoteID+'"]').modal('show');
+
+
+
+            var statusTable = $('.status_table').DataTable({
+                    "ajax": {
+                        "url": "/ajax/getQuoteStatusLog/",
+                        "dataSrc": "",
+                        "type": 'POST',
+                        "data": {'quote_id': quoteID}
+                    },
+                
+                    pageLength: 100,
+                        "paging":   true,
+                        "ordering": false,
+                        "searching": true,
+                    rowId: 'category_slug',
+                      
+                    responsive: true,
+                    //order: [1],
+                    "columns": [ 
+                        { 
+                            "data": "id",
+                        },
+                        { 
+                            "data": "user_id",
+                        },
+                        { 
+                            "data": "status_id",
+                        },
+                        {
+                            "data": "date",
+                            "render" : function(data, type, row) {
+                                var date = new Date(data*1000)
+                                return date.toLocaleString();
+                          } 
+                        },
+                        { 
+                            "data": "due_date",
+                        },
+                    ],
+                    "initComplete": function(settings, json) {
+                    }
+
+                });
+        })
+
 
 
         $('.viewComments').on('click', function(){
@@ -1507,11 +1558,17 @@ $(document).ready(function() {
 
             var thisStatus = $(this).attr('data-status');
 
+            if(quoteList[index].id = quoteId) {
+                quote = quoteList[index];
+            } else {
+                quote = 0;
+            }
+
             $.ajax({
                 url: "/ajax/changeQuoteStatus",
                 type: "post",
                 dataType: "json",
-                data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': thisStatus }
+                data: {'quote': JSON.stringify(quote), 'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': thisStatus }
            }).success(function(json){
 
                 if(json == 3) {
@@ -1810,14 +1867,45 @@ console.log('a');
 
 }
 
+
 function updateStatus(quoteStatus){
 
+
+
     $.each($('.status-wrapper'), function (i, item) {
+
+
         var quoteID = $(item).attr('data-quote');
         var status = quoteStatus[quoteID];
+
+        var statusLog = {};
+
         var statusButton = $(item).find('button[data-status='+ status +']');
 
         statusButton.removeClass('btn-default').addClass('btn-primary');
+
+         $.ajax({
+            url: "/ajax/getQuoteStatusLog",
+            type: "post",
+            dataType: "json",
+            data: {"quote_id": quoteID}
+        }).done(function(json){
+
+           for(var statusItem in json) {
+
+                var date = new Date(json[statusItem].date*1000)
+                var statusDate = date.toLocaleDateString();
+                statusLog[json[statusItem].status_id] = statusDate
+            }
+
+             statusButton.closest('.header').find('status-date-wrapper .status-date'). html(statusLog[status]);
+
+             $(item).parents('.header').find('.status-date').html(statusLog[status]);
+
+
+        }).error(function(xhr, status, error) {
+            
+        })
     });
 }
 

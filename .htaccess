@@ -113,6 +113,8 @@ RewriteRule ^ajax/addComment modules/projects/controllers/add_comment.php [L]
 
 RewriteRule ^ajax/getComments modules/projects/controllers/get_comments.php [L]
 
+RewriteRule ^ajax/getQuoteStatusLog modules/projects/controllers/get_quote_status_log.php [L]
+
 RewriteRule ^ajax/saveFilesToQuote modules/projects/controllers/save_quote_files.php [L]
 
 RewriteRule ^ajax/getQuoteFiles modules/projects/controllers/get_quote_files.php [L]
