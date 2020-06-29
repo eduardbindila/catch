@@ -736,6 +736,17 @@ function utf8ize($d) {
 
 
 
+$winning_chance = array(
+	"4" => "10",
+	"7" => "10",
+	"3" => "25",
+	"1" => "50",
+	"5" => "75",
+	"2" => "100"
+);
+
+
+
 
 // $strtotime = strtotime("now");
 

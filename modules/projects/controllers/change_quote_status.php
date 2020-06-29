@@ -74,11 +74,12 @@ $conn = $QueryBuilder->dbConnection();
 	//echo $new_status;
 
 
+
 	$projectsQuery = $QueryBuilder->update(
 		$conn,
 		$options = array(
 			"table" => "quotes",
-			"set" => ["`quote_status`=".$new_status.$offer_date.$other],
+			"set" => ["`winning_chance`='".$winning_chance[$new_status]."', `quote_status`=".$new_status.$offer_date.$other],
 			"where" => "id = ".$_POST['quote_id']
 		)
 	);
