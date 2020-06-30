@@ -75,6 +75,47 @@
                                         Project Revenue: <?php echo $projectRevenue['project_revenue']  ?>
                                     </li>
                                 </ul>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover dashboard-task-infos">
+                                        <thead>
+                                            <tr>
+                                                <th>Winning Chance</th>
+                                                <th>Ammount</th>
+                                                <th>Quote Progress</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $oldRevenue = 0;
+                                                foreach ($revenueByStatus as $revenueStatus => $revenueStatusValue) {
+
+                                                    if($revenueStatus == 4) {
+                                                        $oldRevenue = $revenueStatusValue;
+                                                        continue;
+                                                    }
+
+                                                    if($revenueStatus == 7) {
+                                                        $revenueStatusValue = $oldRevenue + $revenueStatusValue;
+                                                    }
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <?php echo $winning_chance[$revenueStatus]?>%
+                                                </td>
+                                                <td>
+                                                    <?php echo $revenueStatusValue?> Euro
+                                                </td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $winning_chance[$revenueStatus]?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $winning_chance[$revenueStatus]?>%"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        </tbody>
+                                    </table>
+                            </div>
                             </div>
                         </div>
                         

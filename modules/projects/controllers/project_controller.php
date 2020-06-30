@@ -105,14 +105,34 @@ $conn = $QueryBuilder->dbConnection();
 		"project_revenue" => 0
 	);
 
+
+	$revenueByStatus = array(
+		"4" => 0,
+		"7" => 0,
+		"3" => 0,
+		"1" => 0,
+		"5" => 0,
+		"2" => 0
+	);
+
 	foreach ($quoteQuery as $key => $quote) {
+
+		
 		# code...
-		//var_dump($quoteQuery);
+		//var_dump($quote['id']);
+
 
 		if($quote['quote_status'] == 2) {
 			$projectRevenue['project_profit'] = $projectRevenue['project_profit'] + $quote['profit'];
 			$projectRevenue['project_revenue'] = $projectRevenue['project_revenue'] + $quote['quote_price'];
 		}
+
+		if($quote['isMaster']) {
+
+			$revenueByStatus[$quote['quote_status']] = $revenueByStatus[$quote['quote_status']] + $quote['quote_price'];
+		};
+
+		//var_dump($revenueByStatus);
 
 		$quoteItemsQuery = $QueryBuilder->select(
 			$conn,
