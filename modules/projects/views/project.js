@@ -565,8 +565,8 @@ $(document).ready(function() {
                                         text: "Mobile:" +assigneePhone[val['id']], 
                                     },
 
-                                    'București, 014366, sector 1\n',
-                                    'Str. Mușetești, nr. 16\n',
+                                    'București, 077190, sector 1\n',
+                                    'Str. Moeciu, nr. 3\n',
                                 ];
                                 
 
