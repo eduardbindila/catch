@@ -281,6 +281,22 @@ $(document).ready(function() {
 
                             }
                         },
+                        {
+                            text: 'Hide Discount',
+                            className: 'hideTrigger btn btn-lg btn-primary waves-effect',
+                            action: function ( e, dt, node, config ) {
+                                hideDiscountDetails = !hideDiscountDetails;
+                                
+
+                                if(hideDiscountDetails == true) {
+                                    $('.hideTrigger span').text('Show Discount');
+                                } 
+                                else
+                                 {
+                                    $('.hideTrigger span').text('Hide Discount');
+                                }
+                            }
+                        }
 
                     ]
 
@@ -573,22 +589,7 @@ $(document).ready(function() {
                                 
                             }, footer: true
                         },
-                        {
-                            text: 'Hide Discount',
-                            className: 'hideTrigger btn btn-lg btn-primary waves-effect',
-                            action: function ( e, dt, node, config ) {
-                                hideDiscountDetails = !hideDiscountDetails;
-                                
-
-                                if(hideDiscountDetails == true) {
-                                    $('.hideTrigger span').text('Show Discount');
-                                } 
-                                else
-                                 {
-                                    $('.hideTrigger span').text('Hide Discount');
-                                }
-                            }
-                        }
+                        
                     ]
 
                     if(iss) {
