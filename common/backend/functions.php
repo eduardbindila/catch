@@ -67,6 +67,10 @@ if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionN
 }
 
 
+if($_sectionName !== "offer" &&  $_SESSION['user_type'] == 4 && $_sectionName !== 'login') {
+	$SessionState->redirectLogin();
+}
+
 $_clientView = isset($_SESSION['user_access']['client-grid']); 
 
 $_salesView = isset($_SESSION['user_access']['sales-grid']);
