@@ -1387,26 +1387,28 @@ $(document).ready(function() {
                             className: 'deleteSelectedFiles btn btn-lg btn-danger waves-effect',
                             text: 'Delete Selected',
                             action: function ( e, dt, button, config ) {
+                                if(!isc) {
+                                 var selection = dt.rows( { selected: true } ).data();
+                                    var i;
+                                
+                                    for ( i = 0; i < selection.length; i++) {
+                                        selectedItems.push(selection[i].file_path);
+                                    }
+                                 
 
-                                var selection = dt.rows( { selected: true } ).data();
-                                var i;
-                            
-                                for ( i = 0; i < selection.length; i++) {
-                                    selectedItems.push(selection[i].file_path);
+                                    $.ajax({
+                                        url: "/ajax/removeFilesFromQuote",
+                                        type: "post",
+                                        dataType: "json",
+                                        data: {'file_path': selectedItems, 'quote_id': quoteID}
+                                   }).success(function(json){
+                                       location.reload();
+
+                                    }).error(function(xhr, status, error) {
+                                       //$('.addNewTemporaryProduct').removeClass('hidden');
+                                    })   
                                 }
-                             
-
-                                $.ajax({
-                                    url: "/ajax/removeFilesFromQuote",
-                                    type: "post",
-                                    dataType: "json",
-                                    data: {'file_path': selectedItems, 'quote_id': quoteID}
-                               }).success(function(json){
-                                   location.reload();
-
-                                }).error(function(xhr, status, error) {
-                                   //$('.addNewTemporaryProduct').removeClass('hidden');
-                                })
+                                
                             }
                         },
                       ],
