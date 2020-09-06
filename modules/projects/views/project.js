@@ -1011,19 +1011,22 @@ $(document).ready(function() {
         })
 
         $('body').on('change', '.extraDiscount', function(){
-            var quoteID = $(this).attr('data-quote');
+            if(!isc) {
+                var quoteID = $(this).attr('data-quote');
 
-            $.ajax({
-                url: "/ajax/updateQuote",
-                type: "post",
-                dataType: "json",
-                data: {'quote_id': quoteID, 'extra_discount': $(this).val()}
-           }).success(function(json){
-               $('.updateError').addClass('hidden');
-               location.reload()
-            }).error(function(xhr, status, error) {
-               $('.updateError').removeClass('hidden');
-            })
+                $.ajax({
+                    url: "/ajax/updateQuote",
+                    type: "post",
+                    dataType: "json",
+                    data: {'quote_id': quoteID, 'extra_discount': $(this).val()}
+               }).success(function(json){
+                   $('.updateError').addClass('hidden');
+                   location.reload()
+                }).error(function(xhr, status, error) {
+                   $('.updateError').removeClass('hidden');
+                })
+            }
+            
         });
 
         $('.addNewItem').on('click', function(){
