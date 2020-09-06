@@ -240,16 +240,16 @@ $conn = $QueryBuilder->dbConnection();
 				$quoteProductDetails[0]['product_image'] = $host.'/uploads/'.$quoteProductDetails[0]['product_image'];
 			}  
 			if($_pageName == 'quote'|| $_pageName == 'offer') {
-				$projectQuery = $QueryBuilder->select(
-					$conn,
-					$options = array(
-						"table" => "projects",
-						"columns" => "*",
-						"where" => "id = '".$quoteValues['project_id']."'"
-					)
-				);
-				$projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
-				$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name'];
+				// $projectQuery = $QueryBuilder->select(
+				// 	$conn,
+				// 	$options = array(
+				// 		"table" => "projects",
+				// 		"columns" => "*",
+				// 		"where" => "id = '".$quoteValues['project_id']."'"
+				// 	)
+				// );
+				// $projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
+				// $quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name'];
 			} else {
 				$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name']; 
 			}
