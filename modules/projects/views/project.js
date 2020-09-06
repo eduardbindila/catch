@@ -91,6 +91,12 @@ $(document).ready(function() {
 
          $('#clientEmail').val(clientEmail);
 
+          if(quoteList[index].id = quoteId) {
+                quote = quoteList[index];
+            } else {
+                quote = 0;
+            }
+
          
 
          if(clientId > 0) {
@@ -98,13 +104,31 @@ $(document).ready(function() {
                 url: "/ajax/changeQuoteStatus",
                 type: "post",
                 dataType: "json",
-                data: {'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove }
+                data: {'quote': JSON.stringify(quote), 'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': 1 }
            }).success(function(json){
-            
-            location.reload();
+
+                if(json == 3) {
+                    $('#sendMail-modal').modal('show');
+                    $('#sendQuoteForm').on('submit', function(e){
+                        e.preventDefault()
+
+                        var data = $(this).serializeArray().reduce(function(obj, item) {
+                            obj[item.name] = item.value;
+                            return obj;
+                        }, {});
+
+
+             
+
+                        sendQuoteToClient(quoteId, clientId, data);
+                     })
+                } else {
+                   
+                    location.reload();
+                }
+
 
             }).error(function(xhr, status, error) {
-                //console.log(profitLow);
                $('.updateError').removeClass('hidden');
             })
          }
