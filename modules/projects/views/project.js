@@ -1897,10 +1897,6 @@ function updateStatus(quoteStatus){
 
         var statusButton = $(item).find('button[data-status='+ status +']');
 
-        if(isc){
-            $(item).find('button[data-status]').attr('disabled', 'disabled');
-        }
-
         statusButton.removeClass('btn-default').addClass('btn-primary');
 
          $.ajax({

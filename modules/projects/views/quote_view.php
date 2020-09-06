@@ -212,7 +212,7 @@ $quoteLockedClass = "";
 
                  <?php 
                  //var_dump($_SESSION);
-                    if($_SESSION['name'] !== "Visitor") 
+                    if($_SESSION['name'] !== "Visitor" && $_SESSION['user_type'] <> 3) 
                     {
                 ?>
                     <div class="status-date-wrapper">Status Date: <span class="status-date"></span> 
