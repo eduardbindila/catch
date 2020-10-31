@@ -970,7 +970,7 @@ $(document).ready(function() {
                             QuotePricing[index][meta.row] = new PriceDetails(
                                 row.discount, row.quantity, row.initial_price, row.min_price, row.list_price, row.unit_price, row.profit, row.profit_percent, row.final_price
                             );
-                              return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice">'+data+'</span>';
+                              return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
                           }
                     },
                     { 
@@ -1381,6 +1381,59 @@ $(document).ready(function() {
             })
         })
 
+
+
+
+
+        $('.lastPricesTrigger').on('click', function(e){
+console.log('a');
+            var clientId = $(this).attr('data-client');
+            var productId = $(this).attr('data-product');
+
+            $('.lastPricesTabel').DataTable({
+                     "ajax": {
+                        "url": "/ajax/getLastPrices",
+                        "dataSrc": "",
+                        "type": 'POST',
+                        "data": {'client': clientId, 'product': productId}
+                    },
+                    dom: 'Bfrtip',                
+                    pageLength: 100,
+                        "paging":   true,
+                        "ordering": false,
+                        "searching": true,
+                    rowId: 'category_slug',
+                      buttons: [],
+                    responsive: true,
+                    
+                    //order: [1],
+                    "columns": [
+                        { 
+                            "data": "quote_id",
+                            
+                        },
+                        {
+                            "data": "discount"
+                        },
+                        { 
+                            "data": "unit_price",
+                        }
+                    ],
+                    "initComplete": function(settings, json) {
+                    }
+
+                })
+        })
+
+        $('#lastPrices').on('hide.bs.modal', function(e){
+
+            console.log('b');
+
+           $('.lastPricesTabel').DataTable().clear();
+            $('.lastPricesTabel').DataTable().destroy(); 
+        })
+
+        
         $('.viewFiles').on('click', function(){
             var quoteID = $(this).attr('data-quote');
             $('.quoteNumberEdit').text(quoteID);
@@ -1599,6 +1652,8 @@ $(document).ready(function() {
             var quoteId = $(this).closest('[data-quote]').attr('data-quote');
             var afterApprove = $(this).closest('[data-afterApprove]').attr('data-afterApprove');
 
+             var selfCustomer = $(this).closest('[data-selfCustomer]').attr('data-selfCustomer');
+
             var thisStatus = $(this).attr('data-status');
 
             if(quoteList[index].id = quoteId) {
@@ -1611,7 +1666,7 @@ $(document).ready(function() {
                 url: "/ajax/changeQuoteStatus",
                 type: "post",
                 dataType: "json",
-                data: {'quote': JSON.stringify(quote), 'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': thisStatus }
+                data: {'quote': JSON.stringify(quote), 'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': thisStatus, 'selfCustomer' : selfCustomer }
            }).success(function(json){
 
                 if(json == 3) {

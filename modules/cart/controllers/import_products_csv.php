@@ -56,6 +56,8 @@ while(! feof($f_pointer)){
 }
 
 
+//var_dump($valuesArray);
+
 
 
 $conn = $QueryBuilder->dbConnection();
@@ -71,7 +73,6 @@ $conn = $QueryBuilder->dbConnection();
             $multi = true,
             
         );
-
 
 
 	echo json_encode($productQuery);

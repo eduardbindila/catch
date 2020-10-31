@@ -27,7 +27,7 @@
         foreach ($quoteQuery as $key => $quote) {
             # code...
 
-            include($_MPATH['PROJECTS_VIEWS'].'quote_view.php');
+            //include($_MPATH['PROJECTS_VIEWS'].'quote_view.php');
         }
         ?>
 	</div>

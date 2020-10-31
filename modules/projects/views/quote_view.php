@@ -102,14 +102,21 @@ $quoteLockedClass = "";
                             Update conditions
                             </button>
                         </li> -->
-                        <?php }?>
+                        <?php }
+                        //var_dump($quote['quote_status']);
+
+                       //if (!($_SESSION['user_type'] == 3) && ($quote['quote_status'] == 4)) {
+
+                        if ($quote['quote_status'] <> 4 && $quote['quote_status'] <> 7 ) {
+                            ?>
+                       
                         <li>
                             <button class="btn btn-lg btn-default waves-effect viewFiles"  data-quote="<?php echo $quote['id']?>">
                             Files
                             </button>
                         </li>
-                        <?php 
-                        //var_dump($quote['']);
+                        <?php  
+                        
                             if(!$quote['client_approved'] && !$quote['offer_rejected'] && isset($_SESSION['user_access']['client-grid'])) 
                             {
                         ?>
@@ -124,7 +131,19 @@ $quoteLockedClass = "";
                             </button>
                         </li>
                         <?php
+
+                            }
                         }?>
+                        <?php  if (($_SESSION['user_type'] == 3) && ($quote['quote_status'] == 4)) {
+                            ?>
+                        <div class="col-lg-7">
+                                    <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-selfCustomer="1">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" data-status="7" class="btn btn-default waves-effect">Sent to Agent for Approval</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php }?>
                     </ul> 
                 </div>
                 
@@ -209,6 +228,7 @@ $quoteLockedClass = "";
             </div>
             <div class="header bg-blue-grey">
                 <h2>Quote Status: <?php echo $GetDetails->quoteStatus($quote['quote_status'])?></h2>
+
 
                  <?php 
                  //var_dump($_SESSION);
@@ -457,4 +477,5 @@ $quoteLockedClass = "";
                 </div>
             </div>
         </div>
-      
+
+        

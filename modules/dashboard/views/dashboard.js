@@ -304,7 +304,16 @@ $(document).ready(function() {
                     "data": "quote_price"
                 },
                 { 
-                    "data": "profit_percent"
+                    "data": "profit_percent",
+                    "render" : function(data, type, row) {
+                        var dangerClass = '';
+
+                        if(data < 30) {
+                            dangerClass="label label-danger"
+                        }
+
+                        return '<div class="' + dangerClass + '">' + data + '</div>'
+                      } 
                 },
                 { 
                     "data": "winning_chance"

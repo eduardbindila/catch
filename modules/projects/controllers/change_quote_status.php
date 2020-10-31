@@ -17,7 +17,8 @@ $conn = $QueryBuilder->dbConnection();
 	$quoteStatusAvailableSteps = array(
 		'4' => array(
 			'next'=> '3',
-			'profit-low'=> '7'
+			'profit-low'=> '7',
+			'selfCustomer' => '7'
 		),
 		'3' => array(
 			'next'=> '1'
@@ -38,20 +39,26 @@ $conn = $QueryBuilder->dbConnection();
 
 	$other = '';
 
-	if($_POST['quote_status'] == 4 && isset($_POST['profit_low']) && $_POST['profit_low']) {
+	if($_POST['quote_status'] == 4 && isset($_POST['selfCustomer']) && $_POST['selfCustomer']) {
+		$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['selfCustomer'];
+	} else {
+		if($_POST['quote_status'] == 4 && isset($_POST['profit_low']) && $_POST['profit_low']) {
 
-		if($_POST['afterApprove'] == 1) {
-			$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
-		} else {
-			$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['profit-low'];
+			if($_POST['afterApprove'] == 1) {
+				$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
+			} else {
+				$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['profit-low'];
+			}
+
+			
 		}
+		else {
 
-		
+			$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
+		}
 	}
-	else {
 
-		$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
-	}
+	
 
 	if($new_status == 3) {
 		$offer_date = ", offer_date='".date("Y-m-d")."'";

@@ -111,7 +111,7 @@ Class QueryBuilder{
 
 		$offset = isset($options['offset']) ? 'OFFSET '.$options['offset'] : "";
 
-		$orderBy = isset($options['orderBy']) ? 'Order BY '.$options['orderBy'] : "";
+		$orderBy = isset($options['orderBy']) ? ' Order BY '.$options['orderBy'] : "";
 
 		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
 
@@ -269,7 +269,7 @@ Class QueryBuilder{
 		if($client_id == 0) {
 			$where = "";
 		} else {
-			$where = "WHERE quotes.client_id =".$client_id." AND quotes.quote_status != 4";
+			$where = "WHERE quotes.client_id =".$client_id." AND quotes.quote_status != 4 OR quotes.assignee_id=".$_SESSION['user_id'];
 		}
 
 		$query = "
@@ -521,7 +521,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.6');
+		array_push($this->links, $href.'?v=0.1.7');
 	}
 
 
@@ -535,7 +535,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.6');
+		array_push($this->scripts, $src.'?v=0.1.7');
 	}
 
 

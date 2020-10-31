@@ -242,12 +242,12 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" name="name" placeholder="Name">
                             </div>
-                            <div class="alert userTypesSelectorError hidden bg-pink alert-dismissible" role="alert">
+                            <div class="alert usersSelectorError hidden bg-pink alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                 Users could not be retrieved. <b>Please contact the administrator</b>
                             </div>
                             <div class="input-group">
-                                <select class="form-control userTypesSelector" required name="owner_id">
+                                <select class="form-control usersSelector" required name="owner_id">
                                     <option value="">Select user</option>
                                 </select>
                             </div>
@@ -280,6 +280,31 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="lastPrices" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >Last Prices</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="lastPricesTabel table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th>Quote Id</th>
+                                        <th>Discount</th>
+                                        <th>Final Price</th>
+                                    </thead>
+                                </table>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
        
         <!-- Large Size -->
         <div class="modal fade" id="sendMail-modal" tabindex="-1" role="dialog">

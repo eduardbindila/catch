@@ -3,6 +3,14 @@
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
+//var_dump($_SESSION['user_access']);
+
+if(isset($_SESSION['user_access']['admin'])) {
+	$profitPercent = '';
+} else {
+	$profitPercent = '`profit_percent` > 30 AND ';
+}
+
 
 $conn = $QueryBuilder->dbConnection();
 
@@ -11,7 +19,7 @@ $conn = $QueryBuilder->dbConnection();
 		$options = array(
 			"table" => "quotes",
 			"columns" => "*",
-			"where" => "`profit_percent` < 30 AND `quote_status` = 7"
+			"where" => $profitPercent."`quote_status` = 7"
 		)
 	);
 
