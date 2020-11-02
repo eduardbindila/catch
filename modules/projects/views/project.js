@@ -1390,6 +1390,9 @@ console.log('a');
             var clientId = $(this).attr('data-client');
             var productId = $(this).attr('data-product');
 
+            $('#lastPriceProduct').text(productId);
+            $('#lastPriceClient').text(clientId);
+
             $('.lastPricesTabel').DataTable({
                      "ajax": {
                         "url": "/ajax/getLastPrices",
