@@ -10,7 +10,7 @@ $conn = $QueryBuilder->dbConnection();
 			"table" => "quote_items",
 			"columns" => "quote_items.*",
 			"innerJoin" => "quotes ON quote_items.quote_id = quotes.id ",
-			"where" => "quotes.client_id = ".$_POST['client']." AND quote_items.product_id = ".$_POST['product']
+			"where" => "quotes.client_id = '".$_POST['client']."' AND quote_items.product_id = '".$_POST['product']."'"
 		)
 	);
 
