@@ -180,6 +180,10 @@ $(document).ready(function() {
                 { 
                     "data": "initial_price",
                     className: "initial_price",
+                    "render" : function(data, type, row) {
+                         
+                          return Number(data).toFixed(2)
+                      }
 
                 },
             ],

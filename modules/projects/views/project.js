@@ -89,7 +89,7 @@ $(document).ready(function() {
 
          var afterApprove = $(this).attr('data-afterApprove');
 
-         $('#clientEmail').val(clientEmail);
+         //$('#clientEmail').val(clientEmail);
 
           if(quoteList[index].id = quoteId) {
                 quote = quoteList[index];

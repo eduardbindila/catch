@@ -16,9 +16,9 @@ $conn = $QueryBuilder->dbConnection();
 			)
 		);
 
-	//$email = $_POST['data']['clientEmail'];
+	$email = $_POST['data']['clientEmail'];
 
-	$email = "request@icatch.ro";
+	//$email = "request@icatch.ro";
 
 	if($quoteQuery) {
 

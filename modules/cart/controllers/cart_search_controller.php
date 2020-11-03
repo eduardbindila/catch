@@ -76,14 +76,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 		}
 	}
 
+	if(isset($_SESSION['is_client']) && $_SESSION['is_client']) {
+		$initial_price = "initial_price/". $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 
+	} else {
+		$initial_price = "initial_price";
+	}
+
 
     $conn = $QueryBuilder->dbConnection();
-
+//var_dump($_SESSION);
 	$query = $QueryBuilder->select(
 		$conn,
 		$options = array(
 			"table" => $table,
-			"columns" => "*",
+			"columns" => "id, product_name,". $initial_price ."  as initial_price",
 			"where" => $whereClause
 		)
 	);

@@ -2,6 +2,8 @@
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
+//var_dump($_SESSION);
+
 include($_PATH['COMMON_LAYOUT'].'head.php');
 include($_PATH['COMMON_LAYOUT'].'menu-bar.php');
 

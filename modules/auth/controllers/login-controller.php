@@ -26,6 +26,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION['user_type'] = $query[0]['type_id'];
 		$_SESSION['is_client'] = $query[0]['isClient'];
 
+
+		if(isset($_SESSION['is_client']) && $_SESSION['is_client']) {
+			
+			$discountQuery = $QueryBuilder->select(
+				$conn,
+				$options = array(
+					"table" => "clients",
+					"columns" => "discount",
+					"where" => "id = '".$_SESSION['is_client']."'"
+				)
+			);
+
+			$_SESSION['client_discount'] = $discountQuery[0]['discount'];
+
+
+		} else {
+			$_SESSION['client_discount'] = 0;
+		}
+
 		$_SESSION['user_access'] = $QueryBuilder->select(
 			$conn,
 			$options = array(

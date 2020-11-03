@@ -29,6 +29,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 			$localArray = array(
 				'product' => $value,
 				'quote_id' => $_POST['quote_id'],
+				'discount' => $_SESSION['client_discount'],
 				'temporary_product' => $temporary_product
 			);
 
@@ -44,7 +45,7 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_items",
-			"keys" => ["product_id", "quote_id", 'temporary_product'],
+			"keys" => ["product_id", "quote_id", 'discount', 'temporary_product'],
 			"values" => $valuesArray
 		),
 		$multi = true

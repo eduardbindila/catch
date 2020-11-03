@@ -42,6 +42,7 @@ if(!isset($_SESSION['user_id'])){
 	$_SESSION['user_id'] = 0;
 	$_SESSION['user_type'] = 4;
 	$_SESSION['is_client'] = 0;
+	$_SESSION['client_discount'] = 0;
 
 // } else {
 
