@@ -970,7 +970,11 @@ $(document).ready(function() {
                             QuotePricing[index][meta.row] = new PriceDetails(
                                 row.discount, row.quantity, row.initial_price, row.min_price, row.list_price, row.unit_price, row.profit, row.profit_percent, row.final_price
                             );
-                              return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
+
+                                if(iss)
+                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
+                                else
+                                    return data;
                           }
                     },
                     { 
@@ -1386,7 +1390,7 @@ $(document).ready(function() {
 
 
         $('.lastPricesTrigger').on('click', function(e){
-console.log('a');
+
             var clientId = $(this).attr('data-client');
             var productId = $(this).attr('data-product');
 
@@ -1430,7 +1434,7 @@ console.log('a');
 
         $('#lastPrices').on('hide.bs.modal', function(e){
 
-            console.log('b');
+          
 
            $('.lastPricesTabel').DataTable().clear();
             $('.lastPricesTabel').DataTable().destroy(); 
