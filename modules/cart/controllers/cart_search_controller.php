@@ -3,8 +3,6 @@
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-
-
 if(!isset($projectID)) {
 	$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/sweetalert/sweetalert.css');
 $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css');
@@ -76,7 +74,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 		}
 	}
 
-	if(isset($_SESSION['is_client']) && $_SESSION['is_client']) {
+	if(isset($_SESSION['is_client']) && $_SESSION['is_client'] && $_SESSION['user_type'] == 3) {
 		$initial_price = "initial_price/". $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 
 	} else {
 		$initial_price = "initial_price";

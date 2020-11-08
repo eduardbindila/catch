@@ -44,6 +44,8 @@ $.ajax({
             value: item.id,
             text : item.name 
         }));
+
+        $('.usersSelector option[value="'+ clientIs +'"]').attr('selected','selected')
     });
 
 }).error(function(xhr, status, error) {
@@ -316,6 +318,8 @@ $(document).ready(function() {
 
 
     }); 
+
+
 
     $('input[name="searchType"]').on('change', function(e) { // Select the radio input group
 
