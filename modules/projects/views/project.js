@@ -999,11 +999,17 @@ $(document).ready(function() {
                     selector: 'td:first-child'
                 },
                 "drawCallback": function(settings, json) {
-                    if(quoteStatus[val['id']] == 4) {
-                        //$('#quote-'+val['id']).find('input, textarea, button, select').prop("disabled", false);
-                        //$('#quote-'+val['id']).find('.status-wrapper button').prop("disabled", false);
+                    // if(quoteStatus[val['id']] == 4) {
+                    //     //$('#quote-'+val['id']).find('input, textarea, button, select').prop("disabled", false);
+                    //     //$('#quote-'+val['id']).find('.status-wrapper button').prop("disabled", false);
                          
-                    } else {
+                    // } else 
+
+                    // console.log(isc, quoteStatus[val['id']] != 4);
+
+                    // console.log(isc == true || quoteStatus[val['id']] != 4);
+
+                    if(isc == true || quoteStatus[val['id']] != 4) {
                         if(!val['locked']) {
                             $('.addNewItem[data-quote='+val['id']+']').attr('disabled','disabled');
                         }

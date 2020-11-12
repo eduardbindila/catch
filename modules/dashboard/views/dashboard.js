@@ -295,7 +295,16 @@ $(document).ready(function() {
                       } 
                 },
                 { 
-                    "data": "id"
+                    "data": "id",
+                    "render" : function(data, type, row) {
+                        var successClass = '';
+
+                        if(row.quote_status == 3 && row.client_approved == 1) {
+                            successClass="label label-success"
+                        }
+
+                        return '<div class="' + successClass + '">' + data + '</div>'
+                      } 
                 },
                 { 
                     "data": "start_date"

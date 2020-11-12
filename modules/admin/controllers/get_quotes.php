@@ -19,7 +19,7 @@ $conn = $QueryBuilder->dbConnection();
 		$options = array(
 			"table" => "quotes",
 			"columns" => "*",
-			"where" => $profitPercent."`quote_status` = 7"
+			"where" => $profitPercent."`quote_status` = 7 OR (`quote_status` = 3 AND `client_approved` = 1)"
 		)
 	);
 
