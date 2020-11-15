@@ -2352,6 +2352,7 @@ a {
   animation: none !important; }
 
 section.content {
+  margin-top: 80px;
   /*margin: 100px 15px 0 215px;*/
   -moz-transition: 0.5s;
   -o-transition: 0.5s;

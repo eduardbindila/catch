@@ -18,7 +18,8 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quotes",
-			"columns" => "*",
+			"columns" => "quotes.*, projects.project_name, projects.id as project_id, clients.name as client_name",
+			"innerJoin" => "clients ON clients.id = quotes.client_id INNER JOIN projects ON quotes.project_id = projects.id",
 			"where" => $profitPercent."`quote_status` = 7 OR (`quote_status` = 3 AND `client_approved` = 1)"
 		)
 	);

@@ -4,7 +4,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 ?>
 
 <!-- Top Bar -->
-        <nav class="navbar navbar-default navbar-inverse">
+        <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
           <div class="container-fluid">
             <div class="navbar-header">
                <a class="navbar-brand" href="/dashboard"><img src="/common/interface/images/icatch-logo.png"></a>

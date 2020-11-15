@@ -295,8 +295,14 @@ $(document).ready(function() {
                       } 
                 },
                 { 
+                    "data": "project_name"
+                },
+                { 
                     "data": "id",
-                    "render" : function(data, type, row) {
+                },
+                { 
+                    "data": "client_name",
+                     "render" : function(data, type, row) {
                         var successClass = '';
 
                         if(row.quote_status == 3 && row.client_approved == 1) {
@@ -308,6 +314,9 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "start_date"
+                },
+                { 
+                    "data": "offer_date"
                 },
                 { 
                     "data": "quote_price"

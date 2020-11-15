@@ -9,7 +9,8 @@ $(document).ready(function() {
 
     var hideDiscountDetails = false;
 
-    
+    $('.navbar-nav').append('<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"><span>GO TO This Project</span><span class="caret"></span></a><ul class="dropdown-menu quote-list"></ul></li>');
+
 
     $.ajax({
         url: "/ajax/getClients",
@@ -161,7 +162,7 @@ $(document).ready(function() {
 
         quoteList.forEach(function(val, index){
 
-            //console.log(quoteList[index].quote_products.data);
+            $('.quote-list').append('<li><a href="#linkQuote-'+quoteList[index].id+'">Quote '+quoteList[index].id+'</a></li>')
 
             QuotePricing[index] = [];
 
@@ -620,7 +621,13 @@ $(document).ready(function() {
                         buttonsArray.push(salesButtons);
                     }
                     else if(isc){
-                        buttonsArray.push(clientButtons)
+                        
+                        if(quoteList[index].quote_status == 4) {
+                            buttonsArray = [];
+                        } else {
+                             buttonsArray.push(clientButtons)
+                        }
+                       
                     }
 
             quoteStatus[val['id']] = quoteList[index].quote_status;
@@ -972,7 +979,7 @@ $(document).ready(function() {
                             );
 
                                 if(iss)
-                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
+                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" data-productName="'+row.product_name+'" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
                                 else
                                     return data;
                           }
@@ -1400,8 +1407,19 @@ $(document).ready(function() {
             var clientId = $(this).attr('data-client');
             var productId = $(this).attr('data-product');
 
+            var productName = $(this).attr('data-productName');
+
+            var getLastClient = $(this).parents('.card').find('.lastPriceClient').text();
+
+            console.log(getLastClient);
+
+            $('#lastPriceClient').text(getLastClient);
+
             $('#lastPriceProduct').text(productId);
-            $('#lastPriceClient').text(clientId);
+
+            $("#lastPriceProductName").text(productName);
+
+            // $('#lastPriceClient').text(clientId);
 
             $('.lastPricesTabel').DataTable({
                      "ajax": {
@@ -1424,6 +1442,13 @@ $(document).ready(function() {
                         { 
                             "data": "quote_id",
                             
+                        },
+                        { 
+                            "data": "project_name",
+                            
+                        },
+                        { 
+                            "data": "offer_date",                            
                         },
                         {
                             "data": "discount"
@@ -1658,6 +1683,19 @@ $(document).ready(function() {
 
                     sendQuoteToClient(quoteId, clientId, data);
                  })
+            } else {
+
+
+
+                var updatedFlag = !$(this).is(':disabled');
+
+                var flagOptions = {
+                    "flag": flag, 
+                    "flag_value": + updatedFlag // Bool to numnber
+                }
+
+                updateQuote(quoteId, flagOptions );
+                location.reload();
             }
         });
 

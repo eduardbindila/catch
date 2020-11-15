@@ -58,7 +58,7 @@ $quoteLockedClass = "";
    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header <?php echo $masterQuoteClass?> <?php echo $quoteLockedClass?>">
-                <h2><a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
+                <h2 id="linkQuote-<?php echo $quote['id']?>"><a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
                     <div class="quote-info">
                     <ul class="m-l-0 p-l-0 m-t-10 small">
                         <?php  if(!isset($_SESSION['user_access']['client-grid'])) {?>
@@ -67,7 +67,7 @@ $quoteLockedClass = "";
                         </li>
                         <li class="m-t-5">
 
-                            Client: <?php echo $GetDetails->clientDetails($quote['client_id'])?>
+                            <span class="lastPriceClient">Client: <?php echo $GetDetails->clientDetails($quote['client_id'])?></span>
                         </li>
                         <?php }?>
                     </ul> 
@@ -139,7 +139,7 @@ $quoteLockedClass = "";
                         <div class="col-lg-7">
                                     <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-selfCustomer="1">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <button type="button" data-status="7" class="btn btn-default waves-effect">Sent to Agent for Approval</button>
+                                            <button type="button" data-status="7" class="btn btn-default waves-effect">Send for Approval</button>
                                         </div>
                                     </div>
                                 </div>

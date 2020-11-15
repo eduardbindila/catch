@@ -21,8 +21,11 @@
                                <table class="quotes_attention table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th>Project ID</th>
+                                        <th>Project Name</th>
                                         <th>Quote ID</th>
+                                        <th>Client Name</th>
                                         <th>Start Date</th>
+                                        <th>Offer Date</th>
                                         <th>Project Value</th>
                                         <th>Profit Percent</th>
                                         <th>Winning Chance</th>
@@ -90,7 +93,7 @@
                                         <th>Quote ID</th>
                                         <th>Start Date</th>
                                         <th>Offer Date</th>
-                                        <th>Sales Owner</th>
+                                        <th>Created by</th>
                                         <th>Quote Status</th>
                                     </thead>
                                 </table>
