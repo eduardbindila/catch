@@ -325,7 +325,7 @@
                     <div class="modal-body">
                          <form id="sendQuoteForm" method="post" action='' enctype="multipart/form-data" >
                         <p><b>From:</b> office@icatch.ro<br/>
-                            <b>To:</b> <input id="clientEmail" type="email" class="form-control" name="clientEmail" placeholder="client Email" required></p>
+                            <b>To:</b> <input id="clientEmail" type="email" class="form-control" name="clientEmail" placeholder="Client Email" required></p>
                         <p>Dear client, <br/><br/>
                         <textarea class="tinymce" name="email_body" placeholder="Email body">
                             <p>

@@ -1,6 +1,7 @@
 <?php 
 // $quoteLockedClass = $quote['locked']  ? 'hidden' : '';
 
+
 $quoteLockedClass = "";
    
     $masterQuoteClass = ($quote['isMaster'] ? 'bg-green' : '');   
@@ -244,7 +245,8 @@ $quoteLockedClass = "";
                                 <div class="btn-group btn-group-sm" role="group">
                                     <button type="button" data-status="4" class="btn btn-default waves-effect">Work in progress</button>
                                     <button type="button" data-status="7" disabled class="btn btn-default waves-effect">Admin Approval</button>
-                                    <button type="button" data-status="3" class="btn btn-default waves-effect">Solution Finalized</button>
+                                    <button type="button" data-status="3" class="btn btn-default waves-effect" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
+                            ?>" data-quote='<?php echo $quote['id']?>'>Solution Finalized</button>
                                     <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
                                     <button type="button" data-status="5" class="btn btn-default waves-effect">Contracting</button>
                                     <button type="button" data-status="2" class="btn btn-default waves-effect">Delivering</button>
@@ -273,7 +275,8 @@ $quoteLockedClass = "";
                                 <div class="flags-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
                                     <div class="btn-group btn-group-sm" role="group">
                                         <button type="button" data-flag="afterApprove" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Admin Approved</button>
-                                        <button type="button" data-flag="offer_sent" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Offer Sent</button>
+                                        <button type="button" data-flag="offer_sent" class="btn btn-default waves-effect" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
+                            ?>" data-quote='<?php echo $quote['id']?>'><i class="material-icons" >check_box_outline_blank</i>Offer Sent</button>
                                         <button type="button" data-flag="offer_opened" class="btn btn-default waves-effect" disabled><i class="material-icons">check_box_outline_blank</i>Offer Opened</button>
                                         <button type="button" data-flag="client_approved" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Offer Approved</button>
                                         <button type="button" data-flag="offer_rejected" class="btn btn-default waves-effect"><i class="material-icons">check_box_outline_blank</i>Offer Rejected</button>

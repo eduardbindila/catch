@@ -90,7 +90,7 @@ $(document).ready(function() {
 
          var afterApprove = $(this).attr('data-afterApprove');
 
-         //$('#clientEmail').val(clientEmail);
+         $('#clientEmail').val(clientEmail);
 
           if(quoteList[index].id = quoteId) {
                 quote = quoteList[index];
@@ -1669,6 +1669,16 @@ $(document).ready(function() {
             var flag = $(this).attr('data-flag');
 
             if(flag == "offer_sent") {
+                var quoteId = $(this).attr('data-quote');
+
+         var clientId = $(this).attr('data-client');
+
+         var clientEmail = $(this).attr('data-email');
+
+         var afterApprove = $(this).attr('data-afterApprove');
+
+         $('#clientEmail').val(clientEmail);
+
                 $('#sendMail-modal').modal('show');
                 $('#sendQuoteForm').on('submit', function(e){
                     e.preventDefault()
@@ -1705,7 +1715,9 @@ $(document).ready(function() {
 
              var selfCustomer = $(this).closest('[data-selfCustomer]').attr('data-selfCustomer');
 
-            var thisStatus = $(this).attr('data-status');
+                var thisStatus = $(this).attr('data-status');
+
+                var el = $(this);
 
             if(quoteList[index].id = quoteId) {
                 quote = quoteList[index];
@@ -1721,6 +1733,18 @@ $(document).ready(function() {
            }).success(function(json){
 
                 if(json == 3) {
+
+
+            var quoteId = el.attr('data-quote');
+
+             var clientId = el.attr('data-client');
+
+             var clientEmail = el.attr('data-email');
+
+             var afterApprove = el.attr('data-afterApprove');
+
+             $('#clientEmail').val(clientEmail);
+
                     $('#sendMail-modal').modal('show');
                     $('#sendQuoteForm').on('submit', function(e){
                         e.preventDefault()
@@ -1999,6 +2023,7 @@ function updateQuote(quoteID, options){
 }
 
 function sendQuoteToClient(quoteID, clientId, data) {
+
 console.log('a');
     $.ajax({
         url: "/ajax/sendQuoteToClient",
@@ -2008,7 +2033,7 @@ console.log('a');
    }).success(function(json){
        $('.messageError').addClass('hidden');
        $('.messageSent').removeClass('hidden');
-       location.reload();
+       //location.reload();
 
     }).error(function(xhr, status, error) {
        $('.messageError').removeClass('hidden');
