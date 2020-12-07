@@ -109,20 +109,7 @@ $(document).ready(function() {
            }).success(function(json){
 
                 if(json == 3) {
-                    $('#sendMail-modal').modal('show');
-                    $('#sendQuoteForm').on('submit', function(e){
-                        e.preventDefault()
-
-                        var data = $(this).serializeArray().reduce(function(obj, item) {
-                            obj[item.name] = item.value;
-                            return obj;
-                        }, {});
-
-
-             
-
-                        sendQuoteToClient(quoteId, clientId, data);
-                     })
+                    callQuoteSend();
                 } else {
                    
                     location.reload();
@@ -1704,20 +1691,7 @@ $(document).ready(function() {
 
          $('#clientEmail').val(clientEmail);
 
-                $('#sendMail-modal').modal('show');
-                $('#sendQuoteForm').on('submit', function(e){
-                    e.preventDefault()
-
-                    var data = $(this).serializeArray().reduce(function(obj, item) {
-                        obj[item.name] = item.value;
-                        return obj;
-                    }, {});
-
-
-         
-
-                    sendQuoteToClient(quoteId, clientId, data);
-                 })
+                callQuoteSend();
             } else {
 
 
@@ -1770,20 +1744,7 @@ $(document).ready(function() {
 
              $('#clientEmail').val(clientEmail);
 
-                    $('#sendMail-modal').modal('show');
-                    $('#sendQuoteForm').on('submit', function(e){
-                        e.preventDefault()
-
-                        var data = $(this).serializeArray().reduce(function(obj, item) {
-                            obj[item.name] = item.value;
-                            return obj;
-                        }, {});
-
-
-             
-
-                        sendQuoteToClient(quoteId, clientId, data);
-                     })
+                    callQuoteSend();
                 } else {
                    
                     location.reload();
@@ -2047,6 +2008,7 @@ function updateQuote(quoteID, options){
     })
 }
 
+
 function sendQuoteToClient(quoteID, clientId, data) {
 
 console.log('a');
@@ -2064,6 +2026,25 @@ console.log('a');
        $('.messageError').removeClass('hidden');
     })
 
+}
+
+
+function callQuoteSend()
+{
+    $('#sendMail-modal').modal('show');
+    $('#sendQuoteForm').on('submit', function(e){
+        e.preventDefault()
+
+        var data = $(this).serializeArray().reduce(function(obj, item) {
+            obj[item.name] = item.value;
+            return obj;
+        }, {});
+
+
+
+
+        sendQuoteToClient(quoteId, clientId, data);
+     })
 }
 
 
