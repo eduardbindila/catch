@@ -97,8 +97,7 @@ $(document).ready(function() {
             } else {
                 quote = 0;
             }
-
-         
+        
 
          if(clientId > 0) {
             $.ajax({
@@ -1389,6 +1388,7 @@ $(document).ready(function() {
 
 
 
+
         $('.lastPricesTrigger').on('click', function(e){
 
             var clientId = $(this).attr('data-client');
@@ -1572,7 +1572,7 @@ $(document).ready(function() {
                                 if(data == 1) {
                                     return "Yes"
                                 } else {
-                                    return "No"
+                                    return "No <button class='triggerFileNotification' data-file='"+row.file_path+"' >Send</button"
                                 }
                                 
                               }
@@ -1598,6 +1598,16 @@ $(document).ready(function() {
 
             
         })
+
+        $(document).on( 'click','.triggerFileNotification', function(){
+            var file = $(this).attr('data-file'); 
+
+            tinyMCE.activeEditor.setContent('We have uploaded a new file for you. Please check your quote on the files section for: '+file);
+
+
+            callQuoteSend(file);
+
+        } );
 
         var allComments = $('.allComments_table').DataTable({
                     "ajax": {
@@ -1691,7 +1701,7 @@ $(document).ready(function() {
 
          $('#clientEmail').val(clientEmail);
 
-                callQuoteSend();
+                callQuoteSend('quote');
             } else {
 
 
@@ -1744,7 +1754,7 @@ $(document).ready(function() {
 
              $('#clientEmail').val(clientEmail);
 
-                    callQuoteSend();
+                    callQuoteSend(quote);
                 } else {
                    
                     location.reload();
@@ -1755,10 +1765,6 @@ $(document).ready(function() {
                $('.updateError').removeClass('hidden');
             })
         })
-
-        
-
-
 
 Dropzone.autoDiscover = false;
 
@@ -2009,18 +2015,18 @@ function updateQuote(quoteID, options){
 }
 
 
-function sendQuoteToClient(quoteID, clientId, data) {
+function sendQuoteToClient(quoteID, clientId, data, type) {
 
 console.log('a');
     $.ajax({
         url: "/ajax/sendQuoteToClient",
         type: "post",
         dataType: "json",
-        data: {'quote_id': quoteID, 'client_id': clientId, 'data': data }
+        data: {'quote_id': quoteID, 'client_id': clientId, 'data': data, 'type': type }
    }).success(function(json){
        $('.messageError').addClass('hidden');
        $('.messageSent').removeClass('hidden');
-       //location.reload();
+       location.reload();
 
     }).error(function(xhr, status, error) {
        $('.messageError').removeClass('hidden');
@@ -2029,7 +2035,7 @@ console.log('a');
 }
 
 
-function callQuoteSend()
+function callQuoteSend(type)
 {
     $('#sendMail-modal').modal('show');
     $('#sendQuoteForm').on('submit', function(e){
@@ -2043,7 +2049,7 @@ function callQuoteSend()
 
 
 
-        sendQuoteToClient(quoteId, clientId, data);
+        sendQuoteToClient(quoteId, clientId, data, type);
      })
 }
 

@@ -65,15 +65,27 @@ $conn = $QueryBuilder->dbConnection();
 			}
 
 			if($mailSend) {
+				if($_POST['type'] == 'quote')
+				{
+					$quoteUpdate = $QueryBuilder->update(
+						$conn,
+						$options = array(
+							"table" => "quotes",
+							"set" => ["`offer_sent`='1'"],
+							"where" => "id = ".$_POST['quote_id']
+						)
+					);
+				} else {
+					$quoteUpdate = $QueryBuilder->update(
+						$conn,
+						$options = array(
+							"table" => "quote_files",
+							"set" => ["`is_sent`=1"],
+							"where" => "file_path = '".$_POST['type']."'"
+						)
+					);
+				}
 				
-				$quoteUpdate = $QueryBuilder->update(
-					$conn,
-					$options = array(
-						"table" => "quotes",
-						"set" => ["`offer_sent`='1'"],
-						"where" => "id = ".$_POST['quote_id']
-					)
-				);
 
 				if($quoteUpdate) {
 					echo true;
