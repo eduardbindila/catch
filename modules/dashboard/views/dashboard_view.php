@@ -37,6 +37,31 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Files that need Atention</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                               <table class="files_attention table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th>Quote ID</th>
+                                        <th>File</th>
+                                        <th>File Type</th>
+                                        <th>Agent</th>
+                                        <th>Upload Date</th>
+                                        <th>Days since</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<div class="row">
 	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">

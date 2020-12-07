@@ -343,6 +343,68 @@ $(document).ready(function() {
 
         });
 
+    var fileAtentionTable = $('.files_attention').DataTable({
+            "ajax": {
+                "url": "/ajax/getQuoteFiles",
+                "dataSrc": "",
+            },
+        
+            pageLength: 100,
+                "paging":   true,
+                "ordering": true,
+                "searching": true,
+            rowId: 'category_slug',
+              
+            responsive: true,
+            order: [2],
+            "columns": [ 
+                { 
+                    "data": "quote_id",
+                    "render" : function(data, type, row) {
+                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                      } 
+                },
+                { 
+                    "data": "file_path"
+                },
+                { 
+                    "data": "file_type"
+                },
+                { 
+                    "data": "name",
+                },
+                { 
+                    "data": "date",
+                    "render" : function(data, type, row) {
+                        var date = new Date(data*1000)
+                        return date.toLocaleString();
+                  } 
+                },
+                { 
+                    "data": "sent_date",
+                     "render" : function(data, type, row) {
+                        
+                        var rowDate = new Date(row.date*1000)
+                        var date1 = rowDate.toLocaleString();
+
+                        var uploadDate = new Date(date1); 
+
+                        // To calculate the time difference of two dates 
+                        var Difference_In_Time = new Date() - uploadDate.getTime(); 
+                          
+                        // To calculate the no. of days between two dates 
+                        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);                           
+                        
+                        return Math.trunc(Difference_In_Days);
+                      } 
+                }
+                
+            ],
+            "initComplete": function(settings, json) {
+            }
+
+        });
+
     var quotesTable = $('.quotes-table').DataTable({
             "ajax": {
                 "url": "/ajax/getDashboardQuotes",

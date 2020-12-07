@@ -108,7 +108,7 @@ $(document).ready(function() {
            }).success(function(json){
 
                 if(json == 3) {
-                    callQuoteSend();
+                    callQuoteSend('quote');
                 } else {
                    
                     location.reload();
@@ -1754,7 +1754,7 @@ $(document).ready(function() {
 
              $('#clientEmail').val(clientEmail);
 
-                    callQuoteSend(quote);
+                    callQuoteSend('quote');
                 } else {
                    
                     location.reload();

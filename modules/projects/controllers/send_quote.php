@@ -57,12 +57,9 @@ $conn = $QueryBuilder->dbConnection();
 
 			// // More headers
 			$headers .= 'From: <office@icatch.ro>' . "\r\n";
-			if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
-				//var_dump($message);
-				$mailSend = true;
-			} else {
-				$mailSend = mail($to,$subject,$message,$headers);
-			}
+			
+			$mailSend = mail($to,$subject,$message,$headers);
+			
 
 			if($mailSend) {
 				if($_POST['type'] == 'quote')
@@ -80,7 +77,7 @@ $conn = $QueryBuilder->dbConnection();
 						$conn,
 						$options = array(
 							"table" => "quote_files",
-							"set" => ["`is_sent`=1"],
+							"set" => ["`is_sent`=1","`sent_date`='".strtotime('now')."'"] ,
 							"where" => "file_path = '".$_POST['type']."'"
 						)
 					);
