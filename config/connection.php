@@ -521,7 +521,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.83');
+		array_push($this->links, $href.'?v=0.1.84');
 	}
 
 
@@ -535,7 +535,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.83');
+		array_push($this->scripts, $src.'?v=0.1.84');
 	}
 
 

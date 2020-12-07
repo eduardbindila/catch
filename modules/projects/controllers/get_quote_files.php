@@ -11,8 +11,8 @@ $conn = $QueryBuilder->dbConnection();
 			$conn,
 			$options = array(
 				"table" => "quote_files",
-				"columns" => "quote_files.file_path, users.name,  quote_files.date",
-				"innerJoin" => "users ON quote_files.user_id = users.id",
+				"columns" => "quote_files.*, users.name, quote_file_types.name as file_type",
+				"innerJoin" => "users ON quote_files.user_id = users.id INNER JOIN quote_file_types on quote_files.file_type = quote_file_types.id",
 				"where" => "quote_files.quote_id = '".$_POST['quote_id']."'"
 			)
 		);

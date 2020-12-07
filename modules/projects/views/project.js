@@ -1552,8 +1552,11 @@ $(document).ready(function() {
                         { 
                             "data": "file_path",
                             "render" : function(data, type, row) {
-                                return  '<a href="/uploads/'+data+'" target="_blank" >'+data+'</a>'
+                                return  '<a href="/download?f='+data+'" target="_blank" >'+data+'</a>'
                               }
+                        },
+                         { 
+                            "data": "file_type",
                         },
                         {
                             "data": "date",
@@ -1564,6 +1567,28 @@ $(document).ready(function() {
                         },
                         { 
                             "data": "name",
+                        },
+                        {
+                            "data": "sent_to_client",
+                            "render" : function(data, type, row) {
+                                if(data == 1) {
+                                    return "Yes"
+                                } else {
+                                    return "No"
+                                }
+                                
+                              }
+                        },
+                        {
+                            "data": "is_sent",
+                            "render" : function(data, type, row) {
+                                if(data == 1) {
+                                    return "Yes"
+                                } else {
+                                    return "No"
+                                }
+                                
+                              }
                         }
                     ],
                     "initComplete": function(settings, json) {

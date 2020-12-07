@@ -385,7 +385,7 @@ $quoteLockedClass = "";
                     <div class="modal-body">
                         <div class="row">
                             <?php  if( !isset($_SESSION['user_access']['client-grid'])) {?>
-                            <div class="col-lg-5">
+                            <div class="col-lg-12">
                                 <div class="dropzone dropzone-doc dz-clickable" data-quote="<?php echo $quote['id']; ?>">
                                     <div class="dz-message">
                                         <div class="drag-icon-cph">
@@ -397,19 +397,26 @@ $quoteLockedClass = "";
                                     <form class="quoteFilesForm" method="post" action='' enctype="multipart/form-data" >
                                         <input type="hidden" class="file-name" name="file_name" value="">
                                         <input type="hidden" class="quote-id" name="quote_id" value="">
+                                        <div class="input-group">
+                                            <select class="form-control Select File Type" required name="client_id">
+                                                <option value="">Link client to this user (user when User Type is Self customer)>
+                                            </select>
+                                        </div>
                                         <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Click to save files on Quote</button>
                                     </form>
                                 </div>
                             </div>
                         <?php }?>
-                            <div class="col-lg-7">
+                            <div class="col-lg-12 m-t-40">
                                 <table class="files_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                          <th></th>
                                         <th>File</th>
+                                        <th>File Type</th>
                                         <th>Date</th>
                                         <th>User</th>
-
+                                        <th>Must be sent to Client</th>
+                                        <th>Was sent to Client</th>
                                     </thead>
                                 </table>
                             </div>
