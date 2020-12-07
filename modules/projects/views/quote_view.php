@@ -398,9 +398,20 @@ $quoteLockedClass = "";
                                         <input type="hidden" class="file-name" name="file_name" value="">
                                         <input type="hidden" class="quote-id" name="quote_id" value="">
                                         <div class="input-group">
-                                            <select class="form-control Select File Type" required name="client_id">
-                                                <option value="">Link client to this user (user when User Type is Self customer)>
+                                            <select class="form-control" required name="file_type">
+                                                <option value="">Select File Type*</option>
+                                                <option value="1">Invoice</option>
+                                                <option value="2">Delivery Invoice</option>
+                                                <option value="3">Order Confirmation</option>
+                                                <option value="4">Other</option>
                                             </select>
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Must be sent to client?*:</label>
+                                            <input type="radio" name="send_to_client" id="<?php echo $quote['id'] ?>-send-1" value="1" required="">
+                                            <label for="<?php echo $quote['id'] ?>-send-1">Yes</label>
+                                            <input type="radio" name="send_to_client"  id="<?php echo $quote['id'] ?>-send-0" value="0" required="">
+                                            <label for="<?php echo $quote['id'] ?>-send-0">No</label>
                                         </div>
                                         <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Click to save files on Quote</button>
                                     </form>
