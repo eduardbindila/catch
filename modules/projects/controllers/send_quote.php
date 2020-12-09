@@ -133,16 +133,20 @@ $conn = $QueryBuilder->dbConnection();
 				
 
 				if($quoteUpdate) {
+					echo 'sarma adevarata';
 					echo true;
 				} else {
+					echo 'sarma falsa 1';
 					echo false;
 				}
 
 			} else {
+				echo 'sarma falsa 2';
 				echo false;
 			}
 	}
 	else {
+		echo 'sarma falsa 3';
 		echo false;
 	}
 
