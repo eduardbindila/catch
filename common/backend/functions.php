@@ -18,7 +18,7 @@ $SessionState = new SessionState();
 
 $SessionState->sessionStart();
 
-// var_dump($_SESSION);
+//var_dump($_SESSION);
 
 // echo $_subSectionName;
 
@@ -62,13 +62,13 @@ if(!isset($_SESSION['user_id'])){
 	$QueryBuilder->closeConnection();
 }
 
-if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote") {
+if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote" && $_subSectionName !== "getQuoteFiles" && $_sectionName !== 'download') {
 	$SessionState->redirectLogin();
 
 }
 
 
-if($_sectionName !== "offer" &&  $_SESSION['user_type'] == 4 && $_sectionName !== 'login') {
+if($_sectionName !== "offer" &&  $_SESSION['user_type'] == 4 && $_sectionName !== 'login' && $_sectionName !== 'ajax' && $_sectionName !== 'download') {
 	$SessionState->redirectLogin();
 }
 

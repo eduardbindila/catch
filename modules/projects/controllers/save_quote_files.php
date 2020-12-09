@@ -12,8 +12,8 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_files",
-			"keys" => ["quote_id", "file_path", "date", 'user_id'],
-			"values" => [$_POST['quote_id'], $_POST['file_name'], strtotime('now'), $_SESSION['user_id']]
+			"keys" => ["quote_id", "file_path", "date", 'user_id', 'file_type', 'send_to_client'],
+			"values" => [$_POST['quote_id'], $_POST['file_name'], strtotime('now'), $_SESSION['user_id'], $_POST['file_type'], $_POST['send_to_client']]
 		)
 	);
 

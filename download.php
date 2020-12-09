@@ -5,7 +5,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $file = 'uploads/'.$_GET['f'];
 
-var_dump($file);
+//var_dump($file);
 
 if(isset($_GET['f'])) {
 

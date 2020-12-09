@@ -1556,7 +1556,8 @@ $(document).ready(function() {
                             "data": "name",
                         },
                         {
-                            "data": "sent_to_client",
+                            "data": "send_to_client",
+                            "visible": iss,
                             "render" : function(data, type, row) {
                                 if(data == 1) {
                                     return "Yes"
@@ -1568,6 +1569,7 @@ $(document).ready(function() {
                         },
                         {
                             "data": "is_sent",
+                            "visible": iss,
                             "render" : function(data, type, row) {
                                 if(data == 1) {
                                     return "Yes"
