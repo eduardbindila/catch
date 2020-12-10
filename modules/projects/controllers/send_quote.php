@@ -54,8 +54,7 @@ $conn = $QueryBuilder->dbConnection();
 			// Always set content-type when sending HTML email
 			//$headers = "MIME-Version: 1.0" . "\r\n";
 			// Boundary  
-			$semi_rand = md5(time());  
-			$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";  
+			 
 			 
 			// Sender 
 			$from = 'office@icatch.ro'; 
@@ -106,7 +105,7 @@ $conn = $QueryBuilder->dbConnection();
 				$message .= "--{$mime_boundary}--"; 
 			} else {
 
-				$headers .= "MIME-Version: 1.0" . "\r\n";
+				$headers .= "\nMIME-Version: 1.0" . "\r\n";
 				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
 				$message = $htmlContent;
