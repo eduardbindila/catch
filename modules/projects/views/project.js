@@ -108,7 +108,8 @@ $(document).ready(function() {
            }).success(function(json){
 
                 if(json == 3) {
-                    callQuoteSend('quote');
+                    
+                    callQuoteSend(quoteId, clientId, 'quote')
                 } else {
                    
                     location.reload();
@@ -1607,7 +1608,8 @@ $(document).ready(function() {
             tinyMCE.activeEditor.setContent('We have uploaded a new file for you. Please check your quote on the files section for: '+file);
 
 
-            callQuoteSend(file);
+            
+            callQuoteSend(quoteId, clientId, file)
 
         } );
 
@@ -1703,7 +1705,8 @@ $(document).ready(function() {
 
          $('#clientEmail').val(clientEmail);
 
-                callQuoteSend('quote');
+                
+                callQuoteSend(quoteId, clientId, 'quote')
             } else {
 
 
@@ -1756,7 +1759,8 @@ $(document).ready(function() {
 
              $('#clientEmail').val(clientEmail);
 
-                    callQuoteSend('quote');
+                    
+                    callQuoteSend(quoteId, clientId, 'quote')
                 } else {
                    
                     location.reload();
@@ -2037,7 +2041,7 @@ console.log('a');
 }
 
 
-function callQuoteSend(type)
+function callQuoteSend(quoteId, clientId, type)
 {
     $('#sendMail-modal').modal('show');
     $('#sendQuoteForm').on('submit', function(e){
