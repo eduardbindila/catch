@@ -64,20 +64,22 @@ $conn = $QueryBuilder->dbConnection();
 						// Header for sender info 
 			$headers = "From: $fromName"." <".$from.">"; 
 			 
-			// Boundary  
-			$semi_rand = md5(time());  
-			$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";  
-			 
-			// Headers for attachment  
-			$headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\""; 
-			 
-			// Multipart boundary  
-			$message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"UTF-8\"\n" . 
-			"Content-Transfer-Encoding: 7bit\n\n" . $htmlContent . "\n\n";  
+			
 
 			
 
 			if($_POST['type'] !== "quote") {
+
+					// Boundary  
+				$semi_rand = md5(time());  
+				$mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";  
+				 
+				// Headers for attachment  
+				$headers .= "\nMIME-Version: 1.0\n" . "Content-Type: multipart/mixed;\n" . " boundary=\"{$mime_boundary}\""; 
+				 
+				// Multipart boundary  
+				$message = "--{$mime_boundary}\n" . "Content-Type: text/html; charset=\"UTF-8\"\n" . 
+				"Content-Transfer-Encoding: 7bit\n\n" . $htmlContent . "\n\n";  
 
 				// Attachment file 
 				$file = "../../..//uploads/".$_POST['type']; 
@@ -100,9 +102,17 @@ $conn = $QueryBuilder->dbConnection();
 				        "Content-Transfer-Encoding: base64\n\n" . $data . "\n\n"; 
 				    } 
 				} 
+
+				$message .= "--{$mime_boundary}--"; 
+			} else {
+
+				$headers = "MIME-Version: 1.0" . "\r\n";
+				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+				$message = $htmlContent;
 			}
 			
-			$message .= "--{$mime_boundary}--"; 
+			
 			
 			$mailSend = mail($to,$subject,$message,$headers);
 
@@ -133,20 +143,20 @@ $conn = $QueryBuilder->dbConnection();
 				
 
 				if($quoteUpdate) {
-					echo 'sarma adevarata';
+					// echo 'sarma adevarata';
 					echo true;
 				} else {
-					echo 'sarma falsa 1';
+					// echo 'sarma falsa 1';
 					echo false;
 				}
 
 			} else {
-				echo 'sarma falsa 2';
+				// echo 'sarma falsa 2';
 				echo false;
 			}
 	}
 	else {
-		echo 'sarma falsa 3';
+		// echo 'sarma falsa 3';
 		echo false;
 	}
 
