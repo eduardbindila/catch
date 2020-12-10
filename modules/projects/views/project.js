@@ -1575,7 +1575,7 @@ $(document).ready(function() {
                                 if(data == 1) {
                                     return "Yes"
                                 } else {
-                                    return "No <button class='triggerFileNotification' data-file='"+row.file_path+"' >Send</button"
+                                    return "No <button class='triggerFileNotification' data-quote='"+quoteID+"' data-file='"+row.file_path+"' >Send</button"
                                 }
                                 
                               }
@@ -1604,6 +1604,8 @@ $(document).ready(function() {
 
         $(document).on( 'click','.triggerFileNotification', function(){
             var file = $(this).attr('data-file'); 
+
+            var quoteId = $(this).attr('data-quote');
 
             tinyMCE.activeEditor.setContent('We have uploaded a new file for you. Please check your quote on the files section for: '+file);
 
