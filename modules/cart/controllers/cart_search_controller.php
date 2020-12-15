@@ -41,11 +41,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 
 	if(isset($_POST['searchTemporary'])) {
 		$table = 'products_temp';
+		$is_temporary = "1";
+
 		$searchTemporary = 1;
 	} else {
 		$table = 'products';
+		$is_temporary = "0";
 		$searchTemporary = 0;
 	}
+
+	$dummyArray = array();
 
 
 	if($_POST['searchType'] == 'product-id-contains') {
@@ -60,14 +65,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 
 			$rawBulkArray = explode("\r\n", $_POST['searchBulk']);
 
-			$and = 'OR ';
-			foreach ($rawBulkArray as $key => $value) {
-				if($key == count($rawBulkArray)-1) {
-					$and = '';
-				}
+			foreach($rawBulkArray as $key=>$val)
+			{ 
+			     $dummyArray[$key]["id"] = $val;
+			     $dummyArray[$key]["product_name"] = "";
+			     $dummyArray[$key]["initial_price"] = 0.00;
+			     $dummyArray[$key]["from_db"] = 0;
 
-				$whereClause .= "id ='".trim($value)."' ".$and;
-			}
+
+			}  
+
+			//var_dump($rawBulkArray);
+
+			// $and = 'OR ';
+
+			//$whereCriteria = ""; 
+
+			// foreach ($rawBulkArray as $key => $value) {
+			// 	if($key == count($rawBulkArray)-1) {
+			// 		$and = '';
+			// 	}
+
+			// 	$whereCriteria .= "id ='".trim($value)."' ".$and;
+			// }
+
+			$idList = '"' . implode('", "', $rawBulkArray) . '"';;
+
+			$whereClause = "id IN (".$idList.") ORDER BY FIELD(id,".$idList.");";
+
+			var_dump($whereClause);
 
 		} else {
 			$whereClause = "id = '".$_POST['searchCriteria']."'";
@@ -86,7 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 	$query = $QueryBuilder->select(
 		$conn,
 		$options = array(
-			"table" => $table,
+			"table" =>"products",
 			"columns" => "id, product_name,". $initial_price ."  as initial_price",
 			"where" => $whereClause
 		)
@@ -104,11 +130,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST" & isset($_POST['searchType'])){
 	} else {
 		
 		$_SESSION['login-error-class'] = '';
-
-		$searchResult = $query;
 	}
 
+	var_dump($query);
+
+	$lastQueryKey = 0;
+
+	if($query) {
+		foreach ($dummyArray as $key => $value) {
+			# code...
+			if($dummyArray[$key]['id'] == $query[$lastQueryKey]["id"]) {
+				$dummyArray[$key] = $query[$lastQueryKey];
+				$dummyArray[$key]['from_db'] = 1;
+				$lastQueryKey = $key+1; 
+			}  else {	
+				$lastQueryKey = $key; 
+			}
+			
+
+		}
+	}
+
+	
+
+	var_dump($dummyArray);
+
+	$searchResult = $dummyArray;
+
 	$QueryBuilder->closeConnection();
+
+
+	//var_dump($query);
 
 }
 else {

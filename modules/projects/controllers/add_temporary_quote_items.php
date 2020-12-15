@@ -13,31 +13,35 @@ $conn = $QueryBuilder->dbConnection();
 	$query = $QueryBuilder->insert(
 		$conn,
 		$options = array(
-			"table" => "products_temp",
-			"keys" => ["id", "product_name", "product_description", "product_image", "initial_price"],
+			"table" => "products",
+			"keys" => ["id", "product_name", "product_description", "product_image", "initial_price", 'is_temporary'],
 			"values" => [
 				$_POST['id'],
 				$_POST['product_name'], 
 				$_POST['product_description'], 
 				trim($_POST['file_name']),
 				$_POST['initial_price'],
+				'1'
 			]
 		)
 	);
-
+//var_dump($query);
 	if ($query) {
+		
 		$addQuoteItem = $QueryBuilder->insert(
 			$conn,
 			$options = array(
 				"table" => "quote_items",
-				"keys" => ["product_id", "quote_id", "temporary_product"],
+				"keys" => ["product_id", "quote_id", "initial_price", "temporary_product"],
 				"values" => [
 					$_POST['id'], 
 					$_POST['quote_id'], 
+					$_POST['initial_price'],
 					1
 				]
 			)
 		);
+		//var_dump($addQuoteItem);
 	} else {
 		$addQuoteItem = 0;
 	}

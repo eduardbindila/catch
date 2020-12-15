@@ -7,11 +7,13 @@ $actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
 if(isset($_GET['temp'])) {
 	$table = "products_temp";
+	$is_temporary = 1;
 } else {
 	$table = "products";
+	$is_temporary = 0;
 }
 
-$productID =  basename($_SERVER['REQUEST_URI'], '?'.$_SERVER['QUERY_STRING']);;
+$productID =  urldecode(basename($_SERVER['REQUEST_URI'], '?'.$_SERVER['QUERY_STRING']));
 
 $conn = $QueryBuilder->dbConnection();
 
@@ -20,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$query = $QueryBuilder->update(
 		$conn,
 		$options = array(
-			"table" => $table,
+			"table" => "products",
 			"set" => [
 				"`product_name`='".$_POST['product_name']."'",
 				"`product_description`='". htmlspecialchars($_POST['product_description'])."'",
@@ -36,11 +38,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	$productQuery = $QueryBuilder->select(
 		$conn,
 		$options = array(
-			"table" => $table ,
+			"table" => 'products' ,
 			"columns" => "*",
-			"where" => "id = '".$productID."'"
+			"where" => "id = '".$productID."' AND is_temporary = ".$is_temporary
 		)
 	);
+
 
 	$productName = $productQuery[0]['product_name'];
 	$productPrice = $productQuery[0]['initial_price'];

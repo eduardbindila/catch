@@ -160,61 +160,25 @@ $conn = $QueryBuilder->dbConnection();
 
 		foreach ($quoteItemsQuery as $quoteDetails => $quoteValues) {
 
-			if($quoteValues['temporary_product']) {
-				$quoteProductDetails = $QueryBuilder->select(
-					$conn,
-					$options = array(
-						"table" => "products_temp",
-						"columns" => "id, product_name, product_image, initial_price",
-						"where" => "id = '".$quoteValues['product_id']."'"
-					)
-				);
-
-				$temporary_product = 1;
-
-
-			}
-			else {
 				$quoteProductDetails = $QueryBuilder->select(
 					$conn,
 					$options = array(
 						"table" => "products",
-						"columns" => "id, product_name, product_image, initial_price",
+						"columns" => "id, product_name, product_image, initial_price, is_temporary, active",
 						"where" => "id = '".$quoteValues['product_id']."'"
 					)
 				);
 
-				$temporary_product = 0;
-			}
-
-			
+							
 
 			if($quoteProductDetails) {
 				$quoteProducts['data'][$quoteDetails] = $quoteProductDetails[0];
 			}
 
-// 			if($temporary_product == 0) {
-// 				$featuresArray = $QueryBuilder->selectFeatures(
-// 					$conn, 
-// 					$quoteValues['product_id'],
-// 					$keyFeatures = array(
-// 						"fixture_luminous_flux__lm_", 
-// 						'total_power_consumption__w_',
-// 						'colour_temperature__k_'
-
-// 					)
-// 				);
-
-// 				if($featuresArray){
-// 					foreach ($featuresArray as $featureKey => $featureValue) {
-
-// 						$quoteProducts['data'][$quoteDetails][$featureValue['id']] = $featureValue['feature_value'];
-// 					}
-// 				}
-// 			}
-			
+			//var_dump($quoteProductDetails);	
 
 			
+			$temporary_product = $quoteProductDetails[0]['is_temporary'];
 
 			$list_price = $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
 			$min_price = $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
@@ -240,16 +204,7 @@ $conn = $QueryBuilder->dbConnection();
 				$quoteProductDetails[0]['product_image'] = $host.'/uploads/'.$quoteProductDetails[0]['product_image'];
 			}  
 			if($_pageName == 'quote'|| $_pageName == 'offer') {
-				// $projectQuery = $QueryBuilder->select(
-				// 	$conn,
-				// 	$options = array(
-				// 		"table" => "projects",
-				// 		"columns" => "*",
-				// 		"where" => "id = '".$quoteValues['project_id']."'"
-				// 	)
-				// );
-				// $projectQuery = isset($projectQuery[0]) ? $projectQuery[0] : $projectQuery ;
-				// $quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name'];
+
 			} else {
 				$quoteProducts['data'][$quoteDetails]['project_name'] = $projectQuery['project_name']; 
 			}
