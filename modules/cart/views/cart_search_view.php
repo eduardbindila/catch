@@ -30,13 +30,13 @@
                     <div class="header">
                         <h2>Search Criteria</h2>
                         <form id="form_validation" method="POST" novalidate="novalidate">
-                        <ul class="header-dropdown m-r-0">
+                        <!-- <ul class="header-dropdown m-r-0">
                             <li>
                                 <div class="switch">
                                     Search type: <label>Manufacturer Products<input name="searchTemporary" class="searchTemporary" type="checkbox"><span class="lever"></span>iCatch Products and Services</label>
                                 </div>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="body">
                         
@@ -93,16 +93,18 @@
 
                     </div>
                     <div class="body">
-                        <table class="results-table table table-striped table-bordered table-hover dt-responsive display">
-                            <thead>
-                                <th></th>
-                                <th>Image</th>
-                                <th>Product ID</th>
-                                <th>Product Name</th>
-                                 <th>Price</th>
+                        <form id="newProducts">
+                            <table class="results-table table table-striped table-bordered table-hover dt-responsive display">
+                                <thead>
+                                    <th></th>
+                                    <th>Image</th>
+                                    <th>Product ID</th>
+                                    <th>Product Name</th>
+                                     <th>Price</th>
 
-                            </thead>
-                        </table>
+                                </thead>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>

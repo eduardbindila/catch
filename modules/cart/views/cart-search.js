@@ -84,6 +84,7 @@ $(document).ready(function() {
                     className: 'createProject btn btn-lg btn-success waves-effect',
                     text: 'Create Quote',
                     action: function ( e, dt, button, config ) {
+
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
@@ -134,7 +135,8 @@ $(document).ready(function() {
             "columns": [
                 { 
                     "data": null, 
-                    defaultContent: '' 
+                    defaultContent: ''
+                    
                 },
                 { 
                     "data": "product_image",
@@ -151,43 +153,52 @@ $(document).ready(function() {
                               return '<img src="'+data+'" class="table-image" />'
                             
                             }
-                        }
-
-                        
-
-                       
+                        }                       
                       } 
 
                 },
                 { 
                     "data": "id",
                     className: "product_id",
-                    "render" : function(data, type, row) {
-                         if(searchTemporary){
-                                var temp = "?temp=1";
-                            } else {
-
-                              var temp = "";
-                            
-                            }
-                          return '<a href="/cart/product/'+data+temp+'">'+data+'</a>'
-                      }
+                      "render" : function(data, type, row, meta) {
+                        if(row.from_db) {
+                            return data;
+                        }
+                        else {
+                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="row['+meta.row+'][id]" placeholder="Add an Id" value="'+data+'" required></div></div>'
+                          }
+                    }
 
                 },
                 { 
                     "data": "product_name",
                     className: "product_name",
+                    "render" : function(data, type, row, meta) {
+                        if(row.from_db) {
+                            return data;
+                        }
+                        else {
+                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="row['+meta.row+'][name]" placeholder="Add a Name" value="'+data+'" required></div></div>'
+                          }
+                    }
 
                 },
                 { 
                     "data": "initial_price",
                     className: "initial_price",
-                    "render" : function(data, type, row) {
+                    "render" : function(data, type, row, meta) {
+
+                        if(row.from_db) {
+                            return Number(data).toFixed(2)
+                        }
+                        else {
+                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="row['+meta.row+'][price]" placeholder="Price" value="'+data+'" required></div></div>'
+                          }
                          
-                          return Number(data).toFixed(2)
+                          
                       }
 
-                },
+                }
             ],
             columnDefs : [
                 {
@@ -230,10 +241,28 @@ $(document).ready(function() {
 
                      $('.addNewQuote[data-project="'+queryDict.project+'"]').trigger('click');
                 }
+              },
+
+              "createdRow": function( row, data, dataIndex ) {
+                //console.log(row, data['from_db'], dataIndex);
+                if ( data['from_db'] === 0 ) {
+                  $(row).addClass( 'danger' );
+                }
               }
 
         });
     }
+
+   table.on( 'select', function ( e, dt, type, indexes ) {
+    console.log(e);
+        var row = table.row( indexes ).data();
+
+        if ( row.from_db === 0 ) {
+            dt.row(indexes, { page: 'current' }).deselect();
+        }
+
+    } );
+
 
     var projectsTable = $('.projects_table').DataTable({
             "ajax": {
