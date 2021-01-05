@@ -29,41 +29,13 @@
                 <div class="card">
                     <div class="header">
                         <h2>Search Criteria</h2>
-                        <form id="form_validation" method="POST" novalidate="novalidate">
-                        <!-- <ul class="header-dropdown m-r-0">
-                            <li>
-                                <div class="switch">
-                                    Search type: <label>Manufacturer Products<input name="searchTemporary" class="searchTemporary" type="checkbox"><span class="lever"></span>iCatch Products and Services</label>
-                                </div>
-                            </li>
-                        </ul> -->
+                        <form id="searchForm" method="">
+ 
                     </div>
                     <div class="body">
-                        
-                            <div class="row">
-                                <div class="col-lg-3">
-                                  <input name="searchType" value="product-id" type="radio" id="radio-1" class="with-gap radio-col-light-green" checked>
-                                    <label for="radio-1">Product ID</label>  
-                                </div>
-                                
-                                <div class="col-lg-3">
-                                    <input name="searchType" value="product-id-contains" type="radio" id="radio-2" class="with-gap radio-col-light-green">
-                                    <label for="radio-2">Product ID Contains</label>
-                                </div>
-
-                                <div class="col-lg-3">
-                                    <input name="searchType" value="description" type="radio" id="radio-3" class="with-gap radio-col-light-green">
-                                    <label for="radio-3">Description Contains</label>
-                                </div>
-                            </div>
-                            <div class="row m-t-10 hidden" id="searchSingle">
-                                <div class="col-lg-12">
-                                    <input type="text"  name="searchCriteria" class="form-control" placeholder="Search Criteria" required="required" aria-required="true">
-                                </div>
-                            </div>
                             <div class="row m-t-10" id="searchBulk">
                                 <div class="col-lg-12">
-                                   <textarea name="searchBulk"  class="form-control" placeholder="Bulk Search " ></textarea> 
+                                   <textarea name="searchBulk" height="80" class="form-control" placeholder="Bulk Search " ></textarea> 
                                 </div>
                             </div>
                             <div class="row m-t-10">
@@ -71,11 +43,11 @@
                                     <button type="submit" id="searchButton" class="btn btn-block btn-lg btn-primary waves-effect search">Search</button>
                                 </div>
                             </div>
-                            <div class="row <?php echo $_SESSION['login-error-class'];?>" >
+                            <div class="row  loggin-error >" >
                                 <div class="col-lg-12">
-                                    <div class="alert login-error-alert bg-pink alert-dismissible" role="alert">
+                                    <div class="alert login-error-alert searchError hidden bg-pink alert-dismissible" role="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        <?php echo $errorMessage ?>
+                                        No product has been found
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +57,7 @@
             </div>
         </div>
 
-        <div class="row show-table hidden">
+        <div class="row show-table">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
@@ -93,7 +65,7 @@
 
                     </div>
                     <div class="body">
-                        <form id="newProducts">
+                        
                             <table class="results-table table table-striped table-bordered table-hover dt-responsive display">
                                 <thead>
                                     <th></th>
@@ -104,7 +76,7 @@
 
                                 </thead>
                             </table>
-                        </form>
+                            <input class="hidden" onClick="javascript:void(0)" type="submit">
                     </div>
                 </div>
             </div>

@@ -13,11 +13,12 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
  RewriteRule ^auth/login login.php [L]
  RewriteRule ^dashboard dashboard.php [L]
- RewriteRule ^cart/search cart-search-product.php [L]
+ RewriteRule ^cart/create create_quote.php [L]
  RewriteRule ^cart/import-prices import-prices.php [L]
  RewriteRule ^cart/product/* cart-product.php [L]
  RewriteRule ^projects/* projects.php [L]
  RewriteRule ^project/* project.php [L]
+ RewriteRule ^admin/products/* products.php [L]
  
  RewriteRule ^quotes/* quotes.php [L]
  RewriteRule ^quote/* project.php [L]
@@ -36,6 +37,7 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
  RewriteRule ^admin/designers designers.php [L]
  RewriteRule ^admin/designer/* designers.php [L]
  RewriteRule ^admin/access/* access_table.php [L]
+ RewriteRule ^admin/products/* products.php [L]
  RewriteRule ^404 404.php [L]
  ErrorDocument 404 /404.php
 
@@ -52,6 +54,8 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
  RewriteRule ^ajax/sendQuoteToClient modules/projects/controllers/send_quote.php [L]
  RewriteRule ^ajax/getQuotes modules/admin/controllers/get_quotes.php [L]
  RewriteRule ^ajax/getAccess modules/admin/controllers/get_access.php [L]
+ RewriteRule ^ajax/searchProducts modules/cart/controllers/search_products.php [L]
+ RewriteRule ^ajax/addProduct modules/cart/controllers/add_product.php [L]
 
  RewriteRule ^ajax/getInsertedProductIDs modules/admin/import/products/controllers/get_inserted_products.php [L]
 

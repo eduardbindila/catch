@@ -1,22 +1,24 @@
-$('#form_validation').validate({
-    rules: {
-        'checkbox': {
-            required: true
-        },
-        'gender': {
-            required: true
-        }
-    },
-    highlight: function (input) {
-        $(input).parents('.form-line').addClass('error');
-    },
-    unhighlight: function (input) {
-        $(input).parents('.form-line').removeClass('error');
-    },
-    errorPlacement: function (error, element) {
-        $(element).parents('.form-group').append(error);
-    }
-});
+// $('#form_validation').validate({
+//     rules: {
+//         'checkbox': {
+//             required: true
+//         },
+//         'gender': {
+//             required: true
+//         }
+//     },
+//     highlight: function (input) {
+//         $(input).parents('.form-line').addClass('error');
+//     },
+//     unhighlight: function (input) {
+//         $(input).parents('.form-line').removeClass('error');
+//     },
+//     errorPlacement: function (error, element) {
+//         $(element).parents('.form-group').append(error);
+//     }
+// });
+
+var searchTemporary = 0;
 
 var queryDict = {};
 
@@ -55,19 +57,14 @@ $.ajax({
 $(document).ready(function() {
 
     var selectedProducts = [];
-    
+            //console.log(searchResult);
 
-    if(typeof(searchResult) != "undefined") {
-        $('.show-table').removeClass('hidden');
-
-        //console.log(searchResult);
-
-        var table = $('.results-table').DataTable({
+        var resultsTable = $('.results-table').DataTable({
             dom: 'Blfrtip',
-            data: searchResult,
+            data: [],
             pageLength: 5000,
                 "paging":   false,
-                "ordering": true,
+                "ordering": false,
                 "searching": false,
             rowId: 'category_slug',
              buttons: [
@@ -92,6 +89,41 @@ $(document).ready(function() {
                         }
                     }
                 },
+                // {
+                //     className: 'addNewProducts btn btn-lg btn-success waves-effect',
+                //     text: 'Insert New Products to DataBase',
+                //     action: function ( e, dt, button, config ) {
+                        
+                //         $('#newProducts').find(':submit').click();
+
+                //         $('#newProducts').on('submit', function(e){
+                //             e.preventDefault();
+
+                //             var ser = $(this).serialize();
+
+                //             var tes = $(this).serializeArray();
+
+                //             console.log(ser, tes);
+                            
+                //          })
+                //     }
+                // },
+                {
+                    extend: 'selected',
+                    className: 'addToProject btn btn-lg btn-success waves-effect hidden',
+                    text: 'Add to Project',
+                    action: function ( e, dt, button, config ) {
+                        var selection = dt.rows( { selected: true } ).data();
+                        var i;
+                        for ( i = 0; i < selection.length; i++) {
+                            selectedProducts.push(selection[i].id);
+                        }
+
+                        var projectID = $('#projectNumber').text();
+
+                        createQuote(projectID, selectedProducts)
+                    }
+                }, 
                 {
                     extend: 'selected',
                     className: 'addToQuote btn btn-lg btn-success waves-effect hidden',
@@ -108,22 +140,6 @@ $(document).ready(function() {
                         addItemsToQuote(0, quoteID, selectedProducts)
                     }
                 },
-                {
-                    extend: 'selected',
-                    className: 'addToProject btn btn-lg btn-success waves-effect hidden',
-                    text: 'Add to Project',
-                    action: function ( e, dt, button, config ) {
-                        var selection = dt.rows( { selected: true } ).data();
-                        var i;
-                        for ( i = 0; i < selection.length; i++) {
-                            selectedProducts.push(selection[i].id);
-                        }
-
-                        var projectID = $('#projectNumber').text();
-
-                        createQuote(projectID, selectedProducts)
-                    }
-                }
             ],
             language: {
                 buttons: {
@@ -165,7 +181,7 @@ $(document).ready(function() {
                             return data;
                         }
                         else {
-                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="row['+meta.row+'][id]" placeholder="Add an Id" value="'+data+'" required></div></div>'
+                            return '<form id="newProducts-'+meta.row+'" class="newProduct" method="post" action="" enctype="multipart/form-data"></form><div class="form-group"><div class="form-line"><input class="form-control" form="newProducts-'+meta.row+'" data-type="id" name="id" placeholder="Add an Id" value="'+data+'" required></div></div>'
                           }
                     }
 
@@ -178,7 +194,7 @@ $(document).ready(function() {
                             return data;
                         }
                         else {
-                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="row['+meta.row+'][name]" placeholder="Add a Name" value="'+data+'" required></div></div>'
+                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="product_name" placeholder="Add a Name" value="'+data+'" form="newProducts-'+meta.row+'" required></div></div>'
                           }
                     }
 
@@ -192,7 +208,7 @@ $(document).ready(function() {
                             return Number(data).toFixed(2)
                         }
                         else {
-                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="row['+meta.row+'][price]" placeholder="Price" value="'+data+'" required></div></div>'
+                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="initial_price" placeholder="Price" value="'+data+'" form="newProducts-'+meta.row+'" required></div></div><input class="submitProducts hidden"  form="newProducts-'+meta.row+'" type="submit">'
                           }
                          
                           
@@ -212,6 +228,8 @@ $(document).ready(function() {
                 selector: 'td:first-child'
             },
             "initComplete": function(settings, json) {
+
+              
 
                 $('.dt-buttons a').removeClass('dt-button');
                 $('.createProject').attr({"data-toggle": "modal", "data-target": "#categories-modal"});
@@ -246,22 +264,102 @@ $(document).ready(function() {
               "createdRow": function( row, data, dataIndex ) {
                 //console.log(row, data['from_db'], dataIndex);
                 if ( data['from_db'] === 0 ) {
-                  $(row).addClass( 'danger' );
+                  $(row).addClass( 'warning' );
                 }
               }
 
         });
-    }
 
-   table.on( 'select', function ( e, dt, type, indexes ) {
-    console.log(e);
-        var row = table.row( indexes ).data();
+        var saveAjaxCall;
 
-        if ( row.from_db === 0 ) {
-            dt.row(indexes, { page: 'current' }).deselect();
-        }
+        $('#searchForm').on('submit', function(e){
+            e.preventDefault();
 
-    } );
+            var formValues = $(this).serializeArray();
+
+
+            $.ajax({
+                url: "/ajax/searchProducts",
+                type: "post",
+                dataType: "json",
+                data: {"searchBulk": formValues[0]['value'], }
+           }).success(function(json){
+                if(json === 0){
+                    $('.searchError').removeClass('hidden');
+                } else {
+                    saveAjaxCall =  {"searchBulk": formValues[0]['value'] };
+                    resultsTable.clear().draw();
+                    resultsTable.rows.add(json); // Add new data
+                    resultsTable.columns.adjust().draw(); // Redraw the DataTable
+                }
+            
+            }).error(function(xhr, status, error) {
+               $('.searchError').removeClass('hidden');
+            })
+            
+         })
+
+        $(document).on('submit', '.newProduct', function(e){
+            e.preventDefault();
+           
+           var newProduct = $(this).serializeArray();
+
+           var tr = $(this).parents('tr');
+
+           //console.log(tr);
+
+           $.ajax({
+                url: "/ajax/addProduct",
+                type: "post",
+                dataType: "json",
+                data: {"id": newProduct[0]['value'], "product_name": newProduct[1]['value'], "initial_price": newProduct[2]['value'] }
+           }).success(function(json){
+                if(json === 0){
+                    tr.removeClass('warning').addClass('danger');
+                } else {
+                    //console.log('productAdded')
+                    $.ajax({
+                        url: "/ajax/searchProducts",
+                        type: "post",
+                        dataType: "json",
+                        data: saveAjaxCall
+                   }).success(function(json){
+                        if(json === 0){
+                            $('.searchError').removeClass('hidden');
+                        } else {
+                        
+                            resultsTable.clear().draw();
+                            resultsTable.rows.add(json); // Add new data
+                            resultsTable.columns.adjust().draw(); // Redraw the DataTable
+                        }
+                    
+                    }).error(function(xhr, status, error) {
+                       $('.searchError').removeClass('hidden');
+                    })
+                }
+            
+            }).error(function(xhr, status, error) {
+               tr.removeClass('warning').addClass('danger');
+            })
+        });
+
+   // table.on( 'select', function ( e, dt, type, indexes ) {
+   //      var row = table.row( indexes ).data();
+
+   //      if ( row.from_db === 0 ) {
+   //          dt.row(indexes, { page: 'current' }).deselect();
+   //      }
+
+   //  } );
+
+   // table
+   //  .on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
+        
+
+   //      if ( $(originalEvent.currentTarget).parent('tr').hasClass('danger') ) {
+   //          e.preventDefault();
+   //      }
+   //  } );
 
 
     var projectsTable = $('.projects_table').DataTable({
@@ -422,6 +520,7 @@ function duplicateQuoteItems(projectID, quoteID, quote_items){
 }
 
 function addItemsToQuote(projectID, quoteID, products) {
+    //console.log(products);
     if(products[0].id) {
          $('#status-modal').modal('show');
         var quote = {
