@@ -8,13 +8,13 @@
                 <div class="card">
                     <div class="header">
                         <h2>Products Details</h2>
-                        <ul class="header-dropdown m-r-0">
+                        <!-- <ul class="header-dropdown m-r-0">
                             <li>
                                 <button class="btn btn-success waves-effect" data-toggle="modal"data-target="#addNew-modal">
                                     Add Products
                                 </button>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="body">
                         <div class="row">

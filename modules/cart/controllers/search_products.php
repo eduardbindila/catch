@@ -43,32 +43,50 @@ $isBulkSearch = isset($_POST['searchBulk']) && $_POST['searchBulk'] != "";
 				$options = array(
 					"table" =>"products",
 					"columns" => "id, product_name,". $initial_price ."  as initial_price",
-					"where" => $whereClause
-				)
+					"where" => $whereClause,
+				),
+				$returnType = "idAsArray" 
 			);
 
-			//var_dump($query);
-
-			$lastQueryKey = 0;
-
-
-			foreach ($dummyArray as $key => $value) {
-				# code...
-				if(isset($query[$lastQueryKey]["id"]) && $dummyArray[$key]['id'] == $query[$lastQueryKey]["id"]) {
-					$dummyArray[$key] = $query[$lastQueryKey];
-					$dummyArray[$key]['from_db'] = 1;
-					$lastQueryKey = $key+1; 
-					$foundArray[$dummyArray[$key]['id']] = $key;
-				}  else {
-					if(isset($foundArray[$dummyArray[$key]['id']])) {
-						$dummyArray[$key] = $dummyArray[$foundArray[$dummyArray[$key]['id']]];
-					} else {
-						$lastQueryKey = $key; 
+			if(!empty($query))
+				foreach ($dummyArray as $key => $value) {
+					# code...
+					if(isset($query[$value["id"]])) {
+						$dummyArray[$key] = $query[$value["id"]];
+						$dummyArray[$key]['from_db'] = 1;
 					}
-				}
-			}
 
-			//var_dump($foundArray);
+				}
+
+			// else
+			// 	echo "nope";
+
+			// var_dump($query);
+
+			// var_dump($dummyArray);
+
+			// $lastQueryKey = 0;
+
+
+			// foreach ($dummyArray as $key => $value) {
+			// 	# code...
+			// 	echo $query[$lastQueryKey]["id"], $dummyArray[$key]['id'], $query[$lastQueryKey]["id"];
+			// 	if(isset($query[$lastQueryKey]["id"]) && $dummyArray[$key]['id'] == $query[$lastQueryKey]["id"]) {
+			// 		echo "eee";
+			// 		$dummyArray[$key] = $query[$lastQueryKey];
+			// 		$dummyArray[$key]['from_db'] = 1;
+			// 		$lastQueryKey = $key+1; 
+			// 		$foundArray[$dummyArray[$key]['id']] = $key;
+			// 	}  else {
+			// 		if(isset($foundArray[$dummyArray[$key]['id']])) {
+			// 			$dummyArray[$key] = $dummyArray[$foundArray[$dummyArray[$key]['id']]];
+			// 		} else {
+			// 			$lastQueryKey = $key; 
+			// 		}
+			// 	}
+			// }
+
+			// var_dump($foundArray);
 
 
 			$searchResult = $dummyArray;

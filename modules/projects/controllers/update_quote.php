@@ -13,7 +13,21 @@ if(isset($_POST['extra_discount'])) {
 			"where" => "id = ".$_POST['quote_id']
 		)
 	);
-} else {
+} elseif(isset($_POST['hide_discount'])) {
+
+	//var_dump((int)($_POST['hide_discount'] === "true"));
+
+	
+	$projectsQuery = $QueryBuilder->update(
+		$conn,
+		$options = array(
+			"table" => "quotes",
+			"set" => ["`hide_discount`='".(int)($_POST['hide_discount'] === "true")."'"],
+			"where" => "id = ".$_POST['quote_id']
+		)
+	);
+}
+	else {
 
 //var_dump($_POST);
 

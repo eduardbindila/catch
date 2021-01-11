@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     var profitLow = [];
 
-    var hideDiscountDetails = false;
+    var hideDiscountDetails = undefined;
 
     $('.navbar-nav').append('<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"><span>GO TO This Project</span><span class="caret"></span></a><ul class="dropdown-menu quote-list"></ul></li>');
 
@@ -297,8 +297,9 @@ $(document).ready(function() {
                             text: 'Hide Discount',
                             className: 'hideTrigger btn btn-lg btn-primary waves-effect',
                             action: function ( e, dt, node, config ) {
+                      
+                                hideDiscountDetails = !!+val['hide_discount'];
                                 hideDiscountDetails = !hideDiscountDetails;
-                                
 
                                 if(hideDiscountDetails == true) {
                                     $('.hideTrigger span').text('Show Discount');
@@ -307,6 +308,21 @@ $(document).ready(function() {
                                  {
                                     $('.hideTrigger span').text('Hide Discount');
                                 }
+
+                                //console.log(hideDiscountDetails);
+
+                                $.ajax({
+                                    url: "/ajax/updateQuote",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {'quote_id': val['id'], 'hide_discount': hideDiscountDetails}
+                               }).success(function(json){
+                                   $('.updateError').addClass('hidden');
+                                   location.reload();
+                                }).error(function(xhr, status, error) {
+                                   $('.updateError').removeClass('hidden');
+                                })
+
                             }
                         }
 
@@ -490,7 +506,7 @@ $(document).ready(function() {
 
                                     doc.content[1].table.body[lastRow][12] = {};
 
-                                    if(hideDiscountDetails) {
+                                    if(val['hide_discount'] == 1) {
                                          doc.content[1].table.body[row][8] = {};
 
                                         doc.content[1].table.body[0][8] = {};
@@ -919,8 +935,10 @@ $(document).ready(function() {
                      
                     { 
                         "data": "discount",
+                        "visible": !(isc == true && val['hide_discount'] == 1),
                         className: "discount-wrapper",
                         "render" : function(data, type, row, meta) {
+                            // console.log(isc, val['hide_discount'], !(isc == true && val['hide_discount'] == 1));
                             //console.log(meta, row);
                             return '<div class="form-group"><div class="form-line"><input class="form-control quote-input" data-type="discount" data-index="'+index+'" name="discount" data-row="'+meta.row+'" data-col="'+meta.col+'" data-item="'+row.quote_item_id+'" placeholder="Discount" value="'+row.discount+'" type="number" min=0 ></div></div>'
                           }
@@ -991,6 +1009,19 @@ $(document).ready(function() {
                  select: {
                     style:    'multi',
                     selector: 'td:first-child'
+                },
+                "initComplete": function(settings, json) {
+
+                    //console.log('init',  val['hide_discount']);
+                        
+                    if(val['hide_discount'] == 1) {
+                        $('.hideTrigger span').text('Show Discount');
+                    } 
+                    else
+                     {
+                        $('.hideTrigger span').text('Hide Discount');
+                    }
+
                 },
                 "drawCallback": function(settings, json) {
                     // if(quoteStatus[val['id']] == 4) {
@@ -1301,6 +1332,7 @@ $(document).ready(function() {
                         },
                     ],
                     "initComplete": function(settings, json) {
+
                     }
 
                 });
