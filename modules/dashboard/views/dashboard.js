@@ -68,10 +68,14 @@ $(document).ready(function() {
                     "data": "name"
                 },
                 { 
+                    "data": "project_name",
+                    "visible": false
+                },
+                { 
                     "data": "id"
                 },
                 { 
-                    "data": "owner"
+                    "data": "owner",
                 },
                 { 
                     "data": "client"

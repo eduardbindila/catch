@@ -77,6 +77,7 @@
                                     <thead>
                                         <th>Project ID</th>
                                         <th>Name</th>
+                                        <th>Project Name</th>
                                         <th>Quote ID</th>
                                         <th>Owner</th>
                                         <th>Client</th>
