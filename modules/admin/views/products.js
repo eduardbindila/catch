@@ -1,6 +1,7 @@
 
 $(document).ready(function() {
-    var projectsTable = $('.projects_table').DataTable({
+    
+    var productsTable = $('.products_table').DataTable({
         "ajax": {
             "url": "/ajax/getProducts/",
             "dataSrc": ""

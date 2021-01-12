@@ -173,7 +173,7 @@
                         <!-- Nav tabs -->
                             <ul class="nav nav-tabs tab-nav-right" role="tablist">
                                 <li role="presentation" class="active"><a href="#existingProduct" data-toggle="tab">Add existing product</a></li>
-                                <li role="presentation"><a href="#temporaryProduct" data-toggle="tab">Add temporary product</a></li>
+                                <!-- <li role="presentation"><a href="#temporaryProduct" data-toggle="tab">Add temporary product</a></li> -->
                             </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">

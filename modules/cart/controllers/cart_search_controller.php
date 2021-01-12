@@ -28,8 +28,8 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datata
 
 
 
-$LoadHTMLArtefacts->setScript($_WMPATH['CART_VIEWS'].'cart-search.js');
 
+$LoadHTMLArtefacts->setScript($_WMPATH['CART_VIEWS'].'cart-search.js');
 
 include($_MPATH['CART_VIEWS'].'cart_search_view.php');
 

@@ -27,7 +27,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     Product has been succesfully added.
                                 </div>
-                               <table class="projects_table table table-striped table-bordered table-hover dt-responsive display">
+                               <table class="products_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th>Image</th>
                                         <th>Product ID</th>

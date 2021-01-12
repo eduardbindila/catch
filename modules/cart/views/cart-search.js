@@ -276,8 +276,13 @@ $(document).ready(function() {
             e.preventDefault();
 
             var formValues = $(this).serializeArray();
+            //console.log($(this).attr('id'));
+            if($(this).attr('id') == "searchForm2")
+                searchCriteria = "searchCriteria"
+            else 
+                searchCriteria = "searchBulk"
 
-
+            //console.log( searchCriteria);
             $.ajax({
                 url: "/ajax/searchProducts",
                 type: "post",
@@ -288,6 +293,30 @@ $(document).ready(function() {
                     $('.searchError').removeClass('hidden');
                 } else {
                     saveAjaxCall =  {"searchBulk": formValues[0]['value'] };
+                    resultsTable.clear().draw();
+                    resultsTable.rows.add(json); // Add new data
+                    resultsTable.columns.adjust().draw(); // Redraw the DataTable
+                }
+            
+            }).error(function(xhr, status, error) {
+               $('.searchError').removeClass('hidden');
+            })
+            
+         })
+
+        $('#searchForm2').on('submit', function(e){
+            e.preventDefault();
+
+            var formValues = $(this).serializeArray();
+            $.ajax({
+                url: "/ajax/searchProducts",
+                type: "post",
+                dataType: "json",
+                data: {"searchCriteria": formValues[0]['value'], }
+           }).success(function(json){
+                if(json === 0){
+                    $('.searchError').removeClass('hidden');
+                } else {
                     resultsTable.clear().draw();
                     resultsTable.rows.add(json); // Add new data
                     resultsTable.columns.adjust().draw(); // Redraw the DataTable

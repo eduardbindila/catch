@@ -29,29 +29,66 @@
                 <div class="card">
                     <div class="header">
                         <h2>Search Criteria</h2>
-                        <form id="searchForm" method="">
+                       
  
                     </div>
                     <div class="body">
-                            <div class="row m-t-10" id="searchBulk">
-                                <div class="col-lg-12">
-                                   <textarea name="searchBulk" height="80" class="form-control" placeholder="Bulk Search " ></textarea> 
-                                </div>
-                            </div>
-                            <div class="row m-t-10">
-                                <div class="col-lg-12">
-                                    <button type="submit" id="searchButton" class="btn btn-block btn-lg btn-primary waves-effect search">Search</button>
-                                </div>
-                            </div>
-                            <div class="row  loggin-error >" >
-                                <div class="col-lg-12">
-                                    <div class="alert login-error-alert searchError hidden bg-pink alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        No product has been found
+                          <!-- Nav tabs -->
+                            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                                <li role="presentation" class="active"><a href="#bulk" data-toggle="tab">Bulk Search</a></li>
+                                <li role="presentation" ><a href="#single" data-toggle="tab">Single Search</a></li>
+                            </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="bulk">
+                                <form id="searchForm" method="">
+                                    <div class="row m-t-10" id="searchBulk">
+                                            <div class="col-lg-12">
+                                               <textarea name="searchBulk" height="80" class="form-control" placeholder="Bulk Search " ></textarea> 
+                                            </div>
                                     </div>
-                                </div>
+                                    <div class="row m-t-10">
+                                        <div class="col-lg-12">
+                                            <button type="submit" id="searchButton" class="btn btn-block btn-lg btn-primary waves-effect search">Search</button>
+                                        </div>
+                                    </div>
+                                    <div class="row  loggin-error >" >
+                                        <div class="col-lg-12">
+                                            <div class="alert login-error-alert searchError hidden bg-pink alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                No product has been found
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                            <div role="tabpanel" class="tab-pane fade in" id="single">
+                                <form id="searchForm2" method="">
+                                    <div class="row m-t-10" id="searchBulk">
+                                        <div class="col-lg-12">
+                                           <div class="input-group">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" name="criteria" placeholder="Search Criteria" required>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="row m-t-10">
+                                        <div class="col-lg-12">
+                                            <button type="submit" id="searchButton2" class="btn btn-block btn-lg btn-primary waves-effect search">Search</button>
+                                        </div>
+                                    </div>
+                                    <div class="row  loggin-error >" >
+                                        <div class="col-lg-12">
+                                            <div class="alert login-error-alert searchError hidden bg-pink alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                No product has been found
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
