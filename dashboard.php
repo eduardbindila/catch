@@ -27,6 +27,9 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datata
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.rowGroup.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.select.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.searchPanes.min.js');
+$LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.fnFilterOnReturn.js');
+
+
 // $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/chartjs/Chart.bundle.js');
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzone.js');

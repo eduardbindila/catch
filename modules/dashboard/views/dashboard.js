@@ -193,10 +193,10 @@ $(document).ready(function() {
                 
 
 
-                console.log(chartValues);
+                ///console.log(chartValues);
                 if(!jQuery.isEmptyObject(chartValues)) {
 
-                    console.log(myChart, myFunnel);
+                    ///console.log(myChart, myFunnel);
 
                     data = [
                       {
@@ -236,7 +236,7 @@ $(document).ready(function() {
                     myChart.update();
 
                     //console.log(funnelValues);
-                    console.log(arrayValues);
+                    //console.log(arrayValues);
 
                     myFunnel.data.datasets = [{
                     data: funnelValues,
@@ -272,6 +272,8 @@ $(document).ready(function() {
                 
 
         });
+
+$('.projects_legacy').dataTable().fnFilterOnReturn();
 
     var atentionTable = $('.quotes_attention').DataTable({
             "ajax": {
