@@ -3,6 +3,8 @@
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
+//var_dump($_POST);
+
 $conn = $QueryBuilder->dbConnection();
 
 	$quoteStatuses =  $QueryBuilder->select(
@@ -35,7 +37,15 @@ $conn = $QueryBuilder->dbConnection();
 		'2' => array(
 			'next'=> '2'
 		),
+		'8' => array(
+			'next'=> '8'
+		),
+		'9' => array(
+			'next'=> '9'
+		),
 	);
+
+
 
 	$other = '';
 
@@ -53,8 +63,9 @@ $conn = $QueryBuilder->dbConnection();
 			
 		}
 		else {
-
-			$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
+			//echo $_POST['quote_status'];
+			$new_status = $_POST['jump_status'];
+			//echo $new_status;
 		}
 	}
 
@@ -74,11 +85,12 @@ $conn = $QueryBuilder->dbConnection();
 		$afterApprove = 0;
 	}
 
-	if(isset($_POST['jump_status'])) {
-		$new_status = $_POST['jump_status'];
+	if(isset($_POST['jump_status']) && $_POST['jump_status'] == 0) {
+		//echo "jump";
+		$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
 	}
 
-	//echo $new_status;
+//echo $new_status;
 
 
 
@@ -109,9 +121,6 @@ $conn = $QueryBuilder->dbConnection();
 	} else {
 		echo json_encode($projectsQuery);
 	}
-
-
-	
 
 	$QueryBuilder->closeConnection();
 

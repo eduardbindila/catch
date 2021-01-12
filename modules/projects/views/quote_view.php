@@ -250,6 +250,8 @@ $quoteLockedClass = "";
                                     <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
                                     <button type="button" data-status="5" class="btn btn-default waves-effect">Contracting</button>
                                     <button type="button" data-status="2" class="btn btn-default waves-effect">Delivering</button>
+                                    <button type="button" data-status="8" class="btn btn-danger waves-effect">Lost Quote</button>
+                                    <button type="button" data-status="9" class="btn btn-danger waves-effect">Quote Canceled</button>
                                 </div>
                             </div>
                         </div>
