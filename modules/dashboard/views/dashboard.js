@@ -15,7 +15,16 @@ $(document).ready(function() {
                  layout: 'columns-1',
                  dataLength: 20
             },
+            
             dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',
+            columnDefs: [
+            {
+                searchPanes: {
+                    preSelect: ['2021']
+                },
+                targets: [11]
+            }
+        ],
             pageLength: 100,
                 "paging":   true,
                 "ordering": true,
