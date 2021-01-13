@@ -159,6 +159,14 @@ $(document).ready(function() {
                                     "label": "",
                                     "value": 0
                                     },
+                                    8: {
+                                    "label": "",
+                                    "value": 0
+                                    },
+                                    9: {
+                                    "label": "",
+                                    "value": 0
+                                    },
                                
                                
                                 
@@ -174,6 +182,7 @@ $(document).ready(function() {
                         
                         
                         // values.total = ~~parseFloat(values.total) + ~~parseFloat(thisRow.quote_price);
+                        //console.log(thisRow);
                         var thisValue = ~~parseFloat(chartValues[thisRow.quote_status_id].value) + ~~parseFloat(thisRow.quote_price);
                         // console.log(chartValues[thisRow.quote_status_id].value, ~~parseFloat(thisRow.quote_price), thisValue)
 
