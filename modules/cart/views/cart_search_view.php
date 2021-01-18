@@ -102,7 +102,10 @@
 
                     </div>
                     <div class="body">
-                        
+                            <div class="alert alert-info alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                Press "Enter" key when you finish adding a new product.
+                            </div>
                             <table class="results-table table table-striped table-bordered table-hover dt-responsive display" id="results-table">
                                 <thead>
                                     <th></th>
