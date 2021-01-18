@@ -232,7 +232,7 @@ Class QueryBuilder{
 			       quote_status.id         AS quote_status_id, 
 			       specifyer_designer.name AS specifyer_designer, 
 			       quotes.winning_chance 
-			FROM   quotes 
+			FROM   quotes
 					LEFT JOIN projects 
 			              ON quotes.project_id = projects.id
 			       LEFT JOIN project_status 

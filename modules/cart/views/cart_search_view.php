@@ -103,7 +103,7 @@
                     </div>
                     <div class="body">
                         
-                            <table class="results-table table table-striped table-bordered table-hover dt-responsive display">
+                            <table class="results-table table table-striped table-bordered table-hover dt-responsive display" id="results-table">
                                 <thead>
                                     <th></th>
                                     <th>Image</th>

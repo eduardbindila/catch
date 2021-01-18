@@ -59,7 +59,7 @@ $(document).ready(function() {
     var selectedProducts = [];
             //console.log(searchResult);
 
-        var resultsTable = $('.results-table').DataTable({
+        var resultsTable = $('#results-table').DataTable({
             dom: 'Blfrtip',
             data: [],
             pageLength: 5000,
@@ -293,6 +293,7 @@ $(document).ready(function() {
                     $('.searchError').removeClass('hidden');
                 } else {
                     saveAjaxCall =  {"searchBulk": formValues[0]['value'] };
+                    
                     resultsTable.clear().draw();
                     resultsTable.rows.add(json); // Add new data
                     resultsTable.columns.adjust().draw(); // Redraw the DataTable
@@ -317,6 +318,7 @@ $(document).ready(function() {
                 if(json === 0){
                     $('.searchError').removeClass('hidden');
                 } else {
+                    
                     resultsTable.clear().draw();
                     resultsTable.rows.add(json); // Add new data
                     resultsTable.columns.adjust().draw(); // Redraw the DataTable
@@ -356,6 +358,7 @@ $(document).ready(function() {
                         if(json === 0){
                             $('.searchError').removeClass('hidden');
                         } else {
+                        
                         
                             resultsTable.clear().draw();
                             resultsTable.rows.add(json); // Add new data
