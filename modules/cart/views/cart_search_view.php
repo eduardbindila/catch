@@ -68,7 +68,13 @@
                                         <div class="col-lg-12">
                                            <div class="input-group">
                                                 <div class="form-line">
-                                                    <input type="text" class="form-control" name="criteria" placeholder="Search Criteria" required>
+                                                    <input type="text" class="form-control" name="criteria" placeholder="Search by Id" >
+                                                </div>
+                                            </div>
+                                            <div class="input-group">OR</div>
+                                             <div class="input-group">
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" name="product_name" placeholder="Search by Name" >
                                                 </div>
                                             </div> 
                                         </div>

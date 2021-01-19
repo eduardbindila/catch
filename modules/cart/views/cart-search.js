@@ -305,6 +305,10 @@ $(document).ready(function() {
             
          })
 
+        $("#searchForm2 input").focus(function(){
+            $(this).parent().closest('.input-group').siblings().find('input').val('');
+        })
+
         $('#searchForm2').on('submit', function(e){
             e.preventDefault();
 
@@ -313,12 +317,11 @@ $(document).ready(function() {
                 url: "/ajax/searchProducts",
                 type: "post",
                 dataType: "json",
-                data: {"searchCriteria": formValues[0]['value'], }
+                data: {"searchCriteria": formValues[0]['value'], "product_name": formValues[1]['value'], }
            }).success(function(json){
                 if(json === 0){
                     $('.searchError').removeClass('hidden');
                 } else {
-                    
                     resultsTable.clear().draw();
                     resultsTable.rows.add(json); // Add new data
                     resultsTable.columns.adjust().draw(); // Redraw the DataTable

@@ -10,6 +10,8 @@ $isBulkSearch = isset($_POST['searchBulk']) && $_POST['searchBulk'] != "";
 
 $isCriteriakSearch = isset($_POST['searchCriteria']) && $_POST['searchCriteria'] != "";
 
+$isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != "";
+
 	$dummyArray = array();
 	$foundArray = array();
 
@@ -62,13 +64,18 @@ $isCriteriakSearch = isset($_POST['searchCriteria']) && $_POST['searchCriteria']
 		$searchResult = $dummyArray;
 		echo json_encode($searchResult);
 
-	}  elseif ($isCriteriakSearch) {
+	}  elseif ($isCriteriakSearch OR $isProductSearch) {
+		if($isCriteriakSearch) {
+			$whereClause = "id LIKE '%".$_POST['searchCriteria']."%'";
+		} else {
+			$whereClause = "product_name LIKE '%".$_POST['product_name']."%'";
+		}
 		$criteriaQuery = $QueryBuilder->select(
 				$conn,
 				$options = array(
 					"table" =>"products",
 					"columns" => "id, product_name,". $initial_price ."  as initial_price",
-					"where" => "id LIKE '%".$_POST['searchCriteria']."%'",
+					"where" => $whereClause,
 				)
 			);
 		echo json_encode($criteriaQuery);
