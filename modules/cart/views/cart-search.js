@@ -378,23 +378,23 @@ $(document).ready(function() {
             })
         });
 
-   // table.on( 'select', function ( e, dt, type, indexes ) {
-   //      var row = table.row( indexes ).data();
+   resultsTable.on( 'select', function ( e, dt, type, indexes ) {
+        var row = resultsTable.row( indexes ).data();
 
-   //      if ( row.from_db === 0 ) {
-   //          dt.row(indexes, { page: 'current' }).deselect();
-   //      }
+        if ( row.from_db === 0 ) {
+            dt.row(indexes, { page: 'current' }).deselect();
+        }
 
-   //  } );
+    } );
 
-   // table
-   //  .on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
+   resultsTable
+    .on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
         
 
-   //      if ( $(originalEvent.currentTarget).parent('tr').hasClass('danger') ) {
-   //          e.preventDefault();
-   //      }
-   //  } );
+        if ( $(originalEvent.currentTarget).parent('tr').hasClass('danger') ) {
+            e.preventDefault();
+        }
+    } );
 
 
     var projectsTable = $('.projects_table').DataTable({

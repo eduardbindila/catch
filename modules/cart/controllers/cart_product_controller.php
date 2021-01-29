@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$options = array(
 			"table" => 'products' ,
 			"columns" => "*",
-			"where" => "id = '".$productID."' AND is_temporary = ".$is_temporary
+			"where" => "id = '".$productID."'"
 		)
 	);
 

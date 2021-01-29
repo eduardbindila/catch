@@ -178,11 +178,9 @@ Class QueryBuilder{
 			$additionalWhere = '';
 		}
 
-		$query = "SELECT Distinct features.feature_name, features.id, feature_values.feature_value, feature_categories.feature_category_name FROM feature_values INNER JOIN product_features ON feature_values.id = product_features.feature_value_id INNER JOIN features ON features.id = product_features.feature_id INNER JOIN feature_categories ON feature_categories.id = features.feature_category_id WHERE product_features.product_id =".$productID.$additionalWhere.";";
+		$query = "SELECT Distinct features.feature_name, features.id, feature_values.feature_value, feature_categories.feature_category_name FROM feature_values INNER JOIN product_features ON feature_values.id = product_features.feature_value_id INNER JOIN features ON features.id = product_features.feature_id INNER JOIN feature_categories ON feature_categories.id = features.feature_category_id WHERE product_features.product_id ='".$productID."'".$additionalWhere.";";
 
 		$results = mysqli_query($conn, $query);
-
-		
 
 		if($results) {
 				$rows = array();
