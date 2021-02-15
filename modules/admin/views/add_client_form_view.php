@@ -29,10 +29,14 @@
             <input type="text" class="form-control" name="fiscal_code" placeholder="Fiscal Code" >
         </div>
     </div>
+     <div class="alert countryTypesSelectorError hidden bg-pink alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        Countries could not be retrieved. <b>Please contact the administrator</b>
+    </div>
     <div class="input-group">
-        <div class="form-line">
-            <input type="text" class="form-control" name="country" maxlength="3" placeholder="Country Code" >
-        </div>
+        <select class="form-control countryTypesSelector" required name="country">
+            <option value="">Select Country</option>
+        </select>
     </div>
     <div class="input-group">
         <div class="form-line">

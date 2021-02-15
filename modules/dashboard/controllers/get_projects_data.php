@@ -7,7 +7,7 @@ $conn = $QueryBuilder->dbConnection();
 
 $isLocked = 1;
 
-	$projectsQuery = $QueryBuilder->selectProjectsData($conn, $isLocked);
+	$projectsQuery = $QueryBuilder->selectProjectsData($conn, $isLocked, $_SESSION);
 
 
 	echo json_encode(utf8ize($projectsQuery));

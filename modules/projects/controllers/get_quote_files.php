@@ -13,6 +13,12 @@ if(isset($_POST['quote_id']))  {
 	$where = "`send_to_client` = 1 AND `is_sent` = 0";
 }
 
+if(isset($_SESSION['user_access']['admin'])) {
+	$restrictQuotesByProfile = "";
+} else {
+	$restrictQuotesByProfile = " AND `assignee_id` = ".$_SESSION['user_id'];
+}
+
 // var_dump($where);
 
 
@@ -20,9 +26,9 @@ if(isset($_POST['quote_id']))  {
 			$conn,
 			$options = array(
 				"table" => "quote_files",
-				"columns" => "quote_files.*, users.name, quote_file_types.name as file_type",
-				"innerJoin" => "users ON quote_files.user_id = users.id INNER JOIN quote_file_types on quote_files.file_type = quote_file_types.id",
-				"where" => $where
+				"columns" => "quote_files.*, users.name, quote_file_types.name as file_type, quotes.assignee_id",
+				"innerJoin" => "users ON quote_files.user_id = users.id INNER JOIN quote_file_types on quote_files.file_type = quote_file_types.id INNER JOIN quotes on quote_files.quote_id = quotes.id",
+				"where" => $where.$restrictQuotesByProfile
 			)
 		);
 

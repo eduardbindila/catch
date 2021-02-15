@@ -12,7 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$conn,
 		$options = array(
 			"table" => "users",
-			"columns" => "name, id, type_id, isClient",
+			"columns" => "name, id, type_id, isClient, country",
 			"where" => "username = '".$_POST['username']."' AND password = '".$_POST['password']."'"
 		)
 	);
@@ -25,6 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION['user_id'] = $query[0]['id'];
 		$_SESSION['user_type'] = $query[0]['type_id'];
 		$_SESSION['is_client'] = $query[0]['isClient'];
+		$_SESSION['country'] = $query[0]['country'];
 
 
 		if(isset($_SESSION['is_client']) && $_SESSION['is_client']) {
