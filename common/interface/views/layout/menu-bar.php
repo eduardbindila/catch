@@ -94,9 +94,14 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Products</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="/admin/countries">
+                                    <span>Countries</span>
+                                </a>
+                            </li>
                             <?php }?>
                              <li>
-                                <a href="/admin/clients">
+                                <a href="/clients">
                                     <span>Clients</span>
                                 </a>
                             </li>

@@ -57,28 +57,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 if(is_numeric($userId)) {
 
-	if(isset($_SESSION['user_access']['admin'])) {
-		$restrictQuotesByProfile = "";
-	} else {
-		$restrictQuotesByProfile = " AND `country` = ".$_SESSION['country'];
-	}
-
 	$conn = $QueryBuilder->dbConnection();
 
 	$userQuery = $QueryBuilder->select(
 		$conn,
 		$options = array(
-			"table" => "clients",
+			"table" => "regions",
 			"columns" => "*",
-			"where" => 'id = '.$userId.$restrictQuotesByProfile 
+			"where" => 'id = '.$userId
 		)
 	);
 
 	$QueryBuilder->closeConnection();
 
-	include($_MPATH['ADMIN_VIEWS'].'client_view.php');
+	include($_MPATH['ADMIN_VIEWS'].'regions_view.php');
 } else {
-	include($_MPATH['ADMIN_VIEWS'].'clients_view.php');
+	include($_MPATH['ADMIN_VIEWS'].'regions_view.php');
 }
 	
 ?>

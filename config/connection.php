@@ -197,7 +197,7 @@ Class QueryBuilder{
 		}		
 	}
 
-	function selectProjectsData($conn, $isLocked, $keyFeatures = array()){
+	function selectProjectsData($conn, $isLocked, $thisSession,  $keyFeatures = array() ){
 
 		if($keyFeatures) {
 			$keyFeaturesArray = $this->arrayToSql($keyFeatures, "'");
@@ -206,6 +206,12 @@ Class QueryBuilder{
 		}
 		else {
 			$additionalWhere = '';
+		}
+
+		if(isset($thisSession['user_access']['admin'])) {
+			$restrictQuotesByProfile = "";
+		} else {
+			$restrictQuotesByProfile = " where `assignee_id` = ".$thisSession['user_id'];
 		}
 
 		$query = "SELECT 
@@ -221,6 +227,7 @@ Class QueryBuilder{
 			       quotes.id,
 			       quotes.name,
 			       quotes.quote_status,
+			       quotes.assignee_id AS assignee_id,
 			       quotes.specifyer_designer,
 			       quotes.client_id,
 			       quotes.project_id,
@@ -242,9 +249,11 @@ Class QueryBuilder{
 			       LEFT JOIN specifyer_designer 
 			              ON quotes.specifyer_designer = specifyer_designer.id 
 			       LEFT JOIN clients 
-			              ON quotes.client_id = clients.id ";
+			              ON quotes.client_id = clients.id".$restrictQuotesByProfile;
 
 		$results = mysqli_query($conn, $query);
+
+		//echo $query;
 
 		
 
@@ -520,7 +529,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.95');
+		array_push($this->links, $href.'?v=0.1.951');
 	}
 
 
@@ -534,7 +543,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.95');
+		array_push($this->scripts, $src.'?v=0.1.951');
 	}
 
 

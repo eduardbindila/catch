@@ -41,6 +41,7 @@
                                         <th>Client Name</th>
                                         <th>Client Email</th>
                                         <th>Client Phone</th>
+                                        <th>Client Country</th>
                                     </thead>
                                 </table>
                             </div>

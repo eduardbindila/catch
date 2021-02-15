@@ -2,7 +2,7 @@
 $(document).ready(function() {
     var projectsTable = $('.projects_table').DataTable({
         "ajax": {
-            "url": "/ajax/getClients/",
+            "url": "/ajax/getCountries/",
             "dataSrc": ""
         },
     
@@ -17,64 +17,15 @@ $(document).ready(function() {
         "columns": [ 
             { 
                 "data": "id",
-                "render" : function(data, type, row) {
-                    return '<a href="client/'+data+'" target="_blank">'+data+'</a>'
-                  } 
             },
             { 
                 "data": "name"
-            }
-            ,
-            { 
-                "data": "email"
-            },
-            { 
-                "data": "phone"
-            },
-            { 
-                "data": "country"
             }
         ],
         "initComplete": function(settings, json) {
         }
 
     });
-
-    $.ajax({
-        url: "/ajax/getUsers",
-        type: "post",
-        dataType: "json",
-    }).done(function(json){
-       $.each(json, function (i, item) {
-            $('.userTypesSelector').append($('<option>', { 
-                value: item.id,
-                text : item.name
-            }));
-        });
-       if(isDisabled)
-        $("#userData select[name=user]").val(userDetails.user_id);
-
-    }).error(function(xhr, status, error) {
-        $('.userTypesSelectorError').removeClass('hidden');
-    })
-
-    $.ajax({
-        url: "/ajax/getCountries",
-        type: "post",
-        dataType: "json",
-    }).done(function(json){
-       $.each(json, function (i, item) {
-            $('.countryTypesSelector').append($('<option>', { 
-                value: item.id,
-                text : item.name
-            }));
-        });
-       if(isDisabled)
-        $("#userData select[name=country]").val(userDetails.country);
-
-    }).error(function(xhr, status, error) {
-        $('.countryTypesSelectorError').removeClass('hidden');
-    })
 
 
     if(insertResult) {
