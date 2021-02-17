@@ -4,10 +4,10 @@ require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 if(isset($_SESSION['user_access']['admin'])) {
-		$restrictQuotesByProfile = "`country` != 'NULL'";
-	} else {
-		$restrictQuotesByProfile = "`country` = '".$_SESSION['country']."'";
-	}
+	$restrictQuotesByProfile = "`user_id` != 'NULL'";
+} else {
+	$restrictQuotesByProfile = "`user_id` = '".$_SESSION['user_id']."'";
+}
 
 $conn = $QueryBuilder->dbConnection();
 

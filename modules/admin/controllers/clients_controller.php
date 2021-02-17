@@ -60,7 +60,7 @@ if(is_numeric($userId)) {
 	if(isset($_SESSION['user_access']['admin'])) {
 		$restrictQuotesByProfile = "";
 	} else {
-		$restrictQuotesByProfile = " AND `country` = ".$_SESSION['country'];
+		$restrictQuotesByProfile = " AND `user_id` = ".$_SESSION['user_id'];
 	}
 
 	$conn = $QueryBuilder->dbConnection();

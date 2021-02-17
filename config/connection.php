@@ -272,10 +272,15 @@ Class QueryBuilder{
 		}		
 	}
 
-	function selectQuotesData($conn, $client_id){
+	function selectQuotesData($conn, $client_id, $thisSession){
 
 		if($client_id == 0) {
-			$where = "";
+			
+			if(isset($_SESSION['user_access']['admin'])) {
+				$where = "";
+			} else {
+				$where = " WHERE `assignee_id` = ".$_SESSION['user_id'];
+			}
 		} else {
 			$where = "WHERE quotes.client_id =".$client_id." AND quotes.quote_status != 4 OR quotes.assignee_id=".$_SESSION['user_id'];
 		}

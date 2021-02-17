@@ -11,7 +11,7 @@ if(isset($_POST['client'])) {
 	$client_id = $_SESSION['is_client'];
 }
 
-	$projectsQuery = $QueryBuilder->selectQuotesData($conn, $client_id);
+	$projectsQuery = $QueryBuilder->selectQuotesData($conn, $client_id, $_SESSION);
 
 
 	echo json_encode(utf8ize($projectsQuery));
