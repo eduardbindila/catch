@@ -73,7 +73,7 @@
                             <div class="col-lg-12">
                                 <canvas id="myChart" width="400" height="50"></canvas>
                                  <canvas id="myFunnel" height="100"></canvas>
-                               <table class="projects_legacy table table-striped table-bordered table-hover dt-responsive display">
+                               <table class="projects_legacy table table-striped table-bordered table-hover dt-responsive display"> 
                                     <thead>
                                         <th>Project ID</th>
                                         <th>Name</th>
