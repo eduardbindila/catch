@@ -4,7 +4,7 @@ require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 if(isset($_SESSION['user_access']['admin'])) {
-	$restrictQuotesByProfile = "`user_id` != 'NULL'";
+	$restrictQuotesByProfile = "id > 0 ";
 } else {
 	$restrictQuotesByProfile = "`user_id` = '".$_SESSION['user_id']."'";
 }
