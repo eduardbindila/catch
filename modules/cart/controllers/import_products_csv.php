@@ -34,9 +34,9 @@ while(! feof($f_pointer)){
 	if($product[0] && $product[1] && $product[2]) {
 		$product_id = preg_replace("/[^a-zA-Z 0-9]+/", "",  trim($product[0]));
 
-		$product_name = str_replace("'", "", str_replace('"', "", htmlentities($product[1], ENT_IGNORE)));
+		$product_name = substr(str_replace("'", "", str_replace('"', "", htmlentities($product[1], ENT_IGNORE))), 0, 253).'...';
 
-		$initial_price = trim($product[2]);
+		$initial_price = number_format((float)trim($product[2]), 2, '.', '');
 
 		$manufacturer = preg_replace("/[^a-zA-Z 0-9]+/", "",   trim(substr($product[3], 0, 3)));
 
