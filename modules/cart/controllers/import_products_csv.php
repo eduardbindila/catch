@@ -70,7 +70,7 @@ $conn = $QueryBuilder->dbConnection();
                 "values" => $valuesArray,
                 "duplicateKey" => "ON DUPLICATE KEY UPDATE id=VALUES(id), product_name=VALUES(product_name), initial_price=VALUES(initial_price), manufacturer=VALUES(manufacturer);"
             ),
-            $multi = true,
+            $multi = true
             
         );
 

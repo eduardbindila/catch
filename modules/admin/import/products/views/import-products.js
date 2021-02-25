@@ -557,7 +557,7 @@ $(function() {
     var myDropzone = new Dropzone(".dropzone", {
         url: "/ajax/uploadFile",
         paramName: "file",
-        maxFilesize: 2,
+        maxFilesize: 5,
         maxFiles: 1,
         acceptedFiles: ".csv",
         autoProcessQueue: true,
