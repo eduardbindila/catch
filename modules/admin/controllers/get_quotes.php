@@ -5,7 +5,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 //var_dump($_SESSION['user_access']);
 
-if(isset($_SESSION['user_access']['admin'])) {
+if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 	$profitPercent = '';
 	$restrictQuotesByProfile = "";
 } else {

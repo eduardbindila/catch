@@ -13,7 +13,7 @@ if(isset($_POST['quote_id']))  {
 	$where = "`send_to_client` = 1 AND `is_sent` = 0";
 }
 
-if(isset($_SESSION['user_access']['admin'])) {
+if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 	$restrictQuotesByProfile = "";
 } else {
 	$restrictQuotesByProfile = " AND `assignee_id` = ".$_SESSION['user_id'];

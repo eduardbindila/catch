@@ -208,7 +208,7 @@ Class QueryBuilder{
 			$additionalWhere = '';
 		}
 
-		if(isset($thisSession['user_access']['admin'])) {
+		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 			$restrictQuotesByProfile = "";
 		} else {
 			$restrictQuotesByProfile = " where `assignee_id` = ".$thisSession['user_id'];
@@ -276,7 +276,7 @@ Class QueryBuilder{
 
 		if($client_id == 0) {
 			
-			if(isset($_SESSION['user_access']['admin'])) {
+			if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 				$where = "";
 			} else {
 				$where = " WHERE `assignee_id` = ".$_SESSION['user_id'];
@@ -427,7 +427,7 @@ Class QueryBuilder{
 
 		$result = $conn->query($query);
 
-		$this->logAction("insert", $table, $query, $result);
+		//$this->logAction("insert", $table, $query, $result);
 
 		if ($result === TRUE) {
 			if($conn->insert_id) {
