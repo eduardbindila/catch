@@ -11,33 +11,50 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
 
  $conn = $QueryBuilder->dbConnection();
 
-if(isset($_POST['sync_products']) && $_POST['sync_products']) {
-    $all_products = $QueryBuilder->select(
-        $conn,
-        $options = array(
-            "table" => 'import_products_list',
-            "columns" => "*",
-            "where" => 'imported=0 and inexistent=0'
-        ),
-        // $returnType = 'idAsArray'
-    );
+// if(isset($_POST['sync_products']) && $_POST['sync_products']) {
+//     $all_products = $QueryBuilder->select(
+//         $conn,
+//         $options = array(
+//             "table" => 'import_products_list',
+//             "columns" => "*",
+//             "where" => 'imported=0 and inexistent=0'
+//         ),
+//         // $returnType = 'idAsArray'
+//     );
 
-    $db_products = $QueryBuilder->select(
+//     $db_products = $QueryBuilder->select(
+//         $conn,
+//         $options = array(
+//             "table" => 'products',
+//             "columns" => "id"
+//         )
+//     );
+// }
+// else {
+//     $all_products = $_POST["all_products"];
+// }
+
+//COMMETED THE TOP TO ADD A NEW QUERY
+
+ $db_products = $QueryBuilder->select(
         $conn,
         $options = array(
             "table" => 'products',
-            "columns" => "id"
+            "columns" => "id",
+            "where" => "manufacturer='syl'",
         )
     );
-}
-else {
-    $all_products = $_POST["all_products"];
-}
+
+
+ $all_products = $db_products;
+
 
 
 //$all_products = array_slice($all_products,0,1);
 
-var_dump($all_products);
+// var_dump($db_products);
+
+// break;
 
 //Set Imported as true before sync. Should be commented
 
@@ -97,21 +114,21 @@ foreach ($all_products as $key => $productItem) {
     //var_dump($productItem);
  
     $html = file_get_contents($root.$productItem['id'].'/');
-    if(!$html)
-    {
-        echo 'asd';
-        $updateImportedProducts = $QueryBuilder->update(
-                $conn,
-                $options = array(
-                    "table" => "import_products_list",
-                    "set" => [
-                        "`inexistent`=1"
-                        ],
-                    "where" => "id ='".$productItem['id']."'"
-                )
-            );
-        continue;
-    }
+    // if(!$html)
+    // {
+    //     //echo 'asd';
+    //     $updateImportedProducts = $QueryBuilder->update(
+    //             $conn,
+    //             $options = array(
+    //                 "table" => "import_products_list",
+    //                 "set" => [
+    //                     "`inexistent`=1"
+    //                     ],
+    //                 "where" => "id ='".$productItem['id']."'"
+    //             )
+    //         );
+    //     continue;
+    // }
 
     libxml_use_internal_errors(true);
     $dom = new DOMDocument();
@@ -182,56 +199,59 @@ foreach ($all_products as $key => $productItem) {
                     $categoryId, 
                 ]);
 
-        var_dump($productInfo);
+        //var_dump(htmlspecialchars($product_description));
 
-        var_dump($categoryId);  
+        // var_dump($categoryId);  
 
-        var_dump(htmlspecialchars($product_title));
+        // var_dump(htmlspecialchars($product_title));
 
-        $productQuery = $QueryBuilder->insert(
+        $productQuery = $QueryBuilder->update(
             $conn,
             $options = array(
                 "table" => "products",
-                "keys" => ["id", "product_name", "product_description", "product_diagrams", "product_image", "parent_id"],
-                "values" => [
-                    $productItem['id'], 
-                    trim($product_title), 
-                    htmlspecialchars($product_description), 
-                    htmlspecialchars($product_infopanels), 
-                    $product_image, 
-                    $categoryId, 
-                ]
+                "set" =>  [
+                    "`product_description`='".addslashes(htmlspecialchars($product_description))."'",
+                    "`product_diagrams`='".addslashes(htmlspecialchars($product_infopanels))."'",
+                    "`product_image`='".$product_image."'", "`parent_id`='".$categoryId."'",
+                    "`last_updated_date` = '".strtotime("now")."'"
+                ],
+                "where" => "id='".$productItem['id']."'"
             )
         );
 
-        if($productQuery) {
-            $updateImportedProducts = $QueryBuilder->update(
-                $conn,
-                $options = array(
-                    "table" => "import_products_list",
-                    "set" => [
-                        "`imported`=1"
-                        ],
-                    "where" => "id ='".$productItem['id']."'"
-                )
-            );
-        } else {
-            echo $productItem['id']." has an issue";
 
-            $updateImportedProducts = $QueryBuilder->update(
-                $conn,
-                $options = array(
-                    "table" => "import_products_list",
-                    "set" => [
-                        "`hasIssue`=1"
-                        ],
-                    "where" => "id ='".$productItem['id']."'"
-                )
-            );
-            break;
+        //var_dump($productQuery);
+
+        // if($productQuery) {
+        //     $updateImportedProducts = $QueryBuilder->update(
+        //         $conn,
+        //         $options = array(
+        //             "table" => "import_products_list",
+        //             "set" => [
+        //                 "`imported`=1"
+        //                 ],
+        //             "where" => "id ='".$productItem['id']."'"
+        //         )
+        //     );
+        // } else {
+        //     echo $productItem['id']." has an issue";
+
+        //     $updateImportedProducts = $QueryBuilder->update(
+        //         $conn,
+        //         $options = array(
+        //             "table" => "import_products_list",
+        //             "set" => [
+        //                 "`hasIssue`=1"
+        //                 ],
+        //             "where" => "id ='".$productItem['id']."'"
+        //         )
+        //     );
+        //     break;
 
             
-        }
+        // }
+
+        //COMMENTED ABOVE AS WE DON'T NEED IT FOR DATA UPDATING
 
         foreach ($product_data as $key => $value) {
             
@@ -275,18 +295,18 @@ foreach ($all_products as $key => $productItem) {
 
                         $feature_value_name = trim($td[1]->textContent);
 
-                        // $featuresQuery = $QueryBuilder->insert(
-                        //     $conn,
-                        //     $options = array(
-                        //         "table" => "features",
-                        //         "keys" => ["id","feature_name", "feature_category_id"],
-                        //         "values" => [
-                        //             $_ScrapHelpers->sluggify($feature_name),
-                        //             $feature_name,
-                        //             $_ScrapHelpers->sluggify($feature_category_name) 
-                        //         ]
-                        //     )
-                        // );
+                        $featuresQuery = $QueryBuilder->insert(
+                            $conn,
+                            $options = array(
+                                "table" => "features",
+                                "keys" => ["id","feature_name", "feature_category_id"],
+                                "values" => [
+                                    $_ScrapHelpers->sluggify($feature_name),
+                                    $feature_name,
+                                    $_ScrapHelpers->sluggify($feature_category_name) 
+                                ]
+                            )
+                        );
 
                         $featureValues[$x] = array(
                             "feature_name" => $feature_name,
@@ -297,31 +317,31 @@ foreach ($all_products as $key => $productItem) {
 
 
 
-                        // $featureValuesQuery = $QueryBuilder->insert(
-                        //     $conn,
-                        //     $options = array(
-                        //         "table" => "feature_values",
-                        //         "keys" => ["id","feature_value"],
-                        //         "values" => [
-                        //             $_ScrapHelpers->sluggify($feature_value_name),
-                        //             $feature_value_name 
-                        //         ]
-                        //     )
-                        // );
+                        $featureValuesQuery = $QueryBuilder->insert(
+                            $conn,
+                            $options = array(
+                                "table" => "feature_values",
+                                "keys" => ["id","feature_value"],
+                                "values" => [
+                                    $_ScrapHelpers->sluggify($feature_value_name),
+                                    $feature_value_name 
+                                ]
+                            )
+                        );
 
 
-                        //  $productFeaturesQuery = $QueryBuilder->insert(
-                        //     $conn,
-                        //     $options = array(
-                        //         "table" => "product_features",
-                        //         "keys" => ["product_id","feature_value_id","feature_id"],
-                        //         "values" => [
-                        //             $productItem['id'],
-                        //             $_ScrapHelpers->sluggify($feature_value_name),
-                        //             $_ScrapHelpers->sluggify($feature_name)
-                        //         ]
-                        //     )
-                        // );
+                         $productFeaturesQuery = $QueryBuilder->insert(
+                            $conn,
+                            $options = array(
+                                "table" => "product_features",
+                                "keys" => ["product_id","feature_value_id","feature_id"],
+                                "values" => [
+                                    $productItem['id'],
+                                    $_ScrapHelpers->sluggify($feature_value_name),
+                                    $_ScrapHelpers->sluggify($feature_name)
+                                ]
+                            )
+                        );
                      }
 
                  //var_dump($featureValues);    

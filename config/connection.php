@@ -106,11 +106,11 @@ Class QueryBuilder{
 
 		$where = isset($options['where']) ? ' WHERE '.$options['where'] : "";
 
-		$innerJoin = isset($options['innerJoin']) ? 'INNER JOIN '.$options['innerJoin'] : "";
+		$innerJoin = isset($options['innerJoin']) ? ' INNER JOIN '.$options['innerJoin'] : "";
 
-		$limit = isset($options['limit']) ? 'LIMIT '.$options['limit'] : "";
+		$limit = isset($options['limit']) ? ' LIMIT '.$options['limit'] : "";
 
-		$offset = isset($options['offset']) ? 'OFFSET '.$options['offset'] : "";
+		$offset = isset($options['offset']) ? ' OFFSET '.$options['offset'] : "";
 
 		$orderBy = isset($options['orderBy']) ? ' Order BY '.$options['orderBy'] : "";
 
@@ -427,7 +427,7 @@ Class QueryBuilder{
 
 		$result = $conn->query($query);
 
-		//$this->logAction("insert", $table, $query, $result);
+		$this->logAction("insert", $table, $query, $result);
 
 		if ($result === TRUE) {
 			if($conn->insert_id) {

@@ -3,7 +3,7 @@ $(document).ready(function() {
 
 $('.sync-products').on('click', function(){
   $.ajax({
-      url: "/ajax/getProducts",
+      url: "/ajax/syncSylvaniaProducts",
         type: "post",
       dataType: "json",
       data: {"sync_products": true},
