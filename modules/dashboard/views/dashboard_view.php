@@ -27,6 +27,7 @@
                                         <th>Start Date</th>
                                         <th>Offer Date</th>
                                         <th>Project Value</th>
+                                        <th>Status</th>
                                         <th>Profit Percent</th>
                                         <th>Winning Chance</th>
                                     </thead>

@@ -346,6 +346,20 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "data": "quote_price"
                 },
                 { 
+                    "data": "status",
+                    "render" : function(data, type, row) {
+                        var dangerClass = '';
+
+                        if(row.quote_status == 5) {
+                            dangerClass="label label-danger"
+                        } else {
+                            dangerClass = "";
+                        }
+
+                        return '<div class="' + dangerClass + '">' + data + '</div>'
+                      } 
+                },
+                { 
                     "data": "profit_percent",
                     "render" : function(data, type, row) {
                         var dangerClass = '';
