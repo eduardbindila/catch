@@ -311,7 +311,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
               
             responsive: true,
             order: [2],
-            "columns": [ 
+            "columns": [
                 { 
                     "data": "project_id",
                     "render" : function(data, type, row) {
@@ -351,7 +351,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                         var dangerClass = '';
 
                         if(row.quote_status == 5) {
-                            dangerClass="label label-danger"
+                            dangerClass="label label-primary"
                         } else {
                             dangerClass = "";
                         }
@@ -364,7 +364,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "render" : function(data, type, row) {
                         var dangerClass = '';
 
-                        if(data < 30) {
+                        if(row.quote_status == 7 && data < 30) {
                             dangerClass="label label-danger"
                         }
 

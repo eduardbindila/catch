@@ -20,7 +20,6 @@ if(isset($_SESSION['user_type']) && $_SESSION['user_type'] == 7) {
 
 } elseif(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 
-	$profitPercent = '';
 	$restrictQuotesByProfile = "";
 
 	$where = "(".$profitPercent."`quote_status` = 7) OR (`quote_status` = 3 AND `client_approved` = 1)".$restrictQuotesByProfile;
