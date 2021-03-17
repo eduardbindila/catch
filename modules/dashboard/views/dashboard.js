@@ -315,7 +315,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 { 
                     "data": "project_id",
                     "render" : function(data, type, row) {
-                        return '<a href="/project/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
                       } 
                 },
                 { 
