@@ -69,7 +69,7 @@ $(document).ready(function() {
                 { 
                     "data": "project_id",
                     "render" : function(data, type, row) {
-                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                        return '<a href="/project/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
                       },
                 },
                 
