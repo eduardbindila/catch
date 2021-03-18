@@ -24,6 +24,10 @@ $valuesArray = array();
 foreach ($quoteItemsQuery as $key => $quoteItem) {
 	# code...
 
+	
+	$quoteItem['customer_description'] = addslashes($quoteItem['customer_description']);
+	$quoteItem['destination'] = addslashes($quoteItem['destination']);
+
 	array_splice($quoteItem, 0, 1);
 
 	$quoteItem['quote_id'] = $_POST['quote_id'];
