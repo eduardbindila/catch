@@ -274,7 +274,7 @@ Class QueryBuilder{
 
 	function selectQuotesData($conn, $client_id, $thisSession){
 
-		if($client_id == 0) {
+		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 3) {
 			
 			if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 				$where = "";
