@@ -57,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 if(is_numeric($userId)) {
 
-	if(isset($_SESSION['user_access']['admin'])) {
+	if(isset($_SESSION['user_access']['admin']) || isset($_SESSION['user_type']) && $_SESSION['user_type'] = 7) {
 		$restrictQuotesByProfile = "";
 	} else {
 		$restrictQuotesByProfile = " AND `user_id` = ".$_SESSION['user_id'];
