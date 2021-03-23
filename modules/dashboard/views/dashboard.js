@@ -314,15 +314,16 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
             "columns": [
                 { 
                     "data": "project_id",
-                    "render" : function(data, type, row) {
-                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
-                      } 
+                    
                 },
                 { 
                     "data": "project_name"
                 },
                 { 
                     "data": "id",
+                    "render" : function(data, type, row) {
+                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                      } 
                 },
                 { 
                     "data": "client_name",
