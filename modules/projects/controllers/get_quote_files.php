@@ -26,8 +26,8 @@ if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 			$conn,
 			$options = array(
 				"table" => "quote_files",
-				"columns" => "quote_files.*, users.name, quote_file_types.name as file_type, quotes.assignee_id",
-				"innerJoin" => "users ON quote_files.user_id = users.id INNER JOIN quote_file_types on quote_files.file_type = quote_file_types.id INNER JOIN quotes on quote_files.quote_id = quotes.id",
+				"columns" => "quote_files.*, projects.*, clients.*, clients.name as client_name, projects.id as project_id, users.name, quote_file_types.name as file_type, quotes.assignee_id",
+				"innerJoin" => "users ON quote_files.user_id = users.id INNER JOIN quote_file_types on quote_files.file_type = quote_file_types.id INNER JOIN quotes on quote_files.quote_id = quotes.id INNER JOIN projects on quotes.project_id = projects.id INNER JOIN clients on quotes.client_id = clients.id",
 				"where" => $where.$restrictQuotesByProfile
 			)
 		);

@@ -49,7 +49,10 @@
                             <div class="col-lg-12">
                                <table class="files_attention table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
+                                        <th>Project ID</th>
+                                        <th>Project Name</th>
                                         <th>Quote ID</th>
+                                        <th>Client Name</th>
                                         <th>File</th>
                                         <th>File Type</th>
                                         <th>Agent</th>

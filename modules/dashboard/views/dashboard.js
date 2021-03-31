@@ -398,10 +398,19 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
             order: [2],
             "columns": [ 
                 { 
+                    "data": "project_id",
+                },
+                { 
+                    "data": "project_name",
+                },
+                { 
                     "data": "quote_id",
                     "render" : function(data, type, row) {
-                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                        return '<a href="/project/'+row.project_id+'#linkQuote-'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
                       } 
+                },
+                { 
+                    "data": "client_name"
                 },
                 { 
                     "data": "file_path"
