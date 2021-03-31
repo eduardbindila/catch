@@ -35,6 +35,15 @@
             <option value="">Select project status</option>
         </select>
     </div>
+    <div class="alert categorySelectorError hidden bg-pink alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        Category could not be retrieved. <b>Please contact the administrator</b>
+    </div>
+    <div class="input-group">
+        <select class="form-control categorySelector" required name="project_category">
+            <option value="">Select category</option>
+        </select>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <button id="submitUserData" class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit client data</button>

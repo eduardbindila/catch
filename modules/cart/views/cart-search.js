@@ -54,6 +54,26 @@ $.ajax({
     $('.usersSelectorError').removeClass('hidden');
 })
 
+
+    $.ajax({
+        url: "/ajax/getProjectCategories",
+        type: "post",
+        dataType: "json",
+    }).done(function(json){
+       $.each(json, function (i, item) {
+            $('.categorySelector').append($('<option>', { 
+                value: item.id,
+                text : item.category_name
+            }));
+        });
+
+    }).error(function(xhr, status, error) {
+        $('.categorySelectorError').removeClass('hidden');
+    })
+
+
+
+
 $(document).ready(function() {
 
     var selectedProducts = [];

@@ -11,8 +11,8 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "products",
-			"keys" => ["id", "product_name", "initial_price"],
-			"values" => [$_POST['id'], $_POST['product_name'], $_POST['initial_price']]
+			"keys" => ["id", "product_name", "initial_price", "last_updated_date"],
+			"values" => [$_POST['id'], $_POST['product_name'], $_POST['initial_price'], strtotime("now")]
 		)
 	);
 

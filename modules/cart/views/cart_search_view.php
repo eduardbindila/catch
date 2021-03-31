@@ -188,6 +188,15 @@
                                                 <option value="">Select Owner</option>
                                             </select>
                                         </div>
+                                        <div class="alert categorySelectorError hidden bg-pink alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            Categories could not be retrieved. <b>Please contact the administrator</b>
+                                        </div>
+                                        <div class="input-group">
+                                            <select class="form-control categorySelector" required name="category_name">
+                                                <option value="">Select Category</option>
+                                            </select>
+                                        </div>
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <button class="btn btn-lg btn-block btn-success waves-effect" type="submit">Add New Project & Continue</button>

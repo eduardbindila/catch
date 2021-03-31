@@ -9,8 +9,8 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "projects",
-			"keys" => ["project_name", "project_description", "owner_id"],
-			"values" => [$_POST['project_name'], $_POST['project_description'], $_POST['owner_id']]
+			"keys" => ["project_name", "project_description", "owner_id", "category_id",],
+			"values" => [$_POST['project_name'], $_POST['project_description'], $_POST['owner_id'], $_POST['category_name']]
 		)
 	);
 

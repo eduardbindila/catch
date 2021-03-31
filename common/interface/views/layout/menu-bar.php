@@ -89,6 +89,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Designers</span>
                                 </a>
                             </li>
+                             <li>
+                                <a href="/admin/pcategories">
+                                    <span>Project Categories</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="/admin/products">
                                     <span>Products</span>

@@ -27,6 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['project_name'])){
 				"set" => [
 					"`project_name`='".$_POST['project_name']."'",
 					"`project_description`='".$_POST['project_description']."'",
+					"`category_id`='".$_POST['project_category']."'",
 					"`project_status`='".$_POST['project_status']."'",
 					"`owner_id`='".$_POST['owner_id']."'"
 					],
@@ -38,8 +39,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['project_name'])){
 			$conn,
 			$options = array(
 				"table" => "projects",
-				"keys" => ["project_name", "project_description", "project_status", "owner_id"],
-				"values" => [$_POST["project_name"], $_POST["project_description"], $_POST["project_status"], $_POST["owner_id"]]
+				"keys" => ["project_name", "project_description", "category_id", "project_status", "owner_id"],
+				"values" => [$_POST["project_name"], $_POST["project_description"], $_POST["category_id"], $_POST["project_status"], $_POST["owner_id"]]
 			),
 			$multi = false
 		);
