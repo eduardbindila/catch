@@ -9,6 +9,8 @@ $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatabl
 
 $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzone.css');
 
+$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/multiple-email-input/css/jquery.multi-emails.css');
+
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-validation/jquery.validate.js');
 
@@ -30,6 +32,8 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datata
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzone.js');
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/tinymce/tinymce.js');
+
+$LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/multiple-email-input/js/jquery.multi-emails.js');
 
 $LoadHTMLArtefacts->setScript($_WMPATH['PROJECTS_VIEWS'].'project.js');
 

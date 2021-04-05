@@ -11,7 +11,6 @@ $(document).ready(function() {
 
     $('.navbar-nav').append('<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"><span>GO TO This Project</span><span class="caret"></span></a><ul class="dropdown-menu quote-list"></ul></li>');
 
-
     $.ajax({
         url: "/ajax/getClients",
         type: "post",
@@ -2086,9 +2085,18 @@ console.log('a');
 }
 
 
+
 function callQuoteSend(quoteId, clientId, type)
 {
+
+    $("#clientEmail").multiEmails();
     $('#sendMail-modal').modal('show');
+    $('#sendQuoteForm').keydown(function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
     $('#sendQuoteForm').on('submit', function(e){
         e.preventDefault()
 
@@ -2096,8 +2104,6 @@ function callQuoteSend(quoteId, clientId, type)
             obj[item.name] = item.value;
             return obj;
         }, {});
-
-
 
 
         sendQuoteToClient(quoteId, clientId, data, type);
