@@ -2089,7 +2089,9 @@ console.log('a');
 function callQuoteSend(quoteId, clientId, type)
 {
 
-    $("#clientEmail").multiEmails();
+    $("#clientEmail").email_multiple({
+          reset: true
+      });
     $('#sendMail-modal').modal('show');
     $('#sendQuoteForm').keydown(function (e) {
         if (e.keyCode == 13) {
@@ -2100,13 +2102,17 @@ function callQuoteSend(quoteId, clientId, type)
     $('#sendQuoteForm').on('submit', function(e){
         e.preventDefault()
 
-        var data = $(this).serializeArray().reduce(function(obj, item) {
-            obj[item.name] = item.value;
-            return obj;
-        }, {});
+        if($("#clientEmail").val() == "") {
+             $('.enter-mail-id').css('border', '1px solid red')
+        } else {
+            var data = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
 
 
-        sendQuoteToClient(quoteId, clientId, data, type);
+            sendQuoteToClient(quoteId, clientId, data, type);
+            }
      })
 }
 

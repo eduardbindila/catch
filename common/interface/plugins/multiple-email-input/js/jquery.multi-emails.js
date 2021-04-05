@@ -1,94 +1,85 @@
+/**
+ * Created by Malal91 and Haziel
+ * Select multiple email by jquery.email_multiple
+ * **/
 
 (function($){
-    $.fn.multiEmails = function(options) {
-        var settings = $.extend({
-            color: "#343a40",
-            textColor: "#000000",
-            fontAwesome: false,
-        }, options );
 
-            var keynum;
-            var emailList = [];
-            var hiddenField = $(this);
-            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    $.fn.email_multiple = function(options) {
 
-            $(this)
-            .after(
-                '<input type="text" value="'+$(this).val()+'" class="'+hiddenField.attr("class")+'" id="email">'
-                ).hide().before(
-                    '<div class="email-format">Emails be must sepereted by a comma character (,)</div>'
-                    );
-    
-            function uniqueEmails(emails) {
-                let uniqueEmails = [];
-                $.each(emailList, function(i, el){
-                    if($.inArray(el, uniqueEmails) === -1) uniqueEmails.push(el);
+        let defaults = {
+            reset: false,
+            fill: false,
+            data: null
+        };
+
+        let settings = $.extend(defaults, options);
+        let email = "";
+
+        return this.each(function()
+        {
+
+
+            if(settings.reset){
+                $('.email-ids, .to-input, .all-mail, .enter-mail-id').remove()
+            }
+
+
+            $(this).after("<span class=\"to-input\"></span>\n" +
+                "<div class=\"all-mail\"></div>\n" +
+                "<input type=\"text\" name=\"email\" class=\"enter-mail-id form-control\" placeholder=\"Enter Email ...\" />");
+            let $orig = $(this);
+            let $element = $('.enter-mail-id');
+            $element.keydown(function (e) {
+                $element.css('border', '');
+                if (e.keyCode === 13 || e.keyCode === 32) {
+                    let getValue = $element.val();
+                    if (/^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/.test(getValue)){
+                        $('.all-mail').append('<span class="email-ids"><span class="emailAddress">' + getValue + '</span><span class="cancel-email">x</span></span>');
+                        $element.val('');
+
+                        email += getValue + ';'
+                    } else {
+                        $(element).css('border', '1px solid red')
+                    }
+                }
+
+                $orig.val(email.slice(0, -1))
+            });
+
+            $(document).on('click','.cancel-email',function(){
+                $(this).parent().remove();
+
+                var x =[];
+                $('.emailAddress').each(function(index, obj)
+                {
+                  x.push($(this).text());
                 });
-    
-                return uniqueEmails;
-            }
-            
-            $(document).on('keyup', '#email', function(e) {
-                $('.email-error').remove();
-                if(window.event){ // IE
-                    keynum = e.keyCode;
-                }
-                else if(e.which){ // Netscape/Firefox/Opera
-                    keynum = e.which;
-                }
-                if (keynum == 188){
-                    
-                    let email = $('#email').val().replace(',','');
-                    if (re.test(String(email).toLowerCase())){
-                        emailList.push(email);
-                        let displayList = '';
-                        
-                        uniqueEmails(emailList).forEach((value, ind) => {
-                            displayList += "<li style='background-color:"+hexToRgbA(settings.color)+";border-left: 3px solid"+settings.color+"'>"+value+"<span class='float-right remove' data-index="+ind+">"+((settings.fontAwesome === true)?'<i class=\"fas fa-times\"></i>':'X')+"</span></li>"
-                        } )
-                        let buildEmailList = '<div id="show-emails"><ul style="color:'+settings.textColor+'">'+displayList+'</ul></div>'
-                        if($("#show-emails").length){
-                            $("#show-emails").replaceWith(buildEmailList);
-                        }else{
-                            $('#email').parent().after(buildEmailList);
-                        }
-                        hiddenField.val(uniqueEmails(emailList));
-                        $('#email').val('');
-                    }else{
-                        let errrMessage = "<div class='email-error'>Please enter a valid email address</div>";
-                        if($("#show-emails").length){
-                            $("#show-emails").after(errrMessage);
-                        }else{
-                            $('#email').parent().after(errrMessage);
-                            console.log($('#email').parent());
-                        }
-                    }
-                }
-            })
 
-            $(document).on('click', ".remove", function () {
-                let index = $(this).data("index");
-                emailList.splice(index, 1);
-                let displayList = '';
-                uniqueEmails(emailList).forEach((value, ind) => {
-                    displayList += "<li style='background-color:"+hexToRgbA(settings.color)+";border-left: 3px solid"+settings.color+"'>"+value+"<span class='float-right remove' data-index="+ind+">"+((settings.fontAwesome === true)?'<i class=\"fas fa-times\"></i>':'X')+"</span></li>"
-                } )
-                hiddenField.val(uniqueEmails(emailList));
-                $("#show-emails ul").html(displayList);
-            })
+                $('#clientEmail').val(x)
 
-            function hexToRgbA(hex){
-                var c;
-                if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-                    c= hex.substring(1).split('');
-                    if(c.length== 3){
-                        c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+                console.log(x);
+
+            });
+
+            if(settings.data){
+                $.each(settings.data, function (x, y) {
+                    if (/^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/.test(y)){
+                        $('.all-mail').append('<span class="email-ids">' + y + '<span class="cancel-email">x</span></span>');
+                        $element.val('');
+
+                        email += y + ';'
+                    } else {
+                        $element.css('border', '1px solid red')
                     }
-                    c= '0x'+c.join('');
-                    return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.08)';
-                }
-                throw new Error('Bad Hex');
+                })
+
+                $orig.val(email.slice(0, -1))
             }
-     
+
+
+            return $orig.hide()
+        });
     };
-}(jQuery))
+
+})(jQuery);
