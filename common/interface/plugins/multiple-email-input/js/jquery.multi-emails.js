@@ -38,7 +38,7 @@
                         $('.all-mail').append('<span class="email-ids"><span class="emailAddress">' + getValue + '</span><span class="cancel-email">x</span></span>');
                         $element.val('');
 
-                        email += getValue + ';'
+                        email += getValue + ','
                     } else {
                         $(element).css('border', '1px solid red')
                     }
@@ -68,7 +68,7 @@
                         $('.all-mail').append('<span class="email-ids">' + y + '<span class="cancel-email">x</span></span>');
                         $element.val('');
 
-                        email += y + ';'
+                        email += y + ','
                     } else {
                         $element.css('border', '1px solid red')
                     }
