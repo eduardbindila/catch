@@ -55,9 +55,12 @@ $conn = $QueryBuilder->dbConnection();
 		if($_POST['quote_status'] == 4 && isset($_POST['profit_low']) && $_POST['profit_low']) {
 
 			if($_POST['afterApprove'] == 1) {
+				
 				$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
 			} else {
+
 				$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['profit-low'];
+			
 			}
 
 			
@@ -87,12 +90,28 @@ $conn = $QueryBuilder->dbConnection();
 
 	if(isset($_POST['jump_status']) && $_POST['jump_status'] == 0) {
 		//echo "jump";
-		$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
+
+
+
+		if($_POST['quote_status'] == 4 && isset($_POST['profit_low']) && $_POST['profit_low']) {
+
+			if($_POST['afterApprove'] == 1) {
+				
+				$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
+			} else {
+
+				$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['profit-low'];
+			
+			}
+
+			
+		} else {
+			$new_status = $quoteStatusAvailableSteps[$_POST['quote_status']]['next'];
+		}
+		
 	}
 
 //echo $new_status;
-
-
 
 	$projectsQuery = $QueryBuilder->update(
 		$conn,
