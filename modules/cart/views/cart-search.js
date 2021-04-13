@@ -228,7 +228,7 @@ $(document).ready(function() {
                             return Number(data).toFixed(2)
                         }
                         else {
-                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="initial_price" placeholder="Price" value="'+data+'" form="newProducts-'+meta.row+'" required></div></div><input class="submitProducts hidden"  form="newProducts-'+meta.row+'" type="submit">'
+                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="initial_price" placeholder="Price" value="'+Number(data).toFixed(2)+'" form="newProducts-'+meta.row+'" required></div></div><input class="submitProducts hidden"  form="newProducts-'+meta.row+'" type="submit">'
                           }
                          
                           

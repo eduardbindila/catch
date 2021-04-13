@@ -16,7 +16,11 @@ $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != ""
 	$foundArray = array();
 
 	if(isset($_SESSION['is_client']) && $_SESSION['is_client'] && $_SESSION['user_type'] == 3) {
-		$initial_price = "initial_price/". $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 
+		if($_SESSION['client_discount'] > 0) {
+			$initial_price = "initial_price/". $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 
+		} else {
+			$initial_price = "initial_price/". $Pricing->listPercent;
+		}
 	} else {
 		$initial_price = "initial_price";
 	}

@@ -65,7 +65,7 @@
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="number" class="form-control" min="0" max="60" name="discount" placeholder="Discount" >
+            <input type="number" class="form-control" min="0" max="72" name="discount" placeholder="Discount" >
         </div>
     </div>
     <div class="row">
