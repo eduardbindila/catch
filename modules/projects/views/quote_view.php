@@ -108,7 +108,9 @@ $quoteLockedClass = "";
 
                        //if (!($_SESSION['user_type'] == 3) && ($quote['quote_status'] == 4)) {
 
-                        if ($quote['quote_status'] <> 4 && $quote['quote_status'] <> 7 ) {
+                        // if ($quote['quote_status'] <> 4 && $quote['quote_status'] <> 7 ) {
+                        if ($quote['quote_status'] <> 7 ) {
+
                             ?>
                        
                         <li>
