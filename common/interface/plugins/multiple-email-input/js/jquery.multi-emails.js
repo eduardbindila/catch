@@ -34,13 +34,13 @@
                 $element.css('border', '');
                 if (e.keyCode === 13 || e.keyCode === 32) {
                     let getValue = $element.val();
-                    if (/^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/.test(getValue)){
+                    if (/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(getValue)){
                         $('.all-mail').append('<span class="email-ids"><span class="emailAddress">' + getValue + '</span><span class="cancel-email">x</span></span>');
                         $element.val('');
 
                         email += getValue + ','
                     } else {
-                        $(element).css('border', '1px solid red')
+                        $(this).css('border', '1px solid red')
                     }
                 }
 
