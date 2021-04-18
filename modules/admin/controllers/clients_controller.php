@@ -17,6 +17,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				"table" => "clients",
 				"set" => [
 					"`name`='".$_POST['name']."'",
+					"`poi`='".$_POST['poi']."'",
 					"`email`='".$_POST['email']."'",
 					"`user_id`='".$_POST['user']."'",
 					"`fiscal_code`='".$_POST['fiscal_code']."'",
@@ -37,8 +38,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$conn,
 			$options = array(
 				"table" => "clients",
-				"keys" => ["name", "user_id", "email", "fiscal_code", "country", "registry", "phone", "state", "address", "bank", "discount"],
-				"values" => [$_POST["name"], $_POST["user"], $_POST["email"], $_POST["fiscal_code"], $_POST["country"], $_POST["registry"], $_POST["phone"], $_POST["state"], $_POST["address"], $_POST["bank"], $_POST['discount']? $_POST['discount'] : '0.00']
+				"keys" => ["name", "poi", "user_id", "email", "fiscal_code", "country", "registry", "phone", "state", "address", "bank", "discount"],
+				"values" => [$_POST["name"],$_POST["poi"], $_POST["user"], $_POST["email"], $_POST["fiscal_code"], $_POST["country"], $_POST["registry"], $_POST["phone"], $_POST["state"], $_POST["address"], $_POST["bank"], $_POST['discount']? $_POST['discount'] : '0.00']
 			),
 			$multi = false
 		);

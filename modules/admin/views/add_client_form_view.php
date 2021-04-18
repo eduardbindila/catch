@@ -7,6 +7,11 @@
     </div>
     <div class="input-group">
         <div class="form-line">
+            <input type="text" class="form-control" name="poi" placeholder="Person of Contact" >
+        </div>
+    </div>
+    <div class="input-group">
+        <div class="form-line">
             <input type="email" class="form-control" name="email" placeholder="Email address" >
         </div>
     </div>

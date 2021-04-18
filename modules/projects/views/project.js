@@ -375,7 +375,7 @@ $(document).ready(function() {
                                         {
                                             width: '80%',
                                             style: "bold",
-                                            text: '\nICATCH DESIGN SRL\nCommercial Offer No. ' + val['id'] + ' / ' + today,
+                                            text: '\nICATCH DESIGN SRL\nCommercial Offer No. ' + val['id'] + ' / ' +val['offer_date'].split('-').reverse().join('-')+'\nGenerated Date: '+today,
                                             
                                         },
                                         {
@@ -2201,3 +2201,4 @@ function getProfitLow(profitLowValues) {
         return 0;
     }
 } 
+

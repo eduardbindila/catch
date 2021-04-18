@@ -1,5 +1,6 @@
 
 $(document).ready(function() {
+
     var projectsTable = $('.projects_table').DataTable({
         "ajax": {
             "url": "/ajax/getClients/",
@@ -76,17 +77,20 @@ $(document).ready(function() {
         $('.countryTypesSelectorError').removeClass('hidden');
     })
 
-
     if(insertResult) {
         $('.addUserSuccess').removeClass('hidden')
     } else if(insertResult == 0) {
         $('.addUserError').removeClass('hidden')
     }
 
+
+
     if(isDisabled) {
+
         $('#userData').find('input, textarea, button, select').attr('disabled','disabled');
         userDetails = userDetails[0];
         $("#userData input[name=name]").val(userDetails.name);
+        $("#userData input[name=poi]").val(userDetails.poi);
         $("#userData input[name=fiscal_code]").val(userDetails.fiscal_code);
         $("#userData input[name=email]").val(userDetails.email);
         $("#userData input[name=phone]").val(userDetails.phone);
