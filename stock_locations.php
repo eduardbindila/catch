@@ -1,16 +1,18 @@
-<?php
-
+<?php 
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-if(!isset($projectID)) {
-	$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/sweetalert/sweetalert.css');
+//HTML Artefacts
+
+$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/sweetalert/sweetalert.css');
 $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css');
-//$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/bootstrap-select/css/bootstrap-select.css');
+
+$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzone.css');
 
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-validation/jquery.validate.js');
-	$LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/bootstrap-notify/bootstrap-notify.js');
+
+$LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/bootstrap-notify/bootstrap-notify.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/sweetalert/sweetalert.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/jquery.dataTables.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js');
@@ -23,13 +25,27 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datata
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/buttons.print.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.rowGroup.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.select.min.js');
-}
+
+$LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzone.js');
+
+$LoadHTMLArtefacts->setScript($_WMPATH['ADMIN_VIEWS'].'stock_locations.js');
+
+
+include($_PATH['COMMON_LAYOUT'].'head.php');
+include($_PATH['COMMON_LAYOUT'].'menu-bar.php');
+
+$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+$host = "http://{$_SERVER['HTTP_HOST']}";
+
+$userId = basename($actual_link);
+
+include($_MPATH['ADMIN_CONTROLLERS'].'stock_locations_controller.php');
+
+
+include($_PATH['COMMON_LAYOUT'].'footer.php');
 
 
 
-
-$LoadHTMLArtefacts->setScript($_WMPATH['CART_VIEWS'].'cart-search.js');
-
-include($_MPATH['CART_VIEWS'].'cart_search_view.php');
 
 ?>

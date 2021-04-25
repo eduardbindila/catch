@@ -99,6 +99,16 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Products</span>
                                 </a>
                             </li>
+                             <li>
+                                <a href="/admin/stocks">
+                                    <span>Stocks</span>
+                                </a>
+                            </li>
+                             <li>
+                                <a href="/admin/stock_locations">
+                                    <span>Stock Locations</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="/admin/countries">
                                     <span>Countries</span>

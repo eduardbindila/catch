@@ -465,8 +465,6 @@ $(document).ready(function() {
                                 var priceAfterExtraDiscount = 0;
                                 for (var row = 1; row < lastRow; row++) {
 
-                                    
-
                                     var productId = doc.content[1].table.body[row][3];
 
                                     imageBase = doc.content[1].table.body[row][1].text;
