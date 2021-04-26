@@ -105,28 +105,31 @@ $(document).ready(function() {
 
                 },
                 { 
+                    "data": "stock_id",
+                    className: "stock_id",
+                      "render" : function(data, type, row, meta) {
+                        
+                            return '<input class="form-control" form="newProducts-'+meta.row+'" data-type="id" name="stock_id" placeholder="Add an Id" value="'+data+'" type="hidden">'+data;
+                      },
+                      "visible": !$('.results-table').hasClass("viewAll")
+
+                },
+                { 
                     "data": "id",
                     className: "product_id",
                       "render" : function(data, type, row, meta) {
-                        if(row.from_db) {
+                        
                             return '<form id="newProducts-'+meta.row+'" class="newProduct" method="post" action="" enctype="multipart/form-data"></form><input class="form-control" form="newProducts-'+meta.row+'" data-type="id" name="id" placeholder="Add an Id" value="'+data+'" type="hidden">'+data;
-                        }
-                        else {
-                            return '<form id="newProducts-'+meta.row+'" class="newProduct" method="post" action="" enctype="multipart/form-data"></form><div class="form-group"><div class="form-line"><input class="form-control" form="newProducts-'+meta.row+'" data-type="id" name="id" placeholder="Add an Id" value="'+data+'" required></div></div>'
-                          }
-                    }
+                      }
 
                 },
                 { 
                     "data": "product_name",
                     className: "product_name",
                     "render" : function(data, type, row, meta) {
-                        if(row.from_db) {
+                       
                             return data;
-                        }
-                        else {
-                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="product_name" placeholder="Add a Name" value="'+data+'" form="newProducts-'+meta.row+'" required></div></div>'
-                          }
+                        
                     }
 
                 },
@@ -135,23 +138,19 @@ $(document).ready(function() {
                     className: "initial_price",
                     "render" : function(data, type, row, meta) {
 
-                        if(row.from_db) {
+                        
                             return Number(data).toFixed(2)
-                        }
-                        else {
-                            return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="initial_price" placeholder="Price" value="'+Number(data).toFixed(2)+'" form="newProducts-'+meta.row+'" required></div></div><input class="submitProducts hidden"  form="newProducts-'+meta.row+'" type="submit">'
-                          }
-                         
+                       
                           
                       }
 
                 },
                 { 
-                    "data": "stock_quantity",
-                    className: "stock_quantity",
+                    "data": "quantity",
+                    className: "quantity",
                     "render" : function(data, type, row, meta) {
                        
-                            return '<div class="form-group"><div class="form-line"><input  class="form-control" data-type="id" name="stock_quantity" placeholder="Add quantity" type="number" form="newProducts-'+meta.row+'" required></div></div>'
+                            return '<div class="form-group"><div class="form-line"><input  class="form-control" data-type="id" name="stock_quantity" value="'+data+'" placeholder="Add quantity" type="number" form="newProducts-'+meta.row+'" required></div></div>'
                     }
 
                 },
@@ -171,10 +170,21 @@ $(document).ready(function() {
 
                         
                        
-                            return '<div class="form-group"><div class="form-line"><select class="form-control stockLocationSelector" required name="location" form="newProducts-'+meta.row+'"><option value="">Select Stock Location</option>' + options + '</select></div></div>'
+                            return '<div class="form-group"><div class="form-line"><select class="form-control stockLocationSelector" required name="location" form="newProducts-'+meta.row+'"><option>Select Stock Location</option>' + options + '</select></div></div>'
                     }
 
                 },
+                {
+                    "data": null,
+                     className: "existing_stocks",
+                    "render" : function(data, type, row, meta) {
+
+
+                       
+                            return ''
+                    }
+
+                }
             ],
             columnDefs : [
                 {
@@ -193,11 +203,61 @@ $(document).ready(function() {
               },
 
               "createdRow": function( row, data, dataIndex ) {
-                //console.log(row, data['from_db'], dataIndex);
+                //console.log(row, data['from_db'], dataIndex,);
                 if ( data['from_db'] === 0 ) {
                   $(row).hide();
                 }
 
+                $.ajax({
+                    url: "/ajax/getProductStocks",
+                    type: "post",
+                    dataType: "json",
+                    data: {"product_id":data['id'] }
+                }).success(function(json){
+                    var html, defaultValue = "";
+
+                    if($('.results-table').hasClass('viewAll')) {
+                        html = data['row_name']+data['column_name'];
+                         $('td', row).eq(7).html('<button class="btn btn-danger waves-effect removeFromLocation" data-stock-product="'+data['stock_id']+'" data-stock-location="'+data['location_id']+'">x</button>');
+                         $('td', row).eq(6).find("select").html("");
+                         $('td', row).eq(6).find("select").append('<option value="'+data.location_id+'" selected>'+data.row_name+data.column_name+'</option>');
+
+                         $('.removeFromLocation').on('click', function(){
+
+                            var stock_id = $(this).attr('data-stock-product');
+                            var location_id = $(this).attr('data-stock-location');
+                           
+                             $.ajax({
+                                url: "/ajax/removeFromStockLocation",
+                                type: "post",
+                                dataType: "json",
+                                data:{"stock_id":stock_id, "location_id": location_id}
+                                
+                           }).success(function(json){
+                                if(json === 0){
+                                    $('.searchError').removeClass('hidden');
+                                } else {
+                                   location.reload();
+                                }
+                            
+                            }).error(function(xhr, status, error) {
+                               $('.searchError').removeClass('hidden');
+                            })
+                            
+                        });
+
+                    } else {
+                        html = "<ul class='list-group'>";
+
+                        $.each(json, function (i, item) {
+                               
+                            html = html + "<li class='list-group-item'>" + item.row_name+item.column_name + " - " + item.quantity + "pcs<li>"
+                         });
+
+                        html = html + "</ul>"
+                        $('td', row).eq(7).html(html);
+                    }                    
+                });      
               }
 
         });
@@ -206,6 +266,8 @@ $(document).ready(function() {
 
         $('#searchForm').on('submit', function(e){
             e.preventDefault();
+
+            $('.results-table').removeClass('viewAll');
 
             var formValues = $(this).serializeArray();
             //console.log($(this).attr('id'));
@@ -271,17 +333,27 @@ $(document).ready(function() {
            
            var newProduct = $(this).serializeArray();
 
-           console.log(newProduct);
+           //console.log(newProduct);
 
            var tr = $(this).parents('tr');
 
            //console.log(tr);
 
+           var method, dataParams = "";
+
+           if($('.results-table').hasClass('viewAll')) {
+
+                method = "updateStockQuantity";
+
+            } else {
+                method = "addStock";
+            }
+
            $.ajax({
-                url: "/ajax/addStock",
+                url: "/ajax/"+method,
                 type: "post",
                 dataType: "json",
-                data: {"id": newProduct[0]['value'], "quantity": newProduct[1]['value'], "location_id": newProduct[2]['value'] }
+                data: {"stock_id": newProduct[0]['value'],"id": newProduct[1]['value'], "quantity": newProduct[2]['value'], "location_id": newProduct[3]['value'] }
            }).success(function(json){
                 if(json === 0){
                     tr.removeClass('warning').addClass('danger');
@@ -312,6 +384,31 @@ $(document).ready(function() {
                tr.removeClass('warning').addClass('danger');
             })
         });
+
+        $('.viewAllStocks').on('click', function(){
+            
+             $.ajax({
+                url: "/ajax/getAllStocks",
+                type: "post",
+                dataType: "json",
+                
+           }).success(function(json){
+                if(json === 0){
+                    $('.searchError').removeClass('hidden');
+                } else {
+                    resultsTable.clear().draw();
+                    resultsTable.rows.add(json); // Add new data
+                    resultsTable.columns.adjust().draw(); // Redraw the DataTable
+                    $('.results-table').addClass('viewAll');
+                }
+            
+            }).error(function(xhr, status, error) {
+               $('.searchError').removeClass('hidden');
+            })
+            
+        });
+
+        
 
    resultsTable.on( 'select', function ( e, dt, type, indexes ) {
         var row = resultsTable.row( indexes ).data();

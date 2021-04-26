@@ -73,7 +73,13 @@
                 <div class="card">
                     <div class="header">
                         <h2>Search Result</h2>
-
+                        <ul class="header-dropdown m-r-0">
+                            <li>
+                                <button class="btn btn-success waves-effect viewAllStocks" >
+                                    View All Stocks
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                     <div class="body">
                             <div class="alert alert-info alert-dismissible" role="alert">
@@ -83,11 +89,13 @@
                             <table class="results-table table table-striped table-bordered table-hover dt-responsive display" id="results-table">
                                 <thead>
                                     <th>Image</th>
+                                    <th>Stock ID</th>
                                     <th>Product ID</th>
                                     <th>Product Name</th>
                                      <th>Price</th>
                                      <th>Stock Quantity</th>
                                      <th>Stock Location</th>
+                                     <th>Existing Stock</th>
 
                                 </thead>
                             </table>
