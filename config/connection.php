@@ -381,6 +381,7 @@ Class QueryBuilder{
 
 		$query = 'DELETE from '.$table.' WHERE '.$column.' IN ('.$in.') '.$and;
 
+		//echo $query;
 		
 
 		$this->logAction("delete", $table, $query, "");

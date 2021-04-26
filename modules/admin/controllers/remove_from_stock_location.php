@@ -10,10 +10,9 @@ $conn = $QueryBuilder->dbConnection();
 	$query = $QueryBuilder->delete(
 		$conn,
 		$options = array(
-			"table" => "stoc_products",
+			"table" => "stock_products",
 			"column" => "id",
-			"in" => [$_POST['stock_id']]
-			
+			"in" => [$_POST['stock_id']]	
 		)
 	);
 
