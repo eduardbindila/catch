@@ -75,6 +75,7 @@ $(document).ready(function() {
             //console.log(searchResult);
 
         var resultsTable = $('#results-table').DataTable({
+            retrieve: true,
             dom: 'Blfrtip',
             data: [],
             pageLength: 5000,
@@ -89,6 +90,7 @@ $(document).ready(function() {
                     "data": "product_image",
                     className: "product_image",
                     "render" : function(data, type, row) {
+
                          if(!data){
                             return '<img src="http://ideyafoana.com/api/public/storage/photo/no-image.png" class="table-image" />'
                             
@@ -355,6 +357,7 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {"stock_id": newProduct[0]['value'],"id": newProduct[1]['value'], "quantity": newProduct[2]['value'], "location_id": newProduct[3]['value'] }
            }).success(function(json){
+            //console.log('here');
                 if(json === 0){
                     tr.removeClass('warning').addClass('danger');
                 } else {
@@ -365,13 +368,25 @@ $(document).ready(function() {
                         type: "post",
                         dataType: "json",
                     }).done(function(json){
-                         $('.stockLocationSelector').html("");
-                       $.each(json, function (i, item) {
-                             $('.stockLocationSelector').append($('<option>', { 
-                                value: item.id,
-                                text : item.row_name+item.column_name
-                            }));
-                        });
+
+                        thisSelector = tr.find('.stockLocationSelector');
+                        thisValue = thisSelector.val();
+                        thisText = thisSelector.find("option:selected").text();
+
+                         if(!$('.results-table').hasClass('viewAll')) {
+
+                            $('.stockLocationSelector').html("");
+                            $.each(json, function (i, item) {
+                                 $('.stockLocationSelector').append($('<option>', { 
+                                    value: item.id,
+                                    text : item.row_name+item.column_name
+                                }));
+                            });
+
+                            thisSelector.append('<option val="'+thisValue+'" selected>'+thisText+'</')
+                        }
+
+
 
                     }).error(function(xhr, status, error) {
                         $('.categorySelectorError').removeClass('hidden');

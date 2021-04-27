@@ -63,6 +63,29 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                         </ul>
                     </li>
                     <?php }?>
+                    <li class="dropdown">
+                         <?php 
+                            if(isset($_SESSION['user_access']['logistics'])) 
+                            {
+                        ?>
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="material-icons">settings</i>
+                            <span>Logistics</span><span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/admin/stocks">
+                                    <span>Stocks</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/admin/stock_locations">
+                                    <span>Stock Locations</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php }?>
 
                      <?php 
                         if(isset($_SESSION['user_access']['sales-grid'])) 
@@ -97,16 +120,6 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                             <li>
                                 <a href="/admin/products">
                                     <span>Products</span>
-                                </a>
-                            </li>
-                             <li>
-                                <a href="/admin/stocks">
-                                    <span>Stocks</span>
-                                </a>
-                            </li>
-                             <li>
-                                <a href="/admin/stock_locations">
-                                    <span>Stock Locations</span>
                                 </a>
                             </li>
                             <li>

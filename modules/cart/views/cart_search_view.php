@@ -119,6 +119,7 @@
                                     <th>Product ID</th>
                                     <th>Product Name</th>
                                      <th>Price</th>
+                                    <th>Existing Stock</th>
 
                                 </thead>
                             </table>

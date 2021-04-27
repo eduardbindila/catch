@@ -234,6 +234,18 @@ $(document).ready(function() {
                           
                       }
 
+                },
+                {
+                    "data": null,
+                     className: "existing_stocks",
+                    "render" : function(data, type, row, meta) {
+
+
+                       
+                            return ''
+                    },
+                    "visible": iss
+
                 }
             ],
             columnDefs : [
@@ -286,6 +298,26 @@ $(document).ready(function() {
                 if ( data['from_db'] === 0 ) {
                   $(row).addClass( 'warning' );
                 }
+
+                
+
+                 $.ajax({
+                    url: "/ajax/getProductStocks",
+                    type: "post",
+                    dataType: "json",
+                    data: {"product_id":data['id'] }
+                }).success(function(json){
+                    html = "<ul class='list-group'>";
+
+                $.each(json, function (i, item) {
+                       
+                    html = html + "<li class='list-group-item'>" + item.row_name+item.column_name + " - " + item.quantity + "pcs<li>"
+                 });
+
+                html = html + "</ul>"
+                $('td', row).eq(5).html(html);
+                                    
+                });      
               }
 
         });
