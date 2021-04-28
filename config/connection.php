@@ -359,7 +359,7 @@ Class QueryBuilder{
 
 		$query = 'UPDATE '.$table.' SET '.$set.' '.$where;
 
-		//echo $query;
+		//=echo $query;
 
 		$this->logAction("update", $table, $query, "");
 
@@ -535,7 +535,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.9622');
+		array_push($this->links, $href.'?v=0.1.963');
 	}
 
 
@@ -549,7 +549,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.9622');
+		array_push($this->scripts, $src.'?v=0.1.963');
 	}
 
 

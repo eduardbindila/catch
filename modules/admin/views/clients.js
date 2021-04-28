@@ -1,12 +1,14 @@
 
 $(document).ready(function() {
 
+    selectedClients = [];
+
     var projectsTable = $('.projects_table').DataTable({
         "ajax": {
-            "url": "/ajax/getClients/",
+            "url": "/ajax/getAllClients/",
             "dataSrc": ""
         },
-    
+        dom: 'Blfrtip',
         pageLength: 100,
             "paging":   true,
             "ordering": true,
@@ -14,8 +16,58 @@ $(document).ready(function() {
         rowId: 'category_slug',
           
         responsive: true,
-        order: [1, 'asc'],
-        "columns": [ 
+        buttons: [
+        {
+            extend: 'selectAll',
+            className: 'btn btn-lg btn-primary waves-effect',
+            action: function () {
+                    var count = projectsTable.rows( { search: 'applied' } ).count();
+                    projectsTable.rows({ search: 'applied' }).select();
+                    console.log(count);
+ 
+                    //events.prepend( '<div>'+count+' row(s) selected</div>' );
+                }
+        },
+        {
+            extend: 'selectNone',
+            className: 'btn btn-lg btn-primary waves-effect',
+        },
+         {
+            extend: 'selected',
+            className: 'deactivateClients btn btn-lg btn-success waves-effect',
+            text: 'Deactivate clients',
+            action: function ( e, dt, button, config ) {
+
+                var selection = dt.rows( { selected: true } ).data();
+                var i;
+                for ( i = 0; i < selection.length; i++) {
+                    selectedClients.push(selection[i].id);
+                }
+
+                updateClients(selectedClients, 0);
+            },
+        },
+        {
+            extend: 'selected',
+            className: 'activateClients btn btn-lg btn-success waves-effect',
+            text: 'Activate clients',
+            action: function ( e, dt, button, config ) {
+
+                var selection = dt.rows( { selected: true } ).data();
+                var i;
+                for ( i = 0; i < selection.length; i++) {
+                    selectedClients.push(selection[i].id);
+                }
+
+                updateClients(selectedClients, 1);
+            }
+        }],
+        order: [2, 'asc'],
+        "columns": [
+            { 
+                "data": null, 
+                defaultContent: '' 
+            }, 
             { 
                 "data": "id",
                 "render" : function(data, type, row) {
@@ -34,7 +86,27 @@ $(document).ready(function() {
             },
             { 
                 "data": "country"
+            },
+            { 
+                "data": "active",
+                 "render" : function(data, type, row) {
+                    if(data == 1)
+                        return 'Yes'
+                    else 
+                        return "No"
+                  } 
             }
+        ],
+        select: {
+            style:    'multi',
+            selector: 'td:first-child'
+        },
+        columnDefs : [
+            {
+                orderable : false,
+                className : 'select-checkbox',
+                targets : 0
+            },
         ],
         "initComplete": function(settings, json) {
         }
@@ -113,3 +185,22 @@ $(document).ready(function() {
     })
 
 });
+
+
+function updateClients(clientsList, action){
+    console.log(clientsList, action)
+
+    $.ajax({
+        url: "/ajax/updateClientsActive",
+        type: "post",
+        dataType: "json",
+        data: {"clients_list": clientsList, "value": action}
+    }).done(function(json){
+       location.reload();
+
+    }).error(function(xhr, status, error) {
+        $('.addUserError').removeClass('hidden')
+    })
+
+    
+}

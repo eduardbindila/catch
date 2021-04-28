@@ -51,6 +51,8 @@ $(document).ready(function() {
                     data: {'user_type': typeId}
                }).success(function(json){
                 console.log(json)
+
+                $('#accessElements').find('input').prop('checked', false);
                 
                   for(el in json) {
                     var val = json[el];

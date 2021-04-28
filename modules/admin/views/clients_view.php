@@ -37,11 +37,13 @@
                                 </div>
                                <table class="projects_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
+                                        <th></th>
                                         <th>Client ID</th>
                                         <th>Client Name</th>
                                         <th>Client Email</th>
                                         <th>Client Phone</th>
                                         <th>Client Country</th>
+                                        <th>Is Active</th>
                                     </thead>
                                 </table>
                             </div>
