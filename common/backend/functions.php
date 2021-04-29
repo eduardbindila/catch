@@ -63,13 +63,13 @@ if(!isset($_SESSION['user_id'])){
 	$QueryBuilder->closeConnection();
 }
 
-if($_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote" && $_subSectionName !== "getQuoteFiles" && $_sectionName !== 'download') {
+if($_sectionName !== "cron" && $_sectionName !== "offer" &&  $_SESSION['name'] == "Visitor" && $_subSectionName !== "login" && $_subSectionName !== "getRejectionReason" && $_subSectionName !== "updateQuote" && $_subSectionName !== "confirmQuote" && $_subSectionName !== "getQuoteFiles" && $_sectionName !== 'download') {
 	$SessionState->redirectLogin();
 
 }
 
 
-if($_sectionName !== "offer" &&  $_SESSION['user_type'] == 4 && $_sectionName !== 'login' && $_sectionName !== 'ajax' && $_sectionName !== 'download') {
+if($_sectionName !== "cron" && $_sectionName !== "offer" &&  $_SESSION['user_type'] == 4 && $_sectionName !== 'login' && $_sectionName !== 'ajax' && $_sectionName !== 'download') {
 	$SessionState->redirectLogin();
 }
 
