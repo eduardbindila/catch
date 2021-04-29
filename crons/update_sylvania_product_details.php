@@ -67,9 +67,9 @@ foreach ($productQuery as $key => $value) {
 
     $html = file_get_contents($root.$key.'/');
 
-    $crawling_status = strpos($http_response_header[0], "200") ? 1 : 0;
+    $crawling_status = strpos($http_response_header[0], "200") ? 1 : $http_response_header[0];
 
-    //echo $crawling_status;
+    // echo $http_response_header[0];
 
     if($crawling_status == 1) {
 
@@ -158,7 +158,7 @@ foreach ($productQuery as $key => $value) {
          
     }
 
-    //echo $key.' - '.$crawling_status;
+    echo $key.' - '.$crawling_status;
 }
 
 
