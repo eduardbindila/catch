@@ -50,7 +50,7 @@ $(document).ready(function() {
                 "data": "initial_price"
             },
             { 
-                "data": "last_crawled_date"
+                "data": "last_crawled_status"
             }
         ],
         "initComplete": function(settings, json) {
