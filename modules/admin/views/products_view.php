@@ -35,7 +35,6 @@
                                         <th>Product Manufacturer</th>
                                         <th>Temp</th>
                                         <th>Initial Price</th>
-                                        <th>Last Crawled Status</th>
                                         <th>Last Crawled Date</th>
 
                                     </thead>
