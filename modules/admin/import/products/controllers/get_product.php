@@ -34,7 +34,7 @@ CLASS ScrapHelpers {
 
 
 
-$html = file_get_contents($root.$_POST['product_id'].'/');
+$html = file_get_contents($root.$_GET['product_id'].'/');
 libxml_use_internal_errors(true);
 $dom = new DOMDocument();
 $dom->loadHTML($html);
@@ -60,12 +60,12 @@ $product_data = $xpath->query('//section[contains(@id,"'.$product_data_section_i
 
 $this_product = array(
         "product_name" => trim($product_title),
-        "product_id" => $_POST['product_id'],
+        "product_id" => $_GET['product_id'],
         "product_description" => htmlspecialchars($product_description),
         "product_image" => $product_image,
         "product_infopanels" => htmlspecialchars($product_infopanels),
         "features_list" => array(),
-        "parent_id" => $_POST['parent_id']
+        //"parent_id" => $_POST['parent_id']
 );
 
 

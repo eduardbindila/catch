@@ -116,7 +116,7 @@ Class QueryBuilder{
 
 		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
 
-		$allQueryParams = $innerJoin.$where.$limit.$offset.$orderBy.$orderType;
+		$allQueryParams = $innerJoin.$where.$offset.$orderBy.$orderType.$limit;
 
 		$query = 'SELECT '.$columns.' FROM '.$table.' '.$allQueryParams;
 
@@ -359,7 +359,7 @@ Class QueryBuilder{
 
 		$query = 'UPDATE '.$table.' SET '.$set.' '.$where;
 
-		//=echo $query;
+		//echo $query;
 
 		$this->logAction("update", $table, $query, "");
 
