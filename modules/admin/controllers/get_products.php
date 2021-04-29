@@ -10,7 +10,8 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "products",
-			"columns" => "id, product_image, product_name, manufacturer, is_temporary, initial_price"
+			"columns" => "id, product_image, product_name, manufacturer, is_temporary, initial_price, last_updated_date, last_crawled_date, last_crawled_status",
+			"limit" => "10"
 		)
 	);
 
