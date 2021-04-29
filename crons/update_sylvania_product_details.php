@@ -1,5 +1,5 @@
 <?php 
-error_reporting(E_ALL); ini_set('display_errors', 1); 
+//error_reporting(E_ALL); ini_set('display_errors', 1); 
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
@@ -158,7 +158,7 @@ foreach ($productQuery as $key => $value) {
          
     }
 
-    echo $key.' - '.$crawling_status;
+    echo "\n".$key.' - '.$crawling_status;
 }
 
 
