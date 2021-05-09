@@ -35,6 +35,7 @@
                                         <th>Product Manufacturer</th>
                                         <th>Temp</th>
                                         <th>Initial Price</th>
+                                        <th>Last Crawled Status</th>
 
                                     </thead>
                                 </table>

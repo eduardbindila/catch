@@ -2,19 +2,18 @@
 $(document).ready(function() {
     
     var productsTable = $('.products_table').DataTable({
-        "ajax": {
-            "url": "/ajax/getProducts/",
-            "dataSrc": ""
-        },
-    
-        pageLength: 100,
+        "processing": true,
+        "serverSide": true,
+        'serverMethod': 'post',
+        "ajax": "/ajax/getProducts/",
+        pageLength: 10,
             "paging":   true,
-            "ordering": false,
+            "ordering": true,
             "searching": true,
         rowId: 'category_slug',
           
         responsive: true,
-        order: [1],
+        order: [[ 1, "asc" ]],
         "columns": [
              { 
                 "data": "product_image",
@@ -47,6 +46,9 @@ $(document).ready(function() {
             },
             { 
                 "data": "initial_price"
+            },
+            { 
+                "data": "last_crawled_status"
             }
         ],
         "initComplete": function(settings, json) {
