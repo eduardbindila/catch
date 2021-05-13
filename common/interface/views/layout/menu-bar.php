@@ -74,12 +74,12 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/admin/stocks">
+                                <a href="/logistics/stocks">
                                     <span>Stocks</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="/admin/stock_locations">
+                                <a href="/logistics/stock_locations">
                                     <span>Stock Locations</span>
                                 </a>
                             </li>
