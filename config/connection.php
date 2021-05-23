@@ -535,7 +535,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.965');
+		array_push($this->links, $href.'?v=0.1.966');
 	}
 
 
@@ -549,7 +549,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.965');
+		array_push($this->scripts, $src.'?v=0.1.966');
 	}
 
 
@@ -690,6 +690,45 @@ Class GetDetails {
 
 		
 	}
+
+	function isClientValid($id) {
+
+		$conn = $this->QueryBuilder->dbConnection();
+
+		$usersQuery = $this->QueryBuilder->select(
+			$conn,
+			$options = array(
+				"table" => "clients",
+				"columns" => "*",
+				"where" => "id = '".$id."' and
+				(name is not null and name <> '') and 
+				(poi is not null and poi <> '') and 
+				(email is not null and email <> '') and 
+				(phone is not null and phone <> '') and 
+				(user_id is not null and user_id <> '') and 
+				(fiscal_code is not null and fiscal_code <> '') and 
+				(country is not null and country <> '') and 
+				(state is not null and state <> '') and 
+				(address is not null and address <> '') and 
+				(bank_account is not null and bank_account <> '') and
+				(bank is not null and bank_account <> '') and  
+				(registry is not null and registry <> '') and 
+				(discount is not null and discount >0) and 
+				active = 1"
+			)
+		);
+
+		$this->QueryBuilder->closeConnection();
+
+		if(empty($usersQuery)) {
+			return 0;
+		} else {
+			return 1;
+		}
+
+
+		
+	}
 }
 
 
@@ -760,6 +799,7 @@ $winning_chance = array(
 	"8" => "0",
 	"9" => "0"
 );
+
 
 
 

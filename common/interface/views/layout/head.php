@@ -54,7 +54,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         var issv = <?php echo json_encode($_supervisorView)?>;
         var isa = <?php echo json_encode($_adminView)?>;
 
-        var clientIs = <?php echo json_encode($_SESSION['user_id']); ?>
+        var clientIs = <?php echo json_encode($_SESSION['user_id']); ?>;
 
     </script>
 

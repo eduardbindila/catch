@@ -18,6 +18,7 @@
     var clientEmail = []; 
     var clientName = []; 
     var clientPoi = []; 
+     var isClientValid = [];
 </script>
 
 <section class="content projectPage">
@@ -258,7 +259,7 @@
                             </div>
                             <div class="alert clientTypesSelectorError hidden bg-green alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                Clients could not be retrieved.</b>
+                                Clients could not be retrieved.
                             </div>
                             <div class="input-group">
                                 <select class="form-control clientTypesSelector" required name="client_id">
@@ -322,10 +323,14 @@
                     <div class="modal-header">
                         <h4 class="modal-title" >Send Mail</span></h4>
                     </div>
+                    <div class="alert clientInvalidError hidden bg-pink alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                      <span class="clientNameError">This client</span> does not have all the details completed. <b><a href="#" class="updateClientLink btn btn-default">Click here to update client details.</a></b>
+                    </div>
                     <div class="modal-body">
                          <form id="sendQuoteForm" method="post" action='' enctype="multipart/form-data" >
                         <p><b>From:</b> office@icatch.ro<br/>
-                            <b>To:</b> <input id="clientEmail" type="text" class="form-control" name="clientEmail" placeholder="Client Email"></p>
+                            <b>To:<span class="clientToName"></span></b> <input id="clientEmail" type="text" class="form-control" name="clientEmail" placeholder=""></p>
                         <p>Dear client, <br/><br/>
                         <textarea class="tinymce" name="email_body" placeholder="Email body">
                             <p>
@@ -339,7 +344,7 @@
                             </div>
                             <div class="alert messageError hidden bg-pink alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                Message has nont been sent to client. Please contact the administrator.</b>
+                                Message has nont been sent to client. <b>Please contact the administrator.</b>
                             </div>
                         <div class="row">
                             <div class="col-xs-12">

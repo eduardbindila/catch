@@ -83,13 +83,13 @@ $(document).ready(function() {
         
          var quoteId = $(this).attr('data-quote');
 
-         var clientId = $(this).attr('data-client');
+         var thisClientId = $(this).attr('data-client');
 
-         var clientEmail = $(this).attr('data-email');
+         var thisClientEmail = $(this).attr('data-email');
 
          var afterApprove = $(this).attr('data-afterApprove');
 
-         $('#clientEmail').val(clientEmail);
+         $('#clientEmail').val(thisClientEmail);
 
           if(quoteList[index].id = quoteId) {
                 quote = quoteList[index];
@@ -98,7 +98,7 @@ $(document).ready(function() {
             }
         
 
-         if(clientId > 0) {
+         if(thisClientId > 0) {
             $.ajax({
                 url: "/ajax/changeQuoteStatus",
                 type: "post",
@@ -108,7 +108,7 @@ $(document).ready(function() {
 
                 if(json == 3) {
                     
-                    callQuoteSend(quoteId, clientId, 'quote')
+                    callQuoteSend(quoteId, thisClientId, 'quote')
                 } else {
                    
                     location.reload();
@@ -1739,16 +1739,16 @@ $(document).ready(function() {
             if(flag == "offer_sent") {
                 var quoteId = $(this).attr('data-quote');
 
-         var clientId = $(this).attr('data-client');
+         var thisClientId = $(this).attr('data-client');
 
-         var clientEmail = $(this).attr('data-email');
+         var thisClientEmail = $(this).attr('data-email');
 
          var afterApprove = $(this).attr('data-afterApprove');
 
-         $('#clientEmail').val(clientEmail);
+         $('#clientEmail').val(thisClientEmail);
 
                 
-                callQuoteSend(quoteId, clientId, 'quote')
+                callQuoteSend(quoteId, thisClientId, 'quote')
             } else {
 
 
@@ -1793,16 +1793,16 @@ $(document).ready(function() {
 
             var quoteId = el.attr('data-quote');
 
-             var clientId = el.attr('data-client');
+             var thisClientId = el.attr('data-client');
 
-             var clientEmail = el.attr('data-email');
+             var thisclientEmail = el.attr('data-email');
 
              var afterApprove = el.attr('data-afterApprove');
 
-             $('#clientEmail').val(clientEmail);
+             $('#clientEmail').val(thisclientEmail);
 
                     
-                    callQuoteSend(quoteId, clientId, 'quote')
+                    callQuoteSend(quoteId, thisClientId, 'quote')
                 } else {
                    
                     location.reload();
@@ -2087,10 +2087,27 @@ console.log('a');
 function callQuoteSend(quoteId, clientId, type)
 {
 
+    //console.log(quoteId, isClientValid[quoteId], clientEmail);
+
+    $('.clientNameError').text(clientName[quoteId]);
+    $('.updateClientLink').attr('href', '/client/'+ clientId);
+
+    $('.clientToName').text(clientName[quoteId]);  
+
     $("#clientEmail").email_multiple({
-          reset: true
+          reset: true,
+          data : [clientEmail[quoteId]]
       });
     $('#sendMail-modal').modal('show');
+
+     if(isClientValid[quoteId] == 0) {
+        $('.clientInvalidError').removeClass('hidden');
+        $('.modal-body').addClass('hidden');
+    } else {
+        $('.modal-body').removeClass('hidden');
+        $('.clientInvalidError').addClass('hidden');
+    }
+
     $('#sendQuoteForm').keydown(function (e) {
         if (e.keyCode == 13) {
             e.preventDefault();

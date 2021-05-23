@@ -36,7 +36,7 @@ $quoteLockedClass = "";
 
         var assigneeId = <?php echo $quote['assignee_id']?>;
 
-        var clientEmail = <?php echo json_encode($client_email) ?>;
+        //var clientEmail = <?php echo json_encode($client_email) ?>;
 
         assigneeEmail['<?php echo $quote['id']?>'] = "<?php echo $quote['agent_email']?>";
         assigneeRole['<?php echo $quote['id']?>'] = "<?php echo $quote['agent_role']?>";
@@ -48,6 +48,8 @@ $quoteLockedClass = "";
         clientEmail['<?php echo $quote['id']?>'] = "<?php echo $quote['client_email']?>";
         clientName['<?php echo $quote['id']?>'] = "<?php echo $quote['client_name']?>";
         clientPoi['<?php echo $quote['id']?>'] = "<?php echo $quote['client_poi']?>";
+
+        isClientValid['<?php echo $quote['id']?>'] = '<?php echo $GetDetails->isClientValid($client_id); ?>';
 
     </script>
 

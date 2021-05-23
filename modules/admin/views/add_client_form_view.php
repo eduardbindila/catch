@@ -2,22 +2,22 @@
     <div class="input-group">
         <h3>Client Info</h3>
         <div class="form-line">
-            <input type="text" class="form-control" name="name" placeholder="Name" required>
+            <input type="text" class="form-control" name="name" placeholder="Name*" required>
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="poi" placeholder="Person of Contact" >
+            <input type="text" class="form-control" name="poi" required placeholder="Person of Contact*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="email" class="form-control" name="email" placeholder="Email address" >
+            <input type="email" class="form-control" name="email" required placeholder="Email address*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="phone" placeholder="Phone" >
+            <input type="text" class="form-control" name="phone" required placeholder="Phone*" >
         </div>
     </div>
     <div class="alert userTypesSelectorError hidden bg-pink alert-dismissible" role="alert">
@@ -26,12 +26,12 @@
     </div>
     <div class="input-group">
         <select class="form-control userTypesSelector" required name="user">
-            <option value="">Select Sales Agent</option>
+            <option value="">Select Sales Agent*</option>
         </select>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="fiscal_code" placeholder="Fiscal Code" >
+            <input type="text" class="form-control" name="fiscal_code" required placeholder="Fiscal Code*" >
         </div>
     </div>
      <div class="alert countryTypesSelectorError hidden bg-pink alert-dismissible" role="alert">
@@ -40,37 +40,37 @@
     </div>
     <div class="input-group">
         <select class="form-control countryTypesSelector" required name="country">
-            <option value="">Select Country</option>
+            <option value="">Select Country*</option>
         </select>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="state" placeholder="State" >
+            <input type="text" class="form-control" name="state" required placeholder="State*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="address" placeholder="Address" >
+            <input type="text" class="form-control" name="address" required placeholder="Address*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="bank_account" placeholder="Bank accout" >
+            <input type="text" class="form-control" name="bank_account" required placeholder="Bank accout*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="bank" placeholder="Bank" >
+            <input type="text" class="form-control" name="bank" required placeholder="Bank*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="registry" placeholder="Registry Number" >
+            <input type="text" class="form-control" name="registry" required placeholder="Registry Number*" >
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="number" class="form-control" min="0" max="72" name="discount" placeholder="Discount" >
+            <input type="number" class="form-control" min="0" max="72" required name="discount" placeholder="Discount*" >
         </div>
     </div>
     <div class="row">
