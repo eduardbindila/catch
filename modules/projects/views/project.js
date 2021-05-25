@@ -981,9 +981,9 @@ $(document).ready(function() {
                             );
 
                                 if(iss)
-                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" data-productName="'+row.product_name+'" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data.toFixed(2)+'</a></span>';
+                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" data-productName="'+row.product_name+'" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
                                 else
-                                    return data.toFixed(2);
+                                    return data;
                           }
                     },
                     { 
