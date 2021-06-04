@@ -88,10 +88,14 @@ Class QueryBuilder{
 		if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
 		 $conn = mysqli_connect("127.0.0.1","root","","icatch") or die("Couldn't connect");
 
+		// } else {
+		// 	$conn = mysqli_connect("localhost","eduardbi_icatch","H&s!MNV_Q}K*","eduardbi_icatchb2b") or die("Couldn't connect");
+		// }
 		} else {
-			$conn = mysqli_connect("localhost","eduardbi_icatch","H&s!MNV_Q}K*","eduardbi_icatchb2b") or die("Couldn't connect");
+			$conn = mysqli_connect("localhost","icatc_b2b","&AdS*q^fy]a7","icatc_b2b") or die("Couldn't connect");
 		}
         
+
         return $conn;
     }
 
