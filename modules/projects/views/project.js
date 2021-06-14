@@ -1503,7 +1503,6 @@ $(document).ready(function() {
             var quoteID = $(this).attr('data-quote');
             $('.quoteNumberEdit').text(quoteID);
 
-
             $('.viewFiles-modal[data-quote="'+quoteID+'"]').modal('show');
 
             var filesTable = $('.files_table').DataTable({
