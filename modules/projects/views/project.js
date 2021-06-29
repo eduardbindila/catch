@@ -608,7 +608,7 @@ $(document).ready(function() {
                                     },
 
                                     'București, 077190, sector 1\n',
-                                    'Str. Moeciu, nr. 3\n',
+                                    'Str. Bd. Poligrafiei, nr. 75, etaj 3\n',
                                 ];
                                 
 
