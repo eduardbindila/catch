@@ -2,8 +2,7 @@
  RewriteBase /
 
 RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteCond %{HTTPS} on
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
@@ -34,6 +33,7 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
  RewriteRule ^admin/user/* users.php [L]
  RewriteRule ^logistics/stock_locations stock_locations.php [L]
  RewriteRule ^logistics/stock_location/* stock_locations.php [L]
+RewriteRule ^logistics/import_stocks import_stocks.php [L]
  RewriteRule ^admin/regions regions.php [L]
  RewriteRule ^admin/countries/* countries.php [L]
  RewriteRule ^clients clients.php [L]
@@ -120,6 +120,8 @@ RewriteRule ^ajax/removeFilesFromQuote modules/projects/controllers/remove_quote
 RewriteRule ^ajax/logout modules/auth/controllers/logout-controller.php [L]
 
 RewriteRule ^ajax/addUsers modules/admin/import/elements/controllers/add_users.php [L]
+
+RewriteRule ^ajax/addStocks modules/admin/import/elements/controllers/add_stocks.php [L]
 
 RewriteRule ^ajax/addClients modules/admin/import/elements/controllers/add_clients.php [L]
 

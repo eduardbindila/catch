@@ -104,5 +104,13 @@ $GetDetails = new GetDetails();
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'js/script.js');
 
+$actual_link = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+$host = "https://{$_SERVER['HTTP_HOST']}";
+
+$userId = basename($actual_link);
+
+$urlArray = parse_url($actual_link);
+
 
 ?>

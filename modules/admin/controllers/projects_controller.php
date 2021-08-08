@@ -3,15 +3,6 @@
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-$insertResult = 'undefined';
-$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-
-$host = "http://{$_SERVER['HTTP_HOST']}";
-
-$userId = basename($actual_link);
-
-$urlArray = parse_url($actual_link);
-
 $userId = basename($urlArray['path']);
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['project_name'])){ 

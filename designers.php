@@ -34,12 +34,6 @@ $LoadHTMLArtefacts->setScript($_WMPATH['ADMIN_VIEWS'].'designers.js');
 include($_PATH['COMMON_LAYOUT'].'head.php');
 include($_PATH['COMMON_LAYOUT'].'menu-bar.php');
 
-$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-
-$host = "http://{$_SERVER['HTTP_HOST']}";
-
-$userId = basename($actual_link);
-
 include($_MPATH['ADMIN_CONTROLLERS'].'designers_controller.php');
 
 

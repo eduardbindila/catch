@@ -2,7 +2,7 @@
 
 
 function getPage(){
-	$pageLink = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+	$pageLink = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
 	$urlArray = parse_url($pageLink);
 
@@ -486,12 +486,12 @@ Class SessionState {
 	}
 
 	function redirectLoggedIn(){
-		header("location: http://".$_SERVER['HTTP_HOST']."/dashboard");
+		header("location: https://".$_SERVER['HTTP_HOST']."/dashboard");
 	}
 
 	function redirectLogin(){
 		if($_SERVER["REQUEST_URI"] !== "/auth/login")
-			header("location: http://".$_SERVER['HTTP_HOST']."/auth/login");
+			header("location: https://".$_SERVER['HTTP_HOST']."/auth/login");
 	}
 
 	function logout(){

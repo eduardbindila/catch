@@ -3,11 +3,8 @@
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-$actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
-$host = "http://{$_SERVER['HTTP_HOST']}";
 
-$urlArray = parse_url($actual_link);
 
 $projectID = basename($urlArray['path']);
 

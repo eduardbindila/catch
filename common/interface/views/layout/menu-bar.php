@@ -83,6 +83,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Stock Locations</span>
                                 </a>
                             </li>
+                            <!-- <li>
+                                <a href="/logistics/import_stocks">
+                                    <span>Import Stocks</span>
+                                </a>
+                            </li> -->
                         </ul>
                     </li>
                     <?php }?>
