@@ -4,11 +4,7 @@
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-RewriteCond %{HTTPS} on
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
- RewriteRule ^download download.php [L]
+RewriteRule ^download download.php [L]
 
  RewriteRule ^auth/login login.php [L]
  RewriteRule ^dashboard dashboard.php [L]
