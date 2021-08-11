@@ -5,6 +5,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $userId = basename($urlArray['path']);
 
+$insertResult = 'undefined';
+
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['project_name'])){ 
 
 	$conn = $QueryBuilder->dbConnection();
