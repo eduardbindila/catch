@@ -11,7 +11,8 @@ $(document).ready(function() {
 	})
 
 	$('select').before(function(){
-		return '<label>'+$(this).find("option:first-child").text()+'</label>';
+		if(!$(this).hasClass('ms'))
+			return '<label>'+$(this).find("option:first-child").text()+'</label>';
 	})
 
 	$('input:not([type="password"])').keyup(function() {

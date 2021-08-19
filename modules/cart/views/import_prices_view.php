@@ -1,8 +1,60 @@
 <section class="content">
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2>Import Prices</h2>
+			<h2>Update Prices</h2>
 		</div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        Update Prices by Manufacturer
+                    </div>
+                    <div class="body">
+                        <form id="updatePricesByManufacturer" method="post" action='' enctype="multipart/form-data"></form>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <label>Click the list to Select Manufacturer</label>
+                                    <select id="optgroup" class="ms" multiple="multiple">
+                                        <option value="null">No Manufacturer</option>
+                                        <?php
+
+
+                                        foreach ($manufacturerQuery as $val) {
+
+                                            echo '<option value="'.$val['manufacturer'].'">'.$val['manufacturer'].'</option>';
+                                        }
+
+                                        ?>
+
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="input-group">
+                                        <div class="form-line">
+                                            <input type="numeric" class="form-control" name="price_change" placeholder="Price Change Value" >
+                                        </div>
+                                    </div>
+                                   <div class="input-group">
+                                            <label>Value type</label><br/>
+                                            <input type="radio" name="value_type" id="value-type-send-1" value="absolute" required="">
+                                            <label for="value-type-send-1">Absolute</label>
+                                            <input type="radio" name="value_type"  id="value-type-send-0" value="percent" required="">
+                                            <label for="value-type-send-0">Percent</label>
+                                        </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button id="submitPriceChange" class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit Price Change</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 		<div class="row">
 	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">

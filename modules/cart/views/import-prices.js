@@ -1,5 +1,8 @@
 $(document).ready(function(){
 
+     //Multi-select
+    $('#optgroup').multiSelect({ selectableOptgroup: true });
+
 Dropzone.autoDiscover = false;
 
 $('#importPrices').on('submit', function(e){
