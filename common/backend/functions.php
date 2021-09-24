@@ -24,7 +24,7 @@ $SessionState->sessionStart();
 
 //echo $_sectionName;
 
-if($_subSectionName == "import" && !isset($_SESSION['user_access']['admin']) || $_sectionName == "admin" && !isset($_SESSION['user_access']['supervisor']) || $_subSectionName == "product" && !isset($_SESSION['user_access']['supervisor'])) {
+if($_subSectionName == "import" && !isset($_SESSION['user_access']['admin']) || $_subSectionName == "manage" && !isset($_SESSION['user_access']['admin']) || $_sectionName == "admin" && !isset($_SESSION['user_access']['supervisor']) || $_subSectionName == "product" && !isset($_SESSION['user_access']['supervisor'])) {
 	header("HTTP/1.1 301 Moved Permanently");
 	header( 'Location: /404' ) ;
 } 

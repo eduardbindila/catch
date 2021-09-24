@@ -20,6 +20,7 @@ RewriteRule ^download download.php [L]
  RewriteRule ^offer/* quote.php [L]
  RewriteRule ^admin/import/categories import_categories.php [L]
  RewriteRule ^admin/import/products import_products.php [L]
+ RewriteRule ^admin/manage/products manage_products.php [L]
  RewriteRule ^admin/import/users import_users.php [L]
  RewriteRule ^admin/import/clients import_clients.php [L]
  RewriteRule ^admin/import/designers import_designers.php [L]
@@ -145,8 +146,9 @@ RewriteRule ^ajax/getQuoteFiles modules/projects/controllers/get_quote_files.php
 
 RewriteRule ^ajax/getLastPrices modules/projects/controllers/get_last_prices.php [L]
 
-
 RewriteRule ^ajax/getProjectComments modules/projects/controllers/get_all_comments.php [L]
 
 RewriteRule ^ajax/duplicateQuoteItems modules/projects/controllers/duplicate_quote_items.php [L]
+
+RewriteRule ^ajax/getImportProductLists modules/admin/manage/controllers/get_import_lists.php [L]
 

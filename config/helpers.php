@@ -55,6 +55,10 @@ $_MPATH["IMPORT_PRODUCTS"] = $_MPATH["ADMIN"].'import/products/';
 $_MPATH["IMPORT_PRODUCTS_CONTROLLERS"] = $_MPATH["IMPORT_PRODUCTS"]."controllers/";
 $_MPATH["IMPORT_PRODUCTS_VIEWS"] = $_MPATH["IMPORT_PRODUCTS"]."views/";
 
+$_MPATH["MANAGE_PRODUCTS"] = $_MPATH["ADMIN"].'manage/'; 
+$_MPATH["MANAGE_PRODUCTS_CONTROLLERS"] = $_MPATH["MANAGE_PRODUCTS"]."controllers/";
+$_MPATH["MANAGE_PRODUCTS_VIEWS"] = $_MPATH["MANAGE_PRODUCTS"]."views/";
+
 
 $_MPATH["CART_VIEWS"] = $_MPATH["CART"]."views/";
 $_MPATH["CART_CONTROLLERS"] = $_MPATH["CART"]."controllers/";
@@ -88,6 +92,7 @@ $_WMPATH["PROJECTS_VIEWS"] = $_WMPATH["MODULES"]."projects/views/";
 $_WMPATH["DASHBOARD_VIEWS"] = $_WMPATH["MODULES"]."dashboard/views/";
 
 
+$_WMPATH["MANAGE_VIEWS"] = $_WMPATH["MODULES"]."admin/manage/views/";
 
 
 
