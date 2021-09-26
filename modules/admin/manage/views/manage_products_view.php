@@ -1,9 +1,3 @@
-<script type="text/javascript">
-    
- 	var insertResult = <?php echo $insertResult?>;
-
-</script>
-
 <section class="content projectPage">
 	<div class="container-fluid">
 		<div class="block-header">
@@ -64,7 +58,16 @@
                         <h4 class="modal-title" >Add New Import List</span></h4>
                     </div>
                     <div class="modal-body">
-                         <div class="dropzone dz-clickable">
+                        <div class="importFormWrapper dropzone dz-clickable">
+                            <form class="importProductList" method="post" action='' enctype="multipart/form-data" >
+                                <input type="hidden" id="file-name" name="file_name" value="">
+                                <div class="input-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" name="name" placeholder="Import List Name" required>
+                                            </div>
+                                        </div>
+                                <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Import Product List</button>
+                            </form>
 				            <div class="dz-message">
 				                <div class="drag-icon-cph">
 				                    <i class="material-icons">touch_app</i>
@@ -72,16 +75,41 @@
 				                <h3>Drop files here or click to upload.</h3>
 
 				            </div>
-				            <form class="quoteFilesForm" method="post" action='' enctype="multipart/form-data" >
-				                <input type="hidden" id="file-name" name="file_name" value="">
-				                <div class="input-group">
-									        <div class="form-line">
-									            <input type="text" class="form-control" name="name" placeholder="Import List Name" required>
-									        </div>
-									    </div>
-				                <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Import Product List</button>
-				            </form>
+				            
 				        </div>
+                        <div class="loader-wrapper hidden">
+                            <div class="loader-container">
+                                <div class="preloader pl-size-xl">
+                                    <div class="spinner-layer">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="loader-messages">
+                                <div class="importProductListWarning alert alert-warning">
+                                    <strong>Step 1:</strong> We're importing your file. <strong>DO NOT refresh the page.</strong>
+                                </div>
+                                <div class="importProductListError alert alert-danger hidden">
+                                    <strong>Error!</strong> We could not import the file.
+                                </div>
+
+                                 <div class="importingProducts alert alert-warning hidden">
+                                    <strong>Step 2:</strong> We're saving the products in the database. It could take a few minutes. <strong>DO NOT refresh the page.</strong>
+                                </div>
+
+                                <div class="importingProductsSuccess alert alert-success hidden">
+                                    <strong>Finished!</strong> <span class="noSavedProducts"></span> products have been saved. Click here to check the product list before updating the prices. 
+                                </div>
+                                <div class="importingProductsError alert alert-danger hidden">
+                                    <strong>Error!</strong> We could not save the products. 
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>

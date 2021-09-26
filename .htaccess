@@ -152,3 +152,7 @@ RewriteRule ^ajax/duplicateQuoteItems modules/projects/controllers/duplicate_quo
 
 RewriteRule ^ajax/getImportProductLists modules/admin/manage/controllers/get_import_lists.php [L]
 
+RewriteRule ^ajax/importProductList modules/admin/manage/controllers/import_product_list.php [L]
+
+RewriteRule ^ajax/importListProducts modules/admin/manage/controllers/import_list_products.php [L]
+

@@ -10,9 +10,10 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "import_product_list",
-			"columns" => "import_product_list.*, users.name, statuses.name as status",
-			"innerJoin" => "users on import_product_list.user_id = users.id",
-			"innerJoin" => "import_product_list_statuses as statuses on import_product_list.status_id = statuses.id",
+			"columns" => "import_product_list.*, users.name as user, statuses.name as status",
+			"innerJoin" => "users on import_product_list.user_id = users.id INNER JOIN import_product_list_statuses as statuses on import_product_list.status_id = statuses.id",
+			"orderBy" => "date_uploaded",
+			"orderType" => "DESC"
 		)
 	);
 
