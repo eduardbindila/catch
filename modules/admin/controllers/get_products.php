@@ -66,6 +66,7 @@ while ($row = mysqli_fetch_assoc($empRecords)) {
       "is_temporary"=>$row['is_temporary'],
       "initial_price"=>$row['initial_price'],
       "last_crawled_status"=>$row['last_crawled_status'],
+      'merged_id' => $row['merged_id'] 
    );
 }
 

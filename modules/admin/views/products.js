@@ -49,6 +49,9 @@ $(document).ready(function() {
             },
             { 
                 "data": "last_crawled_status"
+            },
+            {
+                "data": "merged_id"
             }
         ],
         "initComplete": function(settings, json) {
