@@ -10,7 +10,6 @@ $import_file = $_POST['file_name'];
 $conn = $QueryBuilder->dbConnection();
 
 
-
 $query = $QueryBuilder->insert(
 	$conn,
 	$options = array(

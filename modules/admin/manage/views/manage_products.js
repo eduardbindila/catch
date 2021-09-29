@@ -8,6 +8,7 @@ $(document).ready(function() {
             "url": "/ajax/getImportProductLists/",
             "dataSrc": ""
         },
+         "deferRender": true,
     
         pageLength: 100,
             "paging":   true,
@@ -65,9 +66,56 @@ $(document).ready(function() {
             {
                 "data": null,
                  "render" : function(data, type, row) {
-                    return ''
+
+                    var percent = {
+                        "pending" : "",
+                        "update" : "",
+                        "new" : "",
+                        "error" : "",
+                        "processed" : "",
+                        "total" : row.total
+                    }
+
+                    var loader = "";
+
+                    percent.pending =  100 * row.pending / row.total;
+
+                    percent.updated =  100 * row.updated / row.total;
+
+                   percent.new =  100 * row.new / row.total;
+
+                   percent.error =  100 * row.error / row.total;
+
+                   percent.processed = percent.error + percent.updated + percent.new;
+
+                   console.log(percent);
+
+                   if(type === 'display' && percent.processed !== 100 ) {
+ 
+
+                    $.ajax({
+                        url: "/ajax/updateProductsFromList",
+                        type: "post",
+                        dataType: "json",
+                        data: {"import_product_list_id": row.id}
+                    }).success(function(json){
+                                                  
+
+                    }).error(function(xhr, status, error) {
+                       
+                    }).complete( function (data) {
+                        console.log('reload'+row.id)
+                        importLists.ajax.reload();
+                    })
+                        
+
+                    loader = 'Processing...<div class="text-center"><h6 class="loader-progress">'+percent.processed.toFixed(2)+'%</h6><div class="preloader pl-size-sm"> <div class="spinner-layer pl-red-grey"> <div class="circle-clipper left"> <div class="circle"></div> </div> <div class="circle-clipper right"> <div class="circle"></div> </div> </div> </div></div>';
+                   }
+
+                    return loader+'<div class="progress"> <div class="progress-bar progress-bar-success" style="width: '+percent.updated+'%"> <span class="sr-only">'+percent.updated+'% Complete (success)</span> </div> <div class="progress-bar progress-bar-primary progress-bar-striped active" style="width: '+percent.new+'%"> <span class="sr-only">'+percent.new+'% Complete (warning)</span> </div> <div class="progress-bar progress-bar-danger" style="width: '+percent.error+'%"> <span class="sr-only">'+percent.error+'% Complete (danger)</span> </div> </div>'
                   } 
-            }
+            },
+
         ],
         "initComplete": function(settings, json) {
         }

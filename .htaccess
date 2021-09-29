@@ -157,7 +157,10 @@ RewriteRule ^ajax/importProductList modules/admin/manage/controllers/import_prod
 
 RewriteRule ^ajax/importListProducts modules/admin/manage/controllers/import_list_products.php [L]
 
+RewriteRule ^ajax/updateProductsFromList modules/admin/manage/controllers/update_products_from_list.php [L]
+
 RewriteRule ^ajax/setMergeId modules/admin/controllers/set_merge_id.php [L]
 
-RewriteRule ^ajax/importProductsFromList modules/admin/controllers/import_product_from_list.php [L]
+
+
 
