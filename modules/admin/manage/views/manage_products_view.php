@@ -37,7 +37,7 @@
                                         <th>File</th>
                                         <th>Status</th>
                                         <th>User ID</th>
-                                        <th>Actions</th>
+                                        <th>Progress</th>
                                     </thead>
                                 </table>
                             </div>

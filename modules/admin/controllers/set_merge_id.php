@@ -10,29 +10,33 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "products",
-			"columns" => "id"
+			"columns" => "id",
+			"where" => "merged_id is null",
+			"limit" => "100"
 		),
 		$returnType = "idAsArray"
 	);
 
 	foreach ($productsQuery as $product => $product_details) {
 
-		$merge_id = null;
-		$merge_status = null;
+		//echo "<pre>";
+
+		$merge_id = 0;
+		$merge_status = NULL;
 		
 		 if(is_numeric($product)){
+		 	//echo "is numeric";
 		 	$processedProduct = $product;
 		 	$processedProduct += 0;
 		 	
 		 } else {
+		 	//echo "is not numeric";
 		 	$processedProduct = preg_replace("/[^a-zA-Z 0-9]+/", "",  trim($product));
 		 }
 
 
 		if($product !== $processedProduct && isset($productsQuery[$processedProduct])) {
-			var_dump("<pre>");
-			var_dump($processedProduct);
-			var_dump("</pre>");
+			
 			$merge_id = $processedProduct;
 			$merge_status = 2;	
 		}
@@ -40,7 +44,17 @@ $conn = $QueryBuilder->dbConnection();
 			$merge_status = 1;
 		}
 
-		 
+		// echo $product.' => '.$merge_id.' : '.$merge_status;
+		// echo "</pre>";
+		
+		$updateMergeDataProductQuery = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "products",
+				"set" => ["`merged_id`='".$merge_id."'","`merge_status`='".$merge_status."'",],
+				"where" => "id = '".$product."'"
+			)
+		);
 	}
 
 $QueryBuilder->closeConnection();

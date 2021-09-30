@@ -151,6 +151,8 @@ RewriteRule ^ajax/getProjectComments modules/projects/controllers/get_all_commen
 
 RewriteRule ^ajax/duplicateQuoteItems modules/projects/controllers/duplicate_quote_items.php [L]
 
+RewriteRule ^ajax/getImportProductsFromList modules/admin/manage/controllers/get_import_product_from_list.php [L]
+
 RewriteRule ^ajax/getImportProductLists modules/admin/manage/controllers/get_import_lists.php [L]
 
 RewriteRule ^ajax/importProductList modules/admin/manage/controllers/import_product_list.php [L]
@@ -160,6 +162,8 @@ RewriteRule ^ajax/importListProducts modules/admin/manage/controllers/import_lis
 RewriteRule ^ajax/updateProductsFromList modules/admin/manage/controllers/update_products_from_list.php [L]
 
 RewriteRule ^ajax/setMergeId modules/admin/controllers/set_merge_id.php [L]
+
+RewriteRule ^ajax/updateQuoteItemsProduct modules/admin/controllers/update_quote_items_product.php [L]
 
 
 

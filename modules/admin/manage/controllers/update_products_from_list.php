@@ -106,19 +106,4 @@ foreach ($updateListsQuery as $product => $product_details) {
 // Anywhere else in the script
 // echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
 
-
-// $query = $QueryBuilder->insert(
-// 	$conn,
-// 	$options = array(
-// 		"table" => "import_product_list",
-// 		"keys" => ["name", "file_url", "date_uploaded", "user_id"],
-// 		"values" => [$import_name, $import_file, strtotime("now"), $_SESSION['user_id']]
-// 	)
-// );
-
-
-// echo json_decode($query);
-
-//var_dump($_POST);
-
 ?>

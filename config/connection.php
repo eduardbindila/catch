@@ -120,6 +120,12 @@ Class QueryBuilder{
 
 		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
 
+		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
+
+		$columnAsArray = isset($options['columnAsArray']) ? $options['columnAsArray'] : "";
+
+		$columnAsGroup = isset($options['columnAsGroup']) ? $options['columnAsGroup'] : "";
+
 		$allQueryParams = $innerJoin.$where.$offset.$orderBy.$orderType.$limit;
 
 		$query = 'SELECT '.$columns.' FROM '.$table.' '.$allQueryParams;
@@ -159,6 +165,29 @@ Class QueryBuilder{
 				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
 
 					$rows[$row['id']] = $row;
+				    
+				}			
+				$this->logAction("select", $table, $query, $rows);
+				return $rows;
+
+			} else if($returnType == 'columnAsArray' && isset($options['columnAsArray'])) {
+				$rows = array();
+				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+
+					$rows[$row[$columnAsArray]] = $row;
+				    
+				}			
+				$this->logAction("select", $table, $query, $rows);
+				return $rows;
+
+			} else if($returnType == 'columnAsGroup' && isset($options['columnAsGroup'])) {
+				$rows = array();
+				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+
+					if(!isset($rows[$row[$columnAsGroup]]))
+						$rows[$row[$columnAsGroup]] = array();
+
+					array_push($rows[$row[$columnAsGroup]], $row);
 				    
 				}			
 				$this->logAction("select", $table, $query, $rows);
