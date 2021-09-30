@@ -27,7 +27,8 @@ if($searchValue != ''){
    $searchQuery = " and (product_name like '%".$searchValue."%' or 
         manufacturer like '%".$searchValue."%' or 
         initial_price like'%".$searchValue."%' or 
-        last_crawled_status like'%".$searchValue."%' ) ";
+        last_crawled_status like'%".$searchValue."%' or 
+        id like'%".$searchValue."%' ) ";
 }
 
 

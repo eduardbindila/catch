@@ -40,6 +40,8 @@ while(! feof($f_pointer)){
 
 		$initial_price = number_format((float)trim($product[2]), 2, '.', '');
 
+		//var_dump($initial_price);
+
 		$manufacturer = preg_replace("/[^a-zA-Z 0-9]+/", "",   trim(substr($product[3], 0, 3)));
 
 		//var_dump(htmlentities($product[1], ENT_IGNORE));
