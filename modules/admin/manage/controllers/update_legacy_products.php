@@ -36,7 +36,6 @@ $updateListsQuery = $QueryBuilder->select(
 	)
 );
 
-var_dump($updateListsQuery);
 
 foreach ($updateListsQuery as $product => $product_details) {
 
@@ -58,6 +57,7 @@ foreach ($updateListsQuery as $product => $product_details) {
 		),
 			$returnType = "bol"
 	);
+
 
 
 	$legacyProductQuery =  $QueryBuilder->select(
@@ -122,6 +122,7 @@ foreach ($updateListsQuery as $product => $product_details) {
 		$comment = 'Product not found';
 	}
 
+echo $thisProductQuery.' => '.$legacyProductQuery;
 
 	$updateImportProductQuery = $QueryBuilder->update(
 		$conn,
