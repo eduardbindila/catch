@@ -31,7 +31,7 @@ $updateListsQuery = $QueryBuilder->select(
 	$options = array(
 		"table" => "products_import",
 		"columns" => "*",
-		"where" => "import_product_list_id=".$getLatestListId[0]['latest_list_id']." and status in  (7, 2)",
+		"where" => "import_product_list_id=".$getLatestListId[0]['latest_list_id']." and status in  (7, 2) and product_id != new_product_id",
 		"limit" => "100"
 	)
 );
