@@ -7,14 +7,15 @@
 	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2>Price Lists</h2>
+                        <h2>Update Products</h2>
                         <ul class="header-dropdown m-r-0">
                             <li>
                                 <button class="btn btn-success waves-effect" data-toggle="modal"data-target="#addNew-modal">
-                                    Add Import List
+                                    Add Update Products Import List
                                 </button>
                             </li>
                         </ul>
+
                     </div>
                     <div class="body">
                         <div class="row">
@@ -42,6 +43,117 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Duplicates and Product Id Change</h2>
+                        <ul class="header-dropdown m-r-0">
+                            <li>
+                                <button class="btn btn-success waves-effect" data-toggle="modal"data-target="#addNew-modal">
+                                    Add Update Product Codes List
+                                </button>
+                            </li>
+                            <li>
+                                <button class="identifyDuplicates btn btn-success waves-effect">
+                                    Identify Duplicate Products
+                                </button>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-4 text-center">
+                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                    <h2>Duplicates Status: </h2>
+                                    <h5><span class="duplicatesProcessed">
+                                         <div class="preloader pl-size-xs">
+                                                <div class="spinner-layer">
+                                                    <div class="circle-clipper left">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                    <div class="circle-clipper right">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </span>% products checked</h5>
+                                    <div class="duplicatesProgressBarr text-center"></div>
+                                </div>
+                                </div>
+                                <div class="row duplicatesActions hidden">
+                                    <div class="col-lg-6">
+                                        <h5 class="texte-center updateQuoteProductsProgress">
+                                            <div class="loader hidden">
+                                                <div class="preloader pl-size-xs">
+                                                    <div class="spinner-layer">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        <div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span>
+                                                <div class="preloader pl-size-xs">
+                                                    <div class="spinner-layer">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        <div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span> quotes need atention</h5>
+                                        <button class="updateQuoteItemsProduct btn btn-primary waves-effect">
+                                            Update Quote Products
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-6">
+                                         <h5 class="texte-center deactivateOldProductsProgress">
+
+                                             <div class="loader hidden">
+                                                <div class="preloader pl-size-xs">
+                                                    <div class="spinner-layer">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        <div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <span>
+                                                <div class="preloader pl-size-xs">
+                                                    <div class="spinner-layer">
+                                                        <div class="circle-clipper left">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                        <div class="circle-clipper right">
+                                                            <div class="circle"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span> products need atention</h5>
+                                        <button class="deactivateOldProducts btn btn-danger waves-effect">
+                                           Deactivate Old Products
+                                        </button>
+                                    </div>
+                        </div>
+
+                        </div>
+                        
                     </div>
                 </div>
             </div>

@@ -1,34 +1,80 @@
 <?php
 
-// At start of script
-// $time_start = microtime(true); 
-
-
-
 require_once('../../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
-// $_POST['import_product_list_id'] = 3;
+$date = date('Y-m-d H:i:s');
 
-//$date = date('Y-m-d H:i:s');
+$_POST['type'] = "merge";
+
+if($_POST['type'] == "merge"){
+	$field = "merged_id";
+	$where = "p.merged_id != 0 and merge_status = 2";
+
+} else if($_POST['type'] = "legacy") {
+
+	$field = "legacy_id";
+	$where = "p.legacy_id is not null";
+}
+
+$affectedQuoteItems = $QueryBuilder->select(
+		$conn,
+		$options = array(
+			"table" => "products as p",
+			"columns" => "p.id as product_id, p.merged_id",
+			"innerJoin" => "quote_items as qim on p.".$field." = qim.product_id",
+			"where" => $where,
+			"limit" => 10,
+			"columnAsArray" => "product_id"
+		),
+		$returnType = "columnAsArray"
+	);
 
 
+foreach ($affectedQuoteItems as $product => $productDetails) {
 
+	//var_dump($productDetails);
 
 	$updateQuery = $QueryBuilder->update(
 			$conn,
 			$options = array(
 				"table" => "quote_items",
-				"set" => ["`product_id`='".$_POST['updated_product_id']."'"],
-				"where" => "product_id = '".$_POST['product_id']."'"
+				"set" => ["`product_id`='".$productDetails['product_id']."'"],
+				"where" => "product_id = '".$productDetails['merged_id']."'"
 			)
 		);
 
+	if($updateQuery) {
+		$status = 4;
+		//$comment = "Quotes Modified"
+	}
+	else {
+		$status = 5;
+		//$comment = addslashes($conn->error);
+	}
+
+	$updateMergeDataProductQuery = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "products",
+				"set" => ["`merge_status`='4'", "`merged_date`='".$date."'",],
+				"where" => "id = '".$productDetails['product_id']."'"
+			)
+		);
+}
 
 
-// Anywhere else in the script
-// echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
+//var_dump($affectedQuoteItems);
+
+
+
+
+
+	
+
+
+//echo json_encode($affectedQuoteItems);
 
 ?>

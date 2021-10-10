@@ -163,8 +163,14 @@ RewriteRule ^ajax/updateProductsFromList modules/admin/manage/controllers/update
 
 RewriteRule ^ajax/setMergeId modules/admin/controllers/set_merge_id.php [L]
 
-RewriteRule ^ajax/updateQuoteItemsProduct modules/admin/controllers/update_quote_items_product.php [L]
+RewriteRule ^ajax/replaceQuoteItemsOldProduct modules/admin/manage/controllers/update_quote_items_product.php [L]
 
+RewriteRule ^ajax/updateImportListStatus modules/admin/manage/controllers/update_import_list_status.php [L]
 
+RewriteRule ^ajax/getDuplicatesStatus modules/admin/manage/controllers/get_duplicates_status.php [L]
 
+RewriteRule ^ajax/getAffectedQuoteItems modules/admin/manage/controllers/get_affected_quote_items.php [L]
 
+RewriteRule ^ajax/getNeedDeactivationProducts modules/admin/manage/controllers/get_need_deactivation_products.php [L]
+
+RewriteRule ^ajax/deactivateNeededProducts modules/admin/manage/controllers/deactivate_needed_products.php [L]

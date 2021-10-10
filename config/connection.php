@@ -118,6 +118,8 @@ Class QueryBuilder{
 
 		$orderBy = isset($options['orderBy']) ? ' Order BY '.$options['orderBy'] : "";
 
+		$groupBy = isset($options['groupBy']) ? ' Group BY '.$options['groupBy'] : "";
+
 		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
 
 		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
@@ -126,7 +128,7 @@ Class QueryBuilder{
 
 		$columnAsGroup = isset($options['columnAsGroup']) ? $options['columnAsGroup'] : "";
 
-		$allQueryParams = $innerJoin.$where.$offset.$orderBy.$orderType.$limit;
+		$allQueryParams = $innerJoin.$where.$offset.$groupBy.$orderBy.$orderType.$limit;
 
 		$query = 'SELECT '.$columns.' FROM '.$table.' '.$allQueryParams;
 
@@ -390,7 +392,9 @@ Class QueryBuilder{
 
 		$where = isset($options['where']) ? 'WHERE '.$options['where'] : "";
 
-		$query = 'UPDATE '.$table.' SET '.$set.' '.$where;
+		$join = isset($options['join']) ? ' JOIN '.$options['join'] : "";
+
+		$query = 'UPDATE '.$table.$join.' SET '.$set.' '.$where;
 
 		//echo $query;
 

@@ -37,6 +37,8 @@
                                         <th>Initial Price</th>
                                         <th>Last Crawled Status</th>
                                         <th>Merged ID</th>
+                                        <th>Legacy ID ID</th>
+                                        <th>Active</th>
                                     </thead>
                                 </table>
                             </div>

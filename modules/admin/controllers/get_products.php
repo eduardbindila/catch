@@ -28,7 +28,8 @@ if($searchValue != ''){
         manufacturer like '%".$searchValue."%' or 
         initial_price like'%".$searchValue."%' or 
         last_crawled_status like'%".$searchValue."%' or 
-        id like'%".$searchValue."%' ) ";
+        id like'%".$searchValue."%' or 
+        legacy_id like'%".$searchValue."%' ) ";
 }
 
 
@@ -67,7 +68,9 @@ while ($row = mysqli_fetch_assoc($empRecords)) {
       "is_temporary"=>$row['is_temporary'],
       "initial_price"=>$row['initial_price'],
       "last_crawled_status"=>$row['last_crawled_status'],
-      'merged_id' => $row['merged_id'] 
+      'merged_id' => $row['merged_id'],
+      'legacy_id' => $row['legacy_id'],
+      'active' => $row['active'] 
    );
 }
 

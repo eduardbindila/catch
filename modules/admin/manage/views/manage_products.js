@@ -76,7 +76,7 @@ $(document).ready(function() {
                         "total" : row.total
                     }
 
-                    var loader = "";
+                    var showLoader = 0;
 
                     percent.pending =  100 * row.pending / row.total;
 
@@ -88,7 +88,7 @@ $(document).ready(function() {
 
                    percent.processed = percent.error + percent.updated + percent.new;
 
-                   console.log(percent);
+                   //console.log();
 
                    if(type === 'display' && percent.processed !== 100 ) {
  
@@ -104,15 +104,32 @@ $(document).ready(function() {
                     }).error(function(xhr, status, error) {
                        
                     }).complete( function (data) {
-                        console.log('reload'+row.id)
+                        // console.log('reload'+row.id)
                         importLists.ajax.reload();
                     })
                         
 
-                    loader = 'Processing...<div class="text-center"><h6 class="loader-progress">'+percent.processed.toFixed(2)+'%</h6><div class="preloader pl-size-sm"> <div class="spinner-layer pl-red-grey"> <div class="circle-clipper left"> <div class="circle"></div> </div> <div class="circle-clipper right"> <div class="circle"></div> </div> </div> </div></div>';
+                    
+                   } else if(parseInt(row.status_id) !== 4 && percent.processed == 100 ) {
+
+                        showLoader = 1;
+                        
+                        $.ajax({
+                            url: "/ajax/updateImportListStatus",
+                            type: "post",
+                            dataType: "json",
+                            data: {"id": row.id, "new_status": 4 }
+                        }).success(function(json){
+                                                      
+
+                        }).error(function(xhr, status, error) {
+                           
+                        }).complete( function (data) {
+                            importLists.ajax.reload();
+                        })
                    }
 
-                    return loader+'<div class="progress"> <div class="progress-bar progress-bar-success" style="width: '+percent.updated+'%"> <span class="sr-only">'+percent.updated+'% Complete (success)</span> </div> <div class="progress-bar progress-bar-primary progress-bar-striped active" style="width: '+percent.new+'%"> <span class="sr-only">'+percent.new+'% Complete (warning)</span> </div> <div class="progress-bar progress-bar-danger" style="width: '+percent.error+'%"> <span class="sr-only">'+percent.error+'% Complete (danger)</span> </div> </div>'
+                    return showProgressBar(percent, showLoader)
                   } 
             },
 
@@ -183,6 +200,46 @@ $(document).ready(function() {
 
     })
 
+    $('.identifyDuplicates').on('click', function(e){
+        $.ajax({
+            url: "/ajax/setMergeId",
+            type: "post",
+            dataType: "json",
+        }).success(function(json){           
+
+        }).complete( function (data) {
+            console.log(data);
+                getDuplicatesStatus(1);
+                $('.identifyDuplicates').trigger('click');                
+        })
+    })
+
+    getDuplicatesStatus(0);
+
+   $('.identifyDuplicates').on('click', function(e){
+        $.ajax({
+            url: "/ajax/setMergeId",
+            type: "post",
+            dataType: "json",
+        }).success(function(json){           
+
+        }).complete( function (data) {
+            console.log(data);
+                getDuplicatesStatus(1);
+                $('.identifyDuplicates').trigger('click');                
+        })
+    })
+
+
+   $('.updateQuoteItemsProduct').on('click', function(e){
+       updateQuoteItemsProduct(); 
+    })
+
+   $('.deactivateOldProducts').on('click', function(e){
+       deactivateOldProducts(); 
+    })
+
+
 })
 
 function beatifyTimestamp(inputDate){
@@ -215,3 +272,130 @@ $(function() {
 });
 
 
+function showProgressBar(percent, showLoader){
+    var loader = 'Processing...<div class="text-center"><h6 class="loader-progress">'+percent.processed.toFixed(2)+'%</h6><div class="preloader pl-size-sm"> <div class="spinner-layer pl-red-grey"> <div class="circle-clipper left"> <div class="circle"></div> </div> <div class="circle-clipper right"> <div class="circle"></div> </div> </div> </div></div>';
+    
+    if(showLoader == 0) {
+        loader = '';
+    }
+
+    return loader + '<div class="progress"> <div class="progress-bar progress-bar-success" style="width: '+percent.updated+'%"> <span class="sr-only">'+percent.updated+'% Complete (success)</span> </div> <div class="progress-bar progress-bar-primary progress-bar-striped active" style="width: '+percent.new+'%"> <span class="sr-only">'+percent.new+'% Complete (warning)</span> </div> <div class="progress-bar progress-bar-danger" style="width: '+percent.error+'%"> <span class="sr-only">'+percent.error+'% Complete (danger)</span> </div> </div>'
+
+}
+
+function duplicatesProgressBarr(row, showLoader) {
+
+    var percent = {
+        "pending" : "",
+        "update" : "",
+        "new" : "",
+        "error" : "",
+        "processed" : "",
+        "total" : row.total
+    }
+
+
+    percent.updated =  100 * row.not_needed / row.total;
+
+    percent.new =  100 * row.needed / row.total;
+
+    percent.quotes_modified = 100 * row.quotes_modified / row.total;
+
+    percent.products_deactivated = 100 * row.products_deactivated / row.total
+
+    percent.error = 100 * row.quotes_error / row.total
+
+    percent.processed = percent.updated + percent.new + percent.quotes_modified + percent.products_deactivated + percent.error;
+    
+    console.log(percent);
+
+    //console.log(Math.floor(percent.processed));
+
+    if(percent.processed.toFixed() == 100) {   
+        $('.duplicatesActions').removeClass('hidden');
+    }
+
+    $('.duplicatesProcessed').html(percent.processed.toFixed());
+
+    $('.duplicatesProgressBarr').html(showProgressBar(percent, showLoader));
+       
+}
+
+
+function getDuplicatesStatus(showLoader){
+     $.ajax({
+        url: "/ajax/getDuplicatesStatus",
+        type: "post",
+        dataType: "json",
+    }).success(function(json){
+
+
+        duplicatesProgressBarr(json[0], showLoader);
+
+        getAffectedQuoteItems("merge", ".updateQuoteProductsProgress span");
+
+        getNeedDeactivationProducts("merge", ".deactivateOldProductsProgress span");
+
+        console.log('get duplicates');
+
+    }).error(function(xhr, status, error) {
+       
+    })
+}
+
+function getAffectedQuoteItems(type, textElement) {
+
+    $.ajax({
+        url: "/ajax/getAffectedQuoteItems",
+        type: "post",
+        dataType: "json",
+        data: {"type": type}
+    }).success(function(json){
+    console.log($(textElement));           
+        $(textElement).text(json[0]['total']);
+    })
+}
+
+
+function getNeedDeactivationProducts(type, textElement) {
+
+    $.ajax({
+        url: "/ajax/getNeedDeactivationProducts",
+        type: "post",
+        dataType: "json",
+        data: {"type": type}
+    }).success(function(json){
+    console.log($(textElement));           
+        $(textElement).text(json[0]['total']);
+    })
+}
+
+function updateQuoteItemsProduct(){
+    $('.updateQuoteProductsProgress .loader').removeClass('hidden');
+     $.ajax({
+        url: "/ajax/replaceQuoteItemsOldProduct",
+        type: "post",
+        dataType: "json",
+    }).success(function(json){
+
+    }).complete( function (data) {
+       
+                getAffectedQuoteItems("merge", ".updateQuoteProductsProgress span");
+                $('.updateQuoteItemsProduct').trigger('click');                
+        })
+}
+
+function deactivateOldProducts(){
+    $('.deactivateOldProductsProgress .loader').removeClass('hidden');
+     $.ajax({
+        url: "/ajax/deactivateNeededProducts",
+        type: "post",
+        dataType: "json",
+    }).success(function(json){
+
+    }).complete( function (data) {
+       
+                getAffectedQuoteItems("merge", ".deactivateOldProductsProgress span");
+                $('.deactivateOldProducts').trigger('click');                
+        })
+}

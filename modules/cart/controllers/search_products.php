@@ -40,7 +40,7 @@ $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != ""
 
 		$idList = '"' . implode('", "', $rawBulkArray) . '"';;
 
-		$whereClause = "id IN (".$idList.") ORDER BY FIELD(id,".$idList.");";
+		$whereClause = "id IN (".$idList.") AND active = 1 ORDER BY FIELD(id,".$idList.");";
 	
 
 		
@@ -70,9 +70,9 @@ $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != ""
 
 	}  elseif ($isCriteriakSearch OR $isProductSearch) {
 		if($isCriteriakSearch) {
-			$whereClause = "id LIKE '%".$_POST['searchCriteria']."%'";
+			$whereClause = "id LIKE '%".$_POST['searchCriteria']."%' AND active = 1";
 		} else {
-			$whereClause = "product_name LIKE '%".$_POST['product_name']."%'";
+			$whereClause = "product_name LIKE '%".$_POST['product_name']."%' AND active = 1";
 		}
 		$criteriaQuery = $QueryBuilder->select(
 				$conn,

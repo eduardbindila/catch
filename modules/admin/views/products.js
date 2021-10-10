@@ -52,6 +52,12 @@ $(document).ready(function() {
             },
             {
                 "data": "merged_id"
+            },
+            {
+                "data": "legacy_id"
+            },
+            {
+                "data": "active"
             }
         ],
         "initComplete": function(settings, json) {
