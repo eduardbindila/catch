@@ -3,7 +3,7 @@
 require_once('../../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-
+//var_dump($_POST);
 
 $target_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
 
@@ -33,8 +33,30 @@ function fixProductId($product_id)
 while(! feof($f_pointer)){
 	$product=fgetcsv($f_pointer);
 
-	if($product[0] && $product[1] && $product[2]) {
-		$product_id = preg_replace("/[^a-zA-Z 0-9]+/", "",  trim($product[0]));
+
+	$localArray = array(
+			'import_product_list_id' => "",
+			'product' => "",
+			'product_name' => "",
+			'initial_price' => "0.00",
+			'manufacturer' => "",
+			'new_product_id' => "",
+			'status' => $_POST['status'] == '6' ? 7 : 1
+		);
+
+
+	if($_POST['status'] == '6') {
+
+		$product_id = addslashes(trim($product[0]));
+
+		$new_product_id = addslashes(trim($product[4]));
+
+		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
+		$localArray['product'] = fixProductId($product_id);
+		$localArray['new_product_id'] = $new_product_id;
+
+	} else if(($product[0] && $product[1] && $product[2]) || ($product[0]) && $product[4]) {
+		$product_id = addslashes(trim($product[0]));
 
 		$product_name = substr(str_replace("'", "", str_replace('"', "", htmlentities($product[1], ENT_IGNORE))), 0, 253).'...';
 
@@ -44,6 +66,7 @@ while(! feof($f_pointer)){
 
 		$manufacturer = preg_replace("/[^a-zA-Z 0-9]+/", "",   trim(substr($product[3], 0, 3)));
 
+
 		//var_dump(htmlentities($product[1], ENT_IGNORE));
 
 
@@ -52,16 +75,27 @@ while(! feof($f_pointer)){
 			'product' => fixProductId($product_id),
 			'product_name' => $product_name,
 			'initial_price' =>$initial_price,
-			'manufacturer' => $manufacturer
+			'manufacturer' => $manufacturer,
+			'new_product_id' => $new_product_id
 		);
 
+		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
+		$localArray['product'] = fixProductId($product_id);
+		$localArray['product_name'] = $product_name;
+		$localArray['new_product_id'] = $new_product_id;
+
+		$localArray['initial_price'] = $initial_price;
+		$localArray['manufacturer'] = $new_product_id;
+		
 		//var_dump($localArray);
-		array_push($valuesArray, $localArray);
+		
 	}	
+
+	array_push($valuesArray, $localArray);
 }
 
 
-// var_dump($valuesArray);
+//var_dump($valuesArray);
 
 
 $conn = $QueryBuilder->dbConnection();
@@ -70,7 +104,7 @@ $conn = $QueryBuilder->dbConnection();
             $conn,
             $options = array(
                 "table" => "products_import",
-                "keys" => ["import_product_list_id", "product_id", "name", "price", "manufacturer"],
+                "keys" => ["import_product_list_id", "product_id", "name", "price", "manufacturer", "new_product_id", "status"],
                 "values" => $valuesArray,
             ),
             $multi = true
@@ -84,7 +118,7 @@ $conn = $QueryBuilder->dbConnection();
 	} else {
 		echo json_encode(0);
 	}
-
+//var_dump($conn->error);
 
 	
 	

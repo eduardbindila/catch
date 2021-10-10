@@ -21,6 +21,7 @@ $conn = $QueryBuilder->dbConnection();
 
 		//echo "<pre>";
 
+
 		$merge_id = 0;
 		$merge_status = NULL;
 		
@@ -35,7 +36,20 @@ $conn = $QueryBuilder->dbConnection();
 		 }
 
 
-		if($product !== $processedProduct && isset($productsQuery[$processedProduct])) {
+		 $isExisting = $QueryBuilder->select(
+			$conn,
+			$options = array(
+				"table" => "products",
+				"columns" => "id",
+				"where" => "id = '".$processedProduct."'",
+			),
+			$returnType = "bol"
+		);
+
+		 //echo $isExisting;
+
+
+		if($product !== $processedProduct && $isExisting) {
 			
 			$merge_id = $processedProduct;
 			$merge_status = 2;	
@@ -44,8 +58,12 @@ $conn = $QueryBuilder->dbConnection();
 			$merge_status = 1;
 		}
 
-		// echo $product.' => '.$merge_id.' : '.$merge_status;
+
+
+		//echo $product.' => '.$processedProduct.'  =>  '.$merge_id.' : '.$merge_status;
 		// echo "</pre>";
+
+		//var_dump($productsQuery);
 		
 		$updateMergeDataProductQuery = $QueryBuilder->update(
 			$conn,

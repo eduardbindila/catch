@@ -88,10 +88,10 @@ $(document).ready(function() {
 
                    percent.processed = percent.error + percent.updated + percent.new;
 
-                   //console.log();
-
-                   if(type === 'display' && percent.processed !== 100 ) {
+                   
+                   if(type === 'display' && percent.processed !== 100 && parseInt(row.status_id) !== 6 ) {
  
+                    showLoader = 1;
 
                     $.ajax({
                         url: "/ajax/updateProductsFromList",
@@ -107,12 +107,13 @@ $(document).ready(function() {
                         // console.log('reload'+row.id)
                         importLists.ajax.reload();
                     })
-                        
+                        console.log(percent, row.id, row.status_id);
 
                     
-                   } else if(parseInt(row.status_id) !== 4 && percent.processed == 100 ) {
+                   } else if(type === 'display' && parseInt(row.status_id) !== 4 && parseInt(row.status_id) !== 6 && percent.processed == 100 ) {
+                        
 
-                        showLoader = 1;
+                        showLoader = 0;
                         
                         $.ajax({
                             url: "/ajax/updateImportListStatus",
@@ -152,11 +153,13 @@ $(document).ready(function() {
       $('.importFormWrapper').addClass('hidden');
       $('.loader-wrapper').removeClass('hidden');
 
+      fileStatus = data.status;
+
       $.ajax({
             url: "/ajax/importProductList",
             type: "post",
             dataType: "json",
-            data: {'file_name': data.file_name, 'name': data.name}
+            data: {'file_name': data.file_name, 'name': data.name, 'status': data.status}
         }).success(function(importedId){
 
 
@@ -171,7 +174,7 @@ $(document).ready(function() {
                     url: "/ajax/importListProducts",
                     type: "post",
                     dataType: "json",
-                    data: {'file_name': data.file_name, 'import_product_list_id': importedId}
+                    data: {'file_name': data.file_name, 'import_product_list_id': importedId, 'status': fileStatus}
                 }).success(function(json){
                    
 
@@ -216,6 +219,8 @@ $(document).ready(function() {
 
     getDuplicatesStatus(0);
 
+    getLegacyStatus(0);
+
    $('.identifyDuplicates').on('click', function(e){
         $.ajax({
             url: "/ajax/setMergeId",
@@ -231,12 +236,24 @@ $(document).ready(function() {
     })
 
 
+   $('.updateLegacyProducts').on('click', function(e){
+        updateLegacyProducts();
+    })
+
    $('.updateQuoteItemsProduct').on('click', function(e){
-       updateQuoteItemsProduct(); 
+       updateQuoteItemsProduct('merge', '.updateQuoteProductsProgress', '.updateQuoteItemsProduct'); 
+    })
+
+   $('.legacyUpdateQuoteItemsProduct').on('click', function(e){
+       updateQuoteItemsProduct('legacy', '.legacyUpdateQuoteProductsProgress', '.legacyUpdateQuoteItemsProduct'); 
     })
 
    $('.deactivateOldProducts').on('click', function(e){
-       deactivateOldProducts(); 
+       deactivateOldProducts('merge', '.deactivateOldProductsProgress', '.deactivateOldProducts'); 
+    })
+
+   $('.deactivateLegacyOldProducts').on('click', function(e){
+       deactivateOldProducts('legacy', '.deactivateLegacyOldProductsProgress', '.deactivateLegacyOldProducts'); 
     })
 
 
@@ -370,32 +387,123 @@ function getNeedDeactivationProducts(type, textElement) {
     })
 }
 
-function updateQuoteItemsProduct(){
-    $('.updateQuoteProductsProgress .loader').removeClass('hidden');
+function updateQuoteItemsProduct(type, status, trigger){
+    $( status +' .loader').removeClass('hidden');
      $.ajax({
         url: "/ajax/replaceQuoteItemsOldProduct",
         type: "post",
         dataType: "json",
+        data: {"type": type}
     }).success(function(json){
 
     }).complete( function (data) {
        
-                getAffectedQuoteItems("merge", ".updateQuoteProductsProgress span");
-                $('.updateQuoteItemsProduct').trigger('click');                
+                getAffectedQuoteItems(type, status +" span");
+                $(trigger).trigger('click');                
         })
 }
 
-function deactivateOldProducts(){
-    $('.deactivateOldProductsProgress .loader').removeClass('hidden');
+function deactivateOldProducts(type, status, trigger){
+    $(status +' .loader').removeClass('hidden');
      $.ajax({
         url: "/ajax/deactivateNeededProducts",
+        type: "post",
+        dataType: "json",
+        data: {"type": type}
+    }).success(function(json){
+
+    }).complete( function (data) {
+       
+                getNeedDeactivationProducts(type, status +" span");
+                $(trigger).trigger('click');                
+        })
+}
+
+function legacyProgressBarr(row, showLoader) {
+
+
+    row.legacy_updated = parseInt(row.legacy_updated);
+    row.total = parseInt(row.total);
+    row.waiting_update = parseInt(row.waiting_update);
+    row.error = parseInt(row.error);
+    row.waiting_merge = parseInt(row.waiting_merge);
+
+
+
+    var percent = {
+        "pending" : 0,
+        "updated" : 0,
+        "new" : 0,
+        "error" : 0,
+        "processed" : 0,
+        "total" : row.total
+    }
+
+
+
+    percent.updated =  100 * row.legacy_updated / row.total;
+
+    percent.pending =  100 * row.waiting_update / row.total;
+
+    percent.error =  100 * row.error / row.total;
+
+    percent.new =  100 * row.waiting_merge / row.total;
+
+    // percent.quotes_modified = 100 * row.quotes_modified / row.total;
+
+    // percent.products_deactivated = 100 * row.products_deactivated / row.total
+
+    percent.processed = percent.updated + percent.error + percent.new;
+    
+    console.log(percent);
+
+    //console.log(Math.floor(percent.processed));
+
+    if(percent.processed.toFixed() == 100) {   
+        $('.legacyActions').removeClass('hidden');
+    }
+
+    $('.legacyProcessed').html(percent.processed.toFixed());
+
+    $('.legacyProgressBarr').html(showProgressBar(percent, showLoader));
+       
+}
+
+
+function getLegacyStatus(showLoader){
+     $.ajax({
+        url: "/ajax/getLegacyUpdateStatus",
+        type: "post",
+        dataType: "json",
+    }).success(function(json){
+
+
+        legacyProgressBarr(json[0], showLoader);
+
+        getAffectedQuoteItems("legacy", ".legacyUpdateQuoteProductsProgress span");
+
+        getNeedDeactivationProducts("legacy", ".deactivateLegacyOldProductsProgress span");
+
+        // console.log('get duplicates');
+
+    }).error(function(xhr, status, error) {
+       
+    })
+}
+
+
+function updateLegacyProducts(){
+    getLegacyStatus(1);
+
+     $.ajax({
+        url: "/ajax/updateLegacyProducts",
         type: "post",
         dataType: "json",
     }).success(function(json){
 
     }).complete( function (data) {
        
-                getAffectedQuoteItems("merge", ".deactivateOldProductsProgress span");
-                $('.deactivateOldProducts').trigger('click');                
-        })
+                getAffectedQuoteItems("legacy", ".legacyUpdateQuoteProductsProgress span");
+                $('.updateLegacyProducts').trigger('click');                
+    })
 }

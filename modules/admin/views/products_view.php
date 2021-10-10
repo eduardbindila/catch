@@ -8,13 +8,6 @@
                 <div class="card">
                     <div class="header">
                         <h2>Products Details</h2>
-                        <ul class="header-dropdown m-r-0">
-                            <li>
-                                <button class="btn btn-success waves-effect">
-                                    Identify Merged Products
-                                </button>
-                            </li>
-                        </ul>
                     </div>
                     <div class="body">
                         <div class="row">

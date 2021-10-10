@@ -174,3 +174,7 @@ RewriteRule ^ajax/getAffectedQuoteItems modules/admin/manage/controllers/get_aff
 RewriteRule ^ajax/getNeedDeactivationProducts modules/admin/manage/controllers/get_need_deactivation_products.php [L]
 
 RewriteRule ^ajax/deactivateNeededProducts modules/admin/manage/controllers/deactivate_needed_products.php [L]
+
+RewriteRule ^ajax/getLegacyUpdateStatus modules/admin/manage/controllers/get_legacy_update_status.php [L]
+
+RewriteRule ^ajax/updateLegacyProducts modules/admin/manage/controllers/update_legacy_products.php [L]
