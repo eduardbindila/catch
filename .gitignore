@@ -1,1 +1,4 @@
 uploads
+**/.DS_Store
+access.log
+error.log

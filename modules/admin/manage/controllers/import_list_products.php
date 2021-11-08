@@ -70,22 +70,22 @@ while(! feof($f_pointer)){
 		//var_dump(htmlentities($product[1], ENT_IGNORE));
 
 
-		$localArray = array(
-			'import_product_list_id' => $_POST['import_product_list_id'],
-			'product' => fixProductId($product_id),
-			'product_name' => $product_name,
-			'initial_price' =>$initial_price,
-			'manufacturer' => $manufacturer,
-			'new_product_id' => $new_product_id
-		);
+		// $localArray = array(
+		// 	'import_product_list_id' => $_POST['import_product_list_id'],
+		// 	'product' => fixProductId($product_id),
+		// 	'product_name' => $product_name,
+		// 	'initial_price' =>$initial_price,
+		// 	'manufacturer' => $manufacturer,
+		// 	'new_product_id' => ''
+		// );
 
 		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['product_name'] = $product_name;
-		$localArray['new_product_id'] = $new_product_id;
+		$localArray['new_product_id'] = '';
 
 		$localArray['initial_price'] = $initial_price;
-		$localArray['manufacturer'] = $new_product_id;
+		$localArray['manufacturer'] = $manufacturer;
 		
 		//var_dump($localArray);
 		
