@@ -78,7 +78,7 @@ $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != ""
 				$conn,
 				$options = array(
 					"table" =>"products",
-					"columns" => "id, product_name,". $initial_price ."  as initial_price",
+					"columns" => "id, product_name, 0 as from_db, ". $initial_price ."  as initial_price",
 					"where" => $whereClause,
 				)
 			);
