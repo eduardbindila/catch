@@ -86,7 +86,7 @@ Class QueryBuilder{
 
 	function dbConnection(){
 		if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
-		 $conn = mysqli_connect("127.0.0.1","root","","icatch") or die("Couldn't connect");
+		 $conn = mysqli_connect("127.0.0.1","root","eduard21","icatch") or die("Couldn't connect");
 
 		// } else {
 		// 	$conn = mysqli_connect("localhost","eduardbi_icatch","H&s!MNV_Q}K*","eduardbi_icatchb2b") or die("Couldn't connect");
@@ -359,6 +359,38 @@ Class QueryBuilder{
 				}
 
 				$this->logAction("selectQuotesData", "", $query, $rows);
+
+				return $rows;
+		}
+		else {
+			return mysqli_error($conn);
+		}	
+	}
+
+	function getCategoryBreadcrumbs($conn, $parent_id){
+
+
+		$query = "
+
+			with recursive parent_users (id, parent_id, category_name, level) AS (
+			  SELECT id, parent_id, category_name, 1 level
+			  FROM categories
+			  WHERE id = '".$parent_id."'
+			  union all
+			  SELECT t.id, t.parent_id, t.category_name, level + 1
+			  FROM categories t INNER JOIN parent_users pu
+			  ON t.id = pu.parent_id
+			)
+			SELECT * FROM parent_users Order By level DESC
+		";
+
+		$results = mysqli_query($conn, $query);
+		
+		if($results) {
+				$rows = array();
+				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				    array_push($rows, $row);
+				}
 
 				return $rows;
 		}

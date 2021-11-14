@@ -8704,3 +8704,11 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
 .loader-messages {
   margin-top: 20px;
 }
+
+.product-grid__item-img-small {
+    width: 100%;
+    height: 170px;
+    margin: 0 auto;
+    background-size: cover;
+    background-position: center;
+}

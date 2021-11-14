@@ -59,7 +59,6 @@ foreach ($category_path as $subcategory => $subcategory_value) {
         "category_image" => $subcategory_image,
         "parent_slug" => $_POST['parent']
     );
-
     array_push($category_array['data'], $subcategory_array);
 }
 	echo json_encode($category_array);

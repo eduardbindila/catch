@@ -187,8 +187,13 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                 {
                             ?>
                             <li>
-                                <a href="/cart/create">
+                                <a href="/cart/create/">
                                     <span>Create Quote</span>
+                                </a>
+                            </li>
+                             <li>
+                                <a href="/cart/catalog/">
+                                    <span>Catalog</span>
                                 </a>
                             </li>
                             <?php }?>

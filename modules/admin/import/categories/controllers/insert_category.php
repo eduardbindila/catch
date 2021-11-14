@@ -13,7 +13,7 @@ $query = $QueryBuilder->insert(
 	$options = array(
 		"table" => "categories",
 		"keys" => ["id", "category_name", "category_image", "parent_id"],
-		"values" => [$category["category_slug"], $category["category_name"], $category["category_image"], $category["parent_slug"]]
+		"values" => [$category["category_slug"], $category["category_name"], addslashes($category["category_image"]), $category["parent_slug"]]
 	)
 );
 
