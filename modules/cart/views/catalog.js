@@ -59,7 +59,10 @@ $(document).ready(function() {
                 "data": "product_name"
             },
             { 
-                "data": "initial_price"
+                "data": "initial_price",
+                "render" : function(data, type, row) {
+                    return parseFloat(data).toFixed(2);
+                  } 
             },
             { 
                 "data": "aquisition_price",

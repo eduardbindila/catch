@@ -8,6 +8,8 @@
 
         var productFeaturesQuery = <?php echo json_encode($productFeaturesQuery); ?>;
 
+        var parent_id = '<?php echo $productParentID?>';
+
     </script>
 
 <?php
@@ -24,12 +26,14 @@
                 <div class="card">
                     <div class="header">
                         <h2><?php echo $productName?></h2>
-                        <small><?php echo $productParentID?></small>
+                        <ol class="breadcrumb">
+                          <li><a href="/cart/catalog/">Catalog</a></li>
+                        </ol>
                         <div class="clearfix">
                             <ul class="m-l-0 p-l-0 m-t-10 header-dropdown">
                             
                                 <li >
-                                    <h2>Price: <span class="label label-lg label-warning"><?php echo $productPrice?></span></h2>
+                                    <h2>Price: <span class="label label-lg label-warning"><?php echo number_format((float)$productPrice, 2, '.', ''); ?></span></h2>
                                 </li>
                                 <?php 
                                     if($_pageName != "quote" && !isset($_SESSION['user_access']['client-grid']) && isset($_SESSION['user_access']['sales-grid'])) 

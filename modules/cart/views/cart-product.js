@@ -1,6 +1,31 @@
 
 
 $(document).ready(function() {
+
+    $.ajax({
+        url: "/ajax/getCategoryBreadcrumbs",
+        type: "post",
+        dataType: "json",
+        data: {'parent_id': parent_id}
+    }).done(function(json){
+        //console.log(json);
+
+        var urlPrefix = '';
+        jQuery.each(json, function(index, item) {
+            // do something with `item` (or `this` is also `item` if you like)
+            
+            urlPrefix = urlPrefix + item.parent_id;
+            //console.log(urlPrefix);
+            var li = '<li><a href="/cart/catalog/'+urlPrefix+'/'+item.id+'/">'+item.category_name+'</a></li>';
+
+            //console.log(li);
+            $('.breadcrumb').append(li)
+        });
+
+    }).error(function(xhr, status, error) {
+
+    })
+
     $('.product-overview__copy').find('.button').remove();
 
      $('.product-overview__copy').find('li').prepend('<i class="material-icons">check</i>');
