@@ -8712,3 +8712,10 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     background-size: cover;
     background-position: center;
 }
+
+.card .breadcrumb {
+    padding-left: 0;
+    margin-top: 15px;
+    margin-bottom: -10px;
+}
+}

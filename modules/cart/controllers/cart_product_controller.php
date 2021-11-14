@@ -45,7 +45,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 	$productName = $productQuery[0]['product_name'];
-	$productPrice = $productQuery[0]['initial_price'];
+	$aquisitionPrice = $productQuery[0]['initial_price'];
+
+	if($_SESSION['client_discount'] > 0) {
+		$productPrice = $aquisitionPrice / $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 
+	} else {
+		$productPrice = $aquisitionPrice / $Pricing->listPercent;
+	}
 	
 	$productImage = $productQuery[0]['product_image'];
 	$productDescription = htmlspecialchars_decode($productQuery[0]['product_description']);

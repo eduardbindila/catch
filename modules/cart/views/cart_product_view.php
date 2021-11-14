@@ -28,16 +28,23 @@
                         <div class="clearfix">
                             <ul class="m-l-0 p-l-0 m-t-10 header-dropdown">
                             
-                            <li >
-                                <h2>Aquisition Price: <span class="label label-lg label-warning"><?php echo $productPrice?></span></h2>
-                            </li>
-                            <li>
-                                <button class="btn btn-lg btn-default waves-effect editProduct" data-toggle="modal" data-target="#edit-modal" >
-                                Edit
-                            </button>
-                            </li>
-
-                        </ul> 
+                                <li >
+                                    <h2>Price: <span class="label label-lg label-warning"><?php echo $productPrice?></span></h2>
+                                </li>
+                                <?php 
+                                    if($_pageName != "quote" && !isset($_SESSION['user_access']['client-grid']) && isset($_SESSION['user_access']['sales-grid'])) 
+                                    {
+                                ?>
+                                <li >
+                                    <h2>Aquisition Price: <span class="label label-lg label-warning"><?php echo $aquisitionPrice?></span></h2>
+                                </li>
+                                <li>
+                                    <button class="btn btn-lg btn-default waves-effect editProduct" data-toggle="modal" data-target="#edit-modal" >
+                                    Edit
+                                </button>
+                                </li>
+                                <?php }?>
+                            </ul> 
                         </div>
                         
                     </div>
