@@ -21,5 +21,28 @@ $(document).ready(function() {
             }
 
 	});
+
+	createWishlist();
 });
 
+var wishlist = [];
+
+function createWishlist() {
+		$.ajax({
+            url: "/ajax/getWishlist",
+            type: "post",
+            dataType: "json",
+        }).success(function(json){
+           wishlist = json == "" ? [] : json;
+           	 if(json !== "") {
+           	 	var wishlistArray = JSON.parse(json);
+		        wishlistArray.forEach(function(item) {
+				    var li = '<li>'+item+'</li>';
+
+		            //console.log(li);
+		            $('.wishlist').append(li)
+				});
+           	 }
+	        
+        })
+}

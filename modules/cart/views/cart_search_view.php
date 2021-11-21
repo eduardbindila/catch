@@ -29,8 +29,13 @@
                 <div class="card">
                     <div class="header">
                         <h2>Search Criteria</h2>
-                       
- 
+                        <ul class="header-dropdown m-r-0">
+                            <li>
+                                <button class="addFromWishlist btn btn-primary waves-effect" >
+                                    Search from wishlist
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                     <div class="body">
                           <!-- Nav tabs -->

@@ -324,6 +324,35 @@ $(document).ready(function() {
 
         var saveAjaxCall;
 
+        $('.addFromWishlist').on('click', function(e){
+            $.ajax({
+                url: "/ajax/searchProducts",
+                type: "post",
+                dataType: "json",
+                data: {"wishlist": JSON.parse(wishlist) }
+           }).success(function(json){
+                if(json === 0){
+                    $('.searchError').removeClass('hidden');
+                } else {
+                    resultsTable.clear().draw();
+                    resultsTable.rows.add(json); // Add new data
+                    resultsTable.columns.adjust().draw(); // Redraw the DataTable
+                }
+            
+            }).error(function(xhr, status, error) {
+               $('.searchError').removeClass('hidden');
+            })
+        })
+
+        if(queryDict.searchFromWishlist) {
+
+            setTimeout(function () {
+               $('.addFromWishlist').trigger('click');
+            }, 1000);
+
+            
+        }
+
         $('#searchForm').on('submit', function(e){
             e.preventDefault();
 

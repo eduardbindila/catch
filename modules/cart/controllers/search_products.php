@@ -12,6 +12,10 @@ $isCriteriakSearch = isset($_POST['searchCriteria']) && $_POST['searchCriteria']
 
 $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != "";
 
+$isWishlist = isset($_POST['wishlist']) && $_POST['wishlist'] != "";
+
+//var_dump($_POST);
+
 	$dummyArray = array();
 	$foundArray = array();
 
@@ -26,9 +30,17 @@ $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != ""
 	}
 
 	
-	if($isBulkSearch) {
+	if($isBulkSearch || $isWishlist) {
 
-		$rawBulkArray = explode("\r\n", $_POST['searchBulk']);
+		
+		if($isWishlist) {
+			$rawBulkArray = $_POST['wishlist'];
+		} else {
+			$rawBulkArray = explode("\r\n", $_POST['searchBulk']);	
+		}
+
+		$idList = '"' . implode('", "', $rawBulkArray) . '"';
+		
 
 		foreach($rawBulkArray as $key=>$val)
 		{ 
@@ -38,7 +50,7 @@ $isProductSearch = isset($_POST['product_name']) && $_POST['product_name'] != ""
 		     $dummyArray[$key]["from_db"] = 0;
 		}  
 
-		$idList = '"' . implode('", "', $rawBulkArray) . '"';;
+		
 
 		$whereClause = "id IN (".$idList.") AND active = 1 ORDER BY FIELD(id,".$idList.");";
 	

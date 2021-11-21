@@ -84,6 +84,8 @@ if($_sectionName !== "cron" && $_sectionName !== "offer" &&  $_SESSION['user_typ
 // }
 
 
+
+
 $_clientView = isset($_SESSION['user_access']['client-grid']); 
 
 $_salesView = isset($_SESSION['user_access']['sales-grid']);

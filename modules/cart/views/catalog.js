@@ -68,10 +68,34 @@ $(document).ready(function() {
                 "data": "aquisition_price",
                 "visible": iss
             },
+             { 
+                "data": null, 
+               "render" : function(data, type, row) {
+                    return '<button class="addToWishlist btn btn-success waves-effect" data-id="'+row.id+'">Add to Wishlist</button>'
+                  } 
+            }, 
         ],
         "drawCallback": function(settings, json) {
         }
     });
+
+    $('.addToWishlist').on('click', function(e){
+        var productId = $(this).attr('data-id');
+
+        var existingWishlist = wishlist.length > 0 ? wishlist : JSON.stringify(wishlist)
+
+        $.ajax({
+            url: "/ajax/updateWishlist",
+            type: "post",
+            dataType: "json",
+            data: {'productId': productId, 'existingWishlist': existingWishlist}
+        }).success(function(json){
+            createWishlist();
+        })
+        
+    })
+
+
 
 
 });

@@ -54,6 +54,7 @@
                                     <th>Product Name</th>
                                     <th>Aquisition Price</th>
                                     <th>Price</th>
+                                    <th></th>
                                 </thead>
                             </table>
                     </div>

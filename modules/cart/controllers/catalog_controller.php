@@ -25,10 +25,6 @@ if(isset($_SESSION['is_client']) && $_SESSION['is_client'] && $_SESSION['user_ty
 }
 
 
-
-
-echo 'asd'.$category;
-
 $categoriesQuery = $QueryBuilder->select(
 		$conn,
 		$options = array(
