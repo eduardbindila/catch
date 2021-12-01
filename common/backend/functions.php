@@ -1,7 +1,7 @@
 <?php 
 error_reporting(E_ALL); ini_set('display_errors', 1); 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/helpers.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/config/connection.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/config/conn.php');
 
 
 //Query Handling

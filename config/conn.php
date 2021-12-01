@@ -1,5 +1,7 @@
 <?php
 
+require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
+
 
 function getPage(){
 	$pageLink = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
@@ -47,6 +49,9 @@ Class QueryBuilder{
 	public function __construct() {
         global $_pageName;
         $this->pageName =& $_pageName;
+
+        global $_DB;
+        $this->db =&$_DB;
     }
 
     function logAction($action, $table, $query, $results){
@@ -85,15 +90,8 @@ Class QueryBuilder{
 	}
 
 	function dbConnection(){
-		if( in_array( $_SERVER['REMOTE_ADDR'], array( '127.0.0.1', '::1' ) ) ) { 
-		 $conn = mysqli_connect("127.0.0.1","root","eduard21","icatch") or die("Couldn't connect");
 
-		// } else {
-		// 	$conn = mysqli_connect("localhost","eduardbi_icatch","H&s!MNV_Q}K*","eduardbi_icatchb2b") or die("Couldn't connect");
-		// }
-		} else {
-			$conn = mysqli_connect("localhost","icatc_b2b","&AdS*q^fy]a7","icatc_b2b") or die("Couldn't connect");
-		}
+		$conn = mysqli_connect($this->db['host'], $this->db['user'], $this->db['password'], $this->db['db_name']) or die("Couldn't connect");
         
 
         return $conn;
