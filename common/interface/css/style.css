@@ -2357,7 +2357,8 @@ section.content {
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
-  transition: 0.5s; }
+  transition: 0.5s; 
+width: 100%}
 
 /* Dashboard =================================== */
 .dashboard-flot-chart {
@@ -7669,10 +7670,10 @@ fieldset[disabled] .form-control {
 
 .right-sidebar {
   width: 280px;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 50px);
   position: fixed;
   right: -300px;
-  top: 70px;
+  top: 50px;
   background: #fdfdfd;
   z-index: 11 !important;
   -webkit-box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -8185,6 +8186,31 @@ html.ie11 .bs-searchbox .form-control {
     background-size: cover;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.wishlist-view .table-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.wishlist-view .product-title {
+    line-height: 26px;
+    margin-left: 10px;
+    font-size: 11px;
+}
+
+.wishlist-view .pre-scrollable {
+  max-height: 80%;
+}
+
+.wishlist-view {
+  padding: 5px;
+}
+
+
+.wishlist-view .list-group-item {
+  padding: 5px;
 }
 
 .table tbody tr td, .table tbody tr th {
@@ -8717,5 +8743,10 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     padding-left: 0;
     margin-top: 15px;
     margin-bottom: -10px;
+}
+
+.noscroll{
+    position:fixed;
+    overflow:hidden;
 }
 }

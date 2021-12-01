@@ -205,25 +205,21 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                             <span>Logout</span>
                         </a>
                     </li>
-                    <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">
-                            Wishlist
-                            <span class="label-count">7</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">Your List</li>
-                            <li class="body">
-                               <ul class="wishlist">
-
-                               </ul>
-                            </li>
-                            <li class="footer">
-                                <a href="/cart/create/?project=undefined&searchFromWishlist=1" class=" waves-effect waves-block">Search these products</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar viewWishlistProducts" data-close="true">Wishlist<i class="material-icons">more_vert</i> <span class="label-count">7</span></a></li>
                 </ul>
             </div>
             <?php }?>
           </div>
         </nav>
+
+
+
+
+
+        <aside id="rightsidebar" class="right-sidebar wishlist-view">
+                <h4 class="text-center">My wishlist</h4>
+               <ul class="list-group wishlistProducts pre-scrollable">
+               </ul>
+               <a href="/cart/create/?project=undefined&searchFromWishlist=1" class="btn btn-success waves-effect waves-block">Search these products</a>           
+        </aside>
+        <div class="overlay"></div>

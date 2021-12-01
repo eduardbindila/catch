@@ -80,6 +80,7 @@ RewriteRule ^download download.php [L]
  RewriteRule ^ajax/addStock modules/cart/controllers/add_stock.php [L]
  RewriteRule ^ajax/updateWishlist modules/cart/controllers/update_wishlist.php [L]
  RewriteRule ^ajax/getWishlist modules/cart/controllers/get_wishlist.php [L]
+ RewriteRule ^ajax/viewWishlistProducts modules/cart/controllers/get_wishlist_products.php [L]
 
  RewriteRule ^ajax/getUsers modules/profiles/controllers/get_users.php [L]
 

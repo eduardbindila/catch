@@ -71,7 +71,7 @@ $(document).ready(function() {
              { 
                 "data": null, 
                "render" : function(data, type, row) {
-                    return '<button class="addToWishlist btn btn-success waves-effect" data-id="'+row.id+'">Add to Wishlist</button>'
+                    return '<button class="addToWishlist btn btn-success waves-effect notificationTrigger" data-placement-from="top" data-delay="600"  data-show-time="600" data-placement-align="center"data-animate-enter="" data-text="Product added to wishlist" data-animate-exit=""data-color-name="alert-success" data-id="'+row.id+'">Add to Wishlist</button>'
                   } 
             }, 
         ],
@@ -94,6 +94,20 @@ $(document).ready(function() {
         })
         
     })
+
+    $('.notificationTrigger').on('click', function () {
+       
+        var placementFrom = $(this).data('placement-from');
+        var placementAlign = $(this).data('placement-align');
+        var animateEnter = $(this).data('animate-enter');
+        var animateExit = $(this).data('animate-exit');
+        var colorName = $(this).data('color-name');
+        var time = $(this).data('show-time');
+        var delay = $(this).data('delay');
+        var text = $(this).data('text');
+
+        showNotification(colorName, text, placementFrom, placementAlign, animateEnter, animateExit, time, delay);
+    });
 
 
 

@@ -37,7 +37,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
     </script><script src="/common/interface/plugins/chartjs/Chart.bundle.js?v=0.1.4"></script>
 </script><script src="/common/interface/plugins/chartjs/chart.funnel.bundled.js?v=0.1.4"></script>
-<script data-jsd-embedded data-key="6a7789fb-0d09-46bf-af29-7bbbf7fec541" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
+<!-- <script data-jsd-embedded data-key="6a7789fb-0d09-46bf-af29-7bbbf7fec541" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script> -->
 
     
 
