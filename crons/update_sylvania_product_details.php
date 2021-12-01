@@ -18,7 +18,7 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
             "where" => "manufacturer ='syl' AND last_crawled_date <= CURRENT_DATE() - INTERVAL 1 MONTH",
             "orderBy" => "last_crawled_date",
             "orderType" => "ASC",
-            "limit" => "20"
+            "limit" => "1"
 
         ),
         $returnType = 'insertedProducts'
@@ -83,6 +83,9 @@ foreach ($productQuery as $key => $value) {
         $product_infopanels_class = "info-panels";
         $product_table_class = "info-panels";
         $product_data_section_id = "tab-product-data-table";
+        $breadcrumbData = $dom->saveHTML($xpath->query('//div[contains(@class,"breadcrumb")]')[0]);
+        $breadcrumbRaw = $xpath->query('//div[contains(@class,"breadcrumb")]/div')[0];
+
 
         // $category_path = $xpath->query('//div[@class="'.$product_description.'"]');
 
@@ -96,15 +99,42 @@ foreach ($productQuery as $key => $value) {
 
         $product_data = $xpath->query('//section[contains(@id,"'.$product_data_section_id.'")]');
 
+
+
+
+        $breadcrumb = explode("\r\n", $breadcrumbRaw->nodeValue);
+
+        $breadcrumbArray = array_splice($breadcrumb, 3, -2);
+        
+        $categoryId = "";
+
+        $breadcrumbIndex = 0;  
+
+        foreach ($breadcrumbArray as $node => $value) {
+
+            $value = trim($value);
+
+            if($breadcrumbIndex > 0) {
+                $categorySep = "-";
+            } else {
+                $categorySep = "";
+            }
+
+            $categoryId = $categoryId.$categorySep.$_ScrapHelpers->sluggify($value);
+
+            $breadcrumbIndex++;
+        }  
+
         $this_product = array(
                 "product_name" => trim($product_title),
                 "product_id" => $key,
                 "product_description" => addslashes(htmlspecialchars($product_description)),
                 "product_image" => $product_image,
+                "parent_id" => $categoryId,
                 "product_diagrams" => addslashes(htmlspecialchars($product_infopanels)),
         );
 
-        //dd($this_product);
+        //var_dump($this_product);
         
         $updateQuery = $QueryBuilder->update(
             $conn,
@@ -115,6 +145,7 @@ foreach ($productQuery as $key => $value) {
                     "`product_description`='".$this_product['product_description']."'",
                     "`product_image`='".$this_product['product_image']."'",
                     "`product_diagrams`='".$this_product['product_diagrams']."'",
+                    "`parent_id`='".$this_product['parent_id']."'",
                     "`last_crawled_date`=NOW()",
                     "`last_crawled_status`='".$crawling_status."'"   
                 ],
