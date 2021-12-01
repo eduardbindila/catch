@@ -18,7 +18,7 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
             "where" => "manufacturer ='syl' AND last_crawled_date <= CURRENT_DATE() - INTERVAL 1 MONTH",
             "orderBy" => "last_crawled_date",
             "orderType" => "ASC",
-            "limit" => "1"
+            "limit" => "20"
 
         ),
         $returnType = 'insertedProducts'
