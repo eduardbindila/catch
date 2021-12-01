@@ -8201,11 +8201,12 @@ html.ie11 .bs-searchbox .form-control {
 }
 
 .wishlist-view .pre-scrollable {
-  max-height: 80%;
+  max-height: calc(100% - 120px);
 }
 
 .wishlist-view {
   padding: 5px;
+  padding-bottom: 10px;
 }
 
 

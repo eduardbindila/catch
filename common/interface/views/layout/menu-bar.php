@@ -220,6 +220,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                 <h4 class="text-center">My wishlist</h4>
                <ul class="list-group wishlistProducts pre-scrollable">
                </ul>
-               <a href="/cart/create/?project=undefined&searchFromWishlist=1" class="btn btn-success waves-effect waves-block">Search these products</a>           
+               <a href="/cart/create/?project=undefined&searchFromWishlist=1" class="btn btn-success waves-effect waves-block">Search these products</a>    
+               <a href="#" class="btn btn-danger waves-effect waves-block m-t-5 clearWishlist">Clear list</a>          
         </aside>
         <div class="overlay"></div>

@@ -24,6 +24,21 @@ $(document).ready(function() {
 
 	createWishlist();
 
+	$('.clearWishlist').on('click', function(e){
+
+        $.ajax({
+            url: "/ajax/updateWishlist",
+            type: "post",
+            dataType: "json",
+            data: {'clear':1}
+        }).success(function(json){
+            createWishlist();
+            $('.wishlistProducts').empty();
+        })
+        
+    })
+
+
 	$('.viewWishlistProducts').on('click', function(e){
 
         $.ajax({
@@ -43,7 +58,7 @@ $(document).ready(function() {
             
 	             wishlistArray.forEach(function(productId) {
 	             	var item = wishlistProductsArray[productId];
-	             	console.log(item, productId);
+	             	//console.log(item, productId);
 				    var li =   '<li class="list-group-item clearfix">'+
 					                '<img src="'+item.product_image+'" class="table-image pull-left">'+
 					                '<div class="product-title pull-left">'+item.product_name+'</div>'+
@@ -71,16 +86,22 @@ function createWishlist() {
            wishlist = json == "" ? [] : json;
 
 
-           	 if(json !== "") {
+           		var wishlistLength;
 
-           	 	var wishlistArray = JSON.parse(json);
+           	 	if(wishlist.length == 0) {
+           	 		wishlistLength = wishlist.length
+           	 	} else {
+           	 		var wishlistArray = JSON.parse(json);
 
-           	 	var wishlistLength = wishlistArray.length;
+           	 		wishlistLength = wishlistArray.length;
+           	 	}
+           	 	
            	 	//console.log(wishlistLength);
 
            	 	$('.viewWishlistProducts .label-count').html(wishlistLength);
 
 
+           	 if(json !== "") {
 		        wishlistArray.forEach(function(item) {
 				    var li = '<li>'+item+'</li>';
 
