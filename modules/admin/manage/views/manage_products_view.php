@@ -253,6 +253,11 @@
                         <h4 class="modal-title" >Add New Import List</span></h4>
                     </div>
                     <div class="modal-body">
+                        <div class="m-t-10 m-b-10">
+                            <a href="/download?f=update-prices.csv" class="btn btn-info waves-effect">Download Update Prices Format File</a>
+                            <a href="/download?f=stocks_update.csv" class="btn btn-info waves-effect">Download Stocks Update Format File</a>
+                        </div>
+                        
                         <div class="importFormWrapper dropzone dz-clickable">
                             <form class="importProductList" method="post" action='' enctype="multipart/form-data" >
                                 <input type="hidden" id="file-name" name="file_name" value="">
