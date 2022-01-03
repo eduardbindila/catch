@@ -29,15 +29,19 @@ $LoadHTMLArtefacts->setScript($_WMPATH["MANAGE_VIEWS"].'manage_products_list.js'
 include($_PATH['COMMON_LAYOUT'].'head.php');
 include($_PATH['COMMON_LAYOUT'].'menu-bar.php');
 
+
+$listID = basename($urlArray['path']);
+
+
 include($_MPATH['MANAGE_PRODUCTS_CONTROLLERS'].'manage_products_list_controller.php');
 
 
 //show page controller
 
 
-$listID = basename($urlArray['path']);
 
-var_dump($listID);
+
+//var_dump($listID);
 
 include($_PATH['COMMON_LAYOUT'].'footer.php');
 

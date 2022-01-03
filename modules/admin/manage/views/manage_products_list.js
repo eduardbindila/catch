@@ -4,68 +4,54 @@ $(document).ready(function() {
 
  var importLists = $('.importLists_table').DataTable({
         "ajax": {
-            "url": "/ajax/getImportProductLists/",
+            "url": "/ajax/getImportProductsFromList/",
+            "type": "POST",
+            "data": {
+                "listID": listID
+            },
             "dataSrc": ""
-        },
-    
+        },    
         pageLength: 100,
             "paging":   true,
             "ordering": false,
             "searching": true,
         rowId: 'category_slug',
-          
         responsive: true,
-        order: [1],
+        order: [10],
         "columns": [ 
             { 
-                "data": "id",
-                // "render" : function(data, type, row) {
-                //     return '<a href="user/'+data+'" target="_blank">'+data+'</a>'
-                //   } 
+                "data": "id", 
             },
             { 
-                "data": "name"
-            }
-            ,
-            { 
-                "data": "date_uploaded",
-                "render" : function(data, type, row) {
-
-                    return beatifyTimestamp(data);
-                  } 
-            }
-            ,
-            { 
-                "data": "date_started",
-                "render" : function(data, type, row) {
-
-                    return beatifyTimestamp(data);
-                  } 
-            }
-            ,
-            { 
-                "data": "date_finished",
-                "render" : function(data, type, row) {
-
-                    return beatifyTimestamp(data);
-                  } 
+                "data": "product_id"
             },
             { 
-                "data": "file_url"
-            }
-            ,
+                "data": "product_name"
+            },
             { 
-                "data": "status"
-            }
-            ,
+                "data": "saga_stock"
+            },
             { 
-                "data": "user"
-            }, 
-            {
-                "data": null,
-                 "render" : function(data, type, row) {
-                    return ''
-                  } 
+                "data": "saga_comment"
+            },
+            { 
+                "data": "new_product_id"
+            },
+            { 
+                "data": "manufacturer"
+            },
+            { 
+                "data": "old_price"
+            },
+            { 
+                "data": "comment"
+            },
+            { 
+                "data": "status",
+                "visible": false
+            },
+            { 
+                "data": "status_name"
             }
         ],
         "initComplete": function(settings, json) {
@@ -73,18 +59,6 @@ $(document).ready(function() {
 
     });
 
-
-
 })
-
-function beatifyTimestamp(inputDate){
-    if(inputDate == 0 ) {
-        return "n/a"
-    } else {
-        var date = new Date(inputDate*1000)
-        return beautyfullDate = date.toLocaleDateString();  
-    }
-              
-}
 
 

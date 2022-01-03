@@ -30,18 +30,28 @@ function fixProductId($product_id)
 	}
 }
 
-while(! feof($f_pointer)){
-	$product=fgetcsv($f_pointer);
 
+
+
+$count = 0;
+while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
+    $count++;
+    if ($count == 1) { continue; }
+
+    //for stocks 0, 5, 13
+
+    //var_dump($product);
 
 	$localArray = array(
 			'import_product_list_id' => "",
 			'product' => "",
 			'product_name' => "",
+			'saga_quantity' => "",
+			'saga_comment' => "",
 			'initial_price' => "0.00",
 			'manufacturer' => "",
 			'new_product_id' => "",
-			'status' => $_POST['status'] == '6' ? 7 : 1
+			'status' => $_POST['status'] == '6' ? '7' : 1
 		);
 
 
@@ -54,6 +64,16 @@ while(! feof($f_pointer)){
 		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['new_product_id'] = $new_product_id;
+
+	} else if($_POST['status'] == '7') {
+
+		$product_id = addslashes(trim($product[0]));
+
+		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
+		$localArray['product'] = fixProductId($product_id);
+		$localArray['saga_quantity'] = $product[5];
+		$localArray['saga_comment'] = addslashes(htmlspecialchars($product[13]));
+		$localArray['status'] = 10;
 
 	} else if(($product[0] && $product[1] && $product[2]) || ($product[0]) && $product[4]) {
 		$product_id = addslashes(trim($product[0]));
@@ -92,6 +112,7 @@ while(! feof($f_pointer)){
 	}	
 
 	array_push($valuesArray, $localArray);
+	
 }
 
 
@@ -104,7 +125,7 @@ $conn = $QueryBuilder->dbConnection();
             $conn,
             $options = array(
                 "table" => "products_import",
-                "keys" => ["import_product_list_id", "product_id", "name", "price", "manufacturer", "new_product_id", "status"],
+                "keys" => ["import_product_list_id", "product_id", "name", "saga_quantity", "saga_comment", "price", "manufacturer", "new_product_id", "status"],
                 "values" => $valuesArray,
             ),
             $multi = true

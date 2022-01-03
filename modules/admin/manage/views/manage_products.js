@@ -21,9 +21,9 @@ $(document).ready(function() {
         "columns": [ 
             { 
                 "data": "id",
-                // "render" : function(data, type, row) {
-                //     return '<a href="user/'+data+'" target="_blank">'+data+'</a>'
-                //   } 
+                "render" : function(data, type, row) {
+                    return '<a href="/admin/manage/products/list/'+data+'" target="_blank">'+data+'</a>'
+                  } 
             },
             { 
                 "data": "name"
@@ -42,7 +42,9 @@ $(document).ready(function() {
                 "render" : function(data, type, row) {
 
                     return beatifyTimestamp(data);
-                  } 
+                  },
+                  "visible" : false
+
             }
             ,
             { 
@@ -50,7 +52,8 @@ $(document).ready(function() {
                 "render" : function(data, type, row) {
 
                     return beatifyTimestamp(data);
-                  } 
+                  },
+                  "visible" : false 
             },
             { 
                 "data": "file_url"
@@ -88,8 +91,9 @@ $(document).ready(function() {
 
                    percent.processed = percent.error + percent.updated + percent.new;
 
+                   //console.log(parseInt(row.id), parseInt(row.status_id), percent.processed)
                    
-                   if(type === 'display' && percent.processed !== 100 && parseInt(row.status_id) !== 6 ) {
+                   if(type === 'display' && percent.processed !== 100 && parseInt(row.status_id) !== 6) {
  
                     showLoader = 1;
 
@@ -97,7 +101,7 @@ $(document).ready(function() {
                         url: "/ajax/updateProductsFromList",
                         type: "post",
                         dataType: "json",
-                        data: {"import_product_list_id": row.id}
+                        data: {"import_product_list_id": row.id, "import_status": row.status_id}
                     }).success(function(json){
                                                   
 
@@ -110,7 +114,7 @@ $(document).ready(function() {
                         console.log(percent, row.id, row.status_id);
 
                     
-                   } else if(type === 'display' && parseInt(row.status_id) !== 4 && parseInt(row.status_id) !== 6 && percent.processed == 100 ) {
+                   } else if(type === 'display' && parseInt(row.status_id) !== 4 && parseInt(row.status_id) !== 6 && parseInt(row.status_id) !== 7 && percent.processed == 100 ) {
                         
 
                         showLoader = 0;

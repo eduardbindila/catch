@@ -265,6 +265,7 @@
                                     <select class="form-control" required name="status">
                                         <option value="1">Update or Add Product prices</option>
                                         <option value="6">Update product ID</option>
+                                        <option value="7">Update Stocks</option>
                                     </select>
                                 </div>
                                 <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Import Product List</button>
@@ -304,7 +305,7 @@
                                 </div>
 
                                 <div class="importingProductsSuccess alert alert-success hidden">
-                                    <strong>Finished!</strong> <span class="noSavedProducts"></span> products have been saved. Click here to check the product list before updating the prices. 
+                                    <strong>Finished!</strong> <span class="noSavedProducts"></span> products have been saved. Please Refresh the page 
                                 </div>
                                 <div class="importingProductsError alert alert-danger hidden">
                                     <strong>Error!</strong> We could not save the products. 
