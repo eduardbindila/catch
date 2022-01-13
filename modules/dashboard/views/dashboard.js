@@ -20,7 +20,7 @@ $(document).ready(function() {
             columnDefs: [
             {
                 searchPanes: {
-                    preSelect: ['2021']
+                    preSelect: ['2022']
                 },
                 targets: [11]
             }

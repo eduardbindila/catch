@@ -236,15 +236,16 @@ $(document).ready(function() {
 
                 },
                 {
-                    "data": null,
-                     className: "existing_stocks",
+                    "data": "saga_quantity",
+                     //className: "existing_stocks",
                     "render" : function(data, type, row, meta) {
-
-
-                       
-                            return ''
-                    },
-                    "visible": iss
+                        if(row.from_db) {
+                            return data;
+                        } else {
+                            return "";
+                        }
+                    }
+                    //"visible": iss
 
                 }
             ],
@@ -300,24 +301,25 @@ $(document).ready(function() {
                 }
 
                 
+                //Decomment this when using stocks
+                //=================================
+                // $.ajax({
+                //     url: "/ajax/getProductStocks",
+                //     type: "post",
+                //     dataType: "json",
+                //     data: {"product_id":data['id'] }
+                // }).success(function(json){
+                //     html = "<ul class='list-group'>";
 
-                 $.ajax({
-                    url: "/ajax/getProductStocks",
-                    type: "post",
-                    dataType: "json",
-                    data: {"product_id":data['id'] }
-                }).success(function(json){
-                    html = "<ul class='list-group'>";
-
-                $.each(json, function (i, item) {
+                // $.each(json, function (i, item) {
                        
-                    html = html + "<li class='list-group-item'>" + item.row_name+item.column_name + " - " + item.quantity + "pcs<li>"
-                 });
+                //     html = html + "<li class='list-group-item'>" + item.row_name+item.column_name + " - " + item.quantity + "pcs<li>"
+                //  });
 
-                html = html + "</ul>"
-                $('td', row).eq(5).html(html);
+                // html = html + "</ul>"
+                // $('td', row).eq(5).html(html);
                                     
-                });      
+                // });      
               }
 
         });
