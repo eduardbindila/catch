@@ -32,6 +32,11 @@ $conn = $QueryBuilder->dbConnection();
 
 //update products as pd join ( SELECT p.merged_id FROM `products` as p inner join products as pm on p.merged_id = pm.id where pm.active = 1 ) as pm on pd.id = pm.merged_id set pd.active = 0
 
+
+//update products as pd join ( SELECT p.legacy_id FROM `products` as p inner join products as pm on p.legacy_id = pm.id where pm.active = 1 ) as pm on pd.id = pm.legacy set pd.active = 0
+
+
+
 	echo json_encode($affectedQuoteItems);
 
 	$QueryBuilder->closeConnection();

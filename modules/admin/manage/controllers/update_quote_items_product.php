@@ -8,6 +8,8 @@ $conn = $QueryBuilder->dbConnection();
 
 $date = date('Y-m-d H:i:s');
 
+$_POST['type'] = 'legacy';
+
 if($_POST['type'] == "merge"){
 	$field = "merged_id";
 	$where = "p.merged_id != 0 and merge_status = 2";
