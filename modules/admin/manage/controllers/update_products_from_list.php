@@ -12,7 +12,7 @@ $conn = $QueryBuilder->dbConnection();
 
 //$_POST['import_product_list_id'] = 30; $_POST['import_status'] = 7;
 
-if($_POST['import_status'] == 6) {
+if($_POST['import_status'] !== 7) {
 	$status = 1;
 } else if($_POST['import_status'] == 7){
 	$status = 10;
