@@ -10,13 +10,21 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
-//$_POST['import_product_list_id'] = 30; $_POST['import_status'] = 7;
+//$_POST['import_product_list_id'] = 32; $_POST['import_status'] = 7;
 
-if($_POST['import_status'] !== 7) {
+
+var_dump($_POST);
+
+
+if($_POST['import_status'] !== '7') {
 	$status = 1;
-} else if($_POST['import_status'] == 7){
+} else if($_POST['import_status'] == '7'){
 	$status = 10;
 }
+
+
+var_dump($_POST);
+
 
 $date = date('Y-m-d H:i:s');
 
@@ -31,7 +39,7 @@ $updateListsQuery = $QueryBuilder->select(
 	)
 );
 
-//var_dump($updateListsQuery);
+var_dump($updateListsQuery);
 
 foreach ($updateListsQuery as $product => $product_details) {
 
