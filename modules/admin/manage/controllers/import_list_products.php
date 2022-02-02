@@ -72,7 +72,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['saga_quantity'] = $product[5];
-		$localArray['saga_comment'] = addslashes(htmlspecialchars($product[13]));
+		$localArray['saga_comment'] = addslashes(htmlspecialchars($product[19]));
 		$localArray['status'] = 10;
 
 	} else if(($product[0] && $product[1] && $product[2]) || ($product[0]) && $product[4]) {
@@ -139,7 +139,7 @@ $conn = $QueryBuilder->dbConnection();
 	} else {
 		echo json_encode(0);
 	}
-var_dump($conn->error);
+//var_dump($conn->error);
 
 	
 	
