@@ -2098,13 +2098,16 @@ function callQuoteSend(quoteId, clientId, type)
       });
     $('#sendMail-modal').modal('show');
 
-     if(isClientValid[quoteId] == 0) {
-        $('.clientInvalidError').removeClass('hidden');
-        $('.modal-body').addClass('hidden');
-    } else {
-        $('.modal-body').removeClass('hidden');
-        $('.clientInvalidError').addClass('hidden');
-    }
+
+    //Client Validation
+
+    //  if(isClientValid[quoteId] == 0) {
+    //     $('.clientInvalidError').removeClass('hidden');
+    //     $('.modal-body').addClass('hidden');
+    // } else {
+    //     $('.modal-body').removeClass('hidden');
+    //     $('.clientInvalidError').addClass('hidden');
+    // }
 
     $('#sendQuoteForm').keydown(function (e) {
         if (e.keyCode == 13) {
