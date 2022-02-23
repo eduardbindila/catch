@@ -4,6 +4,7 @@ require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
+
 if(isset($_POST['extra_discount'])) {
 	$projectsQuery = $QueryBuilder->update(
 		$conn,

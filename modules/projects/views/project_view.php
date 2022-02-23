@@ -129,6 +129,7 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-lg-12">
+                                
                                 <table class="allComments_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th>ID</th>

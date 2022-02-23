@@ -6365,6 +6365,10 @@ fieldset[disabled] .form-control {
     width: 25px;
     height: 25px; }
 
+    .preloader.pl-size-vxs {
+    width: 13px;
+    height: 13px; } 
+
 .spinner-layer {
   position: absolute;
   width: 100%;
@@ -8750,4 +8754,8 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     position:fixed;
     overflow:hidden;
 }
+
+.product_info .material-icons {
+    font-size: 15px !important;
 }
+

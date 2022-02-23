@@ -161,7 +161,7 @@ $conn = $QueryBuilder->dbConnection();
 					$conn,
 					$options = array(
 						"table" => "products",
-						"columns" => "id, product_name, product_image, initial_price, is_temporary, active",
+						"columns" => "id, product_name, product_image, initial_price, is_temporary, active, manufacturer, saga_quantity",
 						"where" => "id = '".$quoteValues['product_id']."'"
 					)
 				);
@@ -207,6 +207,7 @@ $conn = $QueryBuilder->dbConnection();
 			}
 
 			$quoteProducts['data'][$quoteDetails]['quote_item_id'] = $quoteValues['id'];
+			//$quoteProducts['data'][$quoteDetails]['manufacturer'] = $quoteValues['manufacturer'];
 			$quoteProducts['data'][$quoteDetails]['product_image'] = getImageBase($quoteProductDetails[0]['product_image'], $_pageName);
 			$quoteProducts['data'][$quoteDetails]['quantity'] = $quoteValues['quantity'];
 			$quoteProducts['data'][$quoteDetails]['discount'] = $quoteValues['discount'];
