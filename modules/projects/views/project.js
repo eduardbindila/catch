@@ -941,7 +941,7 @@ $(document).ready(function() {
                     "render" : function(data, type, row, meta) {
                         //console.log(index);
 
-                        if(row.saga_quantity > row.quantity) {
+                        if(parseInt(row.saga_quantity) > parseInt(row.quantity)) {
                             stockIcon = 'check_circle';
                             messageTitle = 'Local Stock';
                             messageContent = row.quantity + ' pieces available in local stock';
