@@ -118,7 +118,7 @@
                                 <input type="text" class="form-control" name="product_name" placeholder="Product Name" value="<?php echo $productName?>" required>
                             </div>
                             <div class="input-group">
-                                <input type="number" step=".01" class="form-control" name="initial_price" placeholder="Price" value="<?php echo $productPrice?>" required>
+                                <input type="number" class="form-control" step="any" name="initial_price" placeholder="Aquisition Price" value="<?php echo $aquisitionPrice?>" required>
                             </div>
                             <textarea class="tinymce" name="product_description" placeholder="Product Description">
                                     <?php echo $productDescription?>
