@@ -2237,7 +2237,7 @@ function callQuoteSend(quoteId, clientId, type)
 
     $("#clientEmail").email_multiple({
           reset: true,
-          //data : [clientEmail[quoteId]]
+          data : [clientEmail[quoteId]]
       });
     $('#sendMail-modal').modal('show');
 
