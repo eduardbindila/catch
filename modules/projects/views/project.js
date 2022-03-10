@@ -748,7 +748,7 @@ $(document).ready(function() {
                                     totalInitialPrice = totalInitialPrice + Number(row.initial_price) * Number(row.quantity); 
                                 })
 
-                                pageTotal = totalInitialPrice;
+                                pageTotal = totalInitialPrice.toFixed(2);
                             }
 
                             if(columnDataName == 'quantity') {
@@ -770,7 +770,7 @@ $(document).ready(function() {
                                     totalMinPrice = totalMinPrice + Number(row.min_price) * Number(row.quantity); 
                                 })
 
-                                pageTotal = totalMinPrice;
+                                pageTotal = totalMinPrice.toFixed(2);
                             }
 
                             if(columnDataName == 'list_price') {
@@ -781,7 +781,7 @@ $(document).ready(function() {
                                     totalListPrice = totalListPrice + Number(row.list_price) * Number(row.quantity); 
                                 })
 
-                                pageTotal = totalListPrice;
+                                pageTotal = totalListPrice.toFixed(2);
                             }
                             if(columnDataName == 'final_price') {
                                
