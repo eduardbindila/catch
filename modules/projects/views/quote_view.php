@@ -141,13 +141,15 @@ $quoteLockedClass = "";
                         }?>
                         <?php  if (($_SESSION['user_type'] == 3) && ($quote['quote_status'] == 4)) {
                             ?>
-                        <div class="col-lg-7">
+                        <li>
+                            <div class="">
                                     <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-selfCustomer="1">
-                                        <div class="btn-group btn-group-sm" role="group">
+                                        <div class="btn-group btn-group-lg" role="group">
                                             <button type="button" data-status="7" class="btn btn-default waves-effect">Send for Approval</button>
                                         </div>
                                     </div>
                                 </div>
+                        </li>
                         <?php }?>
                     </ul> 
                 </div>

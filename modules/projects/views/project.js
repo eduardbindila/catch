@@ -248,33 +248,6 @@ $(document).ready(function() {
                     var salesButtons = [
                         {
                             extend: 'selected',
-                            className: 'deleteSelected btn btn-lg btn-danger waves-effect',
-                            text: 'Delete Selected',
-                            action: function ( e, dt, button, config ) {
-
-                                var selection = dt.rows( { selected: true } ).data();
-                                var i;
-                            
-                                for ( i = 0; i < selection.length; i++) {
-                                    selectedItems.push(selection[i].quote_item_id);
-                                }
-                             
-
-                                $.ajax({
-                                    url: "/ajax/removeItemsFromQuote",
-                                    type: "post",
-                                    dataType: "json",
-                                    data: {'quote_item_id': selectedItems, 'quote_id': val['id']}
-                               }).success(function(json){
-                                   location.reload();
-
-                                }).error(function(xhr, status, error) {
-                                   //$('.addNewTemporaryProduct').removeClass('hidden');
-                                })
-                            }
-                        },
-                        {
-                            extend: 'selected',
                             className: 'duplicateQuote btn btn-lg btn-success waves-effect',
                             text: 'Duplicate Quote',
                             action: function ( e, dt, button, config ) {
@@ -338,6 +311,33 @@ $(document).ready(function() {
                         {
                             extend: 'selectNone',
                             className: 'btn btn-lg btn-primary waves-effect',
+                        },
+                        {
+                            extend: 'selected',
+                            className: 'deleteSelected btn btn-lg btn-danger waves-effect',
+                            text: 'Delete Selected',
+                            action: function ( e, dt, button, config ) {
+
+                                var selection = dt.rows( { selected: true } ).data();
+                                var i;
+                            
+                                for ( i = 0; i < selection.length; i++) {
+                                    selectedItems.push(selection[i].quote_item_id);
+                                }
+                             
+
+                                $.ajax({
+                                    url: "/ajax/removeItemsFromQuote",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {'quote_item_id': selectedItems, 'quote_id': val['id']}
+                               }).success(function(json){
+                                   location.reload();
+
+                                }).error(function(xhr, status, error) {
+                                   //$('.addNewTemporaryProduct').removeClass('hidden');
+                                })
+                            }
                         },
                          {
                             text: 'Get Delivery Date',
@@ -687,11 +687,13 @@ $(document).ready(function() {
                     }
                     else if(isc){
                         
-                        if(quoteList[index].quote_status == 4) {
-                            buttonsArray = [];
-                        } else {
-                             buttonsArray.push(clientButtons)
-                        }
+                        // if(quoteList[index].quote_status == 4) {
+                        //     buttonsArray = [];
+                        // } else {
+                        //      buttonsArray.push(clientButtons)
+                        // }
+
+                         buttonsArray.push(clientButtons)
                        
                     }
 
