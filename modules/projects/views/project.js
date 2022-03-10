@@ -326,6 +326,18 @@ $(document).ready(function() {
                                 })
 
                             }
+                        }
+
+                    ]
+
+                    buttonsArray = [
+                         {
+                            extend: 'selectAll',
+                            className: 'btn btn-lg btn-primary waves-effect',
+                        },
+                        {
+                            extend: 'selectNone',
+                            className: 'btn btn-lg btn-primary waves-effect',
                         },
                          {
                             text: 'Get Delivery Date',
@@ -387,18 +399,6 @@ $(document).ready(function() {
 
                                 
                             } 
-                        }
-
-                    ]
-
-                    buttonsArray = [
-                         {
-                            extend: 'selectAll',
-                            className: 'btn btn-lg btn-primary waves-effect',
-                        },
-                        {
-                            extend: 'selectNone',
-                            className: 'btn btn-lg btn-primary waves-effect',
                         },
                         {
                             extend: 'excel',
