@@ -425,23 +425,20 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "data": "date",
                     "render" : function(data, type, row) {
                         var date = new Date(data*1000)
-                        return date.toLocaleString();
+                        return date.toLocaleDateString();
                   } 
                 },
                 { 
                     "data": "sent_date",
                      "render" : function(data, type, row) {
                         
-                        var rowDate = new Date(row.date*1000)
-                        var date1 = rowDate.toLocaleString();
-
-                        var uploadDate = new Date(date1); 
+                        var rowDate = new Date(row.date*1000) 
 
                         // To calculate the time difference of two dates 
-                        var Difference_In_Time = new Date() - uploadDate.getTime(); 
+                        var Difference_In_Time = new Date() - rowDate.getTime(); 
                           
                         // To calculate the no. of days between two dates 
-                        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);                           
+                        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);                         
                         
                         return Math.trunc(Difference_In_Days);
                       } 
