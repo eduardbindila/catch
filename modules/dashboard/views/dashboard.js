@@ -481,6 +481,12 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 { 
                     "data": "offer_date"
                 },
+                 { 
+                    "data": "name"
+                },
+                 { 
+                    "data": "project_value"
+                },
                 { 
                     "data": "owner"
                 },

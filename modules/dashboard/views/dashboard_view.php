@@ -123,6 +123,8 @@
                                         <th>Quote ID</th>
                                         <th>Start Date</th>
                                         <th>Offer Date</th>
+                                        <th>Quote Name</th>
+                                        <th>Quote Price</th>
                                         <th>Created by</th>
                                         <th>Quote Status</th>
                                     </thead>
