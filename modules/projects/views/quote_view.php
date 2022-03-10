@@ -127,7 +127,7 @@ $quoteLockedClass = "";
                         ?>
                         <li>
                             <button class="btn btn-lg btn-success waves-effect clientConfirm" data-quote="<?php echo $quote['id']?>">
-                            Click here to Accept Offer
+                            Click here to Approve Offer
                             </button>
                         </li>
                         <li>
@@ -141,7 +141,7 @@ $quoteLockedClass = "";
                         }?>
                         <?php  if (($_SESSION['user_type'] == 3) && ($quote['quote_status'] == 4)) {
                             ?>
-                        <li>
+                       <!--  <li>
                             <div class="">
                                     <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-selfCustomer="1">
                                         <div class="btn-group btn-group-lg" role="group">
@@ -149,7 +149,7 @@ $quoteLockedClass = "";
                                         </div>
                                     </div>
                                 </div>
-                        </li>
+                        </li> -->
                         <?php }?>
                     </ul> 
                 </div>

@@ -20,13 +20,14 @@ $SessionState->sessionStart();
 
 //var_dump($_SESSION);
 
-// echo $_subSectionName;
+//echo $_subSectionName;
 
 //echo $_sectionName;
 
 //echo $_pageName;
 
 if(
+	$_sectionName == "project" && !isset($_SESSION['user_access']['sales-grid']) || 
 	$_subSectionName == "import" && !isset($_SESSION['user_access']['admin']) || 
 	$_subSectionName == "manage" && !isset($_SESSION['user_access']['admin']) || 
 	$_sectionName == "admin" && !isset($_SESSION['user_access']['supervisor'])) {

@@ -400,15 +400,15 @@ $(document).ready(function() {
                                 
                             } 
                         },
-                        {
-                            extend: 'excel',
-                            className: 'btn btn-lg btn-primary waves-effect',
-                            exportOptions: {
-                              stripHtml: true,
-                              orthogonal: null,
-                              columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
-                            }, footer: true
-                        },
+                        // {
+                        //     extend: 'excel',
+                        //     className: 'btn btn-lg btn-primary waves-effect',
+                        //     exportOptions: {
+                        //       stripHtml: true,
+                        //       orthogonal: null,
+                        //       columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
+                        //     }, footer: true
+                        // },
                         {
                             extend: 'pdf',
                             className: 'btn btn-lg btn-primary waves-effect',
@@ -1025,16 +1025,28 @@ $(document).ready(function() {
                     },
                      { 
                         "data": "list_price",
+                        "visible": iss
                     },
                      
                     { 
                         "data": "discount",
-                        "visible": !(isc == true && val['hide_discount'] == 1),
+                        //"visible": !(isc == true && val['hide_discount'] == 1),
+                        visible: iss,
                         className: "discount-wrapper",
                         "render" : function(data, type, row, meta) {
                             // console.log(isc, val['hide_discount'], !(isc == true && val['hide_discount'] == 1));
                             //console.log(meta, row);
-                            return '<div class="form-group"><div class="form-line"><input class="form-control quote-input" data-type="discount" data-index="'+index+'" name="discount" data-row="'+meta.row+'" data-col="'+meta.col+'" data-item="'+row.quote_item_id+'" placeholder="Discount" value="'+row.discount+'" type="number" min=0 ></div></div>'
+                            return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control quote-input" " name="discount"' + 
+                                                ' data-type="discount"' + 
+                                                ' data-index="'+index+
+                                                '" data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-item="'+row.quote_item_id+
+                                                '" placeholder="Discount" value="'+row.discount+'" type="number" min=0 '+ inputDisabledForClient + ' >' + 
+                                        '</div>' + 
+                                    '</div>'
                           }
                     },
                     {
@@ -1042,7 +1054,16 @@ $(document).ready(function() {
                       className: "unit-price-wrapper",
                       "render" : function(data, type, row, meta) {
                         
-                            return '<div class="form-group"><div class="form-line"><input class="form-control unit-price quote-input" data-type="unitPrice" data-index="'+index+'" placeholder="Unit Price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-item="'+row.quote_item_id+'" value="'+data+'" type="number" min=0></div></div>'
+                            return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control unit-price quote-input"' + 
+                                            ' data-type="unitPrice" data-index="'+index+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+
+                                            '" data-item="'+row.quote_item_id+
+                                            '" value="'+data+'" type="number" placeholder="Unit Price"  min=0 '+ inputDisabledForClient + '>' + 
+                                        '</div>' + 
+                                    '</div>'
                       }
                     },
 
@@ -1067,7 +1088,16 @@ $(document).ready(function() {
                      { 
                         "data": "quantity",
                             "render" : function(data, type, row, meta) {
-                              return '<div class="form-group"><div class="form-line"><input class="form-control quote-input" data-type="quantity" data-index="'+index+'" name="quantity" data-item="'+row.quote_item_id+'" data-row="'+meta.row+'" data-col="'+meta.col+'" placeholder="Quantity" value="'+row.quantity+'" type="number" min="1" step="1"></div></div>'
+                              return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control quote-input"' + 
+                                            ' data-type="quantity"' + 
+                                            ' data-index="'+index+
+                                            '" data-item="'+row.quote_item_id+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+'" name="quantity" placeholder="Quantity" value="'+row.quantity+'" type="number" min="1" step="1">' + 
+                                        '</div>' + 
+                                    '</div>'
                           }
                     },
                     { 
@@ -1078,9 +1108,16 @@ $(document).ready(function() {
                             );
 
                                 if(iss)
-                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice"><a href="#" data-toggle="modal" data-target="#lastPrices" data-productName="'+row.product_name+'" class="lastPricesTrigger" data-client="'+clientId+'" data-product="'+row.id+'">'+data+'</a></span>';
+                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice">' + 
+                                                '<a href="#" data-toggle="modal" data-target="#lastPrices"' + 
+                                                ' data-productName="'+row.product_name+
+                                                '"  data-client="'+clientId+
+                                                '" data-product="'+row.id+
+                                                '" class="lastPricesTrigger">'+data+
+                                                '</a>' + 
+                                            '</span>';
                                 else
-                                    return data;
+                                    return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice">'+data +'</span>';
                           }
                     },
                     { 
@@ -1136,11 +1173,12 @@ $(document).ready(function() {
 
                         }
 
-                    // if(quoteStatus[val['id']] == 4) {
-                    //     //$('#quote-'+val['id']).find('input, textarea, button, select').prop("disabled", false);
-                    //     //$('#quote-'+val['id']).find('.status-wrapper button').prop("disabled", false);
+                    if(quoteStatus[val['id']] == 4) {
+                        //$('#quote-'+val['id']).find('input, textarea, button, select').prop("disabled", false);
+                        $('#quote-'+val['id']).find('.status-wrapper button').prop("disabled", false);
+                        $('.status-wrapper[data-quote="'+val["id"]+'"]').find('button').prop("disabled", false);
                          
-                    // } else 
+                    }  
 
                     //console.log(quoteStatus[val['id']] != 4 && quoteStatus[val['id']] != 1);
 

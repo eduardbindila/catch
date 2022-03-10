@@ -53,6 +53,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         var iss = <?php echo json_encode($_salesView)?>;
         var issv = <?php echo json_encode($_supervisorView)?>;
         var isa = <?php echo json_encode($_adminView)?>;
+        var inputDisabledForClient = isc ? 'Disabled' : ''; 
 
         var clientIs = <?php echo json_encode($_SESSION['user_id']); ?>;
 
