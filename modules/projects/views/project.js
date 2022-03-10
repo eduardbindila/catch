@@ -792,10 +792,13 @@ $(document).ready(function() {
                                     totalFinalPrice = totalFinalPrice + Number(row.final_price); 
                                 })
 
+                                totalFinalPrice = totalFinalPrice
+
                                 if((data.length > 0) && (data[0].extra_discount > 0)) {
                                     pageTotal = totalFinalPrice - (totalFinalPrice * Number(data[0].extra_discount)/100);
+                                    pageTotal = pageTotal;
                                 } else {
-                                    pageTotal = totalFinalPrice
+                                    pageTotal = totalFinalPrice;
                                 }
                             }
 
@@ -815,6 +818,8 @@ $(document).ready(function() {
 
 
                                 pageTotal = totalFinalPrice - totalInitialPrice;
+
+                                pageTotal = pageTotal.toFixed(2);
     
                                 
                             }
@@ -838,7 +843,7 @@ $(document).ready(function() {
 
                                 totalProfit = totalFinalPrice - totalInitialPrice;
 
-                                pageTotal = (totalProfit * 100 / totalFinalPrice);
+                                pageTotal = (totalProfit * 100 / totalFinalPrice).toFixed(2);
 
                                 // if(pageTotal < 30){
                                 //     $(this.footer()).addClass('danger');
@@ -862,7 +867,7 @@ $(document).ready(function() {
                                      profitLow[val['id']]['extra_discount'] = 0;
                                 }
 
-                            pageTotal = pageTotal.toFixed(2);
+                            //pageTotal = pageTotal.toFixed(2);
 
 
                             $(this.footer()).html(pageTotal);
