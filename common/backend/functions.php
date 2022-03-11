@@ -18,7 +18,10 @@ $SessionState = new SessionState();
 
 $SessionState->sessionStart();
 
-//var_dump($_SESSION);
+
+// echo "<pre>";
+// var_dump($_SESSION);
+// echo "</pre>";
 
 //echo $_subSectionName;
 
@@ -27,7 +30,7 @@ $SessionState->sessionStart();
 //echo $_pageName;
 
 if(
-	$_sectionName == "project" && !isset($_SESSION['user_access']['sales-grid']) || 
+	//$_sectionName == "project" && !isset($_SESSION['user_access']['sales-grid']) || 
 	$_subSectionName == "import" && !isset($_SESSION['user_access']['admin']) || 
 	$_subSectionName == "manage" && !isset($_SESSION['user_access']['admin']) || 
 	$_sectionName == "admin" && !isset($_SESSION['user_access']['supervisor'])) {

@@ -5,7 +5,6 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 
 
-
 $projectID = basename($urlArray['path']);
 
 //echo $_pageName; 1574978400/1431 / MTU3NDk3ODQwMC8xNDMx
@@ -62,6 +61,7 @@ $conn = $QueryBuilder->dbConnection();
 			)
 		);
 	} else {
+
 		$projectQuery = $QueryBuilder->select(
 			$conn,
 			$options = array(
@@ -86,12 +86,20 @@ $conn = $QueryBuilder->dbConnection();
 		// 	$masterQuote = $masterQuote[0];
 		// }
 
+
+		if($_clientView && isset($_SESSION['is_client'])) {
+			$restrictIfClient = 'AND client_id = '.$_SESSION['is_client'];
+		} else {
+			$restrictIfClient = "";
+		}
+
+
 		$quoteQuery = $QueryBuilder->select(
 			$conn,
 			$options = array(
 				"table" => "quotes",
 				"columns" => "*",
-				"where" => "project_id = '".$projectID."'"
+				"where" => "project_id = '".$projectID."' ".$restrictIfClient
 			)
 		);
 	}
