@@ -2211,7 +2211,7 @@ function updateQuote(quoteID, options){
 
 function sendQuoteToClient(quoteID, clientId, data, type) {
 
-console.log('a');
+//console.log('a');
     $.ajax({
         url: "/ajax/sendQuoteToClient",
         type: "post",
@@ -2273,7 +2273,7 @@ function callQuoteSend(quoteId, clientId, type)
                 obj[item.name] = item.value;
                 return obj;
             }, {});
-
+            //console.log(data);
 
             sendQuoteToClient(quoteId, clientId, data, type);
             }

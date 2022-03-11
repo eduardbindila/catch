@@ -111,7 +111,7 @@ $conn = $QueryBuilder->dbConnection();
 				$message = $htmlContent;
 			}
 			
-			
+			//var_dump($to)
 			
 			$mailSend = mail($to,$subject,$message,$headers);
 
