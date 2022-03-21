@@ -798,7 +798,7 @@ $(document).ready(function() {
                                     pageTotal = totalFinalPrice - (totalFinalPrice * Number(data[0].extra_discount)/100);
                                     pageTotal = pageTotal;
                                 } else {
-                                    pageTotal = totalFinalPrice;
+                                    pageTotal = totalFinalPrice.toFixed(2);
                                 }
                             }
 

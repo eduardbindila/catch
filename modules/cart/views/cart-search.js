@@ -77,6 +77,7 @@ $.ajax({
 $(document).ready(function() {
 
     var selectedProducts = [];
+    var selectedProductsAllData = {}
             //console.log(searchResult);
 
         var resultsTable = $('#results-table').DataTable({
@@ -105,12 +106,13 @@ $(document).ready(function() {
                         var selection = dt.rows( { selected: true } ).data();
                         var i;
                         for ( i = 0; i < selection.length; i++) {
+                            var thisId = selection[i].id;
                             selectedProducts.push(selection[i].id);
+                            selectedProductsAllData[thisId] = selection[i];
                         }
                     }
                 },
-                ,
-                         {
+                 {
                             text: 'Get Delivery Date',
                             className: 'deliveryDate btn btn-lg btn-warning waves-effect',
                             action: function ( e, dt, node, config ) {
@@ -201,6 +203,7 @@ $(document).ready(function() {
                         var i;
                         for ( i = 0; i < selection.length; i++) {
                             selectedProducts.push(selection[i].id);
+                            selectedProductsAllData[selection[i].id] = selection[i];
                         }
 
                         var projectID = $('#projectNumber').text();
@@ -217,11 +220,12 @@ $(document).ready(function() {
                         var i;
                         for ( i = 0; i < selection.length; i++) {
                             selectedProducts.push(selection[i].id);
+                            selectedProductsAllData[selection[i].id] = selection[i];
                         }
 
                         var quoteID = $('#quoteNumber').text();
 
-                        addItemsToQuote(0, quoteID, selectedProducts)
+                        addItemsToQuote(0, quoteID, selectedProducts, selectedProductsAllData)
                     }
                 },
             ],
@@ -691,7 +695,7 @@ $(document).ready(function() {
             dataType: "json",
             data: form.serialize()
         }).done(function(json){
-           createQuote(json, selectedProducts);
+           createQuote(json, selectedProducts, selectedProductsAllData);
         }).error(function(xhr, status, error) {
              $('.addProjectForm').removeClass('hidden');
         })
@@ -759,7 +763,7 @@ function updateQuantity(el) {
 }
 
 
-function createQuote(projectID, products) {
+function createQuote(projectID, products, allProductsData) {
 
     $('#categories-modal').modal('hide');
 
@@ -781,9 +785,9 @@ function createQuote(projectID, products) {
         $('.quote-progress').css('width', "100%").attr('aria-valuenow', 100);
         $('.item-progress').css('width', "40%").attr('aria-valuenow', 40);
         if(products['duplicate']) {
-            duplicateQuoteItems(projectID, json, products);
+            duplicateQuoteItems(projectID, json, products, all);
         } else {
-            addItemsToQuote(projectID, json, products)
+            addItemsToQuote(projectID, json, products, allProductsData)
         }
         
 
@@ -815,14 +819,15 @@ function duplicateQuoteItems(projectID, quoteID, quote_items){
     })
 }
 
-function addItemsToQuote(projectID, quoteID, products) {
+function addItemsToQuote(projectID, quoteID, products, allProductsData) {
     //console.log(products);
     if(products[0].id) {
          $('#status-modal').modal('show');
         var quote = {
             'products': products,
             'quote_id': quoteID,
-            'isMulti': 1
+            'isMulti': 1,
+            'allProductsData' : allProductsData
         }
          
     } else {
@@ -830,9 +835,12 @@ function addItemsToQuote(projectID, quoteID, products) {
             'products': products,
             'temporary_products' : searchTemporary,
             'quote_id': quoteID,
-            'isMulti': 0
+            'isMulti': 0,
+            'allProductsData' : allProductsData
         }
     }
+
+    console.log(quote);
      
     $.ajax({
         url: "/ajax/addItemsToQuote",
