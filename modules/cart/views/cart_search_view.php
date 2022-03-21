@@ -123,7 +123,10 @@
                                     <th>Image</th>
                                     <th>Product ID</th>
                                     <th>Product Name</th>
+                                      <th>Stock</th>
+                                    <th>Manufacturer</th>
                                      <th>Price</th>
+                                     <th>Quantity</th>
                                     <th>Existing Stock</th>
 
                                 </thead>

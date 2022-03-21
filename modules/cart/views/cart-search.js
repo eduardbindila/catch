@@ -109,6 +109,70 @@ $(document).ready(function() {
                         }
                     }
                 },
+                ,
+                         {
+                            text: 'Get Delivery Date',
+                            className: 'deliveryDate btn btn-lg btn-warning waves-effect',
+                            action: function ( e, dt, node, config ) {
+                                console.log(dt.data())
+
+                                var thisButton = $(e.currentTarget);
+
+                                thisButton.append('<div class="loadingDeliveryData" style="float:left"><div class="preloader pl-size-vxs"> <div class="spinner-layer pl-white"> <div class="circle-clipper left"> <div class="circle"></div> </div> <div class="circle-clipper right"> <div class="circle"></div> </div> </div></div>');
+
+                                //console.log(thisButton);
+
+                                   var indexes = dt.rows().indexes().filter( 
+                                        function ( value, index ) {    
+                                            //console.log(dt.row(value).data()['saga_quantity'] < dt.row(value).data()['quantity']);
+                                            return 'syl' === dt.row(value).data()['manufacturer'].toLowerCase() && dt.row(value).data()['saga_quantity'] < dt.row(value).data()['quantity'];
+                                            //return 'syl' === dt.row(value).data()['manufacturer'].toLowerCase();
+                                        }
+                                    );
+
+                                    var sylvaniaProducts = dt.rows( indexes ).data().toArray();
+
+                                    var productsForDeliveryDate = [];
+
+                                    for (let index in sylvaniaProducts) {
+                                        // productsForDeliveryDate[sylvaniaProducts[index].id] = {
+                                        //     'quantity' : sylvaniaProducts[index].quantity
+                                        // }
+
+                                        productsForDeliveryDate[index] = {'id': sylvaniaProducts[index].id, 'quantity': sylvaniaProducts[index].quantity};
+
+                                    }
+
+                                    console.log(sylvaniaProducts);
+
+
+                                    $.ajax({
+                                        url: "https://aws.icatch.ro:3131/getPromiseDate",
+                                        type: "post",
+                                        dataType: "json",
+                                        //data: {products: productsForDeliveryDate}
+                                         data: {'products': JSON.stringify(productsForDeliveryDate)}
+                                   }).success(function(json){
+                                       $('.updateError').addClass('hidden');
+
+                                        console.log(json);
+
+                                        json.forEach(function(e){
+                                            //var thisElement = $('[data-id="' + e.id + '"][data-quantity="'+ e.quantity +'"]');
+                                            var thisElement = $('[data-id="' + e.id + '"]');
+                                            thisElement.html(e.promiseDate);
+                                        })
+
+                                    }).error(function(xhr, status, error) {
+                                       $('.updateError').removeClass('hidden');
+                                    }).done(function() {
+                                        console.log(thisButton);
+                                        thisButton.find('.loadingDeliveryData').remove();
+                                    })
+
+                                
+                            } 
+                        },
                 // {
                 //     className: 'addNewProducts btn btn-lg btn-success waves-effect',
                 //     text: 'Insert New Products to DataBase',
@@ -220,6 +284,62 @@ $(document).ready(function() {
 
                 },
                 { 
+                    "data": null, 
+                     "render" : function(data, type, row, meta) {
+                        //console.log(index);
+
+                         if(!row.from_db) {
+                            return "-";
+                        }
+                        else {
+                            if(parseInt(row.saga_quantity) > parseInt(row.quantity)) {
+                                stockIcon = 'check_circle';
+                                messageTitle = 'Local Stock';
+                                messageContent = row.quantity + ' pieces available in local stock';
+                                colorClass = 'col-green';
+
+                            } else if (row.manufacturer.toLowerCase() == 'syl' ) {
+                                stockIcon = 'flight';
+                                messageTitle = 'Remote Stock';
+                                messageContent = 'Click Get Delivery Date';
+                                colorClass = 'col-blue';
+
+                            } else {
+                                stockIcon = 'schedule';
+                                messageTitle = 'Stock info not Available';
+                                messageContent = '';
+                                colorClass = '';
+                            }
+
+                                if(row.manufacturer.toLowerCase() !== 'syl') {
+                                    html = '<button class="btn btn-xs btn-link waves-effect editQuoteItem" data-toggle="modal" data-target="#editItem-modal"  data-row="'+ meta.row +'"><i class="material-icons">mode_edit</i></button>'
+                                }
+                                else {
+                                    html = '<a class="btn btn-xs btn-link" href="https://www.sylvania-lighting.com/product/en-int/products/'+data+'">'+
+                                    '<i class="material-icons">link</i></a>'+
+                                    '<button class="btn btn-xs btn-link waves-effect editQuoteItem"  data-toggle="modal"'+ 
+                                        'data-target="#editItem-modal"  data-row="'+ meta.row +'">'+ 
+                                        '<i class="material-icons">mode_edit</i></button>';
+                                }
+
+                                html = html +'<button class="btn btn-xs btn-link waves-effect"' + 
+                                        ' data-trigger="focus" data-container="body" data-toggle="popover" data-placement="right" title="'+ messageTitle + '" data-content="'+ messageContent +'">'+ 
+                                        '<i class="material-icons '+ colorClass +'">' + stockIcon + '</i></button><span class="promiseDate" data-id="'+ row.id +'" data-quantity="'+ row.quantity +'"></span>';
+
+
+
+                                return html
+                                
+                          }
+
+                        }
+                        
+                    
+                },
+                { 
+                    "data": "manufacturer"
+                },
+                { 
                     "data": "initial_price",
                     className: "initial_price",
                     "render" : function(data, type, row, meta) {
@@ -235,6 +355,21 @@ $(document).ready(function() {
                       }
 
                 },
+                { 
+                        "data": "quantity",
+                            "render" : function(data, type, row, meta) {
+                              return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control quote-input"' + 
+                                            ' data-type="quantity"' + 
+                                            //' data-index="'+index+
+                                            //'" data-item="'+row.quote_item_id+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+'" name="quantity" placeholder="Quantity" value="'+row.quantity+'" type="number" min="1" step="1">' + 
+                                        '</div>' + 
+                                    '</div>'
+                          }
+                    },
                 {
                     "data": "saga_quantity",
                      //className: "existing_stocks",
@@ -568,18 +703,61 @@ $(document).ready(function() {
 
     $('input[name="searchType"]').on('change', function(e) { // Select the radio input group
 
-    if($(this).val() == 'product-id') {
-        $('#searchBulk').removeClass('hidden');
-        $('#searchSingle').addClass('hidden');
-    } else {
-        $('#searchSingle').removeClass('hidden');
-        $('#searchBulk').addClass('hidden');
-    }
+        if($(this).val() == 'product-id') {
+            $('#searchBulk').removeClass('hidden');
+            $('#searchSingle').addClass('hidden');
+        } else {
+            $('#searchSingle').removeClass('hidden');
+            $('#searchBulk').addClass('hidden');
+        }
 
 
-});  
+    });  
+
+
+    $('body').on('change', '.quote-input', function(){
+            var rowId = $(this).attr('data-row');
+            updateQuantity(this);
+
+        })
+
+    
    
 });
+
+
+function updateQuantity(el) {
+
+    el = $(el);
+
+    var type = el.attr('data-type');
+
+
+    var tr = el.closest('tr');
+    var quantity = el.val();
+
+    var tableID = tr.closest('table').attr('id')
+
+    var updatedEl = tr.find("[data-type='" + type + "']");
+
+    var rowId = updatedEl.attr('data-row');
+
+    var colId = updatedEl.attr('data-col');
+
+    var tagName = updatedEl.prop("tagName");
+
+    if (tagName == "INPUT") {
+        updatedEl.val(quantity)
+    }
+    else {
+        updatedEl.text(quantity);
+    }
+
+    $('#'+tableID).dataTable().api().cell({ row: rowId, column: colId }).data(quantity).draw();
+    
+
+}
+
 
 function createQuote(projectID, products) {
 

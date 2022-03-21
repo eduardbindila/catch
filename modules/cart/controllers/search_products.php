@@ -46,6 +46,7 @@ $isWishlist = isset($_POST['wishlist']) && $_POST['wishlist'] != "";
 		{ 
 		     $dummyArray[$key]["id"] = $val;
 		     $dummyArray[$key]["product_name"] = "";
+		     $dummyArray[$key]["manufacturer"] = "";
 		     $dummyArray[$key]["initial_price"] = 0.00;
 		     $dummyArray[$key]["from_db"] = 0;
 		}  
@@ -61,7 +62,7 @@ $isWishlist = isset($_POST['wishlist']) && $_POST['wishlist'] != "";
 			$conn,
 			$options = array(
 				"table" =>"products",
-				"columns" => "id, product_name, saga_quantity,". $initial_price ."  as initial_price",
+				"columns" => "id, product_name, manufacturer, 0 as quantity, saga_quantity,". $initial_price ."  as initial_price",
 				"where" => $whereClause,
 			),
 			$returnType = "idAsArray" 
@@ -90,7 +91,7 @@ $isWishlist = isset($_POST['wishlist']) && $_POST['wishlist'] != "";
 				$conn,
 				$options = array(
 					"table" =>"products",
-					"columns" => "id, product_name, saga_quantity, 0 as from_db, ". $initial_price ."  as initial_price",
+					"columns" => "id, product_name, '-' as manufacturer, 0 as quantity, 0 as saga_quantity, 0 as from_db, ". $initial_price ."  as initial_price",
 					"where" => $whereClause,
 				)
 			);
