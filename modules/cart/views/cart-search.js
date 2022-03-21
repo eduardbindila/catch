@@ -785,7 +785,7 @@ function createQuote(projectID, products, allProductsData) {
         $('.quote-progress').css('width', "100%").attr('aria-valuenow', 100);
         $('.item-progress').css('width', "40%").attr('aria-valuenow', 40);
         if(products['duplicate']) {
-            duplicateQuoteItems(projectID, json, products, all);
+            duplicateQuoteItems(projectID, json, products);
         } else {
             addItemsToQuote(projectID, json, products, allProductsData)
         }
