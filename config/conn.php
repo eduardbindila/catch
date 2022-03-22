@@ -712,27 +712,51 @@ Class GetDetails {
 	}
 
 	function userName($id){
-		$userInfo = $this->userDetails($id);
+		
 
-		return $userInfo[0]['name'];
+		if($id > 0) {
+			$userInfo = $this->userDetails($id);
+			return $userInfo[0]['name'];
+		} else 
+		{
+			return '';
+		}
 	}
 
 	function userEmail($id){
-		$userInfo = $this->userDetails($id);
+		if($id > 0) {
+			$userInfo = $this->userDetails($id);
+			return $userInfo[0]['email'];
+		} else 
+		{
+			return '';
+		}
 
-		return $userInfo[0]['email'];
+			
 	}
 
 	function userRole($id){
-		$userInfo = $this->userDetails($id);
+		
+		if($id > 0) {
+			$userInfo = $this->userDetails($id);
 
-		return $userInfo[0]['role'];
+			return $userInfo[0]['role'];
+		} else 
+		{
+			return '';
+		}
 	}
 
 	function userPhone($id){
-		$userInfo = $this->userDetails($id);
 
-		return $userInfo[0]['phone'];
+		if($id > 0) {
+			$userInfo = $this->userDetails($id);
+
+			return $userInfo[0]['phone'];
+		} else 
+		{
+			return '';
+		}
 	}
 
 	function clientDetails($id) {
