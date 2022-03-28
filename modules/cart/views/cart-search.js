@@ -208,7 +208,7 @@ $(document).ready(function() {
 
                         var projectID = $('#projectNumber').text();
 
-                        createQuote(projectID, selectedProducts)
+                        createQuote(projectID, selectedProducts, selectedProductsAllData)
                     }
                 }, 
                 {
@@ -637,7 +637,7 @@ $(document).ready(function() {
                     text: 'Choose selected Project & Continue',
                     action: function ( e, dt, button, config ) {
                         var selectedRow = dt.rows( { selected: true } ).data();
-                        createQuote(selectedRow[0].id, selectedProducts);
+                        createQuote(selectedRow[0].id, selectedProducts, selectedProductsAllData);
                         $('.projectProgress').css('width', "100%").attr('aria-valuenow', 100);
                     }
                 }
