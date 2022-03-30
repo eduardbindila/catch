@@ -183,7 +183,7 @@ $conn = $QueryBuilder->dbConnection();
 			//var_dump($quoteProductDetails);	
 
 			
-			$temporary_product = $quoteProductDetails[0]['is_temporary'];
+			$temporary_product = isset($quoteProductDetails[0]['is_temporary']) ? $quoteProductDetails[0]['is_temporary'] : 0;
 
 			$list_price = $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
 			$min_price = $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
