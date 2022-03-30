@@ -246,6 +246,16 @@ $(document).ready(function() {
                     ]
 
                     var salesButtons = [
+                    
+                        {
+                            extend: 'excel',
+                            className: 'btn btn-lg btn-primary waves-effect',
+                            exportOptions: {
+                              stripHtml: true,
+                              orthogonal: null,
+                              columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
+                            }, footer: true
+                        },
                         {
                             extend: 'selected',
                             className: 'duplicateQuote btn btn-lg btn-success waves-effect',
@@ -400,15 +410,6 @@ $(document).ready(function() {
                                 
                             } 
                         },
-                        // {
-                        //     extend: 'excel',
-                        //     className: 'btn btn-lg btn-primary waves-effect',
-                        //     exportOptions: {
-                        //       stripHtml: true,
-                        //       orthogonal: null,
-                        //       columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
-                        //     }, footer: true
-                        // },
                         {
                             extend: 'pdf',
                             className: 'btn btn-lg btn-primary waves-effect',
