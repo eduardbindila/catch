@@ -178,6 +178,18 @@ $conn = $QueryBuilder->dbConnection();
 
 			if($quoteProductDetails) {
 				$quoteProducts['data'][$quoteDetails] = $quoteProductDetails[0];
+			} 
+
+
+
+			if (empty($quoteProductDetails))  {
+
+                //echo $quoteValues['product_id'];
+
+
+                showError('Quote ' . $quote['id']. '  -> Product' . $quoteValues['product_id'] . ' could not be found');
+
+                continue;
 			}
 
 			//var_dump($quoteProductDetails);	

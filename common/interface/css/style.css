@@ -8759,3 +8759,8 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     font-size: 15px !important;
 }
 
+.generalError {
+    margin-top: 51px;
+    text-align: center;
+}
+

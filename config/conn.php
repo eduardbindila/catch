@@ -880,6 +880,21 @@ function utf8ize($d) {
 }
 
 
+function showError($message) {
+
+	?>
+
+	 <div class="alert generalError bg-pink alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <?php echo $message ?> <b>Please contact the administrator</b>
+    </div>
+
+	<?php
+
+
+}
+
+
 
 $winning_chance = array(
 	"4" => "10",
