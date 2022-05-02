@@ -33,7 +33,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['project_name'])){
 			$options = array(
 				"table" => "projects",
 				"keys" => ["project_name", "project_description", "category_id", "project_status", "owner_id"],
-				"values" => [$_POST["project_name"], $_POST["project_description"], $_POST["category_id"], $_POST["project_status"], $_POST["owner_id"]]
+				"values" => [$_POST["project_name"], $_POST["project_description"], $_POST["project_category"], $_POST["project_status"], $_POST["owner_id"]]
 			),
 			$multi = false
 		);

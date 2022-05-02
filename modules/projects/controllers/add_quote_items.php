@@ -59,6 +59,10 @@ $conn = $QueryBuilder->dbConnection();
 	);
 
 
+// printError($valuesArray);
+// 		echo$conn->error;
+
+
 echo  json_decode($query);
 
 	$QueryBuilder->closeConnection();

@@ -909,6 +909,22 @@ $winning_chance = array(
 
 
 
+function printError($val) {
+	
+	?>
+
+	 <div class="alert generalError bg-pink alert-dismissible" role="alert">
+    <?php 
+    	echo "<pre>";
+		var_dump($val);
+		echo "</pre>";
+
+    ?>
+    </div>
+
+	<?php
+}
+
 
 
 // $strtotime = strtotime("now");
