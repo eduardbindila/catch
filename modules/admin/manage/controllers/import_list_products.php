@@ -40,7 +40,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 
     //for stocks 0, 5, 13
 
-    //var_dump($product);
+    //printError($product[2]);
 
 	$localArray = array(
 			'import_product_list_id' => "",
@@ -75,7 +75,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 		$localArray['saga_comment'] = addslashes(htmlspecialchars($product[19]));
 		$localArray['status'] = 10;
 
-	} else if(($product[0] && $product[1] && $product[2]) || ($product[0]) && $product[4]) {
+	} else if(($product[0] && $product[1] && is_numeric($product[2])) || ($product[0]) && $product[4]) {
 		$product_id = addslashes(trim($product[0]));
 
 		$product_name = substr(str_replace("'", "", str_replace('"', "", htmlentities($product[1], ENT_IGNORE))), 0, 253).'...';
@@ -107,7 +107,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 		$localArray['initial_price'] = $initial_price;
 		$localArray['manufacturer'] = $manufacturer;
 		
-		//var_dump($localArray);
+		//printError($localArray);
 		
 	}	
 
@@ -116,7 +116,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 }
 
 
-//var_dump($valuesArray);
+//printError($valuesArray);
 
 
 $conn = $QueryBuilder->dbConnection();
@@ -146,6 +146,6 @@ $conn = $QueryBuilder->dbConnection();
 $QueryBuilder->closeConnection();
 
 
-// var_dump($_POST);
+//printError($_POST);
 
 ?>
