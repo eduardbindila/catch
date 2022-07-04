@@ -9,7 +9,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	$conn = $QueryBuilder->dbConnection();
 
-	if (!isset($_POST['client_id']))
+	if (empty($_POST['client_id']))
 		$_POST['client_id'] = 0;
 
 	if(is_numeric($userId)) {
