@@ -10,6 +10,8 @@
 
         var parent_id = '<?php echo $productParentID?>';
 
+        var product_id = '<?php echo $productID?>';
+
     </script>
 
 <?php
@@ -45,6 +47,10 @@
                                 <li>
                                     <button class="btn btn-lg btn-default waves-effect editProduct" data-toggle="modal" data-target="#edit-modal" >
                                     Edit
+                                </button>
+                                 <li>
+                                    <button class="btn btn-lg btn-primary waves-effect editProduct" data-toggle="modal" data-target="#product_quotes-modal" >
+                                    View Product Quotes
                                 </button>
                                 </li>
                                 <?php }?>
@@ -127,6 +133,31 @@
                                 <button id="updateQuoteButton" class="btn btn-lg btn-block btn-success waves-effect" type="submit" >Update Product</button>
                             </div>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Large Size -->
+        <div class="modal fade" id="product_quotes-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >View Product Quotes for  #<?php echo $productID ?></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="product_quotes_table table table-striped table-bordered table-hover dt-responsive display">
+                            <thead>
+                                <th>Quote ID</th>
+                                <th>Quote Name</th>
+                                <th>Quote Status</th>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                            </thead>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>

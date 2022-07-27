@@ -71,6 +71,50 @@ $(document).ready(function() {
 
         });
 
+        var product_quotes_table = $('.product_quotes_table').DataTable({
+            "ajax": {
+                "url": "/ajax/getproductQuotes/",
+                "dataSrc": "",
+                "type": 'POST',
+                "data": {'product_id': product_id}
+            },
+        
+            pageLength: 100,
+                "paging":   true,
+                "ordering": true,
+                "searching": true,
+            rowId: 'category_slug',
+              
+            responsive: true,
+            order: [1],
+            "columns": [ 
+                { 
+                    "data": "quote_id",
+                    "render" : function(data, type, row) {
+                        return '<a href="/quote/'+data+'" target="_blank">'+data+'</a>'
+                      } 
+                },
+                { 
+                    "data": "name"
+                }
+                ,
+                { 
+                    "data": "quote_status"
+                },
+                { 
+                    "data": "project_id",
+                    "render" : function(data, type, row) {
+                        return '<a href="/project/'+data+'" target="_blank">'+data+'</a>'
+                      } 
+                },
+                { 
+                    "data": "project_name"
+                }
+            ],
+            "initComplete": function(settings, json) {
+            }
+        });
+
 
     //TinyMCE
     tinymce.init({

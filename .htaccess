@@ -81,6 +81,8 @@ RewriteRule ^download download.php [L]
  RewriteRule ^ajax/updateWishlist modules/cart/controllers/update_wishlist.php [L]
  RewriteRule ^ajax/getWishlist modules/cart/controllers/get_wishlist.php [L]
  RewriteRule ^ajax/viewWishlistProducts modules/cart/controllers/get_wishlist_products.php [L]
+ RewriteRule ^ajax/getproductQuotes modules/cart/controllers/get_product_quotes.php [L]
+
  
 
  RewriteRule ^ajax/getUsers modules/profiles/controllers/get_users.php [L]
@@ -160,6 +162,8 @@ RewriteRule ^ajax/duplicateQuoteItems modules/projects/controllers/duplicate_quo
 RewriteRule ^ajax/getImportProductsFromList modules/admin/manage/controllers/get_import_product_from_list.php [L]
 
 RewriteRule ^ajax/getImportProductLists modules/admin/manage/controllers/get_import_lists.php [L]
+
+#RewriteRule ^ajax/aquision modules/admin/manage/controllers/aquisition.php [L]
 
 RewriteRule ^ajax/importProductList modules/admin/manage/controllers/import_product_list.php [L]
 
