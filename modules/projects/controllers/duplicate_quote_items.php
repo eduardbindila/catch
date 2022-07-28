@@ -19,6 +19,8 @@ $keys = array_keys($quoteItemsQuery[0]);
 
 $keys = array_splice($keys, 1);
 
+$keys = array_splice($keys,0, -1);
+
 $valuesArray = array();
 
 foreach ($quoteItemsQuery as $key => $quoteItem) {
@@ -31,11 +33,12 @@ foreach ($quoteItemsQuery as $key => $quoteItem) {
 	array_splice($quoteItem, 0, 1);
 
 	$quoteItem['quote_id'] = $_POST['quote_id'];
-
+	unset($quoteItem['aquisition_price']);
 	array_push($valuesArray, $quoteItem);
 
 }
 
+//printError($valuesArray);
 
 $inserQuoteItems = $QueryBuilder->insert(
     $conn,

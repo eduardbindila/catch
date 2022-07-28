@@ -3,7 +3,10 @@
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-//var_dump($_POST);
+$isMaster = json_decode($_POST['quote'])->isMaster;
+
+//var_dump($isMaster);
+
 
 $conn = $QueryBuilder->dbConnection();
 
@@ -111,6 +114,10 @@ $conn = $QueryBuilder->dbConnection();
 		
 	}
 
+
+	if($new_status == 2 && !$isMaster)
+		$new_status = $_POST['quote_status']; 
+
 //echo $new_status;
 
 	$projectsQuery = $QueryBuilder->update(
@@ -124,8 +131,6 @@ $conn = $QueryBuilder->dbConnection();
 
 	$quoteJSON = mysqli_real_escape_string($conn, $_POST['quote']);
 
-
-
 	$quoteStatusQuery = $QueryBuilder->insert(
 		$conn,
 		$options = array(
@@ -136,7 +141,23 @@ $conn = $QueryBuilder->dbConnection();
 	);
 
 	if($projectsQuery) {
-		echo json_encode($new_status);
+
+		$updateQuery = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "quote_items as qi ",
+				"join" => "products p on p.id = qi.product_id",
+				"set" => ["qi.aquisition_price = p.initial_price"],
+				"where" => "qi.quote_id= ".$_POST['quote_id']
+			)
+		);
+
+		if($updateQuery) {
+			echo json_encode($new_status);
+		}
+		else 
+			echo json_encode($updateQuery);
+		
 	} else {
 		echo json_encode($projectsQuery);
 	}

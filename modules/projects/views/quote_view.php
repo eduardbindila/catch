@@ -4,7 +4,9 @@
 
 $quoteLockedClass = "";
    
-    $masterQuoteClass = ($quote['isMaster'] ? 'bg-green' : '');   
+    $masterQuoteClass = ($quote['isMaster'] ? 'bg-green' : ''); 
+
+    $disableNonMaster = ($quote['isMaster'] ? '' : 'disabled');   
 
 
   if(isset($quote)) {
@@ -254,9 +256,9 @@ $quoteLockedClass = "";
                                     <button type="button" data-status="3" class="btn btn-default waves-effect" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
                             ?>" data-quote='<?php echo $quote['id']?>'>Solution Finalized</button>
                                     <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
-                                    <button type="button" data-status="5" class="btn btn-default waves-effect">Contracting</button>
-                                    <button type="button" data-status="2" class="btn btn-default waves-effect">Delivering</button>
-                                    <button type="button" data-status="8" class="btn btn-danger waves-effect">Lost Quote</button>
+                                    <button type="button" data-status="5" class="btn btn-default waves-effect">Order Confirmed</button>
+                                    <button type="button" data-status="2" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Order Processed</button>
+                                    <button type="button" data-status="8" class="btn btn-danger waves-effect" >Lost Quote</button>
                                     <button type="button" data-status="9" class="btn btn-danger waves-effect">Quote Canceled</button>
                                 </div>
                             </div>
