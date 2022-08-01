@@ -7,6 +7,8 @@ $isMaster = json_decode($_POST['quote'])->isMaster;
 
 //var_dump($isMaster);
 
+//printError(json_decode($_POST['quote']));
+
 
 $conn = $QueryBuilder->dbConnection();
 

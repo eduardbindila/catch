@@ -86,6 +86,8 @@ $(document).ready(function() {
         
          var quoteId = $(this).attr('data-quote');
 
+         var thisIndex = $(this).closest('[data-index]').attr('data-index');
+
          var thisClientId = $(this).attr('data-client');
 
          var thisClientEmail = $(this).attr('data-email');
@@ -94,8 +96,10 @@ $(document).ready(function() {
 
          $('#clientEmail').val(thisClientEmail);
 
-          if(quoteList[index].id = quoteId) {
-                quote = quoteList[index];
+         console.log(quoteList);
+
+          if(quoteList[thisIndex].id = quoteId) {
+                quote = quoteList[thisIndex];
             } else {
                 quote = 0;
             }
@@ -892,7 +896,7 @@ $(document).ready(function() {
 
                 },
                 "rowCallback": function( row, data) {
-                  
+
                   if ( data['profit_percent'] < 30 )
                   {
                     $('td', row).addClass('danger');
@@ -1914,6 +1918,7 @@ $(document).ready(function() {
 
         $('.status-wrapper button').on('click', function(){
             var quoteId = $(this).closest('[data-quote]').attr('data-quote');
+            var thisIndex = $(this).closest('[data-index]').attr('data-index');
             var afterApprove = $(this).closest('[data-afterApprove]').attr('data-afterApprove');
 
              var selfCustomer = $(this).closest('[data-selfCustomer]').attr('data-selfCustomer');
@@ -1922,11 +1927,16 @@ $(document).ready(function() {
 
                 var el = $(this);
 
-            if(quoteList[index].id = quoteId) {
-                quote = quoteList[index];
+            if(quoteList[thisIndex].id = quoteId) {
+                quote = quoteList[thisIndex];
             } else {
                 quote = 0;
             }
+
+            // console.log(quoteList[index])
+
+            // console.log(index)
+            // console.log(quoteList)
 
             $.ajax({
                 url: "/ajax/changeQuoteStatus",

@@ -249,7 +249,7 @@ $quoteLockedClass = "";
                     </div>
                     <div class="row m-t-10">
                         <div class="col-lg-7">
-                            <div class="status-wrapper" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
+                            <div class="status-wrapper" data-index="<?php echo $key ?>" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <button type="button" data-status="4" class="btn btn-default waves-effect">Work in progress</button>
                                     <button type="button" data-status="7" disabled class="btn btn-default waves-effect">Admin Approval</button>
@@ -268,7 +268,7 @@ $quoteLockedClass = "";
                                 View Status History
                             </button>
                             <button class="btn btn-default waves-effect nextStep" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
-                            ?>" data-quote='<?php echo $quote['id']?>' >
+                            ?>" data-index="<?php echo $key?>" data-quote='<?php echo $quote['id']?>' >
                                 Next status
                             </button>
                         </div>
