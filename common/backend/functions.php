@@ -99,6 +99,10 @@ $_supervisorView = isset($_SESSION['user_access']['supervisor']);
 $_adminView = isset($_SESSION['user_access']['admin']);
 
 
+$_logisticsView = isset($_SESSION['user_access']['logistics']);
+
+$_hideForLogistic = (!isset($_SESSION['user_access']['logistics']) && isset($_SESSION['user_access']['sales-grid'])) || isset($_SESSION['user_access']['admin']) ;
+
 
 //var_dump($_SESSION);
 //Links Handling

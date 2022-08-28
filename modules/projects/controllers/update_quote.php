@@ -59,7 +59,15 @@ if(isset($_POST['extra_discount'])) {
 			$conn,
 			$options = array(
 				"table" => "quotes",
-				"set" => ["`name`='".$_POST['options']['name']."'","`profit`=".$_POST['options']['profit']."","`profit_percent`=".$_POST['options']['profit_percent']."","`quote_price`=".$_POST['options']['final_price']."","`assignee_id`=".$_POST['options']['assignee_id']."","`client_id`=".$client_id.""],
+				"set" => [
+						"`name`='".$_POST['options']['name']."'",
+						"`profit`=".$_POST['options']['profit']."",
+						"`profit_percent`=".$_POST['options']['profit_percent']."",
+						"`quote_price`=".$_POST['options']['final_price']."",
+						"`assignee_id`=".$_POST['options']['assignee_id']."",
+						"`order_stock_status`=".$_POST['options']['order_stock_status']."",
+						"`client_id`=".$client_id.""
+						],
 				"where" => "id = ".$_POST['quote_id']
 			)
 		);

@@ -63,7 +63,21 @@ $quoteLockedClass = "";
    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header <?php echo $masterQuoteClass?> <?php echo $quoteLockedClass?>">
-                <h2 id="linkQuote-<?php echo $quote['id']?>"><a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
+                <h2 id="linkQuote-<?php echo $quote['id']?>">
+                    <a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
+                    <?php 
+
+                    if(!$quote['order_stock_status'] && $_logisticsView) {
+                        
+                    ?>
+
+                      <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Order Stock Incomplete. Click here to add a Purchase Order</a>
+
+                    <?php
+                    }
+
+                    ?>
+                  
                     <div class="quote-info">
                     <ul class="m-l-0 p-l-0 m-t-10 small">
                         <?php  if(!isset($_SESSION['user_access']['client-grid'])) {?>
@@ -183,6 +197,8 @@ $quoteLockedClass = "";
                                 <th>Profit %</th>
                                 <th>QTY</th>
                                 <th>Final Price</th>
+                                 <th>Reserved Stock</th>
+                                <th>Saga Quantity</th>
                                 <th></th>
                             </thead>
                             <tfoot>
@@ -237,7 +253,22 @@ $quoteLockedClass = "";
             </div>
             <div class="header bg-blue-grey">
                 <h2>Quote Status: <?php echo $GetDetails->quoteStatus($quote['quote_status'])?></h2>
+                <ul class="header-dropdown m-r-0">
+                            <li>
+                                <button class="btn btn-default waves-effect statusHistory" data-quote='<?php echo $quote['id']?>' data-toggle="modal" data-target="#statusHistory-modal" >
+                                View Status History
+                            </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-default waves-effect nextStep" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
+                            ?>" data-index="<?php echo $key?>" data-quote='<?php echo $quote['id']?>' >
+                                Next status
+                            </button>
+                            </li>
+                        </ul>
 
+
+                            
 
                  <?php 
                  //var_dump($_SESSION);
@@ -248,7 +279,7 @@ $quoteLockedClass = "";
                         <!-- | Due Date: <span class="due-date"></span> <button type="button" data-status-id="" class="btn btn-default btn-xs waves-effect">Change due date</button> -->
                     </div>
                     <div class="row m-t-10">
-                        <div class="col-lg-7">
+                        <div class="col-lg-12">
                             <div class="status-wrapper" data-index="<?php echo $key ?>" data-quote="<?php echo $quote['id']?>" data-afterApprove = '<?php echo $quote['afterApprove']?>'>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <button type="button" data-status="4" class="btn btn-default waves-effect">Work in progress</button>
@@ -257,20 +288,11 @@ $quoteLockedClass = "";
                             ?>" data-quote='<?php echo $quote['id']?>'>Solution Finalized</button>
                                     <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
                                     <button type="button" data-status="5" class="btn btn-default waves-effect">Order Confirmed</button>
-                                    <button type="button" data-status="2" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Order Processed</button>
+                                    <button type="button" data-status="2" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Processing Order</button>
                                     <button type="button" data-status="8" class="btn btn-danger waves-effect" >Lost Quote</button>
                                     <button type="button" data-status="9" class="btn btn-danger waves-effect">Quote Canceled</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-5 text-right">
-                             <button class="btn btn-default waves-effect statusHistory" data-quote='<?php echo $quote['id']?>' data-toggle="modal" data-target="#statusHistory-modal" >
-                                View Status History
-                            </button>
-                            <button class="btn btn-default waves-effect nextStep" data-afterApprove = '<?php echo $quote['afterApprove']?>' data-client="<?php echo $client_id?>" data-email="<?php echo $client_email
-                            ?>" data-index="<?php echo $key?>" data-quote='<?php echo $quote['id']?>' >
-                                Next status
-                            </button>
                         </div>
                     </div> 
                     <?php if( $quote['quote_status'] != 0 ) { ?>

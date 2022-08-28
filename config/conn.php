@@ -230,6 +230,61 @@ Class QueryBuilder{
 		}		
 	}
 
+	function orderProcessingUpdateStocks($conn, $quote_id)
+	{
+		$query = "UPDATE
+			    quote_items qi,
+			    products p
+			JOIN(
+			    SELECT
+			        qi2.id,
+			        qi2.product_id,
+			        qi2.quantity,
+			        p2.saga_quantity,
+			        (p2.saga_quantity + qi2.reserved_stock) AS available_product_stock,
+			        qi2.reserved_stock,
+			        (
+			            CASE 
+			                WHEN (p2.saga_quantity + qi2.reserved_stock) = 0 THEN 0 
+			                WHEN p2.saga_quantity IS NULL THEN 0 
+			                WHEN (p2.saga_quantity + qi2.reserved_stock) > qi2.quantity THEN qi2.quantity 
+			                WHEN (p2.saga_quantity + qi2.reserved_stock) < qi2.quantity THEN p2.saga_quantity + qi2.reserved_stock
+			                WHEN (p2.saga_quantity + qi2.reserved_stock) = qi2.quantity THEN qi2.quantity
+			        END
+			        ) AS to_reserve
+			    FROM quote_items qi2
+			    JOIN products p2 ON qi2.product_id = p2.id
+			    WHERE qi2.quote_id = '$quote_id'
+			) as s
+			SET
+			    qi.reserved_stock = s.to_reserve,
+			    p.saga_quantity = (
+			        CASE
+			            WHEN s.available_product_stock > s.to_reserve THEN s.available_product_stock - s.to_reserve
+			            WHEN s.available_product_stock <= s.to_reserve THEN 0
+			            WHEN s.available_product_stock = 0 THEN 0
+			            WHEN s.available_product_stock is null THEN 0
+			        END
+			    )
+			WHERE
+			    qi.quote_id = '$quote_id' AND 
+			    p.id = s.product_id AND
+			    qi.id = s.id;";
+
+		$results = mysqli_query($conn, $query);
+
+		if($results) {
+				$rows = array();
+		
+				$this->logAction("reserveStock", "", $query, $rows);
+
+				return $rows;
+		}
+		else {
+			return mysqli_error($conn);
+		}		
+	}
+
 	function selectProjectsData($conn, $isLocked, $thisSession,  $keyFeatures = array() ){
 
 		if($keyFeatures) {

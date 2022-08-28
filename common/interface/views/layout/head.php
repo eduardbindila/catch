@@ -37,12 +37,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
     </script><script src="/common/interface/plugins/chartjs/Chart.bundle.js?v=0.1.4"></script>
 </script><script src="/common/interface/plugins/chartjs/chart.funnel.bundled.js?v=0.1.4"></script>
-<script data-jsd-embedded data-key="6a7789fb-0d09-46bf-af29-7bbbf7fec541" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>
-
-    
-
-
-    
+<script data-jsd-embedded data-key="6a7789fb-0d09-46bf-af29-7bbbf7fec541" data-base-url="https://jsd-widget.atlassian.com" src="https://jsd-widget.atlassian.com/assets/embed.js"></script>    
 
     <!-- Imported Styles -->
     <?php $LoadHTMLArtefacts->printLinks();?>
@@ -51,9 +46,13 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         
         var isc = <?php echo json_encode($_clientView)?>;
         var iss = <?php echo json_encode($_salesView)?>;
+        var isl = <?php echo json_encode($_logisticsView)?>;
+        var islh = <?php echo json_encode($_hideForLogistic)?>;
         var issv = <?php echo json_encode($_supervisorView)?>;
         var isa = <?php echo json_encode($_adminView)?>;
         var inputDisabledForClient = isc ? 'Disabled' : ''; 
+
+        
 
         var clientIs = <?php echo json_encode($_SESSION['user_id']); ?>;
 

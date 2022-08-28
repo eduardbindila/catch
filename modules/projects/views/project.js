@@ -96,7 +96,7 @@ $(document).ready(function() {
 
          $('#clientEmail').val(thisClientEmail);
 
-         console.log(quoteList);
+         //console.log(quoteList);
 
           if(quoteList[thisIndex].id = quoteId) {
                 quote = quoteList[thisIndex];
@@ -767,6 +767,17 @@ $(document).ready(function() {
                                 pageTotal = totalQuantity;
                             }
 
+                             if(columnDataName == 'reserved_stock') {
+
+                                var totalReservedStock = 0;
+
+                                data.forEach(function(row){
+                                    totalReservedStock = totalReservedStock + Number(row.reserved_stock); 
+                                })
+
+                                pageTotal = totalReservedStock;
+                            }
+
                             if(columnDataName == 'min_price') {
 
                                 var totalMinPrice = 0;
@@ -889,9 +900,13 @@ $(document).ready(function() {
 
                     totalArray['name'] = quoteList[index]['name']; 
 
+                    totalArray['order_stock_status'] = !(totalArray['reserved_stock'] < totalArray['quantity']); 
+
                     updateQuote(val['id'], totalArray);
 
                     quoteOptions[val['id']] = totalArray;
+
+                    console.log(quoteOptions);
 
 
                 },
@@ -962,7 +977,6 @@ $(document).ready(function() {
                         } else if (row.manufacturer.toLowerCase() == 'syl') {
                             stockIcon = 'flight';
                             messageTitle = 'Remote Stock';
-                            messageContent = 'Click Get Delivery Date';
                             colorClass = 'col-blue';
 
                         } else {
@@ -1000,10 +1014,12 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "customer_description",
+                    "visible": islh
 
                 },
                 { 
                     "data": "destination",
+                    "visible": islh
 
                 },
                
@@ -1130,6 +1146,14 @@ $(document).ready(function() {
                                     return '<span class="final-price" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="finalPrice">'+data +'</span>';
                           }
                     },
+                     {
+                        "data": "reserved_stock",
+                        "visible": isl 
+                    },
+                    {
+                        "data": "saga_quantity",
+                        "visible": isl
+                    },
                     { 
                         "data": "temporary_product",
                         "visible": false
@@ -1142,10 +1166,6 @@ $(document).ready(function() {
                         "data": "manufacturer",
                         "visible": false
                     },
-                    {
-                        "data": "saga_quantity",
-                        "visible": false
-                    }
 
                 ],
                 columnDefs : [
