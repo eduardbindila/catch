@@ -91,6 +91,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Import Stocks</span>
                                 </a>
                             </li> -->
+                            <li>
+                                <a href="/logistics/vendor-invoices">
+                                    Vendor Invoices
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <?php }?>

@@ -67,11 +67,11 @@ $quoteLockedClass = "";
                     <a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
                     <?php 
 
-                    if(!$quote['order_stock_status'] && $_logisticsView) {
+                    if(!$quote['order_stock_status'] && $_logisticsView && $quote['quote_status'] == 2) {
                         
                     ?>
 
-                      <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Order Stock Incomplete. Click here to add a Purchase Order</a>
+                      <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Order Stock Incomplete. Click here to add a Vendor Invoice</a>
 
                     <?php
                     }
