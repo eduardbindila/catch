@@ -29,16 +29,21 @@
                             <div class="col-lg-12">
                                 <div class="alert addUserError hidden bg-pink alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    Client could not be added. <b>Please contact the administrator</b>
+                                    Vendor Invoice could not be added. <b>Please contact the administrator</b>
                                 </div>
                                 <div class="alert addUserSuccess hidden alert-success alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    Client has been succesfully added.
+                                    Vendor Invoice has been succesfully added.
                                 </div>
                                <table class="projects_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
-                                        <th>Country ID</th>
-                                        <th>Country Name</th>
+                                        <th>Invoice ID</th>
+                                        <th>Invoice No</th>
+                                        <th>Invoice Vendor</th>
+                                        <th>Invoice Date</th>
+                                        <th>Invoice Due Date</th>
+                                        <th>Invoice Price</th>
+
                                 </table>
                             </div>
                         </div>
@@ -52,7 +57,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Add new Country</span></h4>
+                        <h4 class="modal-title">Add new Vendor Invoice</span></h4>
                     </div>
                     <div class="modal-body">
                         <?php 

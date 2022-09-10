@@ -246,6 +246,10 @@ $conn = $QueryBuilder->dbConnection();
 			$quoteProducts['data'][$quoteDetails]['customer_description'] = $quoteValues['customer_description'];
 			$quoteProducts['data'][$quoteDetails]['extra_discount'] = $quote['extra_discount'];
 			$quoteProducts['data'][$quoteDetails]['reserved_stock'] = $quoteValues['reserved_stock'];
+			$quoteProducts['data'][$quoteDetails]['order_number'] = $quoteValues['order_number'];
+			$quoteProducts['data'][$quoteDetails]['ordered_quantity'] = $quoteValues['ordered_quantity'];
+			$quoteProducts['data'][$quoteDetails]['order_date'] = $quoteValues['order_date'];
+			$quoteProducts['data'][$quoteDetails]['promise_date'] = $quoteValues['promise_date'];
 
 		}
 

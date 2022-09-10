@@ -2,7 +2,7 @@
 $(document).ready(function() {
     var projectsTable = $('.projects_table').DataTable({
         "ajax": {
-            "url": "/ajax/getCountries/",
+            "url": "/ajax/getVendorInvoicesList/",
             "dataSrc": ""
         },
     
@@ -17,9 +17,24 @@ $(document).ready(function() {
         "columns": [ 
             { 
                 "data": "id",
+                "render" : function(data, type, row) {
+                    return '<a href="vendor-invoices/'+data+'" target="_blank">'+data+'</a>'
+                  } 
             },
             { 
-                "data": "name"
+                "data": "invoice_no"
+            },
+            { 
+                "data": "vendor"
+            },
+            { 
+                "data": "date"
+            },
+            { 
+                "data": "due_date"
+            },
+            { 
+                "data": "invoice_value"
             }
         ],
         "initComplete": function(settings, json) {
@@ -39,7 +54,7 @@ $(document).ready(function() {
             }));
         });
        if(isDisabled)
-        $("vendorTypesSelector[name=vendor_id]").val(userDetails.vendor_id);
+        $(".vendorTypesSelector[name=vendor]").val(invoiceData.vendor);
 
     }).error(function(xhr, status, error) {
         $('.vendorTypesSelectorError').removeClass('hidden');
@@ -53,29 +68,33 @@ $(document).ready(function() {
     }
 
     if(isDisabled) {
-        $('#userData').find('input, textarea, button, select').attr('disabled','disabled');
-        userDetails = userDetails[0];
-        $("#userData input[name=name]").val(userDetails.name);
-        $("#userData input[name=fiscal_code]").val(userDetails.fiscal_code);
-        $("#userData input[name=email]").val(userDetails.email);
-        $("#userData input[name=phone]").val(userDetails.phone);
-        $("#userData input[name=country]").val(userDetails.country);
-        $("#userData input[name=state]").val(userDetails.state);
-        $("#userData input[name=address]").val(userDetails.address);
-        $("#userData input[name=bank_account]").val(userDetails.bank_account);
-        $("#userData input[name=bank]").val(userDetails.bank);
-        $("#userData input[name=registry]").val(userDetails.registry);
-        $("#userData input[name=discount]").val(userDetails.discount);
+        $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
+        invoiceData = invoiceData[0];
+        console.log(invoiceData);
+        $("#invoiceData input[name=invoice_no]").val(invoiceData.invoice_no);
+        $("#invoiceData input[name=vendor]").val(invoiceData.vendor);
+        $("#invoiceData input[name=date]").val(invoiceData.date);
+        $("#invoiceData input[name=due_date]").val(invoiceData.due_date);
+        $("#invoiceData input[name=currency]").val(invoiceData.currency);
+        $("#invoiceData input[name=exchange_rate]").val(invoiceData.exchange_rate);
+        $("#invoiceData input[name=vat_value]").val(invoiceData.vat_value);
+        $("#invoiceData input[name=invoice_value]").val(invoiceData.invoice_value);
     }
 
      $('.editSwitch').change(function() {
         isDisabled = !isDisabled;
         if(!isDisabled) {
-            $('#userData').find('input, textarea, button, select').prop("disabled", false);;
+            $('#invoiceData').find('input, textarea, button, select').prop("disabled", false);;
         } else {
-            $('#userData').find('input, textarea, button, select').attr('disabled','disabled');
+            $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
         }      
     })
+
+
+    $('#invoiceData').on('submit',function(){
+        console.log('as');
+    })
+
 
 });
 

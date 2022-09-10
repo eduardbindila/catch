@@ -11,6 +11,8 @@ $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzo
 
 $LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/multiple-email-input/css/jquery.multi-emails.css');
 
+$LoadHTMLArtefacts->setLink($_WPATH['COMMON_INTERFACE'].'plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css');
+
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-validation/jquery.validate.js');
 
@@ -29,6 +31,8 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datata
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.rowGroup.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/dataTables.select.min.js');
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/jquery-datatable/extensions/export/processing.js');
+
+$LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js');
 
 $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/dropzone/dropzone.js');
 

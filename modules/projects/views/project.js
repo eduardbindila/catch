@@ -906,7 +906,7 @@ $(document).ready(function() {
 
                     quoteOptions[val['id']] = totalArray;
 
-                    console.log(quoteOptions);
+                    //console.log(quoteOptions);
 
 
                 },
@@ -1148,11 +1148,102 @@ $(document).ready(function() {
                     },
                      {
                         "data": "reserved_stock",
-                        "visible": isl 
+                        "visible": isl,
+                        "render" : function(data, type, row, meta) {
+                            //console.log(index);
+
+                            if(parseInt(row.reserved_stock) < parseInt(row.quantity)) {
+                                stockIcon = 'playlist_add';
+                                messageTitle = 'Waiting for products';
+                                messageContent = '';
+                                colorClass = 'col-blue';
+
+                            } else  {
+                                stockIcon = 'playlist_add_check';
+                                messageTitle = 'Products in stock';
+                                colorClass = 'col-green';
+
+                            } 
+
+                             
+                                    html = row.reserved_stock + ' ';
+                                
+
+                                html = html +'<button class="btn btn-xs btn-link waves-effect"' + 
+                                        ' data-trigger="focus" data-container="body" data-toggle="popover" data-placement="right" title="'+ messageTitle + 
+                                        '" data-content="'+ messageContent +'">'+ 
+                                        '<i class="material-icons '+ colorClass +'">' + stockIcon + '</i></button><span class="promiseDate" data-id="'+ row.id +'" data-quantity="'+ row.quantity +'"></span>';
+
+
+
+                                return html
+                                
+                          }
                     },
                     {
                         "data": "saga_quantity",
                         "visible": isl
+                    },
+                    { 
+                        "data": "order_number",
+                            "render" : function(data, type, row, meta) {
+                                //console.log(row);
+                              return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control order-input editable"' + 
+                                            ' data-type="order_number"' + 
+                                            ' data-index="'+index+
+                                            '" data-item="'+row.quote_item_id+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+'" name="order_number" placeholder="Order Number" value="'+row.order_number+'" type="text" min="1" step="1">' + 
+                                        '</div>' + 
+                                    '</div>'
+                          }
+                    },
+                    { 
+                        "data": "ordered_quantity",
+                            "render" : function(data, type, row, meta) {
+                              return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control order-input editable"' + 
+                                            ' data-type="ordered_quantity"' + 
+                                            ' data-index="'+index+
+                                            '" data-item="'+row.quote_item_id+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+'" name="ordered_quantity" placeholder="Order Quantity" value="'+row.ordered_quantity+'" type="number" min="1" step="1">' + 
+                                        '</div>' + 
+                                    '</div>'
+                          }
+                    },
+                    { 
+                        "data": "order_date",
+                            "render" : function(data, type, row, meta) {
+                              return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control order-input editable"' + 
+                                            ' data-type="order_date"' + 
+                                            ' data-index="'+index+
+                                            '" data-item="'+row.quote_item_id+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+'" name="order_date" placeholder="Order Date" value="'+row.order_date+'" type="date" min="1" step="1">' + 
+                                        '</div>' + 
+                                    '</div>'
+                          }
+                    },
+                    { 
+                        "data": "promise_date",
+                            "render" : function(data, type, row, meta) {
+                              return '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control order-input editable"' + 
+                                            ' data-type="promise_date"' + 
+                                            ' data-index="'+index+
+                                            '" data-item="'+row.quote_item_id+
+                                            '" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+'" name="promise_date" placeholder="Promise Date" value="'+row.promise_date+'" type="date" min="1" step="1">' + 
+                                        '</div>' + 
+                                    '</div>'
+                          }
                     },
                     { 
                         "data": "temporary_product",
@@ -1165,7 +1256,7 @@ $(document).ready(function() {
                     {
                         "data": "manufacturer",
                         "visible": false
-                    },
+                    }
 
                 ],
                 columnDefs : [
@@ -1219,7 +1310,7 @@ $(document).ready(function() {
                             $('.addNewItem[data-quote='+val['id']+']').attr('disabled','disabled');
                         }
                         
-                       $('#quote-'+val['id']).find('input, textarea, button, select, .deleteSelected ').attr('disabled','disabled');
+                       $('#quote-'+val['id']).find('input:not(.editable), textarea, button:not(.editable), select, .deleteSelected ').attr('disabled','disabled');
 
                        $('#quote-'+val['id']+'_wrapper').find('.deleteSelected ').addClass('hide');
                     } 
@@ -1247,6 +1338,37 @@ $(document).ready(function() {
             var quoteIndex = $(this).attr('data-index');
             var rowId = $(this).attr('data-row');
             QuotePricing[quoteIndex][rowId].updateItemPricing(this);
+
+        })
+
+
+         $('body').on('change', '.order-input', function(){
+            var quoteIndex = $(this).attr('data-index');
+            var rowId = $(this).attr('data-row');
+
+            var name = $(this).attr('name');
+
+            var value = $(this).val()
+
+
+
+            var orderDetail = {
+                'item_id': $(this).attr('data-item'),
+                'name': name,
+                'value': value
+            };
+
+             $.ajax({
+                url: "/ajax/updateItemOrderDetails",
+                type: "post",
+                dataType: "json",
+                data: orderDetail
+            }).success(function(json){
+               $('.updateError').addClass('hidden');
+
+            }).error(function(xhr, status, error) {
+               $('.updateError').removeClass('hidden');
+            })
 
         })
 
@@ -2213,11 +2335,11 @@ class PriceDetails {
             dataType: "json",
             data: quoteItem
         }).success(function(json){
-       $('.updateError').addClass('hidden');
+           $('.updateError').addClass('hidden');
 
-    }).error(function(xhr, status, error) {
-       $('.updateError').removeClass('hidden');
-    })
+        }).error(function(xhr, status, error) {
+           $('.updateError').removeClass('hidden');
+        })
 
 
     }
@@ -2396,4 +2518,3 @@ function getProfitLow(profitLowValues) {
         return 0;
     }
 } 
-

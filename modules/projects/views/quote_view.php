@@ -71,7 +71,7 @@ $quoteLockedClass = "";
                         
                     ?>
 
-                      <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Order Stock Incomplete. Click here to add a Vendor Invoice</a>
+                      <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Waiting for Products.</a>
 
                     <?php
                     }
@@ -197,8 +197,12 @@ $quoteLockedClass = "";
                                 <th>Profit %</th>
                                 <th>QTY</th>
                                 <th>Final Price</th>
-                                 <th>Reserved Stock</th>
+                                <th>Reserved Stock</th>
                                 <th>Saga Quantity</th>
+                                <th>Order Number</th>
+                                <th>Order Quantity</th>
+                                <th>Order Date</th>
+                                <th>Promise Date</th>
                                 <th></th>
                             </thead>
                             <tfoot>
@@ -289,6 +293,8 @@ $quoteLockedClass = "";
                                     <button type="button" data-status="1" class="btn btn-default waves-effect">Calibrating Budget</button>
                                     <button type="button" data-status="5" class="btn btn-default waves-effect">Order Confirmed</button>
                                     <button type="button" data-status="2" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Processing Order</button>
+                                    <button type="button" data-status="10" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Supplier Order Sent</button>
+                                    <button type="button" data-status="11" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Supplier Order Arrived</button>
                                     <button type="button" data-status="8" class="btn btn-danger waves-effect" >Lost Quote</button>
                                     <button type="button" data-status="9" class="btn btn-danger waves-effect">Quote Canceled</button>
                                 </div>
