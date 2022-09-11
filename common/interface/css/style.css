@@ -8764,3 +8764,12 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     text-align: center;
 }
 
+
+.connect_quotes_td {
+  width: 500px;
+}
+
+
+.small-input {
+  width: 40px;
+}

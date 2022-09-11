@@ -77,13 +77,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-             <h3>Vendor Invoice Items</h3>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-xs-12">
-            <button id="submitUserData" class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit Invoice  data</button>
+            <button  class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit Invoice  data</button>
         </div>
     </div>
 </form>

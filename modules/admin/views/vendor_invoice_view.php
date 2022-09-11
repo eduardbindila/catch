@@ -6,6 +6,7 @@
 
     var invoiceData = <?php echo json_encode($invoiceQuery)?>;
 
+    var invoiceId = <?php echo $userId ?>;
 
 </script>
 
@@ -24,6 +25,11 @@
                                 <div class="switch">
                                     Edit: <label>OFF<input name="edit" class="editSwitch" type="checkbox"><span class="lever"></span>ON</label>
                                 </div>
+                            </li>
+                            <li>
+                                <button class="btn btn-lg btn-default waves-effect addNewItem"  data-toggle="modal"data-target="#addNew-modal">
+                                    Add New Invoice Items
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -45,7 +51,44 @@
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="header">
+                        <h2>Vendor Invoice Items</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="invoice_items_table table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th></th>
+                                        <th>Product Id</th>
+                                        <th>Quantity</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Price</th>
+                                        <th>Connect Quotes</th>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 	</div>
 </section>
+
+   <!-- Large Size -->
+    <div class="modal fade" id="addNew-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title quoteTitle hidden" >Add new item to Invoice #<span id="quoteNumber"></span></h4>
+                </div>
+                <div class="modal-body">
+                            <?php include($_MPATH['CART_CONTROLLERS'].'cart_search_controller.php');?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>

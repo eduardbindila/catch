@@ -228,6 +228,45 @@ $(document).ready(function() {
                         addItemsToQuote(0, quoteID, selectedProducts, selectedProductsAllData)
                     }
                 },
+
+                {
+                    extend: 'selected',
+                    className: 'addToInvoice btn btn-lg btn-success waves-effect hidden',
+                    text: 'Add to Invoice',
+                    action: function ( e, dt, button, config ) {
+                        var selection = dt.rows( { selected: true } ).data();
+                        var i;
+                        for ( i = 0; i < selection.length; i++) {
+                            selectedProducts.push(selection[i].id);
+                            selectedProductsAllData[selection[i].id] = selection[i];
+                        }
+
+                        // var quoteID = $('#quoteNumber').text();
+
+                        // addItemsToQuote(0, quoteID, selectedProducts, selectedProductsAllData)
+
+                        console.log(selectedProducts, selectedProductsAllData);
+
+                        var items = {
+                            'products': selectedProducts,
+                            'vendor_invoice_id' : invoiceId,
+                            'allProductsData' : selectedProductsAllData
+                        }
+                        
+                        $.ajax({
+                            url: "/ajax/addVendorInvoiceItems",
+                            type: "post",
+                            dataType: "json",
+                            data: items,
+                        }).done(function(json){
+                            window.history.pushState("object or string", "Title", location.pathname);
+                            location.reload();
+
+                        }).error(function(xhr, status, error) {
+                            $('.quoteItemsCreation').removeClass('hidden');
+                        })
+                    }
+                },
             ],
             language: {
                 buttons: {
@@ -430,6 +469,19 @@ $(document).ready(function() {
                     $('.projectTitle').removeClass('hidden');
 
                      $('.addNewQuote[data-project="'+queryDict.project+'"]').trigger('click');
+                }
+
+                //console.log(invoiceId);
+
+                if(invoiceId && invoiceId !== 'undefined') {
+                    $('.addToQuote').addClass('hidden');
+                    $('.createProject').addClass('hidden');
+                    $('.addToProject').addClass('hidden');
+
+                    $('.projectTitle').addClass('hidden');
+                    $('.quoteTitle').addClass('hidden');
+
+                    $('.addToInvoice').removeClass('hidden');
                 }
               },
 

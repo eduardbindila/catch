@@ -27,28 +27,34 @@ foreach ($xml->children() as $second_gen) {
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
 
-	printError($_POST);
+	//printError($_POST);
 
 	$conn = $QueryBuilder->dbConnection();
 
 	if(is_numeric($userId)) {
-		// $query = $QueryBuilder->update(
-		// 	$conn,
-		// 	$options = array(
-		// 		"table" => "countries",
-		// 		"set" => [
-		// 			"`name`='".$_POST['name']."'",
-		// 			],
-		// 		"where" => "id =".$userId
-		// 	)
-		// );
+		$query = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "vendor_invoices",
+				"set" => [
+					"`invoice_no`='".$_POST['invoice_no']."'",
+					"`vendor`='".$_POST['vendor']."'",
+					"`date`='".$_POST['date']."'",
+					"`due_date`='".$_POST['due_date']."'",
+					"`currency`='".$_POST['currency']."'",
+					"`exchange_rate`='".$_POST['exchange_rate']."'",
+					"`invoice_value`='".$_POST['invoice_value']."'"
+					],
+				"where" => "id =".$userId
+			)
+		);
 	} else {
 		$query = $QueryBuilder->insert(
 			$conn,
 			$options = array(
 				"table" => "vendor_invoices",
-				"keys" => ["invoice_no", "vendor", "date", "due_date", "currency", "exchange_rate", "invoice_value", "invoice_file"],
-				"values" => [$_POST["invoice_no"], $_POST["vendor_id"], $_POST["date"], $_POST["due_date"], $_POST["currency"], $_POST["exchange_rate"],$_POST["invoice_value"], $_POST['file_name']]
+				"keys" => ["invoice_no", "vendor", "date", "due_date", "currency", "exchange_rate", "invoice_value"],
+				"values" => [$_POST["invoice_no"], $_POST["vendor"], $_POST["date"], $_POST["due_date"], $_POST["currency"], $_POST["exchange_rate"],$_POST["invoice_value"]]
 			),
 			$multi = false
 		);

@@ -35,7 +35,7 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     Vendor Invoice has been succesfully added.
                                 </div>
-                               <table class="projects_table table table-striped table-bordered table-hover dt-responsive display">
+                               <table class="invoices_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th>Invoice ID</th>
                                         <th>Invoice No</th>
