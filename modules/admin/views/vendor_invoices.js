@@ -173,7 +173,7 @@ $(document).ready(function() {
                         return '<div class="connect_quotes_container">'+
                                     '<ul class="list-inline ">'+
                                         '<li>'+
-                                            '<select class=" connected_quotes item-'+row.id+' data-item='+row.id+' show-tick" data-product="'+row.product_id+'" multiple>'+
+                                            '<select class="connected_quotes item-'+row.id+' data-item='+row.id+' show-tick" data-product="'+row.product_id+'" >'+
                                                 '<option value="">Select Quote</option>'+
                                             '</select>'+
                                         '</li>'+
@@ -259,34 +259,29 @@ $(document).ready(function() {
 
         var ul = that.parent('li').next('.connect_quotes_container_list');
 
-        console.log(parent);
+        console.log(value, that);
 
-        $.each(value, function (i, item) {
-
-           
-
-
-        var itemConnection = '<ul class="list-inline"><li class="">'+item+'</li>'+
+        var itemConnection = '<ul class="list-inline"><li class="">'+value+'</li>'+
                                 '<li class="">'+
                                     '<button class="btn btn-lg btn-success">All</button>'+
                                 '</li>'+
                                 '<li>OR</li>'+
                                 '<li class="">'+
                                     '<input class="small-input"' + 
-                                    '" value="" type="number" placeholder="?" name="reserve_custom" width="40px"  min=0 required>' + 
-                                '</li></ul>'
-                             
-
-
-         console.log(itemConnection);
+                                    '" value="" type="number" placeholder="Few" name="reserve_custom" min=0 required>' + 
+                                '</li>'+
+                                '<li class="">'+
+                                    '<button class="btn btn-lg btn-danger">x</button>'+
+                                '</li>'+
+                            '</ul>';
+                         
 
         ul.append(itemConnection);
+       
 
         // if((typeof connectedQuotes[itemId] !== 'undefined'))
 
         // connectedQuotes['']
-
-        });
 
     })
 
