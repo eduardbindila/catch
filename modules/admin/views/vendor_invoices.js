@@ -4,7 +4,6 @@ $(document).ready(function() {
 
     var connectedQuotes = [];
 
-
     var projectsTable = $('.invoices_table').DataTable({
         "ajax": {
             "url": "/ajax/getVendorInvoicesList/",
@@ -170,45 +169,17 @@ $(document).ready(function() {
                     "data": null,
                     className: 'connect_quotes_td',
                     "render" : function(data, type, row, meta) {
-                        return '<div class="connect_quotes_container">'+
-                                    '<ul class="list-inline ">'+
-                                        '<li>'+
-                                            '<select class="connected_quotes item-'+row.id+' data-item='+row.id+' show-tick" data-product="'+row.product_id+'" >'+
-                                                '<option value="">Select Quote</option>'+
-                                            '</select>'+
-                                        '</li>'+
-                                        '<li class="connect_quotes_container_list">'+
-                                        '</li>'+
-                                    '</ul>'+
-                                '</div>';
+
+                           OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
+
+                        return OrderSplit[row.id].setWrapper(this);
                   }
                 }
         ],
         "initComplete": function(settings, json) {
+            console.log(json);
             $.each(json, function (i, item) {
-
-                console.log(item);
-
-                $.ajax({
-                    url: "/ajax/getVendorInvoiceItemQuotes",
-                    type: "post",
-                    dataType: "json",
-                    data: {'product_id': item.product_id}
-                }).success(function(json){
-                   $.each(json, function (x, quote) {
-                    console.log(quote);
-                        $('.item-'+item.id).append($('<option>', { 
-                            value: quote.id,
-                            text : quote.id+' - '+quote.name 
-                        }));
-                    });
-
-                }).error(function(xhr, status, error) {
-                   //$('.updateError').removeClass('hidden');
-                }).done(function(json){
-
-                })
-
+                OrderSplit[item.id].setOrders(item);
             });
 
         }
@@ -249,39 +220,25 @@ $(document).ready(function() {
 
     })
     
-    $('body').on('change', '.connected_quotes', function(){
+$('body').on('click', '.orderItem', function(e){
+
+    e.preventDefault()
 
         var that = $(this);
 
-        var itemId = $(this).attr('data-item');
+        var invoiceItemId = $(this).attr('data-item');
 
-        var value = that.val();
+        var quoteItemId = $(this).attr('data-quoteItem');
 
-        var ul = that.parent('li').next('.connect_quotes_container_list');
+        var orderNumber = $(this).attr('data-order')
 
-        console.log(value, that);
+        var quantity = $(this).attr('data_neededquantity');
 
-        var itemConnection = '<ul class="list-inline"><li class="">'+value+'</li>'+
-                                '<li class="">'+
-                                    '<button class="btn btn-lg btn-success">All</button>'+
-                                '</li>'+
-                                '<li>OR</li>'+
-                                '<li class="">'+
-                                    '<input class="small-input"' + 
-                                    '" value="" type="number" placeholder="Few" name="reserve_custom" min=0 required>' + 
-                                '</li>'+
-                                '<li class="">'+
-                                    '<button class="btn btn-lg btn-danger">x</button>'+
-                                '</li>'+
-                            '</ul>';
-                         
+        var orderLine = OrderSplit[invoiceItemId].setOrderActions(orderNumber);
 
-        ul.append(itemConnection);
-       
+        //$('.orderSplitLines[data-item='+invoiceItemId+']').append();
 
-        // if((typeof connectedQuotes[itemId] !== 'undefined'))
-
-        // connectedQuotes['']
+        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderLine)
 
     })
 

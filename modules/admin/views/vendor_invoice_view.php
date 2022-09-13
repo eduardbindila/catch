@@ -15,6 +15,46 @@
 		<div class="block-header">
 			<h2>Vendor Invoices</h2>
 		</div>
+        <div class="row m-b-10">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-1">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs waves-effect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
+                                        <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-11">
+                                <ul class="list-inline">
+                                    <li>
+                                        123123:
+                                    </li>
+                                    <li>
+                                        <div class="switch">
+                                            <label>
+                                                Fullfill<input type="checkbox">
+                                                <span class="lever green-tick-left"></span>
+                                                <input class="small-input" value="" type="number" placeholder="Custom" disabled name="reserve_custom" min=0 >
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-danger btn-xs waves-effect">
+                                        <i class="material-icons">close</i>
+                                    </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 		<div class="row">
 	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
@@ -51,6 +91,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="card">
                     <div class="header">
                         <h2>Vendor Invoice Items</h2>
@@ -65,7 +106,7 @@
                                         <th>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
-                                        <th>Connect Quotes</th>
+                                        <th>Connect Orders</th>
                                 </table>
                             </div>
                         </div>

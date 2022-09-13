@@ -9,9 +9,9 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_items qi",
-			"columns" => "qi.quote_id, q.name, qi.id ",
+			"columns" => "qi.quote_id, q.name, qi.id, qi.order_number, (qi.quantity-qi.reserved_stock) as needed_quantity ",
 			"innerJoin" => " quotes q on qi.quote_id = q.id",
-			"where" => "qi.product_id  = '".$_POST['product_id']."' AND q.quote_status = 2"
+			"where" => "qi.product_id  = '".$_POST['product_id']."' AND q.quote_status = 2 AND qi.order_number is not null"
 		)
 	);
 

@@ -38,6 +38,8 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/bootstrap-sel
 
 $LoadHTMLArtefacts->setScript($_WMPATH['ADMIN_VIEWS'].'vendor_invoices.js');
 
+$LoadHTMLArtefacts->setScript($_WMPATH['ADMIN_VIEWS'].'offer_split.js');
+
 
 
 

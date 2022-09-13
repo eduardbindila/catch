@@ -8771,5 +8771,24 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
 
 
 .small-input {
-  width: 50px;
+  width: 70px;
 }
+
+
+.green-tick-left:not(:checked):after {
+  background-color:  rgb(139, 195, 74) !important;
+}
+
+
+.switch label input[type=checkbox]:checked + .green-tick-left:after {
+  background-color:  grey !important;
+}
+
+.orderItem span {
+  font-size: 10px;
+  color: grey;
+  position: relative;
+  top: -2px;
+}
+
+
