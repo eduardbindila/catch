@@ -3,7 +3,9 @@
 class OrderSplit {
     constructor(itemId, productId) {
        this.itemId = itemId;
-       this.productId = productId
+       this.productId = productId;
+       this.orderSplit = []
+
     }
 
     setWrapper() {
@@ -27,7 +29,7 @@ class OrderSplit {
     }
 
 
-    setOrders(invoiceItem) {
+    setOrders(invoiceItem, thisClass=this) {
 
         $.ajax({
                 url: "/ajax/getVendorInvoiceItemQuotes",
@@ -35,8 +37,12 @@ class OrderSplit {
                 dataType: "json",
                 data: {'product_id': this.productId}
             }).success(function(json){
+                
                $.each(json, function (x, quoteItem) {
-                console.log(quoteItem, invoiceItem);
+                    console.log(quoteItem, invoiceItem)
+
+                    thisClass.loadOrderLine(invoiceItem.id);
+
                     $('.item-'+invoiceItem.id).append('<li><a href="#" data-item="'+invoiceItem.id+'" data-quoteItem="'+quoteItem.id+'" data_neededQuantity="'+quoteItem.needed_quantity+'" data-order="'+quoteItem.order_number+'"'+
                         ' class="orderItem waves-effect waves-block">'+quoteItem.order_number+' <span>('+quoteItem.needed_quantity+'pcs)</span></a></li>');
                 });
@@ -47,9 +53,13 @@ class OrderSplit {
             })
     }
 
+    getOrderSplit(){
+        return this.orderSplit;
+    }
 
-    setOrderActions(order_number){
-        var actionsList = '<ul class="list-inline">'+
+
+    setOrderActions(order_number, split_id){
+        var actionsList = '<ul class="list-inline" data-split='+split_id+'>'+
                                 '<li>Order: <b>'+order_number+'</b></li>'+
                                 '<li>'+
                                     '<div class="switch">'+
@@ -62,7 +72,7 @@ class OrderSplit {
                                     '</div>'+
                                 '</li>'+
                                 '<li>'+
-                                    '<button type="button" class="btn btn-danger btn-xs waves-effect">'+
+                                    '<button type="button" data-split='+split_id+' class="btn btn-danger btn-xs waves-effect">'+
                                     '<i class="material-icons">close</i>'+
                                 '</button>'+
                                 '</li>'+
@@ -103,24 +113,65 @@ class OrderSplit {
 
 
 
-    addOrderLine(invoiceItemId, quoteItemId, quantity, orderLine){
+    addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, thisClass=this){
 
-        console.log(invoiceItemId, quoteItemId, quantity, orderLine);
+        var orderLine = {
+            'vendor_invoice_item_id': invoiceItemId, 
+            'quote_item_id': quoteItemId, 
+            'quantity': quantity
+        }
 
         $.ajax({
             url: "/ajax/addOrderLine",
             type: "post",
             dataType: "json",
-            data: {'vendor_invoice_item_id': invoiceItemId, 'quote_item_id': quoteItemId, 'quantity': quantity}
+            data: orderLine
         }).success(function(json){
+            var splitId = json;
            $('.updateError').addClass('hidden');
 
-           $('.orderSplitLines[data-item='+invoiceItemId+']').append(orderLine)
+           $('.orderSplitLines[data-item='+invoiceItemId+']').append(thisClass.setOrderActions(orderNumber, splitId))
 
         }).error(function(xhr, status, error) {
            $('.updateError').removeClass('hidden');
+        }).complete(function(data){
+            orderLine['id']=data.responseJSON;
+            console.log(data.responseJSON);
+                thisClass.orderSplit = orderLine;
         })
 
+    }
+
+    loadOrderLine(invoiceItem, thisClass=this) {
+
+        $.ajax({
+            url: "/ajax/getOrderLines",
+            type: "post",
+            dataType: "json",
+            data: {'vendor_invoice_item_id':invoiceItem}
+        }).success(function(json){
+
+            console.log(json)
+
+            thisClass.orderSplit = data.responseJSON
+
+
+               // $.each(json, function (x, itemSplit) {
+                    
+               //      ('.orderSplitLines[data-item='+invoiceItemId+']').append(thisClass.setOrderActions(orderNumber, splitId))
+
+                    
+               //  });
+
+            
+
+        }).error(function(xhr, status, error) {
+           $('.updateError').removeClass('hidden');
+        }).complete(function(data){
+            
+        })
+
+        
     }
 
 }

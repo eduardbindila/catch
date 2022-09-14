@@ -234,11 +234,11 @@ $('body').on('click', '.orderItem', function(e){
 
         var quantity = $(this).attr('data_neededquantity');
 
-        var orderLine = OrderSplit[invoiceItemId].setOrderActions(orderNumber);
+        //var orderLine = OrderSplit[invoiceItemId].setOrderActions(orderNumber);
 
         //$('.orderSplitLines[data-item='+invoiceItemId+']').append();
 
-        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderLine)
+        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber)
 
     })
 
