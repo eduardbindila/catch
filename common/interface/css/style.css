@@ -8784,11 +8784,19 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
   background-color:  grey !important;
 }
 
-.orderItem span {
+.order-pcs {
   font-size: 10px;
   color: grey;
   position: relative;
   top: -2px;
+}
+
+.order-selected i{
+  font-size: 15px;
+  position: absolute;
+  left: 3px;
+  top: 6px;
+  color: #2b982b;
 }
 
 

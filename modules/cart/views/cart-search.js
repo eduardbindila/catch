@@ -473,7 +473,7 @@ $(document).ready(function() {
 
                 //console.log(invoiceId);
 
-                if(invoiceId && invoiceId !== 'undefined') {
+                if(typeof invoiceId !== 'undefined' && invoiceId) {
                     $('.addToQuote').addClass('hidden');
                     $('.createProject').addClass('hidden');
                     $('.addToProject').addClass('hidden');

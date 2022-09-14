@@ -19,7 +19,7 @@ $keys = array_keys($quoteItemsQuery[0]);
 
 $keys = array_splice($keys, 1);
 
-$keys = array_splice($keys,0, -1);
+$keys = array_splice($keys,0, -6);
 
 $valuesArray = array();
 
@@ -34,6 +34,11 @@ foreach ($quoteItemsQuery as $key => $quoteItem) {
 
 	$quoteItem['quote_id'] = $_POST['quote_id'];
 	unset($quoteItem['aquisition_price']);
+	unset($quoteItem['reserved_stock']);
+	unset($quoteItem['order_number']);
+	unset($quoteItem['order_date']);
+	unset($quoteItem['ordered_quantity']);
+	unset($quoteItem['promise_date']);
 	array_push($valuesArray, $quoteItem);
 
 }
@@ -52,6 +57,8 @@ $inserQuoteItems = $QueryBuilder->insert(
 
 
 	echo  json_decode($inserQuoteItems);
+
+	echo $conn->error;
 
 
 

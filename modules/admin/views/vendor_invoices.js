@@ -182,10 +182,19 @@ $(document).ready(function() {
                 OrderSplit[item.id].setOrders(item);
             });
 
+
+
         }
 
     });
 
+
+    $('.body').on('click', '.removeLine', function(){
+        console.log(this);
+        var thisSplitId = $(this).attr('data-split');
+        var itemId = $(this).attr('data-item');
+        OrderSplit[itemId].removeLine(itemId, thisSplitId, this);
+    });
 
     $('body').on('change', '.vendor-invoice-input', function(){
 
@@ -220,9 +229,9 @@ $(document).ready(function() {
 
     })
     
-$('body').on('click', '.orderItem', function(e){
+    $('body').on('click', '.orderItem', function(){
 
-    e.preventDefault()
+
 
         var that = $(this);
 
@@ -234,14 +243,43 @@ $('body').on('click', '.orderItem', function(e){
 
         var quantity = $(this).attr('data_neededquantity');
 
-        //var orderLine = OrderSplit[invoiceItemId].setOrderActions(orderNumber);
+        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber);
 
-        //$('.orderSplitLines[data-item='+invoiceItemId+']').append();
+    });
 
-        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber)
 
-    })
+    $('.body').on('change', '.reserve_custom', function(){
 
+        if($(this).is(':checked')) {
+            $(this).siblings('input[name="reserve_custom"]').prop('disabled', false);
+        } else {
+            $(this).siblings('input[name="reserve_custom"]').prop('disabled', true);
+            $(this).siblings('input[name="reserve_custom"]').val('');
+
+            var invoiceItemId = $(this).attr('data-item');
+
+            var splitId = $(this).attr('data-split');
+
+            var quantity = $(this).attr('data-neededQuantity');
+
+            OrderSplit[invoiceItemId].updateLine(splitId, quantity);
+        }
+
+       
+    });
+
+     $('.body').on('change', 'input[name="reserve_custom"]', function(){
+
+        var invoiceItemId = $(this).attr('data-item');
+
+        var splitId = $(this).attr('data-split');
+
+        var quantity = $(this).val();
+
+        OrderSplit[invoiceItemId].updateLine(splitId, quantity);
+
+
+    });
 
 });
 
