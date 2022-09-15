@@ -46,6 +46,8 @@ $(document).ready(function() {
 
     });
 
+
+
     $.ajax({
         url: "/ajax/getVendors",
         type: "post",
@@ -95,103 +97,107 @@ $(document).ready(function() {
             $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
         }      
     })
-     
-
-     var itemsTable = $('.invoice_items_table').DataTable({
-        "ajax": {
-            "url": "/ajax/getVendorInvoiceItemsList/",
-            "dataSrc":"",
-            "type": "POST",
-            "data": {'vendor_invoice_id': invoiceId}
-        },
     
-        pageLength: 100,
-            "paging":   true,
-            "ordering": true,
-            "searching": true,
-        rowId: 'category_slug',
-          
-        responsive: true,
-        order: [1, 'asc'],
-        "columns": [ 
-            { 
-                "data": "reception"
-            },
-            { 
-                "data": "product_id", 
-                "className": 'invoiceTableInput'
-            },
-            { 
-                "data": "quantity", 
-                "className": 'invoiceTableInput',
-                "render" : function(data, type, row, meta) {
-                        
-                    return '<div class="form-group">' + 
-                                '<div class="form-line">' + 
-                                    '<input class="form-control vendor-invoice-input"' + 
-                                    ' data-type="quantity" data-row="'+meta.row+
-                                    '" data-col="'+meta.col+
-                                    '" data-item="'+row.id+
-                                    '" value="'+data+'" type="number" name="quantity" placeholder="Quantity"  min=0 required>' + 
-                                '</div>' + 
-                            '</div>'
-              }
-            },
-            { 
-                "data": "unit_price",
-                "className": 'invoiceTableInput',
-                "render" : function(data, type, row, meta) {
-                        
-                    return '<div class="form-group">' + 
-                                '<div class="form-line">' + 
-                                    '<input class="form-control vendor-invoice-input"' + 
-                                    ' data-type="unit_price" data-row="'+meta.row+
-                                    '" data-col="'+meta.col+
-                                    '" data-item="'+row.id+
-                                    '" value="'+data+'" type="number" placeholder="Unit Price" name="unit_price"  min=0 required>' + 
-                                '</div>' + 
-                            '</div>'
-              }
-            },
-            { 
-                "data": "total_price",
-                "className": 'invoiceTableInput',
-                "render" : function(data, type, row, meta) {
-                        
-                    return '<div class="form-group">' + 
-                                '<div class="form-line">' + 
-                                    '<input class="form-control vendor-invoice-input"' + 
-                                    ' data-type="total_price" data-row="'+meta.row+
-                                    '" data-col="'+meta.col+
-                                    '" data-item="'+row.id+
-                                    '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled  min=0 required>' + 
-                                '</div>' + 
-                            '</div>'
-              }
-            },
 
-            { 
-                    "data": null,
-                    className: 'connect_quotes_td',
+    if(isDisabled) {
+         var itemsTable = $('.invoice_items_table').DataTable({
+            "ajax": {
+                "url": "/ajax/getVendorInvoiceItemsList/",
+                "dataSrc":"",
+                "type": "POST",
+                "data": {'vendor_invoice_id': invoiceId}
+            },
+        
+            pageLength: 100,
+                "paging":   true,
+                "ordering": true,
+                "searching": true,
+            rowId: 'category_slug',
+              
+            responsive: true,
+            order: [1, 'asc'],
+            "columns": [ 
+                { 
+                    "data": "reception"
+                },
+                { 
+                    "data": "product_id", 
+                    "className": 'invoiceTableInput'
+                },
+                { 
+                    "data": "quantity", 
+                    "className": 'invoiceTableInput',
                     "render" : function(data, type, row, meta) {
-
-                           OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
-
-                        return OrderSplit[row.id].setWrapper(this);
+                            
+                        return '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control vendor-invoice-input"' + 
+                                        ' data-type="quantity" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="'+data+'" type="number" name="quantity" placeholder="Quantity"  min=0 required>' + 
+                                    '</div>' + 
+                                '</div>'
                   }
-                }
-        ],
-        "initComplete": function(settings, json) {
-            //console.log(json);
-            $.each(json, function (i, item) {
-                OrderSplit[item.id].setOrders(item);
-            });
+                },
+                { 
+                    "data": "unit_price",
+                    "className": 'invoiceTableInput',
+                    "render" : function(data, type, row, meta) {
+                            
+                        return '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control vendor-invoice-input"' + 
+                                        ' data-type="unit_price" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="'+data+'" type="number" placeholder="Unit Price" name="unit_price"  min=0 required>' + 
+                                    '</div>' + 
+                                '</div>'
+                  }
+                },
+                { 
+                    "data": "total_price",
+                    "className": 'invoiceTableInput',
+                    "render" : function(data, type, row, meta) {
+                            
+                        return '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control vendor-invoice-input"' + 
+                                        ' data-type="total_price" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled  min=0 required>' + 
+                                    '</div>' + 
+                                '</div>'
+                  }
+                },
+
+                { 
+                        "data": null,
+                        className: 'connect_quotes_td',
+                        "render" : function(data, type, row, meta) {
+
+                               OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
+
+                            return OrderSplit[row.id].setWrapper(this);
+                      }
+                    }
+            ],
+            "initComplete": function(settings, json) {
+                //console.log(json);
+                $.each(json, function (i, item) {
+                    OrderSplit[item.id].setOrders(item);
+                });
 
 
 
-        }
+            }
 
-    });
+        });
+
+    }
+
 
 
     $('.body').on('click', '.removeLine', function(){
