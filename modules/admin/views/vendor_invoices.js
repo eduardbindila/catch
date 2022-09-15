@@ -52,6 +52,7 @@ $(document).ready(function() {
         dataType: "json",
     }).done(function(json){
        $.each(json, function (i, item) {
+        //console.log(json, $('.vendorTypesSelector'));
             $('.vendorTypesSelector').append($('<option>', { 
                 value: item.id,
                 text : item.id
@@ -118,9 +119,11 @@ $(document).ready(function() {
             },
             { 
                 "data": "product_id", 
+                "className": 'invoiceTableInput'
             },
             { 
                 "data": "quantity", 
+                "className": 'invoiceTableInput',
                 "render" : function(data, type, row, meta) {
                         
                     return '<div class="form-group">' + 
@@ -136,6 +139,7 @@ $(document).ready(function() {
             },
             { 
                 "data": "unit_price",
+                "className": 'invoiceTableInput',
                 "render" : function(data, type, row, meta) {
                         
                     return '<div class="form-group">' + 
@@ -151,6 +155,7 @@ $(document).ready(function() {
             },
             { 
                 "data": "total_price",
+                "className": 'invoiceTableInput',
                 "render" : function(data, type, row, meta) {
                         
                     return '<div class="form-group">' + 
@@ -159,7 +164,7 @@ $(document).ready(function() {
                                     ' data-type="total_price" data-row="'+meta.row+
                                     '" data-col="'+meta.col+
                                     '" data-item="'+row.id+
-                                    '" value="'+data+'" type="number" placeholder="Total Price" name="total_price"  min=0 required>' + 
+                                    '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled  min=0 required>' + 
                                 '</div>' + 
                             '</div>'
               }
@@ -193,12 +198,28 @@ $(document).ready(function() {
         console.log(this);
         var thisSplitId = $(this).attr('data-split');
         var orderNumber = $(this).attr('data-order');
+        var quoteItemId = $(this).attr('data-quoteItem');
         var itemId = $(this).attr('data-item');
-        OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber, this);
+        OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber,quoteItemId, this);
     });
 
     $('body').on('change', '.vendor-invoice-input', function(){
 
+        //console.log($(this).attr('name'));
+       
+
+        var parent = $(this).closest('tr');
+
+        var quantity = parent.find('input[name="quantity"]').val();;
+
+        var unitPrice = parent.find('input[name="unit_price"]').val();
+
+        var totalPrice = quantity*unitPrice;
+
+         if($(this).attr('name') != 'total_price') {
+
+            parent.find('input[name="total_price"]').val(totalPrice).change()
+        }
         var name = $(this).attr('name');
 
         var value = $(this).val()
@@ -212,7 +233,7 @@ $(document).ready(function() {
         };
 
 
-        console.log(orderDetail);
+        //console.log(orderDetail);
 
          $.ajax({
             url: "/ajax/updateVendorInvoiceItems",

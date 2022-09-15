@@ -241,16 +241,16 @@ Class QueryBuilder{
 			        qi2.product_id,
 			        qi2.quantity,
 			        p2.saga_quantity,
-			        (p2.saga_quantity + qi2.reserved_stock) AS available_product_stock,
+			        coalesce((p2.saga_quantity + qi2.reserved_stock),0) AS available_product_stock,
 			        qi2.reserved_stock,
 			        (
 			            CASE 
-			                WHEN (p2.saga_quantity + qi2.reserved_stock) = 0 THEN 0 
-			                WHEN p2.saga_quantity IS NULL THEN 0 
-			                WHEN (p2.saga_quantity + qi2.reserved_stock) > qi2.quantity THEN qi2.quantity 
-			                WHEN (p2.saga_quantity + qi2.reserved_stock) < qi2.quantity THEN p2.saga_quantity + qi2.reserved_stock
-			                WHEN (p2.saga_quantity + qi2.reserved_stock) = qi2.quantity THEN qi2.quantity
-			        END
+			              	WHEN coalesce((p2.saga_quantity + qi2.reserved_stock),0) = 0 THEN 0
+                            WHEN p2.saga_quantity IS NULL THEN 0 
+                            WHEN coalesce((p2.saga_quantity + qi2.reserved_stock),0) > qi2.quantity THEN qi2.quantity 
+                            WHEN coalesce((p2.saga_quantity + qi2.reserved_stock),0) < qi2.quantity THEN coalesce((p2.saga_quantity + qi2.reserved_stock),0)
+                            WHEN coalesce((p2.saga_quantity + qi2.reserved_stock),0) = qi2.quantity THEN qi2.quantity
+			        	END
 			        ) AS to_reserve
 			    FROM quote_items qi2
 			    JOIN products p2 ON qi2.product_id = p2.id
