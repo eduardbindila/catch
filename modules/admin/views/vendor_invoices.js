@@ -177,7 +177,7 @@ $(document).ready(function() {
                 }
         ],
         "initComplete": function(settings, json) {
-            console.log(json);
+            //console.log(json);
             $.each(json, function (i, item) {
                 OrderSplit[item.id].setOrders(item);
             });
@@ -192,8 +192,9 @@ $(document).ready(function() {
     $('.body').on('click', '.removeLine', function(){
         console.log(this);
         var thisSplitId = $(this).attr('data-split');
+        var orderNumber = $(this).attr('data-order');
         var itemId = $(this).attr('data-item');
-        OrderSplit[itemId].removeLine(itemId, thisSplitId, this);
+        OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber, this);
     });
 
     $('body').on('change', '.vendor-invoice-input', function(){

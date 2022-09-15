@@ -14,6 +14,8 @@ $conn = $QueryBuilder->dbConnection();
 		)
 	);
 
+		echo json_encode($query);
+
 	$QueryBuilder->closeConnection();
 
 

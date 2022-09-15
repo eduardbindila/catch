@@ -978,6 +978,7 @@ $(document).ready(function() {
                             stockIcon = 'flight';
                             messageTitle = 'Remote Stock';
                             colorClass = 'col-blue';
+                            messageContent = '';
 
                         } else {
                             stockIcon = 'schedule';
