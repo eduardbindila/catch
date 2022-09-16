@@ -65,7 +65,7 @@ if(isset($_POST['extra_discount'])) {
 						"`profit_percent`=".$_POST['options']['profit_percent']."",
 						"`quote_price`=".$_POST['options']['final_price']."",
 						"`assignee_id`=".$_POST['options']['assignee_id']."",
-						"`order_stock_status`=".$_POST['options']['order_stock_status']."",
+						// "`order_stock_status`=".$_POST['options']['order_stock_status']."",
 						"`client_id`=".$client_id.""
 						],
 				"where" => "id = ".$_POST['quote_id']

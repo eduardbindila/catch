@@ -900,7 +900,7 @@ $(document).ready(function() {
 
                     totalArray['name'] = quoteList[index]['name']; 
 
-                    totalArray['order_stock_status'] = !(totalArray['reserved_stock'] < totalArray['quantity']); 
+                    // totalArray['order_stock_status'] = !(totalArray['reserved_stock'] < totalArray['quantity']); 
 
                     updateQuote(val['id'], totalArray);
 

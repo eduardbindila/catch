@@ -67,14 +67,14 @@ $quoteLockedClass = "";
                     <a href="/quote/<?php echo $quote['id']?>" class="btn btn-default btn-lg">Quote #<?php echo $quote['id']?> - <?php echo $quote['name']?></a>
                     <?php 
 
-                    if(!$quote['order_stock_status'] && $_logisticsView && $quote['quote_status'] == 2) {
+                    //if(!$quote['order_stock_status'] && $_logisticsView && $quote['quote_status'] == 2) {
                         
                     ?>
 
-                      <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Waiting for Products.</a>
+                      <!-- <a href="#<?php echo $quote['id']?>" class="btn btn-warning btn-lg">Waiting for Products.</a> -->
 
                     <?php
-                    }
+                    //}
 
                     ?>
                   
