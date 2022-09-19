@@ -658,7 +658,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.98');
+		array_push($this->links, $href.'?v=0.1.981');
 	}
 
 
@@ -672,7 +672,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.98');
+		array_push($this->scripts, $src.'?v=0.1.981');
 	}
 
 
@@ -959,7 +959,9 @@ $winning_chance = array(
 	"5" => "75",
 	"2" => "100",
 	"8" => "0",
-	"9" => "0"
+	"9" => "0",
+	"10" => "100",
+	"11" => "100",
 );
 
 

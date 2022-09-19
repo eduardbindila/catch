@@ -176,6 +176,14 @@ $(document).ready(function() {
                                     "label": "",
                                     "value": 0
                                     },
+                                    10: {
+                                    "label": "",
+                                    "value": 0
+                                    },
+                                    11: {
+                                    "label": "",
+                                    "value": 0
+                                    },
                                
                                
                                 

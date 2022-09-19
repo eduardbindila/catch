@@ -48,6 +48,12 @@ $conn = $QueryBuilder->dbConnection();
 		'9' => array(
 			'next'=> '9'
 		),
+		'10' => array(
+			'next'=> '10'
+		),
+		'11' => array(
+			'next'=> '11'
+		)
 	);
 
 
