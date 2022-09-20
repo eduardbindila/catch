@@ -40,7 +40,7 @@ $conn = $QueryBuilder->dbConnection();
 			'next'=> '4',
 		),
 		'2' => array(
-			'next'=> '2'
+			'next'=> '10'
 		),
 		'8' => array(
 			'next'=> '8'
@@ -49,7 +49,7 @@ $conn = $QueryBuilder->dbConnection();
 			'next'=> '9'
 		),
 		'10' => array(
-			'next'=> '10'
+			'next'=> '11'
 		),
 		'11' => array(
 			'next'=> '11'
