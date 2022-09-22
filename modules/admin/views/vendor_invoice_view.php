@@ -55,6 +55,13 @@
                 <div class="card">
                     <div class="header">
                         <h2>Vendor Invoice Items</h2>
+                        <ul class="header-dropdown m-r-0">
+                            <li>
+                                <button class="addExternal btn btn-lg btn-default waves-effect" data-invoice="<?php echo $userId ?>" >
+                                    Add External Items
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                     <div class="body">
                         <div class="row">
@@ -62,7 +69,7 @@
                                 <table class="invoice_items_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th></th>
-                                        <th>Product Id</th>
+                                        <th>Product</th>
                                         <th>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>

@@ -122,7 +122,26 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "product_id", 
-                    "className": 'invoiceTableInput'
+                    "className": 'invoiceTableInput',
+                    "render" : function(data, type, row, meta) {
+                        var product = data;
+
+                        if(product == 0 && row.external_item_name=='') {
+                            console.log('asd')
+                            product = '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control vendor-invoice-external-input"' + 
+                                        ' data-type="quantity" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="" type="text" name="external_item_name" placeholder="New Item" required>' + 
+                                    '</div>' + 
+                                '</div>'
+                        } else if(!product) { product = row.external_item_name }
+
+                        return product
+                  }
+
                 },
                 { 
                     "data": "quantity", 
@@ -132,7 +151,7 @@ $(document).ready(function() {
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
                                         '<input class="form-control vendor-invoice-input"' + 
-                                        ' data-type="quantity" data-row="'+meta.row+
+                                        ' data-type="external_item_name" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
                                         '" value="'+data+'" type="number" name="quantity" placeholder="Quantity"  min=0 required>' + 
@@ -198,6 +217,33 @@ $(document).ready(function() {
 
     }
 
+    var table = $('.invoice_items_table').DataTable();
+ 
+    $('.addExternal').on('click', function () {
+
+        var invoiceId = $(this).attr('data-invoice');
+
+        var rowNode = table
+        .row.add( {
+            "id": "",
+            "vendor_invoice_id": "10000",
+            "product_id": "0",
+            "quantity": "1",
+            "unit_price": "",
+            "total_price": "",
+            "date_added": "",
+            "reception": "0",
+            "remaining_stock": "",
+            "external_item_name": ""
+        } )
+            .draw()
+            .node();
+         
+        $( rowNode )
+            .css( 'color', 'red' )
+            .animate( { color: 'black' } );
+    });
+
 
 
     $('.body').on('click', '.removeLine', function(){
@@ -248,6 +294,47 @@ $(document).ready(function() {
             data: orderDetail
         }).success(function(json){
            //$('.updateError').addClass('hidden');
+
+        }).error(function(xhr, status, error) {
+           //$('.updateError').removeClass('hidden');
+        })
+
+
+
+    })
+
+
+     $('body').on('change', '.vendor-invoice-external-input', function(){
+
+        //console.log($(this).attr('name'));
+       
+
+        var parent = $(this).closest('tr');
+
+        var name = $(this).attr('name');
+
+        var value = $(this).val()
+
+        var inv
+
+
+
+        var itemDetail = {
+            'vendor_invoice_id': invoiceId,
+            'external_item_name': value,
+        };
+
+
+        //console.log(orderDetail);
+
+         $.ajax({
+            url: "/ajax/addVendorInvoiceItems",
+            type: "post",
+            dataType: "json",
+            data: itemDetail
+        }).success(function(json){
+           //$('.updateError').addClass('hidden');
+           location.reload()
 
         }).error(function(xhr, status, error) {
            //$('.updateError').removeClass('hidden');
