@@ -71,6 +71,7 @@ RewriteRule ^download download.php [L]
  RewriteRule ^ajax/addOrderLine modules/admin/controllers/add_order_line.php [L]
  RewriteRule ^ajax/getOrderLines modules/admin/controllers/get_order_split.php [L]
  RewriteRule ^ajax/removeOrderLine modules/admin/controllers/remove_order_split_item.php [L]
+ RewriteRule ^ajax/removeInvoiceItem modules/admin/controllers/remove_invoice_item.php [L]
 RewriteRule ^ajax/updateOrderLine modules/admin/controllers/update_order_split.php [L]
  
  RewriteRule ^ajax/addVendorInvoiceItems modules/admin/controllers/add_vendor_invoice_items.php [L]

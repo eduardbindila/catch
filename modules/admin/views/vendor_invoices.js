@@ -247,12 +247,34 @@ $(document).ready(function() {
 
 
     $('.body').on('click', '.removeLine', function(){
-        console.log(this);
+        //console.log(this);
         var thisSplitId = $(this).attr('data-split');
         var orderNumber = $(this).attr('data-order');
         var quoteItemId = $(this).attr('data-quoteItem');
         var itemId = $(this).attr('data-item');
         OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber,quoteItemId, this);
+    });
+
+    $('.body').on('click', '.removeItem', function(){
+        var itemId = $(this).attr('data-item');
+
+        //console.log(itemId);
+        
+         $.ajax({
+            url: "/ajax/removeInvoiceItem",
+            type: "post",
+            dataType: "json",
+            data: {'id':itemId}
+        }).success(function(json){
+
+        }).error(function(xhr, status, error) {
+           
+        }).complete(function(data){
+
+            table.ajax.reload();
+            
+
+        })
     });
 
     $('body').on('change', '.vendor-invoice-input', function(){

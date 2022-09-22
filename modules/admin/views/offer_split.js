@@ -21,6 +21,11 @@ class OrderSplit {
                         '</div>'+
                         '<div class="col-lg-11 orderSplitLines" data-item='+this.itemId+' data-product="'+this.productId+'">'+
                         '</div>'+
+                        '<div class="col-lg2">'+
+                            '<button type="button" data-item='+this.itemId+' class="removeItem  btn btn-danger btn-xs waves-effect">'+
+                                 'Remove Item'+
+                                '</button>'+
+                        '</div>'+
                     '</div>';
         return wrapper
     }
@@ -36,7 +41,7 @@ class OrderSplit {
             }).success(function(json){
                 
                $.each(json, function (x, quoteItem) {
-                    console.log(quoteItem, invoiceItem)
+                    //console.log(quoteItem, invoiceItem)
                     ////console.log(quoteItem, invoiceItem.id)
                     thisClass.loadOrderLine(invoiceItem.id, quoteItem.order_number, quoteItem.needed_quantity, quoteItem.id);
                     $('.item-'+invoiceItem.id).append(
@@ -132,9 +137,16 @@ class OrderSplit {
 
         //console.log(quoteItemId);
 
+        var splitlines = $('.orderSplitLines[data-item='+invoiceItemId+']')
+
+       if($('.orderSplitorders[data-item='+invoiceItemId+'] .orderItem').length > 0) {
+        //console.log('asd');
+            splitlines.parent('.row').find('.removeItem').addClass('hidden');
+       }
+
             $('.orderSplitorders[data-item='+invoiceItemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').removeClass('hidden');
 
-        $('.orderSplitLines[data-item='+invoiceItemId+']').append(this.setOrderActions(orderNumber, splitId, quoteItemId, invoiceItemId, needed_quantity, quantity));
+        splitlines.append(this.setOrderActions(orderNumber, splitId, quoteItemId, invoiceItemId, needed_quantity, quantity));
     }
 
     loadOrderLine(invoiceItem, orderNumber, needed_quantity, quoteItemId, thisClass=this) {
@@ -185,8 +197,9 @@ class OrderSplit {
         }).error(function(xhr, status, error) {
            
         }).complete(function(data){
-            console.log($(that));
+            //console.log($(that));
             $(that).closest('ul[data-split='+splitId+']').remove();
+            $('.orderSplitLines[data-item='+itemId+']').parent('.row').find('.removeItem').removeClass('hidden');
             //console.log($('.orderSplitorders[data-item='+itemId+'] .orderItem[data-order="'+orderNumber+'"] .order-selected'))
             $('.orderSplitorders[data-item='+itemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').addClass('hidden');
 
