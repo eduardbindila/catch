@@ -23,7 +23,11 @@ class OrderSplit {
                             '<ul class="list-total hidden"  data-item="'+this.itemId+'">'+
                                 '<li> <span>Total: <span class="invoicedQuantity">x</span> invoiced'+
                                     ' - <span class="totalSplitQuantity">y</span> split'+
-                                    ' = <span class="freeStock">y</span> free stock</span> </li>'+
+                                    ' = <span class="freeStock">y</span> free stock</span>'+
+                                    '<span class="quantityError hidden">'+
+                                        '<i class="material-icons">error</i>'+
+                                    '</span>'+
+                                ' </li>'+
                             '</ul>'+
                         '</div>'+
                         '<div class="col-lg2">'+
@@ -172,6 +176,8 @@ class OrderSplit {
 
             if((invoicedQuantity - splitTotal + quantity) < 0 ) {
                 console.log('nope');
+                $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
+                this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
             } else {
                 this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
             }
@@ -207,6 +213,8 @@ class OrderSplit {
 
 
     removeLine(itemId, splitId, orderNumber, quoteItemId, that){
+
+        var thisClass = this;
         //console.log(splitId)
         $.ajax({
             url: "/ajax/removeOrderLine",
@@ -228,6 +236,18 @@ class OrderSplit {
                 $('.list-total[data-item='+itemId+']').addClass('hidden');
                 $('.vendor-invoice-input[data-item='+itemId+']').prop('disabled', false);
             }
+
+            var splitTotal = Number(thisClass.getSplitTotal(itemId));
+
+            var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+itemId+']').val())
+
+            thisClass.setTotal(itemId, invoicedQuantity, splitTotal);
+
+            if(invoicedQuantity >= splitTotal) {
+                $('.list-total[data-item='+itemId+'] .quantityError').addClass('hidden')
+            }
+
+            
 
             //console.log($('.orderSplitorders[data-item='+itemId+'] .orderItem[data-order="'+orderNumber+'"] .order-selected'))
             $('.orderSplitorders[data-item='+itemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').addClass('hidden');

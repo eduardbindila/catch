@@ -8814,3 +8814,10 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     border-top: 1px solid #d6d6d6;
     padding-top: 5px;
 }
+
+.quantityError {
+    color: red;
+    position: relative;
+    top: 6px;
+    left: 5px;
+}

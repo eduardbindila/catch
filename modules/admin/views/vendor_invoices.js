@@ -441,11 +441,13 @@ $(document).ready(function() {
 
         if(splitTotal > invoicedQuantity)
         {
-            console.log('nope');
+            $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
         } else {
-            OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
-            OrderSplit[invoiceItemId].updateLine(splitId, quantity, oldQuantity); 
+            $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden')
         }
+
+        OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
+        OrderSplit[invoiceItemId].updateLine(splitId, quantity, oldQuantity); 
 
     });
 
