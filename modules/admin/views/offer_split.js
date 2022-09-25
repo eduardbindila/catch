@@ -176,7 +176,8 @@ class OrderSplit {
 
             if((invoicedQuantity - splitTotal + quantity) < 0 ) {
                 console.log('nope');
-                $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
+                $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden');
+                $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').prop('disabled', true)
                 this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
             } else {
                 this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
@@ -244,7 +245,8 @@ class OrderSplit {
             thisClass.setTotal(itemId, invoicedQuantity, splitTotal);
 
             if(invoicedQuantity >= splitTotal) {
-                $('.list-total[data-item='+itemId+'] .quantityError').addClass('hidden')
+                $('.list-total[data-item='+itemId+'] .quantityError').addClass('hidden');
+                $('.reception[data-item='+itemId+']').removeClass('btn-danger').addClass('btn-default').prop('disabled', false)
             }
 
             

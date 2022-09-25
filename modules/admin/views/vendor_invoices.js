@@ -132,7 +132,7 @@ $(document).ready(function() {
 
                             
                         return '<button type="button" class="reception btn '+btnClass+' btn-xs waves-effect"'+
-                                 ' data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">'+
+                                 ' data-item='+row.id+'>'+
                                     '<i class="material-icons">'+icon+'</i>'+
                                 '</button>'
                   }
@@ -442,8 +442,10 @@ $(document).ready(function() {
         if(splitTotal > invoicedQuantity)
         {
             $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
+            $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').prop('disabled', true)
         } else {
-            $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden')
+            $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden');
+            $('.reception[data-item='+invoiceItemId+']').removeClass('btn-danger').addClass('btn-default').prop('disabled', false)
         }
 
         OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
