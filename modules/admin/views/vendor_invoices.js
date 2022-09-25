@@ -17,7 +17,7 @@ $(document).ready(function() {
         rowId: 'category_slug',
           
         responsive: true,
-        order: [1, 'asc'],
+        order: [],
         "columns": [ 
             { 
                 "data": "id",
@@ -115,10 +115,27 @@ $(document).ready(function() {
             rowId: 'category_slug',
               
             responsive: true,
-            order: [1, 'asc'],
+            order: [],
             "columns": [ 
+
                 { 
-                    "data": "reception"
+                    "data": "reception",
+                    "render" : function(data, type, row, meta) {
+
+                        var btnClass = 'btn-default';
+                        var icon = 'lock_open';
+
+                        if(data == 1) {
+                            btnClass = 'btn-success';
+                            icon = 'lock'
+                        }
+
+                            
+                        return '<button type="button" class="reception btn '+btnClass+' btn-xs waves-effect"'+
+                                 ' data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">'+
+                                    '<i class="material-icons">'+icon+'</i>'+
+                                '</button>'
+                  }
                 },
                 { 
                     "data": "product_id", 
@@ -368,8 +385,6 @@ $(document).ready(function() {
     
     $('body').on('click', '.orderItem', function(){
 
-
-
         var that = $(this);
 
         var invoiceItemId = $(this).attr('data-item');
@@ -387,19 +402,22 @@ $(document).ready(function() {
 
     $('.body').on('change', '.reserve_custom', function(){
 
+        var invoiceItemId = $(this).attr('data-item');
+
         if($(this).is(':checked')) {
             $(this).siblings('input[name="reserve_custom"]').prop('disabled', false);
         } else {
             $(this).siblings('input[name="reserve_custom"]').prop('disabled', true);
-            $(this).siblings('input[name="reserve_custom"]').val('');
-
-            var invoiceItemId = $(this).attr('data-item');
+           
+            
 
             var splitId = $(this).attr('data-split');
 
             var quantity = $(this).attr('data-neededQuantity');
 
-            OrderSplit[invoiceItemId].updateLine(splitId, quantity);
+            var oldQuantity = $(this).siblings('input[name="reserve_custom"]').val()
+
+            $(this).siblings('input[name="reserve_custom"]').val(quantity).change();
         }
 
        
@@ -413,8 +431,21 @@ $(document).ready(function() {
 
         var quantity = $(this).val();
 
-        OrderSplit[invoiceItemId].updateLine(splitId, quantity);
+        var oldQuantity = $(this).siblings('.reserve_custom').attr('data-neededquantity');
 
+        var invoicedQuantity = $('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val()
+
+        var splitTotal = OrderSplit[invoiceItemId].getSplitTotal(invoiceItemId);
+
+        //console.log(oldQuantity, quantity);
+
+        if(splitTotal > invoicedQuantity)
+        {
+            console.log('nope');
+        } else {
+            OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
+            OrderSplit[invoiceItemId].updateLine(splitId, quantity, oldQuantity); 
+        }
 
     });
 

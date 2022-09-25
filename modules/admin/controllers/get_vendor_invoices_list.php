@@ -10,7 +10,9 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "vendor_invoices",
-			"columns" => "*"
+			"columns" => "*",
+			"orderBy" => 'invoice_no',
+			"orderType" => "ASC"
 		)
 	);
 

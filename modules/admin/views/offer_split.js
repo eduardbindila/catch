@@ -2,7 +2,7 @@ class OrderSplit {
     constructor(itemId, productId) {
        this.itemId = itemId;
        this.productId = productId;
-       this.orderSplit = []
+       this.orderSplit = [];
     }
 
     setWrapper() {
@@ -20,6 +20,11 @@ class OrderSplit {
                            '</div>'+
                         '</div>'+
                         '<div class="col-lg-11 orderSplitLines" data-item='+this.itemId+' data-product="'+this.productId+'">'+
+                            '<ul class="list-total hidden"  data-item="'+this.itemId+'">'+
+                                '<li> <span>Total: <span class="invoicedQuantity">x</span> invoiced'+
+                                    ' - <span class="totalSplitQuantity">y</span> split'+
+                                    ' = <span class="freeStock">y</span> free stock</span> </li>'+
+                            '</ul>'+
                         '</div>'+
                         '<div class="col-lg2">'+
                             '<button type="button" data-item='+this.itemId+' class="removeItem  btn btn-danger btn-xs waves-effect">'+
@@ -68,17 +73,21 @@ class OrderSplit {
         return this.orderSplit;
     }
 
-
     setOrderActions(order_number, split_id, quoteItemId, invoiceItemId, needed_quantity, quantity){
         if(quantity == needed_quantity) {
             var checked = '';
             var disabled = 'disabled';
-            var displayQuantity = '';
+            var displayQuantity = quantity;
         } else {
             var checked = 'checked';
             var disabled = '';
             var displayQuantity = quantity;
         }
+
+        var invoiceQuantity = $('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val();
+
+        var totalLine = $('.orderSplitLines[data-item='+invoiceItemId+']');
+
 
         var actionsList = '<ul class="list-inline" data-split='+split_id+' data-order="'+order_number+'" data-quoteItem="'+quoteItemId+'">'+
                                 '<li>Order: <b class="orderName">'+order_number+'</b></li>'+
@@ -94,7 +103,8 @@ class OrderSplit {
                                     '</div>'+
                                 '</li>'+
                                 '<li>'+
-                                    '<button type="button" data-split='+split_id+' data-quoteItem="'+quoteItemId+'" data-order="'+order_number+'" data-item='+invoiceItemId+' class="removeLine btn btn-danger btn-xs waves-effect">'+
+                                    '<button type="button" data-split='+split_id+' data-quoteItem="'+quoteItemId+'" data-order="'+order_number+
+                                        '" data-item='+invoiceItemId+' class="removeLine btn btn-danger btn-xs waves-effect">'+
                                     '<i class="material-icons">close</i>'+
                                 '</button>'+
                                 '</li>'+
@@ -120,6 +130,7 @@ class OrderSplit {
                 data: orderLine
             }).success(function(json){
                 var splitId = json;
+
                thisClass.setOrderLine(invoiceItemId, orderNumber, splitId, quoteItemId, quantity, quantity)
 
             }).error(function(xhr, status, error) {
@@ -139,14 +150,32 @@ class OrderSplit {
 
         var splitlines = $('.orderSplitLines[data-item='+invoiceItemId+']')
 
-       if($('.orderSplitorders[data-item='+invoiceItemId+'] .orderItem').length > 0) {
-        //console.log('asd');
+        $('.orderSplitorders[data-item='+invoiceItemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').removeClass('hidden');
+
+        splitlines.prepend(this.setOrderActions(orderNumber, splitId, quoteItemId, invoiceItemId, needed_quantity, quantity));
+
+        //console.log(invoiceItemId, $('.line-total[data-item='+invoiceItemId+']'));
+
+       if($('.orderSplitLines[data-item='+invoiceItemId+'] .list-inline').length > 0) {
             splitlines.parent('.row').find('.removeItem').addClass('hidden');
+
+            $('.list-total[data-item='+invoiceItemId+']').removeClass('hidden');
+            $('.vendor-invoice-input[data-item='+invoiceItemId+']').prop('disabled', true);
+
+
+            console.log('why');
+
+
+            var splitTotal = Number(this.getSplitTotal(invoiceItemId));
+
+            var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
+
+            if((invoicedQuantity - splitTotal + quantity) < 0 ) {
+                console.log('nope');
+            } else {
+                this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
+            }
        }
-
-            $('.orderSplitorders[data-item='+invoiceItemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').removeClass('hidden');
-
-        splitlines.append(this.setOrderActions(orderNumber, splitId, quoteItemId, invoiceItemId, needed_quantity, quantity));
     }
 
     loadOrderLine(invoiceItem, orderNumber, needed_quantity, quoteItemId, thisClass=this) {
@@ -163,16 +192,8 @@ class OrderSplit {
             //console.log(json)
 
            $.each(json, function (x, itemSplit) {
-                // if(($('.orderSplitLines[data-item='+invoiceItem+'] ul[data-split='+itemSplit.id+']').length == 0 )) {
-
-                //     //console.log(orderNumber);
-
-                //     thisClass.setOrderLine(invoiceItem, orderNumber, itemSplit.id, itemSplit.quote_item_id, needed_quantity, itemSplit.quantity,)
-                // }
-
-
-
-                    thisClass.setOrderLine(invoiceItem, orderNumber, itemSplit.id, itemSplit.quote_item_id, needed_quantity, itemSplit.quantity)
+ 
+              thisClass.setOrderLine(invoiceItem, orderNumber, itemSplit.id, itemSplit.quote_item_id, needed_quantity, itemSplit.quantity);
             });
 
         }).error(function(xhr, status, error) {
@@ -199,7 +220,15 @@ class OrderSplit {
         }).complete(function(data){
             //console.log($(that));
             $(that).closest('ul[data-split='+splitId+']').remove();
-            $('.orderSplitLines[data-item='+itemId+']').parent('.row').find('.removeItem').removeClass('hidden');
+
+
+
+             if($('.orderSplitLines[data-item='+itemId+'] .list-inline').length == 0) {
+                $('.orderSplitLines[data-item='+itemId+']').parent('.row').find('.removeItem').removeClass('hidden');
+                $('.list-total[data-item='+itemId+']').addClass('hidden');
+                $('.vendor-invoice-input[data-item='+itemId+']').prop('disabled', false);
+            }
+
             //console.log($('.orderSplitorders[data-item='+itemId+'] .orderItem[data-order="'+orderNumber+'"] .order-selected'))
             $('.orderSplitorders[data-item='+itemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').addClass('hidden');
 
@@ -221,5 +250,35 @@ class OrderSplit {
         }).complete(function(data){
 
         })
+    }
+
+    getSplitTotal(itemId){
+        //console.log(splitId, quantity)
+
+        var splitItemsQuantities = $('input[name="reserve_custom"][data-item='+itemId+']');
+
+        var splitTotal = 0;
+
+        //console.log(splitItemsQuantities.val());
+
+        splitItemsQuantities.each(function(index, item){
+
+             //console.log(item);
+
+            var itemQuantity = $(item).val();
+
+            splitTotal = Number(splitTotal) + Number(itemQuantity);
+        })
+
+        //console.log(splitTotal, $('.list-total[data-item='+itemId+'] .totalSplitQuantity'));
+
+        return splitTotal;
+    }
+
+    setTotal(itemId, invoicedQuantity, splitTotal) {
+
+        $('.list-total[data-item='+itemId+'] .invoicedQuantity').text(invoicedQuantity);
+        $('.list-total[data-item='+itemId+'] .totalSplitQuantity').text(splitTotal);
+        $('.list-total[data-item='+itemId+'] .freeStock').text(invoicedQuantity - splitTotal);
     }
 }

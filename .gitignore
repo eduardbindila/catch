@@ -3,3 +3,4 @@ uploads
 access.log
 error.log
 config/db.php
+modules/admin/manage/controllers/aquisition.php

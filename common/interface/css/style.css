@@ -8809,3 +8809,8 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
   width: 100px;
  }
 
+
+.list-total span{
+    border-top: 1px solid #d6d6d6;
+    padding-top: 5px;
+}

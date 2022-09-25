@@ -10,7 +10,9 @@ $conn = $QueryBuilder->dbConnection();
 		$options = array(
 			"table" => "vendor_invoice_items",
 			"columns" => "*",
-			"where" => "vendor_invoice_id=".$_POST['vendor_invoice_id']
+			"where" => "vendor_invoice_id=".$_POST['vendor_invoice_id'],
+			"orderBy" => "id",
+			"orderType" => "ASC"
 		)
 	);
 
