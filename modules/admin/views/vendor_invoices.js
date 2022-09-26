@@ -124,15 +124,18 @@ $(document).ready(function() {
 
                         var btnClass = 'btn-default';
                         var icon = 'lock_open';
+                        var disabled = '';
 
                         if(data == 1) {
                             btnClass = 'btn-success';
                             icon = 'lock'
+                            disabled = 'disabled';
+
                         }
 
                             
-                        return '<button type="button" class="reception btn '+btnClass+' btn-xs waves-effect"'+
-                                 ' data-item='+row.id+'>'+
+                        return '<button type="button" '+disabled+' class="reception btn '+btnClass+' btn-xs waves-effect"'+
+                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+'>'+
                                     '<i class="material-icons">'+icon+'</i>'+
                                 '</button>'
                   }
@@ -159,6 +162,10 @@ $(document).ready(function() {
                         return product
                   }
 
+                },
+                { 
+                    "data": "saga_quantity",
+                    
                 },
                 { 
                     "data": "quantity", 
@@ -222,12 +229,15 @@ $(document).ready(function() {
             ],
             "initComplete": function(settings, json) {
                 //console.log(json);
+                
+            }, 
+            "drawCallback": function(settings, json) {
+                var api = this.api();
+                var json = api.ajax.json();
+                //console.log(settings, json);
                 $.each(json, function (i, item) {
                     OrderSplit[item.id].setOrders(item);
                 });
-
-
-
             }
 
         });
@@ -393,9 +403,15 @@ $(document).ready(function() {
 
         var orderNumber = $(this).attr('data-order')
 
+        var quoteId = $(this).attr('data-quoteId')
+        var quoteQuantity = $(this).attr('data-quoteQuantity')
+        var reservedStock = $(this).attr('data-reservedStock')
+
+
         var quantity = $(this).attr('data_neededquantity');
 
-        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber);
+
+        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, quoteId, quoteQuantity, reservedStock);
 
     });
 
@@ -421,6 +437,69 @@ $(document).ready(function() {
         }
 
        
+    });
+
+    $('.body').on('click', '.reception', function(){
+
+        var invoiceItemId = $(this).attr('data-item');
+
+        var product = $(this).attr('data-product');
+
+        var stock = $(this).attr('data-stock');
+
+        var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text();
+
+        var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
+
+        var itemDetails = {
+            'itemId': invoiceItemId,
+            'newStock': Number(stock) + Number(freeStock),
+            'freeStock': freeStock,
+            'quoteItems' :{},
+            'product': product
+        }
+
+        splitLines.each(function(index, item){
+
+            //console.log(item);
+             
+
+             var itemInput = $(item).find('input[name="reserve_custom"]');
+
+             var itemQuantity = itemInput.val();
+
+             var quoteItemId = itemInput.attr('data-quoteItem');
+             var reservedStock = $(item).attr('data-reserved');
+
+             var quantities = {
+                'splitQuantity' : itemQuantity,
+                'reservedStock': reservedStock
+             }
+
+             //console.log(quantities);
+
+             itemDetails.quoteItems[quoteItemId] = quantities;
+        })
+
+        $.ajax({
+            url: "/ajax/itemReception",
+            type: "post",
+            dataType: "json",
+            data: itemDetails
+        }).success(function(json){
+           //$('.updateError').addClass('hidden');
+
+           table.ajax.reload();
+
+           OrderSplit[invoiceItemId].disableActions(invoiceItemId);
+            
+           
+
+        }).error(function(xhr, status, error) {
+           //$('.updateError').removeClass('hidden');
+        })
+
+        
     });
 
      $('.body').on('change', 'input[name="reserve_custom"]', function(){

@@ -69,6 +69,7 @@ RewriteRule ^download download.php [L]
  RewriteRule ^ajax/getVendorInvoiceItemQuotes modules/admin/controllers/get_vendor_invoice_item_quotes.php [L]
 
  RewriteRule ^ajax/addOrderLine modules/admin/controllers/add_order_line.php [L]
+ RewriteRule ^ajax/itemReception modules/admin/controllers/item_reception.php [L]
  RewriteRule ^ajax/getOrderLines modules/admin/controllers/get_order_split.php [L]
  RewriteRule ^ajax/removeOrderLine modules/admin/controllers/remove_order_split_item.php [L]
  RewriteRule ^ajax/removeInvoiceItem modules/admin/controllers/remove_invoice_item.php [L]

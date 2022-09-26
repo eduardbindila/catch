@@ -10,8 +10,8 @@ class OrderSplit {
         var wrapper = '<div class="row">'+
                         '<div class="col-lg-1">'+
                             '<div class="btn-group">'+
-                                '<button type="button" class="btn btn-default btn-xs waves-effect"'+
-                                 ' data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">'+
+                                '<button type="button" class="btn addLineButton btn-default btn-xs waves-effect"'+
+                                 ' data-toggle="dropdown" aria-haspopup="true" data-item='+this.itemId+' aria-expanded="true">'+
                                     '<i class="material-icons">add</i>'+
                                 '</button>'+
                                 '<ul class="dropdown-menu orderSplitorders item-'+this.itemId+'"'+
@@ -52,12 +52,15 @@ class OrderSplit {
                $.each(json, function (x, quoteItem) {
                     //console.log(quoteItem, invoiceItem)
                     ////console.log(quoteItem, invoiceItem.id)
-                    thisClass.loadOrderLine(invoiceItem.id, quoteItem.order_number, quoteItem.needed_quantity, quoteItem.id);
+                    thisClass.loadOrderLine(invoiceItem.id, quoteItem.order_number, quoteItem.needed_quantity, quoteItem.id, quoteItem.quoteQuantity, quoteItem.reserved_stock );
                     $('.item-'+invoiceItem.id).append(
                             '<li class=""><a data-item="'+invoiceItem.id+'"'+
                                 ' data-quoteItem="'+quoteItem.id+'"'+
                                 ' data_neededQuantity="'+quoteItem.needed_quantity+'"'+
                                 ' data-order="'+quoteItem.order_number+'"'+
+                                ' data-quoteQuantity="'+quoteItem.quoteQuantity+'"'+
+                                ' data-reservedStock="'+quoteItem.reserved_stock+'"'+
+                                ' data-quoteId="'+quoteItem.quote_id+'"'+
                                 ' class="orderItem waves-effect waves-block">'+
                                 '<span class="order-selected hidden"><i class="material-icons">check_circle</i></span>'+
                                     quoteItem.order_number +
@@ -77,7 +80,7 @@ class OrderSplit {
         return this.orderSplit;
     }
 
-    setOrderActions(order_number, split_id, quoteItemId, invoiceItemId, needed_quantity, quantity){
+    setOrderActions(order_number, split_id, quoteItemId, invoiceItemId, needed_quantity, quantity, quoteId, quoteQuantity, reserved_stock){
         if(quantity == needed_quantity) {
             var checked = '';
             var disabled = 'disabled';
@@ -93,8 +96,8 @@ class OrderSplit {
         var totalLine = $('.orderSplitLines[data-item='+invoiceItemId+']');
 
 
-        var actionsList = '<ul class="list-inline" data-split='+split_id+' data-order="'+order_number+'" data-quoteItem="'+quoteItemId+'">'+
-                                '<li>Order: <b class="orderName">'+order_number+'</b></li>'+
+        var actionsList = '<ul class="list-inline" data-split='+split_id+' data-order="'+order_number+'" data-item='+invoiceItemId+' data-quoteItem="'+quoteItemId+'" data-reserved="'+reserved_stock+'">'+
+                                '<li>Order: <b class="orderName">'+order_number+'</b> Quote: <b class="">'+quoteId+'</b> Quote Quantity: <b class="">'+quoteQuantity+'</b> Reserved Stock: <b class="orderName">'+reserved_stock+'</b></li>'+
                                 '<li>'+
                                     '<div class="switch">'+
                                         '<label>'+
@@ -102,7 +105,7 @@ class OrderSplit {
                                             ' data-split='+split_id+' class="reserve_custom" '+checked+'>'+
                                             '<span class="lever green-tick-left"></span>'+
                                             '<input class="small-input" value="'+displayQuantity+'" type="number"'+ 
-                                            'placeholder="Custom" data-split='+split_id+' data-item='+invoiceItemId+' '+disabled+' name="reserve_custom" min=0 >'+
+                                            'placeholder="Custom" data-split='+split_id+' data-quoteItem='+quoteItemId+' data-item='+invoiceItemId+' '+disabled+' name="reserve_custom" min=0 >'+
                                         '</label>'+
                                     '</div>'+
                                 '</li>'+
@@ -117,7 +120,7 @@ class OrderSplit {
         return actionsList
     }
 
-    addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, thisClass=this){
+    addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, quoteId, quoteQuantity, reserved_stock, thisClass=this){
 
         if($('.orderSplitLines[data-item='+invoiceItemId+'] ul[data-quoteItem='+quoteItemId+']').length == 0) {
         
@@ -135,7 +138,7 @@ class OrderSplit {
             }).success(function(json){
                 var splitId = json;
 
-               thisClass.setOrderLine(invoiceItemId, orderNumber, splitId, quoteItemId, quantity, quantity)
+               thisClass.setOrderLine(invoiceItemId, orderNumber, splitId, quoteItemId, quantity, quantity, quoteId, quoteQuantity, reserved_stock)
 
             }).error(function(xhr, status, error) {
                $('.updateError').removeClass('hidden');
@@ -148,7 +151,7 @@ class OrderSplit {
 
     }
 
-    setOrderLine(invoiceItemId, orderNumber, splitId, quoteItemId, needed_quantity, quantity) {
+    setOrderLine(invoiceItemId, orderNumber, splitId, quoteItemId, needed_quantity, quantity, quoteId, quoteQuantity, reserved_stock) {
 
         //console.log(quoteItemId);
 
@@ -156,9 +159,16 @@ class OrderSplit {
 
         $('.orderSplitorders[data-item='+invoiceItemId+'] .orderItem[data-order="'+orderNumber+'"][data-quoteItem="'+quoteItemId+'"] .order-selected').removeClass('hidden');
 
-        splitlines.prepend(this.setOrderActions(orderNumber, splitId, quoteItemId, invoiceItemId, needed_quantity, quantity));
+        splitlines.prepend(this.setOrderActions(orderNumber, splitId, quoteItemId, invoiceItemId, needed_quantity, quantity, quoteId, quoteQuantity, reserved_stock));
 
         //console.log(invoiceItemId, $('.line-total[data-item='+invoiceItemId+']'));
+
+        //console.log($('.reception[data-item='+invoiceItemId+']').prop('disabled'))
+
+        if($('.reception[data-item='+invoiceItemId+']').prop('disabled') == true) {
+            this.disableActions(invoiceItemId);    
+        }
+        
 
        if($('.orderSplitLines[data-item='+invoiceItemId+'] .list-inline').length > 0) {
             splitlines.parent('.row').find('.removeItem').addClass('hidden');
@@ -167,7 +177,7 @@ class OrderSplit {
             $('.vendor-invoice-input[data-item='+invoiceItemId+']').prop('disabled', true);
 
 
-            console.log('why');
+            //console.log('why');
 
 
             var splitTotal = Number(this.getSplitTotal(invoiceItemId));
@@ -175,7 +185,7 @@ class OrderSplit {
             var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
 
             if((invoicedQuantity - splitTotal + quantity) < 0 ) {
-                console.log('nope');
+                //console.log('nope');
                 $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden');
                 $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').prop('disabled', true)
                 this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
@@ -185,7 +195,7 @@ class OrderSplit {
        }
     }
 
-    loadOrderLine(invoiceItem, orderNumber, needed_quantity, quoteItemId, thisClass=this) {
+    loadOrderLine(invoiceItem, orderNumber, needed_quantity, quoteItemId, quoteQuantity, reserved_stock, thisClass=this) {
 
         $.ajax({
             url: "/ajax/getOrderLines",
@@ -199,8 +209,12 @@ class OrderSplit {
             //console.log(json)
 
            $.each(json, function (x, itemSplit) {
+
+            //console.log(itemSplit);
  
-              thisClass.setOrderLine(invoiceItem, orderNumber, itemSplit.id, itemSplit.quote_item_id, needed_quantity, itemSplit.quantity);
+              //thisClass.setOrderLine(invoiceItem, orderNumber, itemSplit.id, itemSplit.quote_item_id, needed_quantity, itemSplit.quantity);
+
+              thisClass.setOrderLine(invoiceItem, orderNumber, itemSplit.id, itemSplit.quote_item_id, needed_quantity, itemSplit.quantity, itemSplit.quote_id, itemSplit.quoteQuantity, itemSplit.reserved_stock, );
             });
 
         }).error(function(xhr, status, error) {
@@ -302,5 +316,13 @@ class OrderSplit {
         $('.list-total[data-item='+itemId+'] .invoicedQuantity').text(invoicedQuantity);
         $('.list-total[data-item='+itemId+'] .totalSplitQuantity').text(splitTotal);
         $('.list-total[data-item='+itemId+'] .freeStock').text(invoicedQuantity - splitTotal);
+    }
+
+
+    disableActions(itemId) {
+        $('input[name="reserve_custom"][data-item='+itemId+']').prop('disabled', true);
+        $('.reserve_custom[data-item='+itemId+']').prop('disabled', true);
+        $('.addLineButton[data-item='+itemId+']').prop('disabled', true);
+        $('.removeLine[data-item='+itemId+']').prop('disabled', true);
     }
 }

@@ -230,6 +230,15 @@ Class QueryBuilder{
 		}		
 	}
 
+	function customQuery($conn, $query){
+
+		$results = mysqli_query($conn, $query);
+
+		$this->logAction("customQuery", '', $query, "");
+
+		return $conn->query($query);			
+	}
+
 	function orderProcessingUpdateStocks($conn, $quote_id)
 	{
 		$query = "UPDATE

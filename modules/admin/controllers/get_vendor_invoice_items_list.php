@@ -9,9 +9,10 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "vendor_invoice_items",
-			"columns" => "*",
+			"columns" => "vendor_invoice_items.*, products.saga_quantity",
+			"innerJoin" => "products on vendor_invoice_items.product_id = products.id",
 			"where" => "vendor_invoice_id=".$_POST['vendor_invoice_id'],
-			"orderBy" => "id",
+			"orderBy" => "vendor_invoice_items.id",
 			"orderType" => "ASC"
 		)
 	);

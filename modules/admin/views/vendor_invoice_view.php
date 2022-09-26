@@ -70,6 +70,7 @@
                                     <thead>
                                         <th></th>
                                         <th>Product</th>
+                                        <th>Free Stock</th>
                                         <th>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
