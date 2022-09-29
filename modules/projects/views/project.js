@@ -1167,7 +1167,7 @@ $(document).ready(function() {
                             } 
 
                              
-                                    html = row.reserved_stock + ' ';
+                                    html = '<span class="reserved_stock" data-item="'+row.quote_item_id+'">'+row.reserved_stock + '</span> ';
                                 
 
                                 html = html +'<button class="btn btn-xs btn-link waves-effect"' + 
@@ -1183,6 +1183,11 @@ $(document).ready(function() {
                     },
                     {
                         "data": "saga_quantity",
+                         "render" : function(data, type, row, meta) {
+                                //console.log(row);
+                              return '<span class="stockData" data-item="'+row.quote_item_id+'"  data-product="'+row.id+'">'+row.saga_quantity + '</span> '
+                          },
+ 
                         "visible": isl
                     },
                     { 
@@ -1210,8 +1215,12 @@ $(document).ready(function() {
                                             ' data-type="ordered_quantity"' + 
                                             ' data-index="'+index+
                                             '" data-item="'+row.quote_item_id+
+                                            '" data-product="'+row.id+
+                                            '" data-quantity="'+row.quantity+
+                                            '" data-reserved="'+row.reserved_stock+
+                                            '" data-stock="'+row.saga_quantity+
                                             '" data-row="'+meta.row+
-                                            '" data-col="'+meta.col+'" name="ordered_quantity" placeholder="Order Quantity" value="'+row.ordered_quantity+'" type="number" min="1" step="1">' + 
+                                            '" data-col="'+meta.col+'" name="ordered_quantity" placeholder="Order Quantity" value="'+row.ordered_quantity+'" type="number" min="0" step="1">' + 
                                         '</div>' + 
                                     '</div>'
                           }
@@ -1347,17 +1356,62 @@ $(document).ready(function() {
             var quoteIndex = $(this).attr('data-index');
             var rowId = $(this).attr('data-row');
 
+            var quoteItemId = $(this).attr('data-item');
+
+            var currentStock = Number($(this).attr('data-stock'));
+
+            var currentReserve = Number($(this).attr('data-reserved'));
+
+            var itemStock = currentStock + currentReserve;
+
+            var quantity = Number($(this).attr('data-quantity'));
+
             var name = $(this).attr('name');
+
+            var productId = $(this).attr('data-product')
 
             var value = $(this).val()
 
 
 
+
             var orderDetail = {
                 'item_id': $(this).attr('data-item'),
+                'product_id': productId,
                 'name': name,
                 'value': value
             };
+
+
+            if(name == 'ordered_quantity') {
+
+                var newReserve = (quantity - value);
+
+                var newStock = 0;
+                
+
+                if(newReserve >= 0 && itemStock >= newReserve) {
+                    reserved_stock = newReserve
+                } 
+                else {
+                    reserved_stock = 0;
+                }
+
+                if(itemStock >= newReserve) {
+                    newStock = itemStock - newReserve
+                } else {
+                    newStock = itemStock;
+                }
+
+                console.log(newStock, reserved_stock);
+                orderDetail['reserved_stock'] = newReserve;
+
+                orderDetail['stock'] = newStock;
+
+                $('span.reserved_stock[data-item='+quoteItemId+']').text(newReserve)
+
+                $('span.stockData[data-product='+productId+']').text(newStock)
+            }
 
              $.ajax({
                 url: "/ajax/updateItemOrderDetails",
@@ -1366,6 +1420,7 @@ $(document).ready(function() {
                 data: orderDetail
             }).success(function(json){
                $('.updateError').addClass('hidden');
+               
 
             }).error(function(xhr, status, error) {
                $('.updateError').removeClass('hidden');

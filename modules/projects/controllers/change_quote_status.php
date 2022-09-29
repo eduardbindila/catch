@@ -138,8 +138,16 @@ $conn = $QueryBuilder->dbConnection();
 	);
 
 	if($new_status == 2) {
-		$QueryBuilder->orderProcessingUpdateStocks($conn, $_POST['quote_id']);
+		$updateQuery = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "quote_items as qi ",
+				"set" => ["qi.ordered_quantity = (case when qi.ordered_quantity > 0 then qi.ordered_quantity else qi.quantity end)", "qi.reserved_stock = 0"],
+				"where" => "qi.quote_id= ".$_POST['quote_id']
+			)
+		);
 	}
+
 
 	$quoteJSON = mysqli_real_escape_string($conn, $_POST['quote']);
 
