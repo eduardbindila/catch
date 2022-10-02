@@ -110,8 +110,8 @@ $(document).ready(function() {
         
             pageLength: 100,
                 "paging":   true,
-                "ordering": true,
-                "searching": true,
+                "ordering": false,
+                "searching": false,
             rowId: 'category_slug',
               
             responsive: true,
