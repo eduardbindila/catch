@@ -2,7 +2,7 @@
 $(document).ready(function() {
     var projectsTable = $('.projects_table').DataTable({
         "ajax": {
-            "url": "/ajax/getUsers/",
+            "url": "/ajax/getAllUsers/",
             "dataSrc": ""
         },
     

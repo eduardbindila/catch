@@ -104,6 +104,8 @@ RewriteRule ^ajax/updateOrderLine modules/admin/controllers/update_order_split.p
 
  RewriteRule ^ajax/getUsers modules/profiles/controllers/get_users.php [L]
 
+ RewriteRule ^ajax/getAllUsers modules/profiles/controllers/get_all_users.php [L]
+
  RewriteRule ^ajax/getUserTypes modules/profiles/controllers/get_user_types.php [L]
 
 RewriteRule ^ajax/updatePrices modules/cart/controllers/update_prices.php [L]
