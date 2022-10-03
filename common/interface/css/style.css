@@ -8821,3 +8821,8 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     top: 6px;
     left: 5px;
 }
+
+.splitLineInfo {
+    border-right: 1px solid grey;
+    padding-right: 5px;
+}

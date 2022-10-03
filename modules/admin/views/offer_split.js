@@ -97,11 +97,12 @@ class OrderSplit {
 
 
         var actionsList = '<ul class="list-inline" data-split='+split_id+' data-order="'+order_number+'" data-item='+invoiceItemId+' data-quoteItem="'+quoteItemId+'" data-reserved="'+reserved_stock+'">'+
-                                '<li>Order: <b class="orderName">'+order_number+'</b> Quote: <b class="">'+quoteId+'</b> Quote Quantity: <b class="">'+quoteQuantity+'</b> Reserved Stock: <b class="orderName">'+reserved_stock+'</b></li>'+
+                                '<li>Order: <b class="splitLineInfo">'+order_number+'</b> Quote: <b class="splitLineInfo">'+quoteId+'</b> QQty: <b class="splitLineInfo" title="Quote Quantity">'+
+                                quoteQuantity+'</b> RQty: <b class="splitLineInfo" title="Reserved Quantity">'+reserved_stock+'</b></li>'+
                                 '<li>'+
                                     '<div class="switch">'+
                                         '<label>'+
-                                            'Fullfill<input type="checkbox" data-item='+invoiceItemId+' data-splitQuantity="'+quantity+'" data-neededQuantity="'+needed_quantity+'"'+
+                                            'Fill<input type="checkbox" data-item='+invoiceItemId+' data-splitQuantity="'+quantity+'" data-neededQuantity="'+needed_quantity+'"'+
                                             ' data-split='+split_id+' class="reserve_custom" '+checked+'>'+
                                             '<span class="lever green-tick-left"></span>'+
                                             '<input class="small-input" value="'+displayQuantity+'" type="number"'+ 
