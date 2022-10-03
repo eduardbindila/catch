@@ -1391,10 +1391,10 @@ $(document).ready(function() {
                 
 
                 if(newReserve >= 0 && itemStock >= newReserve) {
-                    reserved_stock = newReserve
+                    newReserve = newReserve
                 } 
                 else {
-                    reserved_stock = 0;
+                    newReserve = 0;
                 }
 
                 if(itemStock >= newReserve) {
@@ -1403,7 +1403,7 @@ $(document).ready(function() {
                     newStock = itemStock;
                 }
 
-                console.log(newStock, reserved_stock);
+                console.log(newStock, newReserve);
                 orderDetail['reserved_stock'] = newReserve;
 
                 orderDetail['stock'] = newStock;

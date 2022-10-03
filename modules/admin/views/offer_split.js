@@ -97,7 +97,7 @@ class OrderSplit {
 
 
         var actionsList = '<ul class="list-inline" data-split='+split_id+' data-order="'+order_number+'" data-item='+invoiceItemId+' data-quoteItem="'+quoteItemId+'" data-reserved="'+reserved_stock+'">'+
-                                '<li>Order: <b class="splitLineInfo">'+order_number+'</b> Quote: <b class="splitLineInfo">'+quoteId+'</b> QQty: <b class="splitLineInfo" title="Quote Quantity">'+
+                                '<li>Order: <b class="splitLineInfo">'+order_number+'</b> Quote: <a href="/quote/'+quoteId+'" target="_blank" ><b class="splitLineInfo">'+quoteId+'</b></a> QQty: <b class="splitLineInfo" title="Quote Quantity">'+
                                 quoteQuantity+'</b> RQty: <b class="splitLineInfo" title="Reserved Quantity">'+reserved_stock+'</b></li>'+
                                 '<li>'+
                                     '<div class="switch">'+
