@@ -326,4 +326,11 @@ class OrderSplit {
         $('.addLineButton[data-item='+itemId+']').prop('disabled', true);
         $('.removeLine[data-item='+itemId+']').prop('disabled', true);
     }
+
+    enablections(itemId) {
+        $('input[name="reserve_custom"][data-item='+itemId+']').prop('disabled', false);
+        $('.reserve_custom[data-item='+itemId+']').prop('disabled', false);
+        $('.addLineButton[data-item='+itemId+']').prop('disabled', false);
+        $('.removeLine[data-item='+itemId+']').prop('disabled', false);
+    }
 }
