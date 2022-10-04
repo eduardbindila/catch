@@ -11,20 +11,30 @@ $conn = $QueryBuilder->dbConnection();
 $ids = [];
 
 $whens = '';
+$quoteItems = '';
+$quoteItemCondition = '';
 
+if(isset($_POST['quoteItems'])) {
+	foreach ($_POST['quoteItems'] as $key => $value) {
 
-foreach ($_POST['quoteItems'] as $key => $value) {
+		array_push($ids, $key);
+		$whens = $whens.' when '.$key.' then GREATEST(qi.quantity - qi.ordered_quantity, 0)' ;
 
-	array_push($ids, $key);
-	$whens = $whens.' when '.$key.' then GREATEST(qi.quantity - qi.ordered_quantity, 0)' ;
+	}
 
+	$quoteItems = "qi.reserved_stock = case qi.id 
+									".$whens."
+									end,";
+
+	$quoteItemCondition = "qi.id in (".implode(",",$ids).") and";
 }
 
 
+
+
+
 $query = "update quote_items qi, products p, vendor_invoice_items vii
-			SET qi.reserved_stock = case qi.id 
-									".$whens."
-									end,
+			SET ".$quoteItems."
 				p.saga_quantity = case p.id 
 			    				when '".$_POST['product']."' then ".$_POST['newStock']."
 			                    end,
@@ -34,7 +44,7 @@ $query = "update quote_items qi, products p, vendor_invoice_items vii
 			    vii.remaining_stock = case vii.id 
 			    				when ".$_POST['itemId']." then 0
 			                    end
-			where qi.id in (".implode(",",$ids).") and p.id in ('".$_POST['product']."') and vii.id in (".$_POST['itemId'].")";
+			where ".$quoteItemCondition." p.id in ('".$_POST['product']."') and vii.id in (".$_POST['itemId'].")";
 
 
 	$projectsQuery = $QueryBuilder->customQuery(

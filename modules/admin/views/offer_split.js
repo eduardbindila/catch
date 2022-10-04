@@ -21,9 +21,9 @@ class OrderSplit {
                         '</div>'+
                         '<div class="col-lg-11 orderSplitLines" data-item='+this.itemId+' data-product="'+this.productId+'">'+
                             '<ul class="list-total hidden"  data-item="'+this.itemId+'">'+
-                                '<li> <span>Total: <span class="invoicedQuantity">x</span> invoiced'+
-                                    ' - <span class="totalSplitQuantity">y</span> split'+
-                                    ' = <span class="freeStock">y</span> free stock</span>'+
+                                '<li> <span>Total: <span class="invoicedQuantity"></span>'+
+                                    ' - <span class="totalSplitQuantity"></span> split'+
+                                    ' = <span class="freeStock"></span> free stock</span>'+
                                     '<span class="quantityError hidden">'+
                                         '<i class="material-icons">error</i>'+
                                     '</span>'+
@@ -175,7 +175,7 @@ class OrderSplit {
             splitlines.parent('.row').find('.removeItem').addClass('hidden');
 
             $('.list-total[data-item='+invoiceItemId+']').removeClass('hidden');
-            $('.vendor-invoice-input[data-item='+invoiceItemId+']').prop('disabled', true);
+            $('.vendor-invoice-input[data-item='+invoiceItemId+']:not(.delivery)').prop('disabled', true);
 
 
             //console.log('why');
@@ -185,10 +185,18 @@ class OrderSplit {
 
             var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
 
+            var deliveredQuantity = Number($('.vendor-invoice-input[name="delivered_quantity"][data-item='+invoiceItemId+']').val());
+
+            if(deliveredQuantity > 0) {
+                invoicedQuantity = deliveredQuantity;
+            }
+
+            
+
             if((invoicedQuantity - splitTotal + quantity) < 0 ) {
                 //console.log('nope');
                 $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden');
-                $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').prop('disabled', true)
+                $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').removeClass('btn-warning').prop('disabled', true)
                 this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
             } else {
                 this.setTotal(invoiceItemId, invoicedQuantity, splitTotal);
@@ -250,18 +258,24 @@ class OrderSplit {
              if($('.orderSplitLines[data-item='+itemId+'] .list-inline').length == 0) {
                 $('.orderSplitLines[data-item='+itemId+']').parent('.row').find('.removeItem').removeClass('hidden');
                 $('.list-total[data-item='+itemId+']').addClass('hidden');
-                $('.vendor-invoice-input[data-item='+itemId+']').prop('disabled', false);
+                $('.vendor-invoice-input[data-item='+itemId+']:not(.delivery)').prop('disabled', false);
             }
 
             var splitTotal = Number(thisClass.getSplitTotal(itemId));
 
-            var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+itemId+']').val())
+             var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
+
+            var deliveredQuantity = Number($('.vendor-invoice-input[name="delivered_quantity"][data-item='+invoiceItemId+']').val());
+
+            if(deliveredQuantity > 0) {
+                invoicedQuantity = deliveredQuantity;
+            }
 
             thisClass.setTotal(itemId, invoicedQuantity, splitTotal);
 
             if(invoicedQuantity >= splitTotal) {
                 $('.list-total[data-item='+itemId+'] .quantityError').addClass('hidden');
-                $('.reception[data-item='+itemId+']').removeClass('btn-danger').addClass('btn-default').prop('disabled', false)
+                $('.reception[data-item='+itemId+']').removeClass('btn-danger').removeClass('btn-warning').addClass('btn-default').prop('disabled', false)
             }
 
             
@@ -327,7 +341,7 @@ class OrderSplit {
         $('.removeLine[data-item='+itemId+']').prop('disabled', true);
     }
 
-    enablections(itemId) {
+    enableActions(itemId) {
         $('input[name="reserve_custom"][data-item='+itemId+']').prop('disabled', false);
         $('.reserve_custom[data-item='+itemId+']').prop('disabled', false);
         $('.addLineButton[data-item='+itemId+']').prop('disabled', false);

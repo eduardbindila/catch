@@ -137,11 +137,11 @@ $(document).ready(function() {
 
                             
                         return '<button type="button" '+disabled+' class="reception btn '+btnClass+' btn-xs waves-effect"'+
-                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+'>'+
+                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">'+icon+'</i>'+
                                 '</button> ' +
                                 '<button type="button" class="reverseReception '+editClass+' btn btn-default btn-circle waves-effect waves-circle waves-float"'+
-                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+'>'+
+                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">refresh</i>'+
                                 '</button>'
                   }
@@ -185,6 +185,22 @@ $(document).ready(function() {
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
                                         '" value="'+data+'" type="number" name="quantity" placeholder="Quantity"  min=0 required>' + 
+                                    '</div>' + 
+                                '</div>'
+                  }
+                },
+                { 
+                    "data": "delivered_quantity", 
+                    "className": 'invoiceTableInput',
+                    "render" : function(data, type, row, meta) {
+                            
+                        return '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control vendor-invoice-input delivery"' + 
+                                        ' data-type="external_item_name" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="'+data+'" type="number" name="delivered_quantity" placeholder="Delivered Quantity" min=0>' + 
                                     '</div>' + 
                                 '</div>'
                   }
@@ -350,6 +366,8 @@ $(document).ready(function() {
         }).success(function(json){
            //$('.updateError').addClass('hidden');
 
+           table.ajax.reload()
+
         }).error(function(xhr, status, error) {
            //$('.updateError').removeClass('hidden');
         })
@@ -451,11 +469,17 @@ $(document).ready(function() {
 
         var product = $(this).attr('data-product');
 
+        var delivered = Number($(this).attr('data-delivered'));
+
         var stock = $(this).attr('data-stock');
 
         var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text();
 
         var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
+
+        if(freeStock == 0 && splitLines.length == 0) {
+            freeStock = delivered;
+        }
 
         var itemDetails = {
             'itemId': invoiceItemId,
@@ -465,10 +489,11 @@ $(document).ready(function() {
             'product': product
         }
 
+        var splitTotal = 0;
+
         splitLines.each(function(index, item){
 
-            //console.log(item);
-             
+            
 
              var itemInput = $(item).find('input[name="reserve_custom"]');
 
@@ -477,33 +502,54 @@ $(document).ready(function() {
              var quoteItemId = itemInput.attr('data-quoteItem');
              var reservedStock = $(item).attr('data-reserved');
 
+             //console.log(splitTotal, itemQuantity);
+
+             splitTotal = splitTotal + Number(itemQuantity);
+
              var quantities = {
                 'splitQuantity' : itemQuantity,
                 'reservedStock': reservedStock
              }
+
+             //console.log(itemQuantity);
 
              //console.log(quantities);
 
              itemDetails.quoteItems[quoteItemId] = quantities;
         })
 
-        $.ajax({
-            url: "/ajax/itemReception",
-            type: "post",
-            dataType: "json",
-            data: itemDetails
-        }).success(function(json){
-           //$('.updateError').addClass('hidden');
+        console.log(splitTotal, Number(delivered), itemDetails);
 
-           table.ajax.reload();
 
-           OrderSplit[invoiceItemId].disableActions(invoiceItemId);
-            
-           
+        if(delivered < splitTotal) {
 
-        }).error(function(xhr, status, error) {
-           //$('.updateError').removeClass('hidden');
-        })
+            $(this).removeClass('btn-default').addClass('btn-warning');
+
+
+        } else {
+
+            $.ajax({
+                url: "/ajax/itemReception",
+                type: "post",
+                dataType: "json",
+                data: itemDetails
+            }).success(function(json){
+               //$('.updateError').addClass('hidden');
+
+               table.ajax.reload();
+
+               $(this).removeClass('btn-warning');
+
+               OrderSplit[invoiceItemId].disableActions(invoiceItemId);
+                
+               
+
+            }).error(function(xhr, status, error) {
+               //$('.updateError').removeClass('hidden');
+            })
+        }
+
+        
 
         
     });
@@ -516,9 +562,18 @@ $(document).ready(function() {
 
         var stock = $(this).attr('data-stock');
 
-        var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text();
+        var delivered = Number($(this).attr('data-delivered'));
+
+
+        var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text() ;
+
+
 
         var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
+
+        if(freeStock == 0 && splitLines.length == 0) {
+            freeStock = delivered;
+        }
 
         var itemDetails = {
             'itemId': invoiceItemId,
@@ -558,7 +613,7 @@ $(document).ready(function() {
 
            table.ajax.reload();
 
-             OrderSplit[invoiceItemId].enableActions(invoiceItemId);           
+             OrderSplit[invoiceItemId].enableActions(invoiceItemId);     
 
         }).error(function(xhr, status, error) {
            //$('.updateError').removeClass('hidden');
@@ -577,7 +632,13 @@ $(document).ready(function() {
 
         var oldQuantity = $(this).siblings('.reserve_custom').attr('data-neededquantity');
 
-        var invoicedQuantity = $('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val()
+        var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
+
+        var deliveredQuantity = Number($('.vendor-invoice-input[name="delivered_quantity"][data-item='+invoiceItemId+']').val());
+
+            if(deliveredQuantity > 0) {
+                invoicedQuantity = deliveredQuantity;
+            }
 
         var splitTotal = OrderSplit[invoiceItemId].getSplitTotal(invoiceItemId);
 
@@ -586,10 +647,10 @@ $(document).ready(function() {
         if(splitTotal > invoicedQuantity)
         {
             $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
-            $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').prop('disabled', true)
+            $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').removeClass('btn-warning').prop('disabled', true)
         } else {
             $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden');
-            $('.reception[data-item='+invoiceItemId+']').removeClass('btn-danger').addClass('btn-default').prop('disabled', false)
+            $('.reception[data-item='+invoiceItemId+']').removeClass('btn-danger').removeClass('btn-warning').addClass('btn-default').prop('disabled', false)
         }
 
         OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
