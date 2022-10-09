@@ -313,7 +313,58 @@ $(document).ready(function() {
                                 })
 
                             }
-                        }
+                        },
+                        {
+                            extend: 'selected',
+                            className: 'createPackage btn btn-lg btn-success waves-effect',
+                            text: 'Create Package',
+                            action: function ( e, dt, button, config ) {
+                                var selection = dt.rows( { selected: true } ).data();
+                                var i;
+                                for ( i = 0; i < selection.length; i++) {
+                                    // var thisProduct = {
+                                    //     'id': selection[i].quote_item_id,
+                                    //     // 'temporary_product': selection[i].temporary_product 
+                                    // }
+                                    //console.log(selection[i],'ds');
+                                    selectedItems.push(selection[i].quote_item_id);
+                                }
+                                
+
+                                console.log(val['id']);
+
+                                //createQuote(projectID, selectedItems)
+
+                                console.log(selectedItems)
+
+                                var packageDetail = {
+                                    'quote_id' : val['id'],
+                                    'quote_items' : selectedItems
+                                }
+
+
+                                $.ajax({
+                                    url: "/ajax/createPackage",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: packageDetail
+                                }).success(function(json){
+                                   $('.updateError').addClass('hidden');
+
+                                   packageDetail['package_id'] = json;
+
+                                   console.log(json, packageDetail);  
+
+                                   addItemsToPackage(packageDetail);                                 
+
+                                }).error(function(xhr, status, error) {
+                                   $('.updateError').removeClass('hidden');
+                                })
+
+                                console.log(packageDetail);
+
+                            }
+                        },
 
                     ]
 
@@ -1775,6 +1826,14 @@ $(document).ready(function() {
             })
         })
 
+        $('.viewPackages').on('click', function(){
+            var quoteID = $(this).attr('data-quote');
+            $('.quoteNumberEdit').text(quoteID);
+
+             $('.viewPackages-modal[data-quote="'+quoteID+'"]').modal('show');
+
+        })
+
 
 
 
@@ -2574,3 +2633,18 @@ function getProfitLow(profitLowValues) {
         return 0;
     }
 } 
+
+function addItemsToPackage(packageDetail) {
+    $.ajax({
+        url: "/ajax/addItemsToPackage",
+        type: "post",
+        dataType: "json",
+        data: packageDetail
+    }).success(function(json){
+       $('.updateError').addClass('hidden');
+       
+
+    }).error(function(xhr, status, error) {
+       $('.updateError').removeClass('hidden');
+    })
+}

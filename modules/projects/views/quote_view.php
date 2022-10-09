@@ -115,6 +115,11 @@ $quoteLockedClass = "";
                             Comments
                             </button>
                         </li>
+                        <li>
+                            <button class="btn btn-lg btn-default waves-effect viewPackages"  data-quote="<?php echo $quote['id']?>">
+                            Packages
+                            </button>
+                        </li>
                         
                         <!--  <li>
                             <button class="btn btn-lg btn-default waves-effect offerConditions" data-toggle="modal"data-target="#offerConditions-modal">
@@ -471,6 +476,93 @@ $quoteLockedClass = "";
                             </div>
                         </div>
                         
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Large Size -->
+        <div class="modal fade viewPackages-modal" tabindex="-1" role="dialog" data-quote="<?php echo $quote['id']?>">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >Quote #<span class="quoteNumberEdit"></span>  Packages</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="package_line">
+                                    <div class="package_wrapper">
+                                        <button class="btn btn-default collapser" type="button" data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                                            <span class="packageId">
+                                                <i class="material-icons">folder</i>
+                                                Package <b>123</b> 
+                                            </span>
+                                            <span class="packageDate">
+                                                created on <b>22-10-2022</b>
+                                            </span>
+                                            <span class="packageStatus">
+                                                Status: <b>Draft Package</b>
+                                            </span>
+                                        </button>
+                                        <div class="btn-group btn-group-sm right" role="group" aria-label="Large button group">
+                                            <button type="button" class="btn btn-info waves-effect">Generate POS</button>
+                                        <button type="button" class="btn btn-primary waves-effect">Generate Delivery Notice</button>
+                                        <button type="button" class="btn btn-success waves-effect">Generate Invoice</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="collapse" id="collapseExample" aria-expanded="true" style="">
+                                        <table class="packages_table table table-striped table-bordered table-hover dt-responsive display">
+                                            <thead>
+                                                 <th></th>
+                                                <th>Id</th>
+                                                <th>Product Id</th>
+                                                <th>Product Name</th>
+                                                <th>Package Quantity</th>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="package_line m-t-10">
+                                    <div class="package_wrapper">
+                                        <button class="btn btn-default collapser" type="button" data-toggle="collapse" href="#collapseExample2" aria-expanded="true" aria-controls="collapseExample2">
+                                            <span class="packageId">
+                                                <i class="material-icons">folder</i>
+                                                Package <b>654</b> 
+                                            </span>
+                                            <span class="packageDate">
+                                                created on <b>29-11-2022</b>
+                                            </span>
+                                            <span class="packageStatus">
+                                                Status: <b>Preparing Package</b>
+                                            </span>
+                                        </button>
+                                        <div class="btn-group btn-group-sm right" role="group" aria-label="Large button group">
+                                            <button type="button" disabled class="btn btn-info waves-effect">POS Generated</button>
+                                        <button type="button" class="btn btn-primary waves-effect">Generate Delivery Notice</button>
+                                        <button type="button" class="btn btn-success waves-effect">Generate Invoice</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="collapse" id="collapseExample2" aria-expanded="true" style="">
+                                        <table class="packages_table table table-striped table-bordered table-hover dt-responsive display">
+                                            <thead>
+                                                 <th></th>
+                                                <th>Id</th>
+                                                <th>Product Id</th>
+                                                <th>Product Name</th>
+                                                <th>Package Quantity</th>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>

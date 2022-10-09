@@ -139,7 +139,11 @@ RewriteRule ^ajax/getImageBase common/backend/get_image_base.php [L]
 
 RewriteRule ^ajax/createQuote modules/projects/controllers/create_quote.php [L]
 
+RewriteRule ^ajax/createPackage modules/projects/controllers/create_package.php [L]
+
 RewriteRule ^ajax/addItemsToQuote modules/projects/controllers/add_quote_items.php [L]
+
+RewriteRule ^ajax/addItemsToPackage modules/projects/controllers/add_package_items.php [L]
 
 RewriteRule ^ajax/addTemporaryItemsToQuote modules/projects/controllers/add_temporary_quote_items.php [L]
 
