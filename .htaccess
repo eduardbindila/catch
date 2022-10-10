@@ -181,6 +181,8 @@ RewriteRule ^ajax/saveFilesToQuote modules/projects/controllers/save_quote_files
 
 RewriteRule ^ajax/getQuoteFiles modules/projects/controllers/get_quote_files.php [L]
 
+RewriteRule ^ajax/getQuotePackages modules/projects/controllers/get_quote_packages.php [L]
+
 RewriteRule ^ajax/getLastPrices modules/projects/controllers/get_last_prices.php [L]
 
 RewriteRule ^ajax/getProjectComments modules/projects/controllers/get_all_comments.php [L]

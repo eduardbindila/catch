@@ -4,6 +4,8 @@ $(document).ready(function() {
 
     $("[data-toggle=popover]").popover();
 
+    Invoice = new Invoices();
+
     var quoteStatus = [];
 
     var quoteFlags = [];
@@ -1831,6 +1833,28 @@ $(document).ready(function() {
             $('.quoteNumberEdit').text(quoteID);
 
              $('.viewPackages-modal[data-quote="'+quoteID+'"]').modal('show');
+
+             $.ajax({
+                url: "/ajax/getQuotePackages",
+                type: "post",
+                dataType: "json",
+                data: { 'quote_id': quoteID}
+           }).success(function(json){
+
+            console.log('a', json);
+
+            var packagesObject = {
+                'packages' : json,
+                'container': '.packagesContainer'
+            }
+
+            $(packagesObject.container).html('');
+
+            Invoice.setPackages(packagesObject);
+
+            }).error(function(xhr, status, error) {
+               
+            })  
 
         })
 

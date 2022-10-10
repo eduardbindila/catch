@@ -42,6 +42,8 @@ $LoadHTMLArtefacts->setScript($_WPATH['COMMON_INTERFACE'].'plugins/multiple-emai
 
 $LoadHTMLArtefacts->setScript($_WMPATH['PROJECTS_VIEWS'].'project.js');
 
+$LoadHTMLArtefacts->setScript($_WMPATH['PROJECTS_VIEWS'].'invoice.js');
+
 
 include($_PATH['COMMON_LAYOUT'].'head.php');
 include($_PATH['COMMON_LAYOUT'].'menu-bar.php');
