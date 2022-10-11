@@ -1,5 +1,6 @@
 class Invoices {
     constructor() { 
+      this.packageTable = [];
     }
 
     setPackageLine(params) {
@@ -14,10 +15,10 @@ class Invoices {
 
       var packageLine = '<div class="package_line m-t-10">'+
                            '<div class="package_wrapper">'+
-                               '<button class="btn btn-default collapser"'+
+                               '<button class="btn btn-default collapser triggerPackageItems"'+
                                ' type="button" data-toggle="collapse"'+
-                               ' href="#'+collapserId+'" aria-expanded="true"'+
-                               ' aria-controls="'+collapserId+'">'+
+                               ' href="#'+collapserId+'" aria-expanded="false"'+
+                               ' aria-controls="'+collapserId+'" data-package='+packageId+'>'+
                                    '<span class="packageId">'+
                                        '<i class="material-icons">folder</i>'+
                                        'Package <b>'+packageId+'</b>'+ 
@@ -61,6 +62,8 @@ class Invoices {
 
     setPackages(params){
 
+      var that = this;
+
       var packages = params.packages;
 
       var packageContainer = params.container;
@@ -68,7 +71,6 @@ class Invoices {
       packages.forEach(function(val, index){
 
          var thisPackage = val;
-
          
          var packageDetails = {
             'packageId': thisPackage.id,
@@ -79,6 +81,95 @@ class Invoices {
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
+
+         that.packageTable[thisPackage.id] = $('.packages_table-'+thisPackage.id).DataTable({
+                     "ajax": {
+                        "url": "/ajax/getPackageItems/",
+                        "dataSrc": "",
+                        "type": 'POST',
+                        "data": {'package_id': thisPackage.id}
+                    },
+                    dom: 'Bfrtip',                
+                    pageLength: 100,
+                        "paging":   true,
+                        "ordering": false,
+                        "searching": false,
+                    rowId: 'category_slug',
+                      buttons: [
+                      {
+                            extend: 'selectAll',
+                            className: 'btn btn-lg btn-primary waves-effect',
+                        },
+                        {
+                            extend: 'selectNone',
+                            className: 'btn btn-lg btn-primary waves-effect',
+                        },
+                        // {
+                        //     extend: 'selected',
+                        //     className: 'deleteSelectedFiles btn btn-lg btn-danger waves-effect',
+                        //     text: 'Delete Selected',
+                        //     action: function ( e, dt, button, config ) {
+                        //         if(!isc) {
+                        //          var selection = dt.rows( { selected: true } ).data();
+                        //             var i;
+                                
+                        //             for ( i = 0; i < selection.length; i++) {
+                        //                 selectedItems.push(selection[i].file_path);
+                        //             }
+                                 
+
+                        //            //  $.ajax({
+                        //            //      url: "/ajax/removeFilesFromQuote",
+                        //            //      type: "post",
+                        //            //      dataType: "json",
+                        //            //      data: {'file_path': selectedItems, 'quote_id': quoteID}
+                        //            // }).success(function(json){
+                        //            //     location.reload();
+
+                        //            //  }).error(function(xhr, status, error) {
+                        //            //     //$('.addNewTemporaryProduct').removeClass('hidden');
+                        //            //  })   
+                        //         }
+                                
+                        //     }
+                        // },
+                      ],
+                    responsive: true,
+                    columnDefs : [
+                        {
+                            orderable : false,
+                            className : 'select-checkbox',
+                            targets : 0
+                        },
+                    ],
+                     select: {
+                        style:    'multi',
+                        selector: 'td:first-child'
+                    },
+                    //order: [1],
+                    "columns": [ 
+                        { 
+                            "data": null, 
+                            defaultContent: '' 
+                        },
+                        { 
+                            "data": "quote_item_id",
+                        },
+                         { 
+                            "data": "product_id",
+                        },
+                        { 
+                            "data": "product_name",
+                        }
+                        ,
+                        { 
+                            "data": "package_quantity",
+                        }
+                    ],
+                    "initComplete": function(settings, json) {
+                    }
+
+                })
       });
       
 

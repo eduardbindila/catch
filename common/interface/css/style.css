@@ -8850,4 +8850,9 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     margin-top: 3px;
     margin-right: 1px;
 }
+
+
+.package_line .dataTables_wrapper {
+    padding: 20px;
+    border: 1px solid #d0d0d063;
 }

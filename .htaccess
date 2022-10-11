@@ -183,6 +183,8 @@ RewriteRule ^ajax/getQuoteFiles modules/projects/controllers/get_quote_files.php
 
 RewriteRule ^ajax/getQuotePackages modules/projects/controllers/get_quote_packages.php [L]
 
+RewriteRule ^ajax/getPackageItems modules/projects/controllers/get_package_items.php [L]
+
 RewriteRule ^ajax/getLastPrices modules/projects/controllers/get_last_prices.php [L]
 
 RewriteRule ^ajax/getProjectComments modules/projects/controllers/get_all_comments.php [L]

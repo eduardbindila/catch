@@ -35,6 +35,8 @@ $(document).ready(function() {
 
     var quoteOptions = [];
 
+
+
     $('.editQuoteTrigger').on('click', function(){
             var quoteId = $(this).attr('data-quote');
             $('#quoteNumberEdit').text(quoteId);
@@ -1841,7 +1843,7 @@ $(document).ready(function() {
                 data: { 'quote_id': quoteID}
            }).success(function(json){
 
-            console.log('a', json);
+            //console.log('a', json);
 
             var packagesObject = {
                 'packages' : json,
@@ -1872,7 +1874,7 @@ $(document).ready(function() {
 
             var getLastClient = $(this).parents('.card').find('.lastPriceClient').text();
 
-            console.log(getLastClient);
+            //console.log(getLastClient);
 
             $('#lastPriceClient').text(getLastClient);
 
