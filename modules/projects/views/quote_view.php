@@ -495,6 +495,9 @@ $quoteLockedClass = "";
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
+                                <div class="alert bg-red updatePackageItemError hidden">
+                                    Package item has not been updated! Please contact the administrator.
+                                </div>
                                 <div class="packagesContainer"></div>
                             </div>
                         </div>  

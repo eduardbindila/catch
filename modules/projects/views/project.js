@@ -359,7 +359,9 @@ $(document).ready(function() {
 
                                    console.log(json, packageDetail);  
 
-                                   addItemsToPackage(packageDetail);                                 
+                                   addItemsToPackage(packageDetail); 
+
+                                   $('.viewPackages[data-quote='+val['id']+']').click();                                
 
                                 }).error(function(xhr, status, error) {
                                    $('.updateError').removeClass('hidden');
@@ -2253,6 +2255,70 @@ $(document).ready(function() {
                $('.updateError').removeClass('hidden');
             })
         })
+
+
+
+    $('body').on('change', '.package-quantity-input', function(){
+       
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_item_quantity': $(this).val()
+        }
+
+        console.log(packageItem);
+
+
+         $.ajax({
+                url: "/ajax/updatePackageItem",
+                type: "post",
+                dataType: "json",
+                data: packageItem
+           }).success(function(json){
+               
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
+
+        
+    });
+
+     $('body').on('click', '.package_status_change', function(){
+
+         var params = {
+                'statusType': $(this).attr('data-type'),
+                'packageId': $(this).attr('data-package')
+            }
+
+
+            Invoice.changeStatus(params);
+
+         // $.ajax({
+         //        url: "/ajax/updatePackageItem",
+         //        type: "post",
+         //        dataType: "json",
+         //        data: packageItem
+         //   }).success(function(json){
+               
+         //      if(json==0) {
+         //          $('.updatePackageItemError').removeClass('hidden');
+         //      } else {
+         //        $('.updatePackageItemError').addClass('hidden');
+         //      }
+         //    }).error(function(xhr, status, error) {
+         //        $('.updatePackageItemError').removeClass('hidden');
+         //    })
+
+        
+    });
+
+
 
 Dropzone.autoDiscover = false;
 

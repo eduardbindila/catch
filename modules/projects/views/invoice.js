@@ -32,12 +32,12 @@ class Invoices {
                                '</button>'+
                                '<div class="btn-group btn-group-sm right"'+
                                ' role="group" aria-label="Large button group">'+
-                                   '<button type="button" '+
-                                   ' class="btn btn-info waves-effect">'+
+                                   '<button type="button" data-type="generate_pos" data-package='+packageId+' '+
+                                   ' class="btn btn-info waves-effect package_status_change">'+
                                    'Generate POS</button>'+
-                               '<button type="button" class="btn btn-primary waves-effect">'+
-                               'Generate Delivery Notice</button>'+
-                               '<button type="button" class="btn btn-success waves-effect">'+
+                               '<button type="button" data-package='+packageId+' data-type="generate_delivery_note"  class="btn btn-primary waves-effect package_status_change">'+
+                               'Generate Delivery Note</button>'+
+                               '<button type="button" data-package='+packageId+' data-type="generate_invoice"  class="btn btn-success waves-effect package_status_change">'+
                                'Generate Invoice</button>'+
                                '</div>'+
                                
@@ -50,6 +50,10 @@ class Invoices {
                                        '<th>Id</th>'+
                                        '<th>Product Id</th>'+
                                        '<th>Product Name</th>'+
+                                       '<th>QQuantity</th>'+
+                                       '<th>Reserved</th>'+
+                                       '<th>Stock</th>'+
+                                       '<th>Invoiced</th>'+
                                        '<th>Package Quantity</th>'+
                                    '</thead>'+
                                '</table>'+
@@ -104,6 +108,17 @@ class Invoices {
                             extend: 'selectNone',
                             className: 'btn btn-lg btn-primary waves-effect',
                         },
+                         {
+                            extend: 'csv',
+                            className: 'btn btn-lg btn-primary waves-effect hidden',
+                            name:"generate_pos",
+                            text:'Generate POS',
+                            exportOptions: {
+                              stripHtml: true,
+                              orthogonal: null,
+                              //columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
+                            }, footer: true
+                        }
                         // {
                         //     extend: 'selected',
                         //     className: 'deleteSelectedFiles btn btn-lg btn-danger waves-effect',
@@ -163,7 +178,33 @@ class Invoices {
                         }
                         ,
                         { 
+                            "data": "quantity",
+                        },
+                        { 
+                            "data": "reserved_stock",
+                        },
+                        { 
+                            "data": "saga_quantity",
+                        },
+                        { 
+                            "data": "invoiced_quantity",
+                        },
+                        { 
                             "data": "package_quantity",
+                             "render" : function(data, type, row, meta) {
+                                return '<div class="form-group">' + 
+                                            '<div class="form-line">' + 
+                                                '<input class="form-control package-quantity-input"' + 
+                                                ' data-type="external_item_name" data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+
+                                                '" value="'+data+'" type="number" name="package_quantity"'+
+                                                ' placeholder="Package Quantity"  min=0 required>' + 
+                                            '</div>' + 
+                                        '</div>'
+                              }
                         }
                     ],
                     "initComplete": function(settings, json) {
@@ -173,5 +214,10 @@ class Invoices {
       });
       
 
+    }
+
+    changeStatus(params){
+        console.log( params);
+        this.packageTable[3].buttons(params.statusType+':name').trigger();
     }
 }
