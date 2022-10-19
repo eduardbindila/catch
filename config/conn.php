@@ -2,6 +2,8 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
+$_VERSION = '0.1.9836';
+
 
 function getPage(){
 	$pageLink = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
@@ -666,10 +668,16 @@ Class LoadHTMLArtefacts{
 
 	public $bodyClasses = array();
 
+
+	public function __construct() {
+        global $_VERSION;
+        $this->version =& $_VERSION;
+    }
+
 	//Set&Get Links
 	//====================
 	function setLink($href) {
-		array_push($this->links, $href.'?v=0.1.9835');
+		array_push($this->links, $href.'?v='.$this->version);
 	}
 
 
@@ -683,7 +691,7 @@ Class LoadHTMLArtefacts{
 	//Set&Get Scripts
 	//====================
 	function setScript($src) {
-		array_push($this->scripts, $src.'?v=0.1.9835');
+		array_push($this->scripts, $src.'?v='.$this->version);
 	}
 
 

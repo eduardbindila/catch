@@ -218,6 +218,6 @@ class Invoices {
 
     changeStatus(params){
         console.log( params);
-        this.packageTable[3].buttons(params.statusType+':name').trigger();
+        this.packageTable[params.packageId].buttons(params.statusType+':name').trigger();
     }
 }
