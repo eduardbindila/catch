@@ -9,18 +9,20 @@ class Invoices {
 
       var packageDate = params.packageDate;
 
-      var packageStatus = params.packageStatus
+      var packageStatus = params.packageStatus;
+
+      var quote_id = params.quote_id;
 
       var collapserId = 'collapse-'+packageId;
 
-      var packageLine = '<div class="package_line m-t-10">'+
+      var packageLine = '<div class="package_line m-t-10 package-'+packageId+'">'+
                            '<div class="package_wrapper">'+
                                '<button class="btn btn-default collapser triggerPackageItems"'+
                                ' type="button" data-toggle="collapse"'+
                                ' href="#'+collapserId+'" aria-expanded="false"'+
                                ' aria-controls="'+collapserId+'" data-package='+packageId+'>'+
                                    '<span class="packageId">'+
-                                       '<i class="material-icons">folder</i>'+
+                                       '<i class="material-icons package-icon">folder</i>'+
                                        'Package <b>'+packageId+'</b>'+ 
                                    '</span>'+
                                    '<span class="packageDate">'+
@@ -39,6 +41,9 @@ class Invoices {
                                'Generate Delivery Note</button>'+
                                '<button type="button" data-package='+packageId+' data-type="generate_invoice"  class="btn btn-success waves-effect package_status_change">'+
                                'Generate Invoice</button>'+
+                               '<button type="button" data-package='+packageId+' class="btn btn-danger waves-effect removePackage">'+
+                                 '<i class="material-icons">close</i>'+
+                                '</button>'+
                                '</div>'+
                                
                            '</div>'+
@@ -47,14 +52,20 @@ class Invoices {
                                '<table class="packages_table-'+packageId+' table table-striped table-bordered table-hover dt-responsive display">'+
                                    '<thead>'+
                                         '<th></th>'+
-                                       '<th>Id</th>'+
-                                       '<th>Product Id</th>'+
-                                       '<th>Product Name</th>'+
-                                       '<th>QQuantity</th>'+
-                                       '<th>Reserved</th>'+
-                                       '<th>Stock</th>'+
-                                       '<th>Invoiced</th>'+
-                                       '<th>Package Quantity</th>'+
+                                        '<th>Quote ID</th>'+
+                                        '<th>Index</th>'+
+                                        '<th>Client Name</th>'+
+                                        '<th>Warehouse</th>'+
+                                        '<th>Quote Item ID</th>'+
+                                        '<th>Product Id</th>'+
+                                        '<th>Product Name</th>'+
+                                        '<th>QQuantity</th>'+
+                                        '<th>Reserved</th>'+
+                                        '<th>Stock</th>'+
+                                        '<th>Invoiced</th>'+
+                                        '<th>Package Quantity</th>'+
+                                        '<th>Package Quantity</th>'+
+                                        '<th>Owner</th>'+
                                    '</thead>'+
                                '</table>'+
                            '</div>'+
@@ -79,9 +90,12 @@ class Invoices {
          var packageDetails = {
             'packageId': thisPackage.id,
             'packageDate': thisPackage.created_date,
-            'packageStatus': thisPackage.name
+            'packageStatus': thisPackage.name,
+            'quote_id': packages[0].quote_id
 
          }
+
+         // console.log(packages[0], packageDetails);
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
@@ -113,11 +127,18 @@ class Invoices {
                             className: 'btn btn-lg btn-primary waves-effect hidden',
                             name:"generate_pos",
                             text:'Generate POS',
+                            filename: 'Quote-'+ thisPackage.quote_id + '-POS-' + thisPackage.id,
                             exportOptions: {
                               stripHtml: true,
-                              orthogonal: null,
-                              //columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
-                            }, footer: true
+                              orthogonal: true,
+                              columns: [ 1,2,3,4,5,6,13,14 ]
+                            }, footer: true,
+                            action: function ( e, dt, node, config ) {
+                                
+                               this.ajax.reload(() => {
+                                    $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, node, config);
+                                   });
+                            }
                         }
                         // {
                         //     extend: 'selected',
@@ -168,6 +189,30 @@ class Invoices {
                             defaultContent: '' 
                         },
                         { 
+                            "data": "quote_id",
+                            "visible": false
+                        },
+                        { 
+                            "data": null, 
+                             "render" : function(data, type, row, meta) {
+                                return meta.row+1
+                              }
+                        },
+                        { 
+                            "data": "null",
+                            "visible": false,
+                            "render" : function(data, type, row, meta) {
+                                return clientName[row.quote_id]
+                              }
+                        },
+                        { 
+                            "data": "null",
+                            "visible": false,
+                            "render" : function(data, type, row, meta) {
+                                return 'Central'
+                              }
+                        },
+                        { 
                             "data": "quote_item_id",
                         },
                          { 
@@ -190,7 +235,7 @@ class Invoices {
                             "data": "invoiced_quantity",
                         },
                         { 
-                            "data": "package_quantity",
+                            "data": "null",
                              "render" : function(data, type, row, meta) {
                                 return '<div class="form-group">' + 
                                             '<div class="form-line">' + 
@@ -200,12 +245,23 @@ class Invoices {
                                                 '" data-quote_item="'+row.quote_item_id+
                                                 '" data-package_item="'+row.id+
                                                 '" data-product="'+row.product_id+
-                                                '" value="'+data+'" type="number" name="package_quantity"'+
+                                                '" value="'+row.package_quantity+'" type="number" name="package_quantity"'+
                                                 ' placeholder="Package Quantity"  min=0 required>' + 
                                             '</div>' + 
                                         '</div>'
                               }
-                        }
+                        },
+                         { 
+                            "data": "package_quantity",
+                            'visible': false
+                        },
+                        { 
+                            "data": "null",
+                            "visible": false,
+                            "render" : function(data, type, row, meta) {
+                                return 'Icatch'
+                              }
+                        },
                     ],
                     "initComplete": function(settings, json) {
                     }
@@ -218,6 +274,7 @@ class Invoices {
 
     changeStatus(params){
         console.log( params);
+        //this.packageTable[params.packageId].ajax.reload();
         this.packageTable[params.packageId].buttons(params.statusType+':name').trigger();
     }
 }

@@ -8827,7 +8827,7 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     padding-right: 5px;
 }
 
-.package_wrapper i.material-icons {
+.package_wrapper i.material-icons.package-icon {
     font-size: 17px !important;
     opacity: 0.5;
 }
@@ -8855,4 +8855,13 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
 .package_line .dataTables_wrapper {
     padding: 20px;
     border: 1px solid #d0d0d063;
+}
+
+button.removePackage.btn.btn-danger.waves-effect {
+    margin-left: 1px;
+    font-size: 6px !important;
+}
+
+button.removePackage.btn.btn-danger.waves-effect i {
+    font-size: 17px !important;
 }

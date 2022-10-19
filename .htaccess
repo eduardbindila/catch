@@ -141,6 +141,8 @@ RewriteRule ^ajax/createQuote modules/projects/controllers/create_quote.php [L]
 
 RewriteRule ^ajax/createPackage modules/projects/controllers/create_package.php [L]
 
+RewriteRule ^ajax/removePackage modules/admin/controllers/remove_package.php [L]
+
 RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_Item_quantity.php [L]
 
 RewriteRule ^ajax/addItemsToQuote modules/projects/controllers/add_quote_items.php [L]

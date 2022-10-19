@@ -323,6 +323,7 @@ $(document).ready(function() {
                             className: 'createPackage btn btn-lg btn-success waves-effect',
                             text: 'Create Package',
                             action: function ( e, dt, button, config ) {
+                                selectedItems = [];
                                 var selection = dt.rows( { selected: true } ).data();
                                 var i;
                                 for ( i = 0; i < selection.length; i++) {
@@ -1849,7 +1850,8 @@ $(document).ready(function() {
 
             var packagesObject = {
                 'packages' : json,
-                'container': '.packagesContainer'
+                'container': '.packagesContainer',
+                'quote_id': quoteID
             }
 
             $(packagesObject.container).html('');
@@ -2288,6 +2290,32 @@ $(document).ready(function() {
 
         
     });
+
+
+
+
+
+
+
+    $('body').on('click', '.removePackage', function(){
+            console.log('a');
+
+        var itemId = $(this).attr('data-package');
+        
+         $.ajax({
+            url: "/ajax/removePackage",
+            type: "post",
+            dataType: "json",
+            data: {'id':itemId}
+        }).success(function(json){
+            $('.updatePackageItemError').addClass('hidden');
+            $('.package_line.package-'+itemId).remove();
+        }).error(function(xhr, status, error) {
+           $('.updatePackageItemError').removeClass('hidden');
+        })
+
+
+        })
 
      $('body').on('click', '.package_status_change', function(){
 
