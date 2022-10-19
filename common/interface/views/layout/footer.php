@@ -22,7 +22,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
     <!-- Imported Scripts -->
     <?php $LoadHTMLArtefacts->printScripts();?>
 
-
+ 
 </body>
 
 </html>
