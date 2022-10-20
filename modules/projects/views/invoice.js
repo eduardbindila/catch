@@ -47,7 +47,7 @@ class Invoices {
                                '</div>'+
                                
                            '</div>'+
-                           '<div class="collapse" id="'+collapserId+'" aria-expanded="true"'+
+                           '<div class="collapse in" id="'+collapserId+'" aria-expanded="true"'+
                            ' style="">'+
                                '<table class="packages_table-'+packageId+' table table-striped table-bordered table-hover dt-responsive display">'+
                                    '<thead>'+
