@@ -140,6 +140,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Countries</span>
                                 </a>
                             </li>
+                             <li>
+                                <a href="/admin/vendors">
+                                    <span>Vendors</span>
+                                </a>
+                            </li>
                             <?php }?>
                              <li>
                                 <a href="/clients">

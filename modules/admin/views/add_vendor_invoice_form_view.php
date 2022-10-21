@@ -22,7 +22,7 @@
         <div class="col-lg-6">
              <div class="input-group">
                 <select class="form-control vendorTypesSelector" required name="vendor">
-                    <option value="" selected>Select Vendoooor</option>
+                    <option value="" selected>Select Vendor</option>
                 </select>
             </div>
             <div class="input-group">
