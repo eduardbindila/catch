@@ -91,11 +91,12 @@ class Invoices {
             'packageId': thisPackage.id,
             'packageDate': thisPackage.created_date,
             'packageStatus': thisPackage.name,
-            'quote_id': packages[0].quote_id
+            'quote_id': packages[0].quote_id,
+            'packageStatus': packages[0].package_status_id
 
          }
 
-         // console.log(packages[0], packageDetails);
+         //console.log(packages[0], packageDetails);
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
@@ -139,7 +140,7 @@ class Invoices {
                                     $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, node, config);
                                    });
                             }
-                        }
+                        },
                         // {
                         //     extend: 'selected',
                         //     className: 'deleteSelectedFiles btn btn-lg btn-danger waves-effect',
@@ -169,6 +170,17 @@ class Invoices {
                                 
                         //     }
                         // },
+                        {
+                            className: 'comments btn btn-lg btn-danger waves-effect',
+                            text: ' Add Comments',
+                            action: function ( e, dt, button, config ) {
+                                $('.viewPackages-modal[data-quote="'+thisPackage.quote_id+'"]').modal('hide'); 
+                                $('.viewComments-modal[data-quote="'+thisPackage.quote_id+'"]').modal('show');
+                                $('.packageText[data-quote="'+thisPackage.quote_id+'"]').removeClass('hidden');
+                                $('.packageId[data-quote="'+thisPackage.quote_id+'"]').html(thisPackage.id);
+                                $('.packageStatus[data-quote="'+thisPackage.quote_id+'"]').html(thisPackage.package_status_id);
+                            }
+                        },
                       ],
                     responsive: true,
                     columnDefs : [

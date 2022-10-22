@@ -1806,6 +1806,12 @@ $(document).ready(function() {
                         { 
                             "data": "comment",
                         },
+                         { 
+                            "data": "package_id",
+                        },
+                         { 
+                            "data": "package_status_id",
+                        },
                         {
                             "data": "date",
                             "render" : function(data, type, row) {
@@ -1936,6 +1942,14 @@ $(document).ready(function() {
 
            $('.lastPricesTabel').DataTable().clear();
             $('.lastPricesTabel').DataTable().destroy(); 
+        })
+
+
+
+         $('.viewComments-modal').on('hide.bs.modal', function(e){
+            $('.packageId').html('');
+            $('.packageStatus').html(''); 
+            $('.packageText').addClass('hidden');
         })
 
         
@@ -2151,13 +2165,17 @@ $(document).ready(function() {
             var quoteID = $(this).attr('data-quote');
             $('#quoteNumberEdit').text(quoteId);
 
+            var packageId = $('.packageId[data-quote="'+quoteId+'"]').html();
+            var packageStatus = $('.packageStatus[data-quote="'+quoteId+'"]').html();
+
+
             //console.log(quoteID);
 
             $.ajax({
                 url: "/ajax/addComment",
                 type: "post",
                 dataType: "json",
-                data: {'quote_id': quoteID, 'quote_status': quoteStatus[quoteId], 'data': data}
+                data: {'quote_id': quoteID,'package_id': packageId,'package_status_id': packageStatus, 'quote_status': quoteStatus[quoteId], 'data': data}
            }).success(function(json){
                $('.updateError').addClass('hidden');
                location.reload()

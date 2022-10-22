@@ -378,7 +378,12 @@ $quoteLockedClass = "";
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" >Quote #<span class="quoteNumberEdit"></span> Comments</h4>
+                        <h4 class="modal-title" >
+                            Quote #<span class="quoteNumberEdit"></span> Comments 
+                            <span class="packageText hidden" data-quote="<?php echo $quote['id']?>">- for package</span>
+                            <span data-quote="<?php echo $quote['id']?>" class="packageId"></span>
+                            <span class="packageText hidden" data-quote="<?php echo $quote['id']?>"> in status </span>
+                            <span data-quote="<?php echo $quote['id']?>" class="packageStatus"></span></h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -389,15 +394,16 @@ $quoteLockedClass = "";
                                         <th>User Name</th>
                                         <th>Quote Status</th>
                                         <th>Comment</th>
+                                        <th>Package ID</th>
+                                        <th>Package Status ID</th>
                                         <th>Date</th>
-
                                     </thead>
                                 </table>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <form class="commentForm" method="post" action='' enctype="multipart/form-data" >
+                               <form class="commentForm" method="post" action='' enctype="multipart/form-data" >
                                     <textarea name="comment" class="form-control" placeholder="Comment"></textarea>
                                     <input type="hidden" name="quote_id" value="<?php echo $quote['id']?>">
                                     <div class="row m-t-10">
