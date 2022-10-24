@@ -146,6 +146,8 @@ RewriteRule ^ajax/removePackage modules/admin/controllers/remove_package.php [L]
 
 RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_Item_quantity.php [L]
 
+RewriteRule ^ajax/updatePackageStatus modules/projects/controllers/update_package_status.php [L]
+
 RewriteRule ^ajax/addItemsToQuote modules/projects/controllers/add_quote_items.php [L]
 
 RewriteRule ^ajax/addItemsToPackage modules/projects/controllers/add_package_items.php [L]

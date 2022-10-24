@@ -2338,28 +2338,29 @@ $(document).ready(function() {
      $('body').on('click', '.package_status_change', function(){
 
          var params = {
-                'statusType': $(this).attr('data-type'),
+                'nextStatus': $(this).attr('data-nextStatus'),
                 'packageId': $(this).attr('data-package')
             }
 
 
             Invoice.changeStatus(params);
 
-         // $.ajax({
-         //        url: "/ajax/updatePackageItem",
-         //        type: "post",
-         //        dataType: "json",
-         //        data: packageItem
-         //   }).success(function(json){
+         $.ajax({
+                url: "/ajax/updatePackageStatus",
+                type: "post",
+                dataType: "json",
+                data: params
+           }).success(function(json){
                
-         //      if(json==0) {
-         //          $('.updatePackageItemError').removeClass('hidden');
-         //      } else {
-         //        $('.updatePackageItemError').addClass('hidden');
-         //      }
-         //    }).error(function(xhr, status, error) {
-         //        $('.updatePackageItemError').removeClass('hidden');
-         //    })
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+                location.reload();
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
 
         
     });
