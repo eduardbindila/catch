@@ -39,6 +39,7 @@ foreach ($quoteItemsQuery as $key => $quoteItem) {
 	unset($quoteItem['order_date']);
 	unset($quoteItem['ordered_quantity']);
 	unset($quoteItem['promise_date']);
+	$quoteItem['rejection_reason'] = 1;
 	array_push($valuesArray, $quoteItem);
 
 }

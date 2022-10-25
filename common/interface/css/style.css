@@ -8865,3 +8865,6 @@ button.removePackage.btn.btn-danger.waves-effect {
 button.removePackage.btn.btn-danger.waves-effect i {
     font-size: 17px !important;
 }
+
+.modal-xl { width:1280px !important; }
+

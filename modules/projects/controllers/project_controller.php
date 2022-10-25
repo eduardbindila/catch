@@ -200,9 +200,25 @@ $conn = $QueryBuilder->dbConnection();
 			$list_price = $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
 			$min_price = $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
 
+			$db_unit_price = $quoteValues['unit_price'];
+
 			$unit_price = $quoteValues['unit_price'] > 0 ? $quoteValues['unit_price'] : $list_price - ($quoteValues['discount'] ? ($list_price * $quoteValues['discount']/100) : 0);
 
 			$unit_price = number_format((float)$unit_price, 2, '.', '');
+
+			//update unit price if the unit price is 0 in the database
+			if(intval($db_unit_price) == 0) {
+				$quoteUpdate = $QueryBuilder->update(
+					$conn,
+					$options = array(
+						"table" => "quote_items",
+						"set" => ["`unit_price`=".$unit_price.""],
+						"where" => "id = ".$quoteValues['id']
+					)
+				);
+
+
+			}
 
 			$profit =  $unit_price - $quoteProductDetails[0]['initial_price'];
 

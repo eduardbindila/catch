@@ -111,6 +111,7 @@ class Invoices {
                                         '<th>Invoiced</th>'+
                                         '<th>Package Quantity</th>'+
                                         '<th>Package Quantity</th>'+
+                                        '<th>Unit Price</th>'+
                                         '<th>Owner</th>'+
                                    '</thead>'+
                                '</table>'+
@@ -132,6 +133,17 @@ class Invoices {
       packages.forEach(function(val, index){
 
          var thisPackage = val;
+         var editDisabled = '';
+         var showForInvoice = false;
+         var hideForInvoice = true;
+
+         if(packages[0].package_status_id > 1) {
+            editDisabled = 'disabled';
+            showForInvoice = true;
+            hideForInvoice = false;
+         }
+
+
          
          var packageDetails = {
             'packageId': thisPackage.id,
@@ -315,6 +327,9 @@ class Invoices {
                          { 
                             "data": "package_quantity",
                             'visible': false
+                        },
+                        { 
+                            "data": "unit_price",
                         },
                         { 
                             "data": "null",
