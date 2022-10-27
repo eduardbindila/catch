@@ -1840,7 +1840,11 @@ $(document).ready(function() {
         })
 
         $('.viewPackages').on('click', function(){
+
+            //console.log(quoteList);
             var quoteID = $(this).attr('data-quote');
+            var quoteIndex = $(this).attr('data-index');
+             var quoteName = $(this).attr('data-name');
             $('.quoteNumberEdit').text(quoteID);
 
              $('.viewPackages-modal[data-quote="'+quoteID+'"]').modal('show');
@@ -1857,7 +1861,9 @@ $(document).ready(function() {
             var packagesObject = {
                 'packages' : json,
                 'container': '.packagesContainer',
-                'quote_id': quoteID
+                'quote_id': quoteID,
+                'quoteIndex': quoteIndex,
+                'quoteName': quoteName
             }
 
             $(packagesObject.container).html('');
@@ -2389,7 +2395,6 @@ $(function() {
             }
         });
     }
-
 
 
      if($('.dropzone-doc').length) {

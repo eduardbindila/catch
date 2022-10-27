@@ -116,7 +116,8 @@ $quoteLockedClass = "";
                             </button>
                         </li>
                         <li>
-                            <button class="btn btn-lg btn-default waves-effect viewPackages"  data-quote="<?php echo $quote['id']?>">
+                            <button class="btn btn-lg btn-default waves-effect viewPackages"  data-index="<?php echo $key?>"
+                            data-name="<?php echo  $quote['name']?>"  data-quote="<?php echo $quote['id']?>">
                             Packages
                             </button>
                         </li>

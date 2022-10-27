@@ -273,6 +273,8 @@ $conn = $QueryBuilder->dbConnection();
 
 		$quoteQuery[$key]['quote_details'] = $quoteItemsQuery;
 
+		$quoteQuery[$key]['client_details'] = $clientQuery[0];
+
 		$quoteQuery[$key]['client_email'] = $clientQuery? $clientQuery[0]['email'] : '';
 		$quoteQuery[$key]['client_name'] = $clientQuery? $clientQuery[0]['name'] : '';
 		$quoteQuery[$key]['client_poi'] = $clientQuery? $clientQuery[0]['poi'] : '';
