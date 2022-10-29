@@ -200,8 +200,9 @@ class Invoices {
                         },
                          {
                             extend: 'pdfHtml5',
+                            name:"3", 
                             text: 'Generate PDF',
-                            className: 'btn btn-lg btn-primary waves-effect',
+                            className: 'btn btn-lg btn-primary waves-effect hidden',
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,

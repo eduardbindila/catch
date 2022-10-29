@@ -204,6 +204,7 @@ $quoteLockedClass = "";
                                 <th>QTY</th>
                                 <th>Final Price</th>
                                 <th>Reserved Stock</th>
+                                <th>Invoiced Quantity</th>
                                 <th>Saga Quantity</th>
                                 <th>Order Number</th>
                                 <th>Order Quantity</th>
@@ -301,6 +302,7 @@ $quoteLockedClass = "";
                                     <button type="button" data-status="2" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Processing Order</button>
                                     <button type="button" data-status="10" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Supplier Order Sent</button>
                                     <button type="button" data-status="11" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Supplier Order Arrived</button>
+                                    <button type="button" data-status="12" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Order Completed</button>
                                     <button type="button" data-status="8" class="btn btn-danger waves-effect" >Lost Quote</button>
                                     <button type="button" data-status="9" class="btn btn-danger waves-effect">Quote Canceled</button>
                                 </div>

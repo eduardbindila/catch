@@ -126,6 +126,8 @@ RewriteRule ^ajax/updateQuote modules/projects/controllers/update_quote.php [L]
 
 RewriteRule ^ajax/updateItems modules/projects/controllers/update_quote_items.php [L]
 
+RewriteRule ^ajax/moveToInvoice modules/projects/controllers/move_to_invoice.php [L]
+
 RewriteRule ^ajax/updateItemOrderDetails modules/projects/controllers/update_item_order_details.php [L]
 
 RewriteRule ^ajax/updateVendorInvoiceItems modules/admin/controllers/update_vendor_invoice_items.php [L]

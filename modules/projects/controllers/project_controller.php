@@ -266,6 +266,7 @@ $conn = $QueryBuilder->dbConnection();
 			$quoteProducts['data'][$quoteDetails]['ordered_quantity'] = $quoteValues['ordered_quantity'];
 			$quoteProducts['data'][$quoteDetails]['order_date'] = $quoteValues['order_date'];
 			$quoteProducts['data'][$quoteDetails]['promise_date'] = $quoteValues['promise_date'];
+			$quoteProducts['data'][$quoteDetails]['invoiced_quantity'] = $quoteValues['invoiced_quantity'];
 
 		}
 

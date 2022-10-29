@@ -373,6 +373,53 @@ $(document).ready(function() {
                             }
                         },
 
+                        {
+                            extend: 'selected',
+                            className: 'btn btn-lg btn-success waves-effect',
+                            text: 'Invoiced in Saga',
+                            action: function ( e, dt, button, config ) {
+                                selectedItems = [];
+                                var selection = dt.rows( { selected: true } ).data();
+                                var i;
+                                for ( i = 0; i < selection.length; i++) {
+                                    // var thisProduct = {
+                                    //     'id': selection[i].quote_item_id,
+                                    //     // 'temporary_product': selection[i].temporary_product 
+                                    // }
+                                    //console.log(selection[i],'ds');
+                                    selectedItems.push(selection[i].quote_item_id);
+                                }
+                                
+
+                                console.log(val['id']);
+
+                                //createQuote(projectID, selectedItems)
+
+                                console.log(selectedItems)
+
+                                var packageDetail = {
+                                    'quote_id' : val['id'],
+                                    'quote_items' : selectedItems
+                                }
+
+
+                                $.ajax({
+                                    url: "/ajax/moveToInvoice",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: packageDetail
+                                }).success(function(json){
+                                   $('.updateError').addClass('hidden');
+
+                                    location.reload();               
+
+                                }).error(function(xhr, status, error) {
+                                   $('.updateError').removeClass('hidden');
+                                })
+
+                            }
+                        },
+
                     ]
 
                     buttonsArray = [
@@ -1209,7 +1256,7 @@ $(document).ready(function() {
                         "data": "reserved_stock",
                         "visible": isl,
                         "render" : function(data, type, row, meta) {
-                            //console.log(index);
+                            //console.log(row);
 
                             if(parseInt(row.reserved_stock) < parseInt(row.quantity)) {
                                 stockIcon = 'playlist_add';
@@ -1239,6 +1286,41 @@ $(document).ready(function() {
                                 
                           }
                     },
+                     {
+                        "data": "invoiced_quantity",
+                         "render" : function(data, type, row, meta) {
+                            //console.log(parseInt(row.invoiced_quantity));
+
+                            if(parseInt(row.invoiced_quantity) < parseInt(row.quantity)) {
+                                stockIcon = 'playlist_add';
+                                messageTitle = 'Waiting for Invoice';
+                                messageContent = '';
+                                colorClass = 'col-blue';
+
+                            } else  {
+                                stockIcon = 'playlist_add_check';
+                                messageTitle = 'Products invoiced';
+                                colorClass = 'col-green';
+
+                            } 
+
+                             
+                                    html = '<span class="invoiced_quantity" data-item="'+row.quote_item_id+'">'+row.invoiced_quantity + '</span> ';
+                                
+
+                                html = html +'<button class="btn btn-xs btn-link waves-effect"' + 
+                                        ' data-trigger="focus" data-container="body" data-toggle="popover" data-placement="right" title="'+ messageTitle + 
+                                        '" data-content="'+ messageContent +'">'+ 
+                                        '<i class="material-icons '+ colorClass +'">' + stockIcon + '</i></button><span class="promiseDate" data-id="'+ row.id +'" data-quantity="'+ row.quantity +'"></span>';
+
+
+
+                                return html
+                                
+                          },
+ 
+                        "visible": isl
+                    },
                     {
                         "data": "saga_quantity",
                          "render" : function(data, type, row, meta) {
@@ -1252,9 +1334,14 @@ $(document).ready(function() {
                         "data": "order_number",
                             "render" : function(data, type, row, meta) {
                                 //console.log(row);
+                                var editableClass = ""
+                                if(quoteStatus[quoteId] == 2) {
+                                    editableClass = 'editable'
+                                }
+
                               return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
-                                            '<input class="form-control order-input editable"' + 
+                                            '<input class="form-control order-input '+editableClass+'"' + 
                                             ' data-type="order_number"' + 
                                             ' data-index="'+index+
                                             '" data-item="'+row.quote_item_id+
@@ -1267,9 +1354,13 @@ $(document).ready(function() {
                     { 
                         "data": "ordered_quantity",
                             "render" : function(data, type, row, meta) {
+                                var editableClass = ""
+                                if(quoteStatus[quoteId] == 2) {
+                                    editableClass = 'editable'
+                                }
                               return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
-                                            '<input class="form-control order-input editable"' + 
+                                            '<input class="form-control order-input  '+editableClass+'"' + 
                                             ' data-type="ordered_quantity"' + 
                                             ' data-index="'+index+
                                             '" data-item="'+row.quote_item_id+
@@ -1286,9 +1377,13 @@ $(document).ready(function() {
                     { 
                         "data": "order_date",
                             "render" : function(data, type, row, meta) {
+                                var editableClass = ""
+                                if(quoteStatus[quoteId] == 2) {
+                                    editableClass = 'editable'
+                                }
                               return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
-                                            '<input class="form-control order-input editable"' + 
+                                            '<input class="form-control order-input  '+editableClass+'"' + 
                                             ' data-type="order_date"' + 
                                             ' data-index="'+index+
                                             '" data-item="'+row.quote_item_id+
@@ -1301,9 +1396,13 @@ $(document).ready(function() {
                     { 
                         "data": "promise_date",
                             "render" : function(data, type, row, meta) {
+                                var editableClass = ""
+                                if(quoteStatus[quoteId] == 2) {
+                                    editableClass = 'editable'
+                                }
                               return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
-                                            '<input class="form-control order-input editable"' + 
+                                            '<input class="form-control order-input '+editableClass+'"' + 
                                             ' data-type="promise_date"' + 
                                             ' data-index="'+index+
                                             '" data-item="'+row.quote_item_id+
