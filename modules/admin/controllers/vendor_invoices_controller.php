@@ -5,25 +5,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $insertResult = 'undefined';
 
-
-$url = "https://www.bnr.ro/nbrfxrates.xml";
-$xml = simplexml_load_file($url);
-
-$exchange_rate = 0;
-
-foreach ($xml->children() as $second_gen) {
-
-    foreach ($second_gen->children() as $third_gen) {
-
-        foreach ($third_gen->children() as $fourth_gen) {
-
-        	if($fourth_gen->attributes() == 'EUR')
-            	$exchange_rate = $fourth_gen;
-        }
-    }
-}
-
-
+$exchange_rate = '';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
 

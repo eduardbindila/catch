@@ -132,6 +132,8 @@ RewriteRule ^ajax/updateItemOrderDetails modules/projects/controllers/update_ite
 
 RewriteRule ^ajax/updateVendorInvoiceItems modules/admin/controllers/update_vendor_invoice_items.php [L]
 
+RewriteRule ^ajax/getExchangeRate modules/admin/controllers/get_exchange_rate.php [L]
+
 RewriteRule ^ajax/updateMaster modules/projects/controllers/update_master.php [L]
 
 RewriteRule ^ajax/uploadCustomProductImage modules/projects/controllers/upload_custom_product_image.php [L]

@@ -377,6 +377,28 @@ $(document).ready(function() {
     })
 
 
+     $('body').on('change', '.invoice-date', function(){
+
+        var date = $(this).val();
+
+         $.ajax({
+            url: "/ajax/getExchangeRate",
+            type: "post",
+            dataType: "json",
+            data: {'date': date}
+        }).success(function(json){
+           //$('.updateError').addClass('hidden');
+           $("#invoiceData input[name=exchange_rate]").val(json[0]);
+
+        }).error(function(xhr, status, error) {
+           //$('.updateError').removeClass('hidden');
+        })
+
+
+
+    })
+
+
      $('body').on('change', '.vendor-invoice-external-input', function(){
 
         //console.log($(this).attr('name'));
