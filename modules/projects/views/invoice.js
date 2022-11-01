@@ -112,8 +112,19 @@ class Invoices {
                                         '<th>Package Quantity</th>'+
                                         '<th>Package Quantity</th>'+
                                         '<th>Unit Price</th>'+
+                                        '<th>Value</th>'+
+                                        '<th>VAT</th>'+
+                                        '<th>Item Total</th>'+
                                         '<th>Owner</th>'+
                                    '</thead>'+
+                                   '<tfoot>'+
+                                        '<th colspan=14></th>'+
+                                        '<th>Unit Price</th>'+
+                                        '<th>Value</th>'+
+                                        '<th>VAT</th>'+
+                                        '<th>Item Total</th>'+
+                                        '<th>Owner</th>'+
+                                   '</tfoot>'+
                                '</table>'+
                            '</div>'+
                        '</div>';
@@ -163,7 +174,7 @@ class Invoices {
                         "url": "/ajax/getPackageItems/",
                         "dataSrc": "",
                         "type": 'POST',
-                        "data": {'package_id': thisPackage.id}
+                        "data": {'package_id': thisPackage.id, 'country': quoteList[params.quoteIndex].client_details.country}
                     },
                     dom: 'Bfrtip',                
                     pageLength: 100,
@@ -202,11 +213,11 @@ class Invoices {
                             extend: 'pdfHtml5',
                             name:"3", 
                             text: 'Generate PDF',
-                            className: 'btn btn-lg btn-primary waves-effect hidden',
+                            className: 'btn btn-lg btn-primary waves-effect',
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 2,7, 13,14]
+                              columns: [ 2,7, 13,14,15,16,17]
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -604,6 +615,14 @@ class Invoices {
                         { 
                             "data": "unit_price",
                         },
+                       { 
+                            "data": "value",
+                        },
+                        { 
+                            "data": "vat_value",
+                        },{ 
+                            "data": "total",
+                        },
                         { 
                             "data": "null",
                             "visible": false,
@@ -613,10 +632,44 @@ class Invoices {
                         },
                     ],
                     "initComplete": function(settings, json) {
+                    },
+                    "footerCallback": function( row, data, start, end, display ) {
+
+                        var api = this.api();
+
+                        var totalArray = {};
+                        api.columns().every(function () {
+
+                            $( api.column( 15 ).footer() ).html(
+                                api.column( 15 ).data().reduce( function ( a, b ) {
+                                    return parseFloat(a) + parseFloat(b);
+                                }, 0 )
+                            ); 
+
+                            $( api.column( 16 ).footer() ).html(
+                                api.column( 16 ).data().reduce( function ( a, b ) {
+                                    return parseFloat(a) + parseFloat(b);
+                                }, 0 )
+                            );                          
+
+                            $( api.column( 17 ).footer() ).html(
+                                api.column( 17 ).data().reduce( function ( a, b ) {
+                                    return parseFloat(a) + parseFloat(b);
+                                }, 0 )
+                            ); 
+                        });
                     }
 
-                })
+            })
+
+    
+        //  $('.packages_table-'+thisPackage.id).dataTable( {
+
+        // } );
+
       });
+
+        
       
 
     }

@@ -19,9 +19,9 @@ $conn = $QueryBuilder->dbConnection();
 			)
 		);
 
-		$saga_quantity = $getPackageItem[0]['saga_quantity'];
+		$saga_quantity = is_numeric($getPackageItem[0]['saga_quantity']) ? $getPackageItem[0]['saga_quantity'] : 0 ;
 
-		$reserved_stock = $getPackageItem[0]['reserved_stock'];
+		$reserved_stock = is_numeric($getPackageItem[0]['reserved_stock']) ? $getPackageItem[0]['reserved_stock'] : 0 ;
 
 		$package_item_quantity = $_POST['package_item_quantity'];
 
