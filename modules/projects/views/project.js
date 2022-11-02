@@ -2389,10 +2389,13 @@ $(document).ready(function() {
             'package_item_id': $(this).attr('data-package_item'),
             'quote_item_id':  $(this).attr('data-quote_item'),
             'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
             'package_item_quantity': $(this).val()
         }
 
-        console.log(packageItem);
+        //console.log(packageItem);
+
+        var table = $('.packages_table-'+packageItem.package_id).DataTable();
 
 
          $.ajax({
@@ -2406,6 +2409,7 @@ $(document).ready(function() {
                   $('.updatePackageItemError').removeClass('hidden');
               } else {
                 $('.updatePackageItemError').addClass('hidden');
+                 table.ajax.reload()
               }
             }).error(function(xhr, status, error) {
                 $('.updatePackageItemError').removeClass('hidden');

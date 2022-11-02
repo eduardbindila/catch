@@ -13,7 +13,7 @@ $conn = $QueryBuilder->dbConnection();
 			$conn,
 			$options = array(
 				"table" => "quote_items",
-				"columns" => "products.saga_quantity, quote_items.reserved_stock",
+				"columns" => "products.saga_quantity, quote_items.reserved_stock, quote_items.product_id, quote_items. id as quote_item_id",
 				"innerJoin" => 'products on quote_items.product_id = products.id',
 				"where" => "quote_items.id = '".$_POST['quote_item_id']."'"
 			)
@@ -25,7 +25,13 @@ $conn = $QueryBuilder->dbConnection();
 
 		$package_item_quantity = $_POST['package_item_quantity'];
 
+		$product_id = $_POST['product_id'];
+
+		$quote_item_id = $_POST['quote_item_id'];
+
 		$usable_stock = $saga_quantity + $reserved_stock;
+
+
 
 
 		if($package_item_quantity > $usable_stock) {
@@ -40,6 +46,41 @@ $conn = $QueryBuilder->dbConnection();
 					"where" => "id = ".$_POST['package_item_id']
 				)
 			);
+
+			if(($package_item_quantity > $reserved_stock) && $updatePackageItem) {
+
+				$product_stock = $GetDetails->productStock($product_id);
+
+				$reserved_stock = $GetDetails->reservedStock($quote_item_id);
+
+				$quantity_dif = $package_item_quantity - $reserved_stock;
+
+				$new_reserved_stock = $reserved_stock + $quantity_dif;
+
+				$new_product_stock = $product_stock - $quantity_dif;
+
+				$updateQuoteItem = $QueryBuilder->update(
+					$conn,
+					$options = array(
+						"table" => "quote_items",
+						"set" => ["`reserved_stock`='".$new_reserved_stock."'"],
+						"where" => "id = '".$quote_item_id."'"
+					)
+				);
+
+
+
+				if($updateQuoteItem) {
+					$updateProducts = $QueryBuilder->update(
+					$conn,
+					$options = array(
+						"table" => "products",
+						"set" => ["`saga_quantity`='".$new_product_stock."'"],
+						"where" => "id = '".$product_id."'"
+					)
+				);
+				}
+			}
 
 			echo json_encode($updatePackageItem);
 		}

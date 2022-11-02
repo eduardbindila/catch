@@ -895,6 +895,42 @@ Class GetDetails {
 
 		
 	}
+
+	function productStock($product_id) {
+
+		$conn = $this->QueryBuilder->dbConnection();
+
+		$productStock = $this->QueryBuilder->select(
+			$conn,
+			$options = array(
+				"table" => "products",
+				"columns" => "saga_quantity",
+				"where" => "id = '".$product_id."'"
+			)
+		);
+
+		$this->QueryBuilder->closeConnection();
+
+		return $productStock[0]['saga_quantity'];
+	}
+
+	function reservedStock($quote_item_id) {
+
+		$conn = $this->QueryBuilder->dbConnection();
+
+		$productStock = $this->QueryBuilder->select(
+			$conn,
+			$options = array(
+				"table" => "quote_items",
+				"columns" => "reserved_stock",
+				"where" => "id = '".$quote_item_id."'"
+			)
+		);
+
+		$this->QueryBuilder->closeConnection();
+
+		return $productStock[0]['reserved_stock'];
+	}
 }
 
 
@@ -1002,11 +1038,5 @@ function printError($val) {
 	<?php
 }
 
-
-
-// $strtotime = strtotime("now");
-
-// echo $strtotime;  
-// echo uniqid($strtotime);
 
 ?>

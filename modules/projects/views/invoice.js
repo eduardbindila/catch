@@ -599,6 +599,7 @@ class Invoices {
                                                 '<input class="form-control package-quantity-input"' + 
                                                 ' data-type="external_item_name" data-row="'+meta.row+
                                                 '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
                                                 '" data-quote_item="'+row.quote_item_id+
                                                 '" data-package_item="'+row.id+
                                                 '" data-product="'+row.product_id+
