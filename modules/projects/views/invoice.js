@@ -118,8 +118,7 @@ class Invoices {
                                         '<th>Owner</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
-                                        '<th colspan=14></th>'+
-                                        '<th>Unit Price</th>'+
+                                        '<th colspan=15>Totals</th>'+
                                         '<th>Value</th>'+
                                         '<th>VAT</th>'+
                                         '<th>Item Total</th>'+
@@ -217,7 +216,7 @@ class Invoices {
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 2,7, 13,14,15,16,17]
+                              columns: [ 2,7, 13,14,15,16]
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -451,35 +450,101 @@ class Invoices {
                                        bold: true,
                                    },
                                    tableHeader: {
-                                        fillColor: '#dbdbdb',
-                                        margin: [7,7,7,7],
+                                        //fillColor: '#dbdbdb',
+                                        margin: [3,3,3,3],
                                         bold: true,
                                         alignment: 'center',
                                         fontSize: 8
                                     
                                     },
                                     tableFooter: {
-                                        fillColor: '#dbdbdb',
-                                        margin: [7,7,7,7],
+                                        //fillColor: '#dbdbdb',
+                                        //margin: [7,7,7,7],
                                         bold: true,
                                         fontSize: 8
                                     },
                                     tableBodyEven: {
                                         alignment: 'center',
-                                        fillColor: '#eeeeee',
-                                        margin: [10,10,10,10],
+                                        //fillColor: '#eeeeee',
+                                        margin: [0,5,0,5],
                                         fontSize: 8
                                     },
                                     tableBodyOdd: {
                                         alignment: 'center',
-                                        margin: [10,10,10,10],
+                                        margin: [0,5,0,5],
                                         fontSize: 8
                                     },
                                 };
                                  doc.defaultStyle = 
                                  {
                                     fontSize: 9
-                                }
+                                };
+
+                                doc.content[1].layout = 'lightHorizontalLines';
+
+                                 var tableLength = doc.content[1].table.body.length;
+
+                                 console.log(doc.content[1].table.body);
+
+                                doc.content[1].table.body[tableLength-1][0] = "";
+                                doc.content[1].table.body[tableLength-1][1] = "";
+                                doc.content[1].table.body[tableLength-1][2] = "";
+
+                                var totalValue = doc.content[1].table.body[tableLength-1][4].text;
+                                totalValue = parseFloat(totalValue);
+
+                                var totalVat = doc.content[1].table.body[tableLength-1][5].text;
+                                totalVat = parseFloat(totalVat);
+
+                                console.log(totalValue, totalVat);
+
+                                var extraDiscountArray = ["",""];
+
+                                var priceBeforeArray = ["",""];
+
+                                // if(1) {
+                                //     priceBeforeArray = [{text: 'Total Price:', style: 'bold'}, 0];
+                                // }
+
+                                doc.content[2] = [
+                                {
+                                    canvas: [
+                                        {
+                                            type: 'line',
+                                            x1: 0,
+                                            y1: 0,
+                                            x2: 787,
+                                            y2: 0,
+                                            lineWidth: 0.5
+                                        }
+                                    ] 
+                                },
+                                {
+                                      columns: [
+                                        {
+                                            width: '*',
+                                            style: "bold",
+                                            text: '',
+                                            
+                                        },
+                                        { 
+                                            width: 'auto',
+                                            table: {
+                                            body: [
+                                                // priceBeforeArray,
+                                                // extraDiscountArray,
+                                                [
+                                                    {text: 'Invoice Total:', style: 'offerPrice'}, 
+                                                    {text: totalValue + totalVat, style: 'offerPrice'}]
+                                            ]
+                                            },
+                                            layout: 'noBorders'
+                                        }
+                                      ],
+                                   
+                                    },
+                                
+                                ];
                                
                             },
                         },
