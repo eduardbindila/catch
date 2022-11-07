@@ -8,6 +8,12 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 	$dateObj = date_parse_from_format("d/m/Y", $date);
 
+	
+
+	if($dateObj['error_count'] > 0) {
+		$dateObj = date_parse_from_format("Y-m-d", $date);
+	}
+
 	$cubeDate = date("Y-m-d", strtotime($date));
 
 	// returns original date string assuming the format was Y-m-d H:i:s

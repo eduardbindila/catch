@@ -67,6 +67,7 @@ RewriteRule ^download download.php [L]
  RewriteRule ^ajax/updateClientsActive modules/admin/controllers/update_clients_active.php [L]
  RewriteRule ^ajax/getCountries modules/admin/controllers/get_countries.php [L]
  RewriteRule ^ajax/getVendors modules/admin/controllers/get_vendors.php [L]
+ RewriteRule ^ajax/getInvoiceDetailsForm modules/admin/views/add_client_invoice_form_view.php [L]
  RewriteRule ^ajax/getVendorInvoiceItemQuotes modules/admin/controllers/get_vendor_invoice_item_quotes.php [L]
 
  RewriteRule ^ajax/addOrderLine modules/admin/controllers/add_order_line.php [L]
@@ -151,6 +152,8 @@ RewriteRule ^ajax/removePackage modules/admin/controllers/remove_package.php [L]
 RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_Item_quantity.php [L]
 
 RewriteRule ^ajax/updatePackageStatus modules/projects/controllers/update_package_status.php [L]
+
+RewriteRule ^ajax/updatePackageInvoiceData modules/projects/controllers/update_package_invoice_data.php [L]
 
 RewriteRule ^ajax/addItemsToQuote modules/projects/controllers/add_quote_items.php [L]
 

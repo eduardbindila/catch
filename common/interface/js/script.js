@@ -153,3 +153,18 @@ function showNotification(colorName, text, placementFrom, placementAlign, animat
             '</div>'
         });
 }
+
+function convertMysqlDate(date){
+    
+    var date = new Date(date);
+    var yyyy = date.getFullYear();
+    let mm = date.getMonth() + 1; // Months start at 0!
+    let dd = date.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    var formatteDate = dd + '/' + mm + '/' + yyyy;
+
+    return formatteDate
+}

@@ -5,6 +5,8 @@ class Invoices {
 
     setPackageLine(params) {
 
+      var that = this;
+
       var packageId = params.packageId;
 
       var packageDate = params.packageDate;
@@ -52,7 +54,13 @@ class Invoices {
                  nextStatusClass = 'hidden';
         }
 
-        console.log(nextStatusClass, packageStatus);
+        //console.log(nextStatusClass, packageStatus);
+
+       var invoiceForm = '';
+
+       if(packageStatus == 3) {
+        invoiceForm = that.getInvoiceDetailsForm(params);
+       }
 
       var packageLine = '<div class="package_line m-t-10 package-'+packageId+'">'+
                            '<div class="package_wrapper">'+
@@ -91,7 +99,7 @@ class Invoices {
                            ' style="">'+
                            '<div class="row m-t-10 m-b-10">'+
                                     '<div class="col-lg-12">'+
-                                         
+                                         invoiceForm +
                                     '</div>'+ 
                            '</div>'+
                             
@@ -161,6 +169,10 @@ class Invoices {
             'quote_id': packages[0].quote_id,
             'packageStatus': packages[0].package_status_id,
             'clientDetails': quoteList[params.quoteIndex].client_details,
+            'invoiceDate': packages[0].invoice_date,
+            'dueDate': packages[0].invoice_due_date,
+            'exchangeRate': packages[0].exchange_rate,
+            'invoiceNumber': packages[0].invoice_number,
          }
         
 
@@ -311,7 +323,7 @@ class Invoices {
                                                     columns: 
                                                     [
                                                         {text: 'Invoice Number:',  width: 100},
-                                                        {text: '123123'},
+                                                        {text: packageDetails.invoiceNumber},
                                                         
                                                     ],
                                                     style: 'boldInfoRight'
@@ -320,7 +332,7 @@ class Invoices {
                                                     columns: 
                                                     [
                                                         {text: 'Invoice Date:',  width: 100},
-                                                        {text: '21.12.2022'},
+                                                        {text: convertMysqlDate(packageDetails.invoiceDate)},
                                                         
                                                     ],
                                                     style: 'boldInfoRight'
@@ -538,8 +550,8 @@ class Invoices {
                                                     {text: totalValue + totalVat, style: 'offerPriceValue'}
                                                 ],
                                                 [
-                                                    {text: 'Due Date: 12/01/2023', style: 'dueDate'}, 
-                                                    {text: 'Exchange Rate: 4.6546', style: 'dueDateValue'}
+                                                    {text: "Due Date: " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
+                                                    {text: "Exchange Rate " + packageDetails.exchangeRate, style: 'dueDateValue'}
                                                 ]
                                             ]
                                         },
@@ -742,8 +754,38 @@ class Invoices {
     }
 
     changeStatus(params){
-        console.log( params);
+        //console.log( params);
         //this.packageTable[params.packageId].ajax.reload();
         this.packageTable[params.packageId].buttons(params.nextStatus+':name').trigger();
+    }
+
+     getInvoiceDetailsForm(params){
+        //console.log( params);
+
+        var orderDetail = params;
+
+        var form = ''
+       
+       $.ajax({
+            url: "/ajax/getInvoiceDetailsForm",
+            type: "post",
+            dataType: "text",
+            data: orderDetail,
+            async:false
+        }).success(function(json){
+           $('.updateError').addClass('hidden');
+
+           form = json;
+
+           
+        }).error(function(xhr, status, error) {
+           $('.updateError').removeClass('hidden');
+        })
+
+
+        return form
+
+
+
     }
 }

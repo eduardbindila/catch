@@ -377,7 +377,7 @@ $(document).ready(function() {
     })
 
 
-     $('body').on('change', '.invoice-date', function(){
+    $('body').on('change', '.invoice-date', function(){
 
         var date = $(this).val();
 
@@ -393,9 +393,6 @@ $(document).ready(function() {
         }).error(function(xhr, status, error) {
            //$('.updateError').removeClass('hidden');
         })
-
-
-
     })
 
 

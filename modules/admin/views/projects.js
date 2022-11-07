@@ -69,7 +69,7 @@ $(document).ready(function() {
         $("#userData input[name=project_name]").val(userDetails.project_name);
         $("#userData input[name=project_description]").val(userDetails.project_description);
         $("#userData input[name=project_category]").val(userDetails.category_id);
-        console.log(userDetails);
+        //console.log(userDetails);
     }
 
      $('.editSwitch').change(function() {

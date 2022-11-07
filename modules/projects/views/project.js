@@ -1335,7 +1335,7 @@ $(document).ready(function() {
                             "render" : function(data, type, row, meta) {
                                 //console.log(row);
                                 var editableClass = ""
-                                if(quoteStatus[quoteId] == 2) {
+                                if(quoteList[index].quote_status == 2) {
                                     editableClass = 'editable'
                                 }
 
@@ -1354,8 +1354,9 @@ $(document).ready(function() {
                     { 
                         "data": "ordered_quantity",
                             "render" : function(data, type, row, meta) {
+                                //console.log( quoteList[index].qu );
                                 var editableClass = ""
-                                if(quoteStatus[quoteId] == 2) {
+                                if(quoteList[index].quote_status == 2) {
                                     editableClass = 'editable'
                                 }
                               return '<div class="form-group">' + 
@@ -1378,7 +1379,7 @@ $(document).ready(function() {
                         "data": "order_date",
                             "render" : function(data, type, row, meta) {
                                 var editableClass = ""
-                                if(quoteStatus[quoteId] == 2) {
+                                if(quoteList[index].quote_status == 2) {
                                     editableClass = 'editable'
                                 }
                               return '<div class="form-group">' + 
@@ -1397,7 +1398,7 @@ $(document).ready(function() {
                         "data": "promise_date",
                             "render" : function(data, type, row, meta) {
                                 var editableClass = ""
-                                if(quoteStatus[quoteId] == 2) {
+                                if(quoteList[index].quote_status == 2) {
                                     editableClass = 'editable'
                                 }
                               return '<div class="form-group">' + 
@@ -2478,7 +2479,59 @@ $(document).ready(function() {
 
 Dropzone.autoDiscover = false;
 
+
+    $('body').on('change', '.invoice-date', function(){
+
+        var date = $(this).val();
+
+        $.ajax({
+            url: "/ajax/getExchangeRate",
+            type: "post",
+            dataType: "json",
+            data: {'date': date}
+        }).success(function(json){
+           //$('.updateError').addClass('hidden');
+           //console.log(json)
+           $('.viewPackages-modal.in input[name="exchange_rate"]').val(json[0]);
+
+        }).error(function(xhr, status, error) {
+           //$('.updateError').removeClass('hidden');
+        })
+
+    })
+
+    $('body').on('submit', '#invoiceData', function(e){
+
+        var packageId = $('.viewPackages-modal.in .triggerPackageItems').attr('data-package')
+
+       e.preventDefault();
+
+       var invoiceData = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+        //console.log(data);
+
+        invoiceData['package_id'] = packageId; 
+
+        $.ajax({
+            url: "/ajax/updatePackageInvoiceData",
+            type: "post",
+            dataType: "json",
+            data: invoiceData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           location.reload();
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
 });
+
+
 
 $(function() {
     //Dropzone class
