@@ -142,6 +142,8 @@ class Invoices {
 
     setPackages(params){
 
+
+
       var that = this;
 
       var packages = params.packages;
@@ -155,7 +157,7 @@ class Invoices {
          var showForInvoice = false;
          var hideForInvoice = true;
 
-         if(packages[0].package_status_id > 1) {
+         if(packages[index].package_status_id > 1) {
             editDisabled = 'disabled';
             showForInvoice = true;
             hideForInvoice = false;
@@ -166,16 +168,16 @@ class Invoices {
             'packageId': thisPackage.id,
             'packageDate': thisPackage.created_date,
             'packageStatusName': thisPackage.name,
-            'quote_id': packages[0].quote_id,
-            'packageStatus': packages[0].package_status_id,
+            'quote_id': packages[index].quote_id,
+            'packageStatus': packages[index].package_status_id,
             'clientDetails': quoteList[params.quoteIndex].client_details,
-            'invoiceDate': packages[0].invoice_date,
-            'dueDate': packages[0].invoice_due_date,
-            'exchangeRate': packages[0].exchange_rate,
-            'invoiceNumber': packages[0].invoice_number,
+            'invoiceDate': packages[index].invoice_date,
+            'dueDate': packages[index].invoice_due_date,
+            'exchangeRate': packages[index].exchange_rate,
+            'invoiceNumber': packages[index].invoice_number,
          }
         
-
+//console.log(packageDetails);
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
