@@ -2502,17 +2502,14 @@ Dropzone.autoDiscover = false;
 
     $('body').on('submit', '#invoiceData', function(e){
 
-        var packageId = $('.viewPackages-modal.in .triggerPackageItems').attr('data-package')
-
        e.preventDefault();
 
        var invoiceData = $(this).serializeArray().reduce(function(obj, item) {
                 obj[item.name] = item.value;
                 return obj;
             }, {});
-        //console.log(data);
-
-        invoiceData['package_id'] = packageId; 
+       
+        console.log(invoiceData);
 
         $.ajax({
             url: "/ajax/updatePackageInvoiceData",

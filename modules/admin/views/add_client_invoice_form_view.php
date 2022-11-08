@@ -5,6 +5,7 @@ $invoiceData = array(
     "dueDate" => "",
     "exchangeRate" => "",
     "invoiceNumber" => "",
+    "packageId" => ""
 
 );
 
@@ -15,12 +16,13 @@ if(isset($_POST['invoiceNumber']))
         "dueDate" => $_POST['dueDate'],
         "exchangeRate" => $_POST['exchangeRate'],
         "invoiceNumber" => $_POST['invoiceNumber'],
+        "packageId" => $_POST['packageId'],
     );
 }
 
 ?>
 
-<form id="invoiceData" method="post" action='' enctype="multipart/form-data" >
+<form id="invoiceData" method="post" class="<?php echo 'form-package-'.$_POST['packageId']?>" action='' enctype="multipart/form-data" >
     <div class="row">
         <div class="col-lg-12">
              <h3>Client Invoice Details</h3>
@@ -31,6 +33,7 @@ if(isset($_POST['invoiceNumber']))
             <div class="input-group">
                 <div class="form-line">
                     <input type="text" class="form-control" name="invoice_no" placeholder="Invoice Number" value="<?php echo $invoiceData['invoiceNumber']?>" required>
+                    <input type="hidden" class="form-control" name="package_id" value="<?php echo $invoiceData['packageId']?>">
                 </div>
             </div>
             

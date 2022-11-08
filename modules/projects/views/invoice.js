@@ -762,7 +762,7 @@ class Invoices {
     }
 
      getInvoiceDetailsForm(params){
-        //console.log( params);
+        console.log( params);
 
         var orderDetail = params;
 
