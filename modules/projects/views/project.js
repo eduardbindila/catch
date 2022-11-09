@@ -2391,6 +2391,7 @@ $(document).ready(function() {
             'quote_item_id':  $(this).attr('data-quote_item'),
             'product_id':  $(this).attr('data-product'),
             'package_id':  $(this).attr('data-package'),
+            'external_unit_price':  $(this).attr('data-external-price'),
             'package_item_quantity': $(this).val()
         }
 
@@ -2499,6 +2500,76 @@ Dropzone.autoDiscover = false;
         })
 
     })
+
+     $('body').on('change', '.invoice-external-name', function(){
+       
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
+            'external_item_name': $(this).val()
+        }
+
+        //console.log(packageItem);
+
+        var table = $('.packages_table-'+packageItem.package_id).DataTable();
+
+
+         $.ajax({
+                url: "/ajax/insertPackageExternalItem",
+                type: "post",
+                dataType: "json",
+                data: packageItem
+           }).success(function(json){
+               
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+                 table.ajax.reload()
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
+
+        
+    });
+
+     $('body').on('change', '.invoice-external-unit-price', function(){
+       
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
+            'external_unit_price': $(this).val()
+        }
+
+        //console.log(packageItem);
+
+        var table = $('.packages_table-'+packageItem.package_id).DataTable();
+
+
+         $.ajax({
+                url: "/ajax/updateExternalPackageItem",
+                type: "post",
+                dataType: "json",
+                data: packageItem
+           }).success(function(json){
+               
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+                 table.ajax.reload()
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
+
+        
+    });
 
     $('body').on('submit', '#invoiceData', function(e){
 

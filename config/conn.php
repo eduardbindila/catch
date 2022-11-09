@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.983911';
+$_VERSION = '0.1.983912';
 
 
 function getPage(){
@@ -112,6 +112,9 @@ Class QueryBuilder{
 
 		$innerJoin = isset($options['innerJoin']) ? ' INNER JOIN '.$options['innerJoin'] : "";
 
+
+		$leftJoin = isset($options['leftJoin']) ? ' LEFT JOIN '.$options['leftJoin'] : "";
+
 		$limit = isset($options['limit']) ? ' LIMIT '.$options['limit'] : "";
 
 		$offset = isset($options['offset']) ? ' OFFSET '.$options['offset'] : "";
@@ -128,7 +131,7 @@ Class QueryBuilder{
 
 		$columnAsGroup = isset($options['columnAsGroup']) ? $options['columnAsGroup'] : "";
 
-		$allQueryParams = $innerJoin.$where.$offset.$groupBy.$orderBy.$orderType.$limit;
+		$allQueryParams = $innerJoin.$leftJoin.$where.$offset.$groupBy.$orderBy.$orderType.$limit;
 
 		$query = 'SELECT '.$columns.' FROM '.$table.' '.$allQueryParams;
 

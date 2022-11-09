@@ -117,9 +117,9 @@ class Invoices {
                                         '<th>Reserved</th>'+
                                         '<th>Stock</th>'+
                                         '<th>Invoiced</th>'+
-                                        '<th>Package Quantity</th>'+
-                                        '<th>Package Quantity</th>'+
                                         '<th>Unit Price</th>'+
+                                        '<th>Package Quantity</th>'+
+                                        '<th>Package Quantity</th>'+
                                         '<th>Value</th>'+
                                         '<th>VAT</th>'+
                                         '<th>Item Total</th>'+
@@ -204,7 +204,34 @@ class Invoices {
                             extend: 'selectNone',
                             className: 'btn btn-lg btn-primary waves-effect',
                         },
-                         {
+                        {
+                            text: 'Add External Item',
+                            className: 'btn btn-lg btn-primary waves-effect',
+                            action: function ( e, dt, node, config ) {
+
+                                dt.row.add( 
+                                {
+                                    "id": "",
+                                    "quote_item_id": "",
+                                    "package_quantity": "",
+                                    "package_id": "",
+                                    "external_item_name": "",
+                                    "product_id": "",
+                                    "product_name": "",
+                                    "saga_quantity": "",
+                                    "reserved_stock": "",
+                                    "quantity": "",
+                                    "invoiced_quantity": "",
+                                    "quote_id": "",
+                                    "unit_price": "",
+                                    "value": "",
+                                    "vat_value": "",
+                                    "total": ""
+                                }).draw().node();
+                                                      
+                            }
+                        },
+                        {
                             extend: 'csv',
                             className: 'btn btn-lg btn-primary waves-effect hidden',
                             name:"2",
@@ -654,6 +681,30 @@ class Invoices {
                         },
                         { 
                             "data": "product_name",
+                            "render" : function(data, type, row, meta) {
+                                //console.log(row);
+                            var product = data;
+
+                             var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+
+                            if(product == 0 && row.external_item_name =='') {
+                                //console.log('asd')
+                                product = '<div class="form-group">' + 
+                                        '<div class="form-line">' + 
+                                            '<input class="form-control invoice-external-name"' + 
+                                            ' data-type="external-name" data-row="'+meta.row+
+                                            '" data-col="'+meta.col+
+                                            '" data-package="'+thisPackage.id+
+                                            '" data-quote_item="'+row.quote_item_id+
+                                            '" data-package_item="'+row.id+
+                                            '" data-product="'+row.product_id+
+                                            '" value="" type="text" name="external_item_name" placeholder="New Item" '+ disabled +'  required>' + 
+                                        '</div>' + 
+                                    '</div>'
+                            } else if(!product) { product = row.external_item_name }
+
+                            return product
+                        },
                         }
                         ,
                         { 
@@ -669,10 +720,55 @@ class Invoices {
                             "data": "invoiced_quantity",
                         },
                         { 
+                            "data": "unit_price",
+                            "render" : function(data, type, row, meta) {
+                                //console.log(row);
+                                var price = row.unit_price;
+
+                                var product = row.product_id;
+
+                                var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+
+                                if(product == 0)  {
+
+                                    if(row.external_item_unit_price =='') {
+
+                                        if(row.external_item_name =='') {
+                                            disabled = "disabled"
+                                        }
+
+                                        price = '<div class="form-group">' + 
+                                                '<div class="form-line">' + 
+                                                    '<input class="form-control invoice-external-unit-price"' + 
+                                                    ' data-type="ùnit_price" data-row="'+meta.row+
+                                                    '" data-col="'+meta.col+
+                                                    '" data-package="'+thisPackage.id+
+                                                    '" data-quote_item="'+row.quote_item_id+
+                                                    '" data-package_item="'+row.id+
+                                                    '" data-product="'+row.product_id+
+                                                    '" value="" type="text" name="external_item_price" placeholder="Unit Price" '+ disabled +' required>' + 
+                                                '</div>' + 
+                                            '</div>'
+                                    } else {
+                                        price = row.external_item_unit_price
+                                    }
+
+                                    //console.log('asd')
+
+                                }
+
+                                return price
+                            }, 
+                        },
+                        { 
                             "data": "null",
                              "render" : function(data, type, row, meta) {
 
                                 var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+
+                                if(row.product = 0 && row.external_item_name =='') {
+                                        disabled = "disabled"
+                                }
 
                                 return '<div class="form-group">' + 
                                             '<div class="form-line">' + 
@@ -683,20 +779,19 @@ class Invoices {
                                                 '" data-quote_item="'+row.quote_item_id+
                                                 '" data-package_item="'+row.id+
                                                 '" data-product="'+row.product_id+
+                                                '" data-external-price="'+row.external_item_unit_price+
                                                 '" value="'+row.package_quantity+'" type="number" name="package_quantity"'+
                                                 ' placeholder="Package Quantity"  min=0 required '+disabled+'>' + 
                                             '</div>' + 
                                         '</div>'
                               }
                         },
-                         { 
+                        { 
                             "data": "package_quantity",
                             'visible': false
                         },
+                        
                         { 
-                            "data": "unit_price",
-                        },
-                       { 
                             "data": "value",
                         },
                         { 
@@ -723,19 +818,19 @@ class Invoices {
 
                             $( api.column( 15 ).footer() ).html(
                                 api.column( 15 ).data().reduce( function ( a, b ) {
-                                    return parseFloat(a) + parseFloat(b);
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
                             ); 
 
                             $( api.column( 16 ).footer() ).html(
                                 api.column( 16 ).data().reduce( function ( a, b ) {
-                                    return parseFloat(a) + parseFloat(b);
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
                             );                          
 
                             $( api.column( 17 ).footer() ).html(
                                 api.column( 17 ).data().reduce( function ( a, b ) {
-                                    return parseFloat(a) + parseFloat(b);
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
                             ); 
                         });
