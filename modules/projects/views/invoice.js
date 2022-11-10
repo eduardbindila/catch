@@ -121,12 +121,12 @@ class Invoices {
                                         '<th>Package Quantity</th>'+
                                         '<th>Package Quantity</th>'+
                                         '<th>Value</th>'+
-                                        '<th>VAT</th>'+
+                                        '<th>VAT('+ params.vat +')</th>'+
                                         '<th>Item Total</th>'+
                                         '<th>Owner</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
-                                        '<th colspan=15>Totals</th>'+
+                                        '<th colspan=15>Totals('+ params.currency +')</th>'+
                                         '<th>Value</th>'+
                                         '<th>VAT</th>'+
                                         '<th>Item Total</th>'+
@@ -175,6 +175,9 @@ class Invoices {
             'dueDate': packages[index].invoice_due_date,
             'exchangeRate': packages[index].exchange_rate,
             'invoiceNumber': packages[index].invoice_number,
+            'showRon':  (quoteList[params.quoteIndex].client_details.country == "RO"),
+            'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== "" ? "Ron" : "Euro",
+            'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19%" : "0%"
          }
         
 //console.log(packageDetails);
@@ -187,7 +190,12 @@ class Invoices {
                         "url": "/ajax/getPackageItems/",
                         "dataSrc": "",
                         "type": 'POST',
-                        "data": {'package_id': thisPackage.id, 'country': quoteList[params.quoteIndex].client_details.country}
+                        "data": {
+                            'package_id': thisPackage.id, 
+                            'country': quoteList[params.quoteIndex].client_details.country,
+                            'exchange_rate': packageDetails.exchangeRate == '' ? 1 : packageDetails.exchangeRate,
+                            'vat': packageDetails.vat
+                        }
                     },
                     dom: 'Bfrtip',                
                     pageLength: 100,
@@ -233,15 +241,15 @@ class Invoices {
                         },
                         {
                             extend: 'csv',
-                            className: 'btn btn-lg btn-primary waves-effect hidden',
+                            className: 'btn btn-lg btn-primary waves-effect',
                             name:"2",
                             text:'Generate POS',
                             filename: 'Quote-'+ thisPackage.quote_id + '-POS-' + thisPackage.id,
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 1,2,3,4,5,6,13,14 ]
-                            }, footer: true,
+                              columns: [ 1,2,3,4,5,6,12,14,18]
+                            }, footer: false,
                             action: function ( e, dt, node, config ) {
                                 
                                this.ajax.reload(() => {
@@ -575,7 +583,7 @@ class Invoices {
                                                 // priceBeforeArray,
                                                 // extraDiscountArray,
                                                 [
-                                                    {text: 'Invoice Total:', style: 'offerPrice'}, 
+                                                    {text: 'Invoice Total ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
                                                     {text: totalValue + totalVat, style: 'offerPriceValue'}
                                                 ],
                                                 [
