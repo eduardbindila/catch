@@ -6,8 +6,6 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 function getExchangeRateByDate($year, $date)
 {
-
-
 	$url = "https://www.bnr.ro/files/xml/years/nbrfxrates".$year.".xml";
 
 	//echo $url;
@@ -50,6 +48,8 @@ function getExchangeRateByDate($year, $date)
 }
 
 
+
+
 	$date = $_POST['date'];
 
 	$dateObj = date_parse_from_format("d/m/Y", $date);
@@ -79,12 +79,7 @@ function getExchangeRateByDate($year, $date)
 		$cubeDate_dt = $cubeDate_dt->modify('-1 day');
 	}
 
-
-	
-	
-
 	// print_r($currency[0]['value'];
-
 
 	echo json_encode($exchange_rate);
 ?>
