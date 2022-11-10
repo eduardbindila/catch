@@ -8868,3 +8868,9 @@ button.removePackage.btn.btn-danger.waves-effect i {
 
 .modal-xl { width:1280px !important; }
 
+.exchange_rate_preloader {
+    position: absolute;
+    z-index: 20000;
+    left: -19px;
+    top: 10px;
+}

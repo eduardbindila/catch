@@ -2483,6 +2483,11 @@ Dropzone.autoDiscover = false;
 
     $('body').on('change', '.invoice-date', function(){
 
+       
+       $('.viewPackages-modal.in .exchange_rate_preloader').removeClass('hidden');
+
+
+
         var date = $(this).val();
 
         $.ajax({
@@ -2494,6 +2499,7 @@ Dropzone.autoDiscover = false;
            //$('.updateError').addClass('hidden');
            //console.log(json)
            $('.viewPackages-modal.in input[name="exchange_rate"]').val(json[0]);
+            $('.viewPackages-modal.in .exchange_rate_preloader').addClass('hidden');
 
         }).error(function(xhr, status, error) {
            //$('.updateError').removeClass('hidden');

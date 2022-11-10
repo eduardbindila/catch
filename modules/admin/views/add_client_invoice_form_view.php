@@ -9,6 +9,8 @@ $invoiceData = array(
 
 );
 
+
+
 if(isset($_POST['invoiceNumber']))
 {
     $invoiceData = array(
@@ -18,6 +20,14 @@ if(isset($_POST['invoiceNumber']))
         "invoiceNumber" => $_POST['invoiceNumber'],
         "packageId" => $_POST['packageId'],
     );
+
+
+    if($invoiceData['exchangeRate'] == 1) {
+        $exchange_rate_class = "hidden";
+    }
+    else {
+        $exchange_rate_class = '';
+    }
 }
 
 ?>
@@ -52,7 +62,17 @@ if(isset($_POST['invoiceNumber']))
             </div>
              <div class="input-group">
                 <div class="form-line">
-                    <input type="text" class="form-control" placeholder="Exchange Rate" name="exchange_rate" value="<?php echo $invoiceData['exchangeRate']?>" required>
+                    <div class="preloader pl-size-vxs hidden exchange_rate_preloader">
+                        <div class="spinner-layer pl-red-grey">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control <?php echo $exchange_rate_class?>" placeholder="Exchange Rate" name="exchange_rate" value="<?php echo $invoiceData['exchangeRate']?>" >
                 </div>
             </div>
         </div>

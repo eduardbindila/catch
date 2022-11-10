@@ -164,6 +164,8 @@ class Invoices {
          }
 
          
+         console.log(packages);
+
          var packageDetails = {
             'packageId': thisPackage.id,
             'packageDate': thisPackage.created_date,
@@ -173,10 +175,10 @@ class Invoices {
             'clientDetails': quoteList[params.quoteIndex].client_details,
             'invoiceDate': packages[index].invoice_date,
             'dueDate': packages[index].invoice_due_date,
-            'exchangeRate': packages[index].exchange_rate,
+            'exchangeRate': quoteList[params.quoteIndex].client_details.country == "RO" ? packages[index].exchange_rate : 1,
             'invoiceNumber': packages[index].invoice_number,
             'showRon':  (quoteList[params.quoteIndex].client_details.country == "RO"),
-            'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== "" ? "Ron" : "Euro",
+            'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== '' ? "Ron" : "Euro",
             'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19%" : "0%"
          }
         
@@ -588,7 +590,7 @@ class Invoices {
                                                 ],
                                                 [
                                                     {text: "Due Date: " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
-                                                    {text: "Exchange Rate " + packageDetails.exchangeRate, style: 'dueDateValue'}
+                                                    {text: "Exchange Rate: " + packageDetails.exchangeRate, style: 'dueDateValue'}
                                                 ]
                                             ]
                                         },
