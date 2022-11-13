@@ -122,6 +122,8 @@ class Invoices {
                                         '<th>Package Quantity</th>'+
                                         '<th>Value</th>'+
                                         '<th>VAT('+ params.vat +')</th>'+
+                                        '<th>Green Tax</th>'+
+                                        '<th>Green Tax</th>'+
                                         '<th>Item Total</th>'+
                                         '<th>Owner</th>'+
                                    '</thead>'+
@@ -129,6 +131,8 @@ class Invoices {
                                         '<th colspan=15>Totals('+ params.currency +')</th>'+
                                         '<th>Value</th>'+
                                         '<th>VAT</th>'+
+                                        '<th>Green Tax</th>'+
+                                        '<th>Green Tax</th>'+
                                         '<th>Item Total</th>'+
                                         '<th>Owner</th>'+
                                    '</tfoot>'+
@@ -182,6 +186,9 @@ class Invoices {
             'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19%" : "0%"
          }
         
+
+            var greenTaxDropDown = that.getGreenTaxlist();
+
 //console.log(packageDetails);
          var packageLine = Invoice.setPackageLine(packageDetails);
 
@@ -236,6 +243,7 @@ class Invoices {
                                     "unit_price": "",
                                     "value": "",
                                     "vat_value": "",
+                                    "green_tax_value": "",
                                     "total": ""
                                 }).draw().node();
                                                       
@@ -250,7 +258,7 @@ class Invoices {
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 1,2,3,4,5,6,12,14,18]
+                              columns: [ 1,2,3,4,5,6,12,14,20]
                             }, footer: false,
                             action: function ( e, dt, node, config ) {
                                 
@@ -267,7 +275,7 @@ class Invoices {
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 2,7, 13,14,15,16]
+                              columns: [ 2,7, 13,14,15,16, 17]
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -550,7 +558,7 @@ class Invoices {
 
                                 var tableLength = doc.content[1].table.body.length;
 
-                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*', ]
+                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*','*',]
 
                                 console.log(doc.content[1]);
 
@@ -564,7 +572,12 @@ class Invoices {
                                 var totalVat = doc.content[1].table.body[tableLength-1][5].text;
                                 totalVat = parseFloat(totalVat);
 
-                                console.log(totalValue, totalVat);
+                                // var totalGreenTax = doc.content[1].table.body[tableLength-1][6].text;
+                                // totalGreenTax = parseFloat(totalGreenTax);
+
+                                    var totalGreenTax = 0;
+
+                                //console.log(totalValue, totalVat);
 
                                 var extraDiscountArray = ["",""];
 
@@ -586,7 +599,7 @@ class Invoices {
                                                 // extraDiscountArray,
                                                 [
                                                     {text: 'Invoice Total ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
-                                                    {text: totalValue + totalVat, style: 'offerPriceValue'}
+                                                    {text: totalValue + totalVat + totalGreenTax, style: 'offerPriceValue'}
                                                 ],
                                                 [
                                                     {text: "Due Date: " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
@@ -806,7 +819,50 @@ class Invoices {
                         },
                         { 
                             "data": "vat_value",
-                        },{ 
+                        },
+                        { 
+                            "data": "green_tax_value",
+                            'visible': false
+                        },
+                        { 
+                            "data": "green_tax_value",
+                            "render" : function(data, type, row, meta) {
+                                //console.log(row);
+                                var value = row.green_tax_value;
+
+                                var product = row.product_id;
+
+                                var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+
+                                //console.log(product !== "");
+
+                                if(product !== "" && value == "0.00")  {
+
+                                    value = row.green_tax_value + 
+                                            '<div class="btn-group">'+
+                                                '<button class="btn btn-default btn-xs "' + 
+                                                ' data-type="ùnit_price" data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+'" data-toggle="dropdown'+
+                                                '" aria-haspopup="true" aria-expanded="true">'+
+                                                        '<i class="material-icons">add</i>'+ 
+                                                '</button>'+
+                                                '<ul class="dropdown-menu">'+
+                                                        greenTaxDropDown
+                                                '</ul>'
+                                            '</div>';
+                                } 
+
+                                    //console.log('asd')
+
+
+                                return value
+                            }, 
+                        },
+                        { 
                             "data": "total",
                         },
                         { 
@@ -836,13 +892,28 @@ class Invoices {
                                 api.column( 16 ).data().reduce( function ( a, b ) {
                                     return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
-                            );                          
+                            );  
 
-                            $( api.column( 17 ).footer() ).html(
+                             $( api.column( 17 ).footer() ).html(
                                 api.column( 17 ).data().reduce( function ( a, b ) {
                                     return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
+                            );                         
+
+                            $( api.column( 18 ).footer() ).html(
+                                api.column( 18 ).data().reduce( function ( a, b ) {
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                                }, 0 )
                             ); 
+
+
+
+                            $( api.column( 19 ).footer() ).html(
+                                api.column( 19 ).data().reduce( function ( a, b ) {
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                                }, 0 )
+                            ); 
+
                         });
                     }
 
@@ -866,7 +937,7 @@ class Invoices {
         this.packageTable[params.packageId].buttons(params.nextStatus+':name').trigger();
     }
 
-     getInvoiceDetailsForm(params){
+    getInvoiceDetailsForm(params){
         console.log( params);
 
         var orderDetail = params;
@@ -894,5 +965,34 @@ class Invoices {
 
 
 
+    }
+
+    getGreenTaxlist(){
+
+        var greenTaxDropDown = "";
+
+        $.ajax({
+            url: "/ajax/getGreenTaxList",
+            type: "post",
+            dataType: "text",
+            async:false
+        }).success(function(json){
+           $('.updateError').addClass('hidden');
+
+            JSON.parse(json).forEach(function(val, index){
+                greenTaxDropDown = greenTaxDropDown + 
+                  '<li class=""><a class="addGreenTax waves-effect waves-block" data-green_tax_id="'+ val.id +'">'+
+                             val.ee_category+' '+ val.name + ': '+ val.value +
+                                '</a>'+
+                            '</li>'
+           })
+           
+        }).error(function(xhr, status, error) {
+           $('.updateError').removeClass('hidden');
+        })
+
+        console.log(greenTaxDropDown);
+
+        return greenTaxDropDown
     }
 }
