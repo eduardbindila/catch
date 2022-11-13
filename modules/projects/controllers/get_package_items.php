@@ -7,7 +7,7 @@ $conn = $QueryBuilder->dbConnection();
 
 //var_dump($_POST);
 
-$vat = floatVal($_POST['vat']);
+$vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $exchange_rate = floatVal($_POST['exchange_rate']); 
 
