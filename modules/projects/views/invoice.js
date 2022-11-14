@@ -121,18 +121,18 @@ class Invoices {
                                         '<th>Package Quantity</th>'+
                                         '<th>Package Quantity</th>'+
                                         '<th>Value</th>'+
+                                        '<th>Green Tax</th>'+
+                                        '<th>Green Tax</th>'+
                                         '<th>VAT('+ params.vat +')</th>'+
-                                        '<th>Green Tax</th>'+
-                                        '<th>Green Tax</th>'+
                                         '<th>Item Total</th>'+
                                         '<th>Owner</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
                                         '<th colspan=15>Totals('+ params.currency +')</th>'+
                                         '<th>Value</th>'+
+                                        '<th>Green Tax</th>'+
+                                        '<th>Green Tax</th>'+
                                         '<th>VAT</th>'+
-                                        '<th>Green Tax</th>'+
-                                        '<th>Green Tax</th>'+
                                         '<th>Item Total</th>'+
                                         '<th>Owner</th>'+
                                    '</tfoot>'+
@@ -168,7 +168,7 @@ class Invoices {
          }
 
          
-         console.log(packages);
+         //console.log(packages);
 
          var packageDetails = {
             'packageId': thisPackage.id,
@@ -275,7 +275,7 @@ class Invoices {
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 2,7, 13,14,15,16, 17]
+                              columns: [ 2,7, 14,15,16, 18]
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -558,24 +558,25 @@ class Invoices {
 
                                 var tableLength = doc.content[1].table.body.length;
 
-                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*','*',]
+                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*']
 
                                 console.log(doc.content[1]);
 
                                 doc.content[1].table.body[tableLength-1][0] = "";
                                 doc.content[1].table.body[tableLength-1][1] = "";
-                                doc.content[1].table.body[tableLength-1][2] = "";
+                                //doc.content[1].table.body[tableLength-1][2] = "";
 
-                                var totalValue = doc.content[1].table.body[tableLength-1][4].text;
+                                var totalValue = doc.content[1].table.body[tableLength-1][3].text;
                                 totalValue = parseFloat(totalValue);
 
-                                var totalVat = doc.content[1].table.body[tableLength-1][5].text;
+                                var totalVat = doc.content[1].table.body[tableLength-1][4].text;
                                 totalVat = parseFloat(totalVat);
 
-                                // var totalGreenTax = doc.content[1].table.body[tableLength-1][6].text;
-                                // totalGreenTax = parseFloat(totalGreenTax);
+                                var totalGreenTax = doc.content[1].table.body[tableLength-1][5].text;
+                                totalGreenTax = parseFloat(totalGreenTax);
 
-                                    var totalGreenTax = 0;
+
+                                    // var totalGreenTax = 0;
 
                                 //console.log(totalValue, totalVat);
 
@@ -818,9 +819,6 @@ class Invoices {
                             "data": "value",
                         },
                         { 
-                            "data": "vat_value",
-                        },
-                        { 
                             "data": "green_tax_value",
                             'visible': false
                         },
@@ -841,7 +839,7 @@ class Invoices {
                                     value = row.green_tax_value + 
                                             '<div class="btn-group">'+
                                                 '<button class="btn btn-default btn-xs "' + 
-                                                ' data-type="ùnit_price" data-row="'+meta.row+
+                                                ' data-row="'+meta.row+
                                                 '" data-col="'+meta.col+
                                                 '" data-package="'+thisPackage.id+
                                                 '" data-quote_item="'+row.quote_item_id+
@@ -850,7 +848,13 @@ class Invoices {
                                                 '" aria-haspopup="true" aria-expanded="true">'+
                                                         '<i class="material-icons">add</i>'+ 
                                                 '</button>'+
-                                                '<ul class="dropdown-menu">'+
+                                                '<ul class="dropdown-menu"'+
+                                                ' data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+'" data-toggle="dropdown">'+
                                                         greenTaxDropDown
                                                 '</ul>'
                                             '</div>';
@@ -862,6 +866,10 @@ class Invoices {
                                 return value
                             }, 
                         },
+                        { 
+                            "data": "vat_value",
+                        },
+                        
                         { 
                             "data": "total",
                         },
@@ -881,6 +889,8 @@ class Invoices {
 
                         var totalArray = {};
                         api.columns().every(function () {
+
+                           
 
                             $( api.column( 15 ).footer() ).html(
                                 api.column( 15 ).data().reduce( function ( a, b ) {
@@ -991,7 +1001,7 @@ class Invoices {
            $('.updateError').removeClass('hidden');
         })
 
-        console.log(greenTaxDropDown);
+        //console.log(greenTaxDropDown);
 
         return greenTaxDropDown
     }

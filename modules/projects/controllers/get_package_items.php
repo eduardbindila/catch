@@ -39,7 +39,7 @@ $green_tax = "(
 
 $green_tax_value = $exchange_rate == 1 ?  0 : $green_tax;
 
-$vatValue = 'TRUNCATE(('.$value.' * '.$vat. '), 2)';
+$vatValue = 'TRUNCATE((('.$value.' + '.$green_tax_value. ') *  '.$vat .'), 2)';
 
 $total = $value.' + '.$vatValue.' + '.$green_tax_value;
 

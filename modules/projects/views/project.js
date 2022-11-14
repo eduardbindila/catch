@@ -2603,6 +2603,36 @@ Dropzone.autoDiscover = false;
 
     })
 
+
+    $('body').on('click', '.addGreenTax', function(e){
+
+      greenTaxData = {
+        'product_id' : $(this).parents('ul').attr('data-product'),
+        'green_tax_id' : $(this).attr('data-green_tax_id'),
+        'package' : $(this).parents('ul').attr('data-package')
+      }
+
+      //console.log(greenTaxData)
+
+      var table = $('.packages_table-'+greenTaxData.package).DataTable();
+
+
+      $.ajax({
+            url: "/ajax/updateGreenTax",
+            type: "post",
+            dataType: "json",
+            data: greenTaxData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           //console.log(json);
+           table.ajax.reload()
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
 });
 
 
