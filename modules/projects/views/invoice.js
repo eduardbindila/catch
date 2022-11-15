@@ -290,7 +290,7 @@ class Invoices {
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 2,7, 14,15,16, 18]
+                              columns: [ 2,7,12, 14,15,16, 18]
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -573,21 +573,21 @@ class Invoices {
 
                                 var tableLength = doc.content[1].table.body.length;
 
-                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*']
+                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*', '*']
 
                                 console.log(doc.content[1]);
 
                                 doc.content[1].table.body[tableLength-1][0] = "";
                                 doc.content[1].table.body[tableLength-1][1] = "";
-                                //doc.content[1].table.body[tableLength-1][2] = "";
+                                doc.content[1].table.body[tableLength-1][2] = "";
 
-                                var totalValue = doc.content[1].table.body[tableLength-1][3].text;
+                                var totalValue = doc.content[1].table.body[tableLength-1][4].text;
                                 totalValue = parseFloat(totalValue);
 
-                                var totalVat = doc.content[1].table.body[tableLength-1][4].text;
+                                var totalVat = doc.content[1].table.body[tableLength-1][5].text;
                                 totalVat = parseFloat(totalVat);
 
-                                var totalGreenTax = doc.content[1].table.body[tableLength-1][5].text;
+                                var totalGreenTax = doc.content[1].table.body[tableLength-1][6].text;
                                 totalGreenTax = parseFloat(totalGreenTax);
 
 
