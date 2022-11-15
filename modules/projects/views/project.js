@@ -2444,7 +2444,27 @@ $(document).ready(function() {
         })
 
 
+    })
+
+    $('body').on('click', '.revertInvoice', function(){
+            console.log('a');
+
+        var itemId = $(this).attr('data-package');
+        
+         $.ajax({
+            url: "/ajax/revertInvoice",
+            type: "post",
+            dataType: "json",
+            data: {'id':itemId}
+        }).success(function(json){
+            $('.updatePackageItemError').addClass('hidden');
+            location.reload();
+        }).error(function(xhr, status, error) {
+           $('.updatePackageItemError').removeClass('hidden');
         })
+
+
+    })
 
      $('body').on('click', '.package_status_change', function(){
 

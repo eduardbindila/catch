@@ -8857,12 +8857,14 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
     border: 1px solid #d0d0d063;
 }
 
-button.removePackage.btn.btn-danger.waves-effect {
+button.removePackage.btn.btn-danger.waves-effect,
+button.revertInvoice.btn.btn-primary.waves-effect {
     margin-left: 1px;
     font-size: 6px !important;
 }
 
-button.removePackage.btn.btn-danger.waves-effect i {
+button.removePackage.btn.btn-danger.waves-effect i,
+button.revertInvoice.btn.btn-primary.waves-effect i {
     font-size: 17px !important;
 }
 

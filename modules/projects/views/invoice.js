@@ -27,12 +27,18 @@ class Invoices {
 
       var nextStatusAction = ""
 
+      var revertInvoiceClass = ""
+
+      var removePackageClass = ""
+
         switch(parseInt(packageStatus)) {
             case 1:
                 statusClass = 'btn-default';
                 nextStatusClass = 'btn-info';
                 nextStatus = 2;
                 nextStatusAction = "Generate POS";
+                revertInvoiceClass = "hidden"
+                removePackageClass = "";
             break;
 
               case 2:
@@ -40,6 +46,8 @@ class Invoices {
                 nextStatusClass = 'btn-primary';
                 nextStatus = 3;
                 nextStatusAction = "Generate Delivery Note";
+                revertInvoiceClass = "hidden"
+                removePackageClass = "";
             break;
 
             case 3:
@@ -47,11 +55,15 @@ class Invoices {
                 nextStatusClass = 'btn-success';
                 nextStatus = 4;
                 nextStatusAction = "Generate Invoice";
+                revertInvoiceClass = "hidden"
+                removePackageClass = "";
             break;
 
             case 4:
                 statusClass = 'btn-success';
                  nextStatusClass = 'hidden';
+                 revertInvoiceClass = ""
+                removePackageClass = "hidden";
         }
 
         //console.log(nextStatusClass, packageStatus);
@@ -85,12 +97,15 @@ class Invoices {
                                                     ' class="btn '+statusClass+' waves-effect package_status_change" disabled>'+
                                                         packageStatusName + '</button>'+
                                  '<button type="button" data-package='+packageId+
-                                                ' data-nextStatus='+nextStatus+
-                                                    ' class="btn '+nextStatusClass+
+                                                ' data-nextStatus="'+nextStatus+
+                                                    '" class="btn '+nextStatusClass+
                                                     ' waves-effect package_status_change">'+
                                                             nextStatusAction+'</button>'+
-                               '<button type="button" data-package='+packageId+' class="btn btn-danger waves-effect removePackage">'+
+                               '<button type="button" data-package='+packageId+' class="'+removePackageClass+' btn btn-danger waves-effect removePackage">'+
                                  '<i class="material-icons">close</i>'+
+                                '</button>'+
+                                '<button type="button" data-package='+packageId+' class="'+revertInvoiceClass+' btn btn-primary waves-effect revertInvoice">'+
+                                 '<i class="material-icons">subdirectory_arrow_left</i>'+
                                 '</button>'+
                                '</div>'+
                                

@@ -126,6 +126,8 @@ RewriteRule ^ajax/updateQuantity modules/projects/controllers/update_quantity.ph
 
 RewriteRule ^ajax/updateGreenTax modules/projects/controllers/update_green_tax.php [L]
 
+RewriteRule ^ajax/revertInvoice modules/projects/controllers/revert_invoice.php [L]
+
 RewriteRule ^ajax/updateQuote modules/projects/controllers/update_quote.php [L]
 
 RewriteRule ^ajax/updateItems modules/projects/controllers/update_quote_items.php [L]
