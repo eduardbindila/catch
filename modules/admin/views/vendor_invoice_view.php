@@ -26,11 +26,7 @@
                                     Edit: <label>OFF<input name="edit" class="editSwitch" type="checkbox"><span class="lever"></span>ON</label>
                                 </div>
                             </li>
-                            <li>
-                                <button class="btn btn-lg btn-default waves-effect addNewItem"  data-toggle="modal"data-target="#addNew-modal">
-                                    Add New Invoice Items
-                                </button>
-                            </li>
+                           
                         </ul>
                     </div>
                     <div class="body">
@@ -56,6 +52,11 @@
                     <div class="header">
                         <h2>Vendor Invoice Items</h2>
                         <ul class="header-dropdown m-r-0">
+                             <li>
+                                <button class="btn btn-lg btn-primary waves-effect addNewItem"  data-toggle="modal"data-target="#addNew-modal">
+                                    Add New Invoice Items
+                                </button>
+                            </li>
                             <li>
                                 <button class="addExternal btn btn-lg btn-default waves-effect" data-invoice="<?php echo $userId ?>" >
                                     Add External Items
@@ -72,9 +73,9 @@
                                         <th>Product</th>
                                         <th>Free Stock</th>
                                         <th>Quantity</th>
-                                        <th>Delivered Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
+                                        <th>Delivered Quantity</th>
                                         <th>Connect Orders</th>
                                 </table>
                             </div>

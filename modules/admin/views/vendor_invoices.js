@@ -177,6 +177,12 @@ $(document).ready(function() {
                     "data": "quantity", 
                     "className": 'invoiceTableInput',
                     "render" : function(data, type, row, meta) {
+
+                        var disabled = ""
+
+                        if(data > 0 && row.unit_price > 0 ) {
+                            disabled = "disabled"
+                        }
                             
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
@@ -184,23 +190,7 @@ $(document).ready(function() {
                                         ' data-type="external_item_name" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" name="quantity" placeholder="Quantity"  min=0 required>' + 
-                                    '</div>' + 
-                                '</div>'
-                  }
-                },
-                { 
-                    "data": "delivered_quantity", 
-                    "className": 'invoiceTableInput',
-                    "render" : function(data, type, row, meta) {
-                            
-                        return '<div class="form-group">' + 
-                                    '<div class="form-line">' + 
-                                        '<input class="form-control vendor-invoice-input delivery"' + 
-                                        ' data-type="external_item_name" data-row="'+meta.row+
-                                        '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" name="delivered_quantity" placeholder="Delivered Quantity" min=0>' + 
+                                        '" value="'+data+'" type="number" '+disabled+' name="quantity" placeholder="Quantity"  min=0 required>' + 
                                     '</div>' + 
                                 '</div>'
                   }
@@ -209,6 +199,15 @@ $(document).ready(function() {
                     "data": "unit_price",
                     "className": 'invoiceTableInput',
                     "render" : function(data, type, row, meta) {
+                        var disabled = "disabled"
+
+                        if(row.quantity > 0) {
+                            disabled = ""
+                        }
+
+                        if(row.delivered_quantity !== "" ) {
+                            disabled = "disabled"
+                        }
                             
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
@@ -216,10 +215,10 @@ $(document).ready(function() {
                                         ' data-type="unit_price" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" placeholder="Unit Price" name="unit_price"  min=0 required>' + 
+                                        '" value="'+data+'" type="number" '+disabled+' placeholder="Unit Price" name="unit_price"  min=0 required>' + 
                                     '</div>' + 
                                 '</div>'
-                  }
+                        }
                 },
                 { 
                     "data": "total_price",
@@ -233,6 +232,29 @@ $(document).ready(function() {
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
                                         '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled  min=0 required>' + 
+                                    '</div>' + 
+                                '</div>'
+                  }
+                },
+
+                { 
+                    "data": "delivered_quantity", 
+                    "className": 'invoiceTableInput',
+                    "render" : function(data, type, row, meta) {
+
+                        var disabled = "disabled"
+
+                        if(row.unit_price > 0) {
+                            disabled = ""
+                        }
+                            
+                        return '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control vendor-invoice-input delivery"' + 
+                                        ' data-type="external_item_name" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="'+data+'" type="number" '+disabled+' name="delivered_quantity" placeholder="Delivered Quantity" min=0>' + 
                                     '</div>' + 
                                 '</div>'
                   }
@@ -333,9 +355,16 @@ $(document).ready(function() {
 
         var parent = $(this).closest('tr');
 
-        var quantity = parent.find('input[name="quantity"]').val();;
+        var quantityElement = parent.find('input[name="quantity"]');
 
-        var unitPrice = parent.find('input[name="unit_price"]').val();
+        var unitPriceElement = parent.find('input[name="unit_price"]');
+
+        var deliveredQuantityElement = parent.find('input[name="delivered_quantity"]');
+
+
+        var quantity = quantityElement.val();;
+
+        var unitPrice = unitPriceElement.val();
 
         var totalPrice = quantity*unitPrice;
 
@@ -343,6 +372,21 @@ $(document).ready(function() {
 
             parent.find('input[name="total_price"]').val(totalPrice).change()
         }
+
+
+        if(quantity !== "") {
+            unitPriceElement.prop('disabled', false)
+        } else {
+            unitPriceElement.prop('disabled', true)
+        }
+
+        if(unitPrice !== "") {
+            deliveredQuantityElement.prop('disabled', false)
+        } else {
+            deliveredQuantityElement.prop('disabled', true)
+        }
+
+
         var name = $(this).attr('name');
 
         var value = $(this).val()
