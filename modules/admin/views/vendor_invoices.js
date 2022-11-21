@@ -46,6 +46,61 @@ $(document).ready(function() {
 
     });
 
+    var connectionsTable = $('.connections_table').DataTable({
+        // "ajax": {
+        //     "url": "/ajax/getVendorInvoicesList/",
+        //     "dataSrc": "",
+        // },
+    
+        pageLength: 100,
+            "paging":   true,
+            "ordering": true,
+            "searching": true,
+        rowId: 'category_slug',
+          
+        responsive: true,
+        order: [],
+        "columns": [ 
+            { 
+                "data": "id"
+            },
+            { 
+                "data": "quote_id"
+            },
+            { 
+                "data": "quoteQuantity"
+            },
+            { 
+                "data": "reserved_stock"
+            },
+            { 
+                "data": "order_number"
+            },
+            { 
+                "data": "ordered_quantity"
+            },
+            { 
+                "data": null,
+                "render" : function(data, type, row, meta) {
+
+                            
+                        return '<div class="form-group">' + 
+                                    '<div class="form-line">' + 
+                                        '<input class="form-control reserve-new-stock delivery"' + 
+                                        ' data-type="reserve-new-stock" data-row="'+meta.row+
+                                        '" data-col="'+meta.col+
+                                        '" data-item="'+row.id+
+                                        '" value="'+data+'" type="number" name="reserve-new-stock" placeholder="Reserve" min=0>' + 
+                                    '</div>' + 
+                                '</div>'
+                  }
+            }
+        ],
+        "initComplete": function(settings, json) {
+        }
+
+    });
+
 
 
     $.ajax({
@@ -265,9 +320,14 @@ $(document).ready(function() {
                         className: 'connect_quotes_td',
                         "render" : function(data, type, row, meta) {
 
-                               OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
+                               //OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
 
-                            return OrderSplit[row.id].setWrapper(this);
+                            // return OrderSplit[row.id].setWrapper(this);
+
+                                return '<button type="button" class="btn addConnection btn-default btn-xs waves-effect"'+
+                                 ' data-product="'+row.product_id+'" data-delivered="'+row.delivered_quantity+'" data-toggle="modal "data-target="#addConnection-modal">'+
+                                    '<i class="material-icons">add</i>'+
+                                '</button>'
                       }
                     }
             ],
@@ -280,7 +340,7 @@ $(document).ready(function() {
                 var json = api.ajax.json();
                 //console.log(settings, json);
                 $.each(json, function (i, item) {
-                    OrderSplit[item.id].setOrders(item);
+                   // OrderSplit[item.id].setOrders(item);
                 });
             }
 
@@ -317,14 +377,14 @@ $(document).ready(function() {
 
 
 
-    $('.body').on('click', '.removeLine', function(){
-        //console.log(this);
-        var thisSplitId = $(this).attr('data-split');
-        var orderNumber = $(this).attr('data-order');
-        var quoteItemId = $(this).attr('data-quoteItem');
-        var itemId = $(this).attr('data-item');
-        OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber,quoteItemId, this);
-    });
+    // $('.body').on('click', '.removeLine', function(){
+    //     //console.log(this);
+    //     var thisSplitId = $(this).attr('data-split');
+    //     var orderNumber = $(this).attr('data-order');
+    //     var quoteItemId = $(this).attr('data-quoteItem');
+    //     var itemId = $(this).attr('data-item');
+    //     OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber,quoteItemId, this);
+    // });
 
     $('.body').on('click', '.removeItem', function(){
         var itemId = $(this).attr('data-item');
@@ -440,6 +500,40 @@ $(document).ready(function() {
     })
 
 
+    $('body').on('click', '.addConnection', function(){
+
+        var product_id = $(this).attr('data-product');
+
+        var delivered_quantity = $(this).attr('data-delivered');
+
+        $('#addConnection-modal').modal('show')
+
+        var table = $('.connections_table').DataTable();
+
+        $.ajax({
+            url: "/ajax/getVendorInvoiceItemQuotes",
+            type: "post",
+            dataType: "json",
+            data: {'product_id': product_id},
+            async: false
+        }).success(function(json){
+           //$('.updateError').addClass('hidden');
+
+           $('.info-box-productID').html(product_id);
+           $('.info-box-stock').html(json[0]['saga_quantity']);
+           $('.info-box-deliveredQuantity').html(delivered_quantity);
+
+           console.log(json);
+
+           table.clear().rows.add(json).draw()
+          
+
+        }).error(function(xhr, status, error) {
+           //$('.updateError').removeClass('hidden');
+        })
+    })
+
+
      $('body').on('change', '.vendor-invoice-external-input', function(){
 
         //console.log($(this).attr('name'));
@@ -480,248 +574,248 @@ $(document).ready(function() {
 
     })
     
-    $('body').on('click', '.orderItem', function(){
+    // $('body').on('click', '.orderItem', function(){
 
-        var that = $(this);
+    //     var that = $(this);
 
-        var invoiceItemId = $(this).attr('data-item');
+    //     var invoiceItemId = $(this).attr('data-item');
 
-        var quoteItemId = $(this).attr('data-quoteItem');
+    //     var quoteItemId = $(this).attr('data-quoteItem');
 
-        var orderNumber = $(this).attr('data-order')
+    //     var orderNumber = $(this).attr('data-order')
 
-        var quoteId = $(this).attr('data-quoteId')
-        var quoteQuantity = $(this).attr('data-quoteQuantity')
-        var reservedStock = $(this).attr('data-reservedStock')
-
-
-        var quantity = $(this).attr('data_neededquantity');
+    //     var quoteId = $(this).attr('data-quoteId')
+    //     var quoteQuantity = $(this).attr('data-quoteQuantity')
+    //     var reservedStock = $(this).attr('data-reservedStock')
 
 
-        OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, quoteId, quoteQuantity, reservedStock);
-
-    });
+    //     var quantity = $(this).attr('data_neededquantity');
 
 
-    $('.body').on('change', '.reserve_custom', function(){
+    //     OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, quoteId, quoteQuantity, reservedStock);
 
-        var invoiceItemId = $(this).attr('data-item');
+    // });
 
-        if($(this).is(':checked')) {
-            $(this).siblings('input[name="reserve_custom"]').prop('disabled', false);
-        } else {
-            $(this).siblings('input[name="reserve_custom"]').prop('disabled', true);
+
+    // $('.body').on('change', '.reserve_custom', function(){
+
+    //     var invoiceItemId = $(this).attr('data-item');
+
+    //     if($(this).is(':checked')) {
+    //         $(this).siblings('input[name="reserve_custom"]').prop('disabled', false);
+    //     } else {
+    //         $(this).siblings('input[name="reserve_custom"]').prop('disabled', true);
            
             
 
-            var splitId = $(this).attr('data-split');
+    //         var splitId = $(this).attr('data-split');
 
-            var quantity = $(this).attr('data-neededQuantity');
+    //         var quantity = $(this).attr('data-neededQuantity');
 
-            var oldQuantity = $(this).siblings('input[name="reserve_custom"]').val()
+    //         var oldQuantity = $(this).siblings('input[name="reserve_custom"]').val()
 
-            $(this).siblings('input[name="reserve_custom"]').val(quantity).change();
-        }
+    //         $(this).siblings('input[name="reserve_custom"]').val(quantity).change();
+    //     }
 
        
-    });
+    // });
 
-    $('.body').on('click', '.reception', function(){
+//     $('.body').on('click', '.reception', function(){
 
-        var invoiceItemId = $(this).attr('data-item');
+//         var invoiceItemId = $(this).attr('data-item');
 
-        var product = $(this).attr('data-product');
+//         var product = $(this).attr('data-product');
 
-        var delivered = Number($(this).attr('data-delivered'));
+//         var delivered = Number($(this).attr('data-delivered'));
 
-        var stock = $(this).attr('data-stock');
+//         var stock = $(this).attr('data-stock');
 
-        var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text();
+//         var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text();
 
-        var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
+//         var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
 
-        if(freeStock == 0 && splitLines.length == 0) {
-            freeStock = delivered;
-        }
+//         if(freeStock == 0 && splitLines.length == 0) {
+//             freeStock = delivered;
+//         }
 
-        var itemDetails = {
-            'itemId': invoiceItemId,
-            'newStock': Number(stock) + Number(freeStock),
-            'freeStock': freeStock,
-            'quoteItems' :{},
-            'product': product
-        }
+//         var itemDetails = {
+//             'itemId': invoiceItemId,
+//             'newStock': Number(stock) + Number(freeStock),
+//             'freeStock': freeStock,
+//             'quoteItems' :{},
+//             'product': product
+//         }
 
-        var splitTotal = 0;
+//         var splitTotal = 0;
 
-        splitLines.each(function(index, item){
+//         splitLines.each(function(index, item){
 
             
 
-             var itemInput = $(item).find('input[name="reserve_custom"]');
+//              var itemInput = $(item).find('input[name="reserve_custom"]');
 
-             var itemQuantity = itemInput.val();
+//              var itemQuantity = itemInput.val();
 
-             var quoteItemId = itemInput.attr('data-quoteItem');
-             var reservedStock = $(item).attr('data-reserved');
+//              var quoteItemId = itemInput.attr('data-quoteItem');
+//              var reservedStock = $(item).attr('data-reserved');
 
-             //console.log(splitTotal, itemQuantity);
+//              //console.log(splitTotal, itemQuantity);
 
-             splitTotal = splitTotal + Number(itemQuantity);
+//              splitTotal = splitTotal + Number(itemQuantity);
 
-             var quantities = {
-                'splitQuantity' : itemQuantity,
-                'reservedStock': reservedStock
-             }
+//              var quantities = {
+//                 'splitQuantity' : itemQuantity,
+//                 'reservedStock': reservedStock
+//              }
 
-             //console.log(itemQuantity);
+//              //console.log(itemQuantity);
 
-             //console.log(quantities);
+//              //console.log(quantities);
 
-             itemDetails.quoteItems[quoteItemId] = quantities;
-        })
+//              itemDetails.quoteItems[quoteItemId] = quantities;
+//         })
 
-        console.log(splitTotal, Number(delivered), itemDetails);
-
-
-        if(delivered < splitTotal) {
-
-            $(this).removeClass('btn-default').addClass('btn-warning');
+//         console.log(splitTotal, Number(delivered), itemDetails);
 
 
-        } else {
+//         if(delivered < splitTotal) {
 
-            $.ajax({
-                url: "/ajax/itemReception",
-                type: "post",
-                dataType: "json",
-                data: itemDetails
-            }).success(function(json){
-               //$('.updateError').addClass('hidden');
+//             $(this).removeClass('btn-default').addClass('btn-warning');
 
-               table.ajax.reload();
 
-               $(this).removeClass('btn-warning');
+//         } else {
 
-               OrderSplit[invoiceItemId].disableActions(invoiceItemId);
+//             $.ajax({
+//                 url: "/ajax/itemReception",
+//                 type: "post",
+//                 dataType: "json",
+//                 data: itemDetails
+//             }).success(function(json){
+//                //$('.updateError').addClass('hidden');
+
+//                table.ajax.reload();
+
+//                $(this).removeClass('btn-warning');
+
+//                OrderSplit[invoiceItemId].disableActions(invoiceItemId);
                 
                
 
-            }).error(function(xhr, status, error) {
-               //$('.updateError').removeClass('hidden');
-            })
-        }
+//             }).error(function(xhr, status, error) {
+//                //$('.updateError').removeClass('hidden');
+//             })
+//         }
 
         
 
         
-    });
+//     });
 
-    $('.body').on('click', '.reverseReception', function(){
+//     $('.body').on('click', '.reverseReception', function(){
 
-        var invoiceItemId = $(this).attr('data-item');
+//         var invoiceItemId = $(this).attr('data-item');
 
-        var product = $(this).attr('data-product');
+//         var product = $(this).attr('data-product');
 
-        var stock = $(this).attr('data-stock');
+//         var stock = $(this).attr('data-stock');
 
-        var delivered = Number($(this).attr('data-delivered'));
-
-
-        var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text() ;
+//         var delivered = Number($(this).attr('data-delivered'));
 
 
+//         var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text() ;
 
-        var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
 
-        if(freeStock == 0 && splitLines.length == 0) {
-            freeStock = delivered;
-        }
 
-        var itemDetails = {
-            'itemId': invoiceItemId,
-            'newStock': Number(stock) - Number(freeStock),
-            'freeStock': 0,
-            'quoteItems' :{},
-            'product': product
-        }
+//         var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
 
-        splitLines.each(function(index, item){
+//         if(freeStock == 0 && splitLines.length == 0) {
+//             freeStock = delivered;
+//         }
 
-            //console.log(item);
+//         var itemDetails = {
+//             'itemId': invoiceItemId,
+//             'newStock': Number(stock) - Number(freeStock),
+//             'freeStock': 0,
+//             'quoteItems' :{},
+//             'product': product
+//         }
+
+//         splitLines.each(function(index, item){
+
+//             //console.log(item);
              
 
-             var itemInput = $(item).find('input[name="reserve_custom"]');
+//              var itemInput = $(item).find('input[name="reserve_custom"]');
 
-             var itemQuantity = itemInput.val();
+//              var itemQuantity = itemInput.val();
 
-             var quoteItemId = itemInput.attr('data-quoteItem');
+//              var quoteItemId = itemInput.attr('data-quoteItem');
 
-             var quantities = {
-                'splitQuantity' : itemQuantity
-             }
+//              var quantities = {
+//                 'splitQuantity' : itemQuantity
+//              }
 
-             //console.log(quantities);
+//              //console.log(quantities);
 
-             itemDetails.quoteItems[quoteItemId] = quantities;
-        })
+//              itemDetails.quoteItems[quoteItemId] = quantities;
+//         })
 
-        $.ajax({
-            url: "/ajax/itemReverseReception",
-            type: "post",
-            dataType: "json",
-            data: itemDetails
-        }).success(function(json){
-           //$('.updateError').addClass('hidden');
+//         $.ajax({
+//             url: "/ajax/itemReverseReception",
+//             type: "post",
+//             dataType: "json",
+//             data: itemDetails
+//         }).success(function(json){
+//            //$('.updateError').addClass('hidden');
 
-           table.ajax.reload();
+//            table.ajax.reload();
 
-             OrderSplit[invoiceItemId].enableActions(invoiceItemId);     
+//              OrderSplit[invoiceItemId].enableActions(invoiceItemId);     
 
-        }).error(function(xhr, status, error) {
-           //$('.updateError').removeClass('hidden');
-        })
+//         }).error(function(xhr, status, error) {
+//            //$('.updateError').removeClass('hidden');
+//         })
 
         
-    });
+//     });
 
-     $('.body').on('change', 'input[name="reserve_custom"]', function(){
+//      $('.body').on('change', 'input[name="reserve_custom"]', function(){
 
-        var invoiceItemId = $(this).attr('data-item');
+//         var invoiceItemId = $(this).attr('data-item');
 
-        var splitId = $(this).attr('data-split');
+//         var splitId = $(this).attr('data-split');
 
-        var quantity = $(this).val();
+//         var quantity = $(this).val();
 
-        var oldQuantity = $(this).siblings('.reserve_custom').attr('data-neededquantity');
+//         var oldQuantity = $(this).siblings('.reserve_custom').attr('data-neededquantity');
 
-        var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
+//         var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
 
-        var deliveredQuantity = Number($('.vendor-invoice-input[name="delivered_quantity"][data-item='+invoiceItemId+']').val());
+//         var deliveredQuantity = Number($('.vendor-invoice-input[name="delivered_quantity"][data-item='+invoiceItemId+']').val());
 
-            if(deliveredQuantity > 0) {
-                invoicedQuantity = deliveredQuantity;
-            }
+//             if(deliveredQuantity > 0) {
+//                 invoicedQuantity = deliveredQuantity;
+//             }
 
-        var splitTotal = OrderSplit[invoiceItemId].getSplitTotal(invoiceItemId);
+//         var splitTotal = OrderSplit[invoiceItemId].getSplitTotal(invoiceItemId);
 
-        //console.log(oldQuantity, quantity);
+//         //console.log(oldQuantity, quantity);
 
-        if(splitTotal > invoicedQuantity)
-        {
-            $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
-            $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').removeClass('btn-warning').prop('disabled', true)
-        } else {
-            $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden');
-            $('.reception[data-item='+invoiceItemId+']').removeClass('btn-danger').removeClass('btn-warning').addClass('btn-default').prop('disabled', false)
-        }
+//         if(splitTotal > invoicedQuantity)
+//         {
+//             $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
+//             $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').removeClass('btn-warning').prop('disabled', true)
+//         } else {
+//             $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden');
+//             $('.reception[data-item='+invoiceItemId+']').removeClass('btn-danger').removeClass('btn-warning').addClass('btn-default').prop('disabled', false)
+//         }
 
-        OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
-        OrderSplit[invoiceItemId].updateLine(splitId, quantity, oldQuantity); 
+//         OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
+//         OrderSplit[invoiceItemId].updateLine(splitId, quantity, oldQuantity); 
 
-    });
+//     });
 
-});
+ });
 
 $(function () {
     

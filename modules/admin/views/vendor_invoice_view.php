@@ -53,7 +53,7 @@
                         <h2>Vendor Invoice Items</h2>
                         <ul class="header-dropdown m-r-0">
                              <li>
-                                <button class="btn btn-lg btn-primary waves-effect addNewItem"  data-toggle="modal"data-target="#addNew-modal">
+                                <button class="btn btn-lg btn-primary waves-effect addNewItem"  data-toggle="modal"data-target="#addConnection-modal">
                                     Add New Invoice Items
                                 </button>
                             </li>
@@ -103,3 +103,77 @@
             </div>
         </div>
     </div>
+
+    <!-- Large Size -->
+    <div class="modal fade" id="addConnection-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" >Add new connection </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="info-box bg-red">
+                                    <div class="icon">
+                                        <i class="material-icons">star</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">PRODUCT</div>
+                                        <div class="number info-box-productID">125</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="info-box bg-blue">
+                                    <div class="icon">
+                                        <i class="material-icons">folder</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">STOCK</div>
+                                        <div class="number info-box-stock">125</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="info-box bg-green">
+                                    <div class="icon">
+                                        <i class="material-icons">create_new_folder</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">DELIVERED</div>
+                                        <div class="number  info-box-deliveredQuantity">125</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="connections_table table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th>Quote Item ID</th>
+                                        <th>Quote ID</th>
+                                        <th>Quote Quantity</th>
+                                        <th>Reserved Quantity</th>
+                                        <th>Order Number</th>
+                                        <th>Ordered Quantity</th>
+                                        <th>Reserve More</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
