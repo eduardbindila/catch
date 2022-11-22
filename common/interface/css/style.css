@@ -8876,3 +8876,11 @@ button.revertInvoice.btn.btn-primary.waves-effect i {
     left: -19px;
     top: 10px;
 }
+
+.inline-block {
+  display: inline-block;
+}
+
+.label i {
+  color: grey;
+}

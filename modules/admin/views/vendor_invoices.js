@@ -4,6 +4,8 @@ $(document).ready(function() {
 
     var connectedQuotes = [];
 
+    var totalConnected;
+
     var projectsTable = $('.invoices_table').DataTable({
         "ajax": {
             "url": "/ajax/getVendorInvoicesList/",
@@ -47,15 +49,11 @@ $(document).ready(function() {
     });
 
     var connectionsTable = $('.connections_table').DataTable({
-        // "ajax": {
-        //     "url": "/ajax/getVendorInvoicesList/",
-        //     "dataSrc": "",
-        // },
     
         pageLength: 100,
             "paging":   true,
             "ordering": true,
-            "searching": true,
+            "searching": false,
         rowId: 'category_slug',
           
         responsive: true,
@@ -79,25 +77,74 @@ $(document).ready(function() {
             { 
                 "data": "ordered_quantity"
             },
-            { 
+            {
                 "data": null,
                 "render" : function(data, type, row, meta) {
 
+                    return '<span class="label label-warning">' +
+                         row.needed_quantity +
+                    '</label>'
+                }
+            },
+            { 
+                "data": "split_quantity",
+                "render" : function(data, type, row, meta) {
+
+                    var disabled = "disabled"
+
+                        if(row.split_id ) {
+                            disabled = ""
+                        }
                             
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
-                                        '<input class="form-control reserve-new-stock delivery"' + 
+                                        '<input class="form-control reserve-new-stock"' + 
                                         ' data-type="reserve-new-stock" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" name="reserve-new-stock" placeholder="Reserve" min=0>' + 
+                                        '" data-quote_item_id="'+row.id+
+                                        '" data-split_id="'+ row.split_id +
+                                        '" value="'+ data +'" type="number" '+ disabled +' name="reserve-new-stock" placeholder="Add" min=0>' + 
                                     '</div>' + 
                                 '</div>'
+                  }
+            },
+            {
+                "data": null,
+                "render" : function(data, type, row, meta) {
+
+                
+
+                    var params = {
+                        "stock": row.saga_quantity,
+                        "delivered": row.delivered_quantity,
+                        "connected" : totalConnected
+                    }
+
+                    var possibleQuantity = getPossibleQuantity(params)
+    
+                    return '<span class="label label-warning">' +
+                         row.needed_quantity +
+                    '</label>'
+                }
+            },
+            {
+                "data": null,
+                "render" : function(data, type, row, meta) {
+
+                    var checked = "";
+
+                        if(row.split_id ) {
+                            checked = "checked"
+                        }
+                            
+                        return '<input type="checkbox" id="connectItem-'+ row.id +'" class="filled-in chk-col-light-green" '+ checked +' >' +
+                        '<label for="connectItem-'+ row.id +'">Connect</label>'
+
                   }
             }
         ],
         "initComplete": function(settings, json) {
-        }
+        },
 
     });
 
@@ -325,7 +372,7 @@ $(document).ready(function() {
                             // return OrderSplit[row.id].setWrapper(this);
 
                                 return '<button type="button" class="btn addConnection btn-default btn-xs waves-effect"'+
-                                 ' data-product="'+row.product_id+'" data-delivered="'+row.delivered_quantity+'" data-toggle="modal "data-target="#addConnection-modal">'+
+                                 ' data-product="'+row.product_id+'" data-item="'+row.id+'" data-delivered="'+row.delivered_quantity+'" data-toggle="modal "data-target="#addConnection-modal">'+
                                     '<i class="material-icons">add</i>'+
                                 '</button>'
                       }
@@ -499,12 +546,45 @@ $(document).ready(function() {
         })
     })
 
+    $('body').on('change', '.reserve-new-stock', function(){
+
+        var date = $(this).val();
+
+        $.ajax({
+            url: "/ajax/updateOrderLine",
+            type: "post",
+            dataType: "json",
+            data: {'id':splitId,'quantity': quantity}
+        }).success(function(json){
+
+        }).error(function(xhr, status, error) {
+           
+        }).complete(function(data){
+
+        })
+
+        // $.ajax({
+        //     url: "/ajax/getExchangeRate",
+        //     type: "post",
+        //     dataType: "json",
+        //     data: {'date': date}
+        // }).success(function(json){
+        //    //$('.updateError').addClass('hidden');
+        //    //$("#invoiceData input[name=exchange_rate]").val(json[0]);
+
+        // }).error(function(xhr, status, error) {
+        //    //$('.updateError').removeClass('hidden');
+        // })
+    })
+
 
     $('body').on('click', '.addConnection', function(){
 
         var product_id = $(this).attr('data-product');
 
         var delivered_quantity = $(this).attr('data-delivered');
+
+        var vendor_invoice_item_id = $(this).attr('data-item');
 
         $('#addConnection-modal').modal('show')
 
@@ -514,7 +594,7 @@ $(document).ready(function() {
             url: "/ajax/getVendorInvoiceItemQuotes",
             type: "post",
             dataType: "json",
-            data: {'product_id': product_id},
+            data: {'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id},
             async: false
         }).success(function(json){
            //$('.updateError').addClass('hidden');
@@ -523,7 +603,13 @@ $(document).ready(function() {
            $('.info-box-stock').html(json[0]['saga_quantity']);
            $('.info-box-deliveredQuantity').html(delivered_quantity);
 
-           console.log(json);
+          totalConnected =  getTotalConnected(json);
+
+            $('.info-box-connected').html(totalConnected);
+
+
+            console.log(totalConnected);
+
 
            table.clear().rows.add(json).draw()
           
@@ -826,3 +912,24 @@ $(function () {
         container: '#bs_datepicker_container'
     });
 });
+
+
+function getPossibleQuantity(params){
+
+    return Number(params.stock) + Number(params.delivered) - Number(params.connected)
+
+}
+
+function getTotalConnected(json){
+    var connected = 0;
+    //console.log(data);
+    $.each(json, function (i, item) {
+       //console.log(item);
+       connected = connected + Number(item['split_quantity']);
+    });
+
+    //console.log(connected);
+
+
+    return connected
+}

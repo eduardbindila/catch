@@ -139,13 +139,25 @@
                             </div>
 
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <div class="info-box bg-green">
+                                <div class="info-box bg-light-green">
                                     <div class="icon">
                                         <i class="material-icons">create_new_folder</i>
                                     </div>
                                     <div class="content">
                                         <div class="text">DELIVERED</div>
                                         <div class="number  info-box-deliveredQuantity">125</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                <div class="info-box bg-green">
+                                    <div class="icon">
+                                        <i class="material-icons">forward</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">CONNECTED</div>
+                                        <div class="number  info-box-connected">0</div>
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +173,10 @@
                                         <th>Reserved Quantity</th>
                                         <th>Order Number</th>
                                         <th>Ordered Quantity</th>
-                                        <th>Reserve More</th>
+                                        <th>Needed for Quote</th>
+                                        <th>Distributed</th>
+                                        <th>Line Status</th>
+                                        <th>Connect</th>
                                     </thead>
                                 </table>
                             </div>
