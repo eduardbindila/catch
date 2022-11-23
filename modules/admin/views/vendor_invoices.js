@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     var connectedQuotes = [];
 
-    var connected;
+    //var connected;
 
     var projectsTable = $('.invoices_table').DataTable({
         "ajax": {
@@ -135,8 +135,7 @@ $(document).ready(function() {
                             editClass = '';
 
                         }
-
-                        if(row.connected_total > (row.saga_quantity + row.delivered_quantity)) {
+                        if(Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity))) {
                             btnClass = 'btn-danger';
                             icon = 'lock'
                             disabled = 'disabled';
@@ -633,27 +632,28 @@ console.log('a')
                       }
                 },
                 {
-                    "data": null,
+                    "data": "split_quantity",
                     "className": "line-status",
                     "render" : function(data, type, row, meta) {
 
-                        var possibleQuantity = Number(row.saga_quantity) + Number(row.delivered_quantity) - Number(connected);
+                        var possibleQuantity = Number(row.saga_quantity) + Number(row.delivered_quantity) - Number(row.connected_total);
                         
                         var infoBoxClass = "";
                         var infoBoxIcon = "";
 
-                        var split_quantity = Number(row.split_quantity);
+                        var split_quantity = Number(data);
                         var needed_quantity = Number(row.needed_quantity);
 
                         var delivered = Number(row.delivered_quantity);
 
-                        console.log(possibleQuantity);
+                        //console.log(connected);
+                        
 
                         if (row.split_id == "") {
                             return ""
                         } else {
 
-                            if( split_quantity > possibleQuantity) {
+                            if(possibleQuantity < 0) {
                                 infoBoxClass = "bg-red";
                                 infoBoxIcon = "error";
                                 infoBoxMessage = "Stock unavailable";
@@ -701,22 +701,22 @@ console.log('a')
                       }
                 }
             ],
-            "initComplete": function(settings, json) {
+            "preDraw": function(settings, json) {
                 
-                
+                console.log('a')
             },
 
             "drawCallback": function(settings, json) {
                 var api = this.api();
                 var json = api.ajax.json();
-                connected = 0;
+                //connected = 0;
                 //console.log(settings, json);
 
-                $.each(json, function (i, item) {
-                    connected = connected + Number(item['split_quantity']);
-                });
+                // $.each(json, function (i, item) {
+                //     connected = connected + Number(item['split_quantity']);
+                // });
 
-                console.log(json)
+                //console.log(json)
 
                 if(json) {
                     $('.info-box-productID').html(product_id);
@@ -724,9 +724,9 @@ console.log('a')
                     $('.info-box-deliveredQuantity').html(delivered_quantity);
 
 
-                    $('.info-box-connected').html(connected);
+                    $('.info-box-connected').html(json[0]['connected_total']);
 
-                    var usedFromDelivery = delivered_quantity - connected;
+                    var usedFromDelivery = delivered_quantity - json[0]['connected_total'];
 
                     if(usedFromDelivery < 0) {
                         $('.info-box-from-stock').html(-usedFromDelivery);
@@ -738,7 +738,7 @@ console.log('a')
                 }
                 
 
-                console.log(connected)
+                //console.log(connected)
             }
 
                    
