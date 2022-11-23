@@ -132,8 +132,15 @@ $(document).ready(function() {
                             btnClass = 'btn-success';
                             icon = 'lock'
                             disabled = 'disabled';
-                            var editClass = '';
+                            editClass = '';
 
+                        }
+
+                        if(row.connected_total > (row.saga_quantity + row.delivered_quantity)) {
+                            btnClass = 'btn-danger';
+                            icon = 'lock'
+                            disabled = 'disabled';
+                            
                         }
 
                             
@@ -283,13 +290,17 @@ $(document).ready(function() {
                     "data": null,
                     "render" : function(data, type, row, meta) {
 
+                        var disabled = ""
+
                         if(row.connected_total > 0 ) {
-                            return ""
-                        } else {
-                            return  ' <button type="button" data-item='+row.id+' class="removeItem  btn btn-danger btn-xs waves-effect">'+
+                            disabled = "disabled"
+                        }
+
+                       
+                            return  ' <button type="button" data-item='+row.id+'  '+disabled+' class="removeItem  btn btn-danger btn-xs waves-effect">'+
                                     '<i class="material-icons">close</i>'+
                                 '</button>'
-                        }
+                        
 
                          
                       }
@@ -470,7 +481,7 @@ $(document).ready(function() {
 
         var splitId = $(this).attr('data-split_id');
 
-        var table = $('.connections_table').DataTable();
+        var connectionsTable = $('.connections_table').DataTable();
 
         $.ajax({
             url: "/ajax/updateOrderLine",
@@ -479,7 +490,7 @@ $(document).ready(function() {
             data: {'id':splitId,'quantity': quantity}
         }).success(function(json){
 
-            table.ajax.reload();
+            connectionsTable.ajax.reload();
 
         }).error(function(xhr, status, error) {
            
@@ -501,7 +512,7 @@ $(document).ready(function() {
 
         var needed_quantity = $(this).attr('data-neededQuantity');
 
-        var table = $('.connections_table').DataTable();
+        var connectionsTable = $('.connections_table').DataTable();
 
         console.log(splitId, invoiceItemId, quoteItemId, needed_quantity)
 
@@ -519,7 +530,7 @@ $(document).ready(function() {
                 dataType: "json",
                 data: orderLine
             }).success(function(json){
-                 table.ajax.reload();
+                 connectionsTable.ajax.reload();
             }).error(function(xhr, status, error) {
                $('.updateError').removeClass('hidden');
             })
@@ -530,20 +541,18 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {'id':splitId}
             }).success(function(json){
-                table.ajax.reload();
+                connectionsTable.ajax.reload();
             }).error(function(xhr, status, error) {
                $('.updateError').removeClass('hidden');
             })
         }
 
-        
-
-
     })
 
 
-    $('.addConnection-modal').on('hide.bs.modal', function(e){
-             $('.connections_table').destroy();
+    $('#addConnection-modal').on('hide.bs.modal', function(e){
+console.log('a')
+             table.ajax.reload()
         })
 
 
@@ -648,19 +657,21 @@ $(document).ready(function() {
                                 infoBoxClass = "bg-red";
                                 infoBoxIcon = "error";
                                 infoBoxMessage = "Stock unavailable";
-                            } else if(split_quantity < needed_quantity) {
-                                infoBoxClass = "bg-blue";
-                                infoBoxIcon = "arrow_downward";
-                                infoBoxMessage = "Less than quote";
-                            } else if (split_quantity > needed_quantity){
-                                infoBoxClass = "bg-orange";
-                                infoBoxIcon = "arrow_upward";
-                                infoBoxMessage = "More than quote";
-                            } else if (split_quantity == needed_quantity){
-                                infoBoxClass = "bg-green";
-                                infoBoxIcon = "check_circle";
-                                infoBoxMessage = "As in quote";
-                            }  
+                            } else {
+                                if(split_quantity < needed_quantity) {
+                                    infoBoxClass = "bg-blue";
+                                    infoBoxIcon = "arrow_downward";
+                                    infoBoxMessage = "Less than quote";
+                                } else if (split_quantity > needed_quantity){
+                                    infoBoxClass = "bg-orange";
+                                    infoBoxIcon = "arrow_upward";
+                                    infoBoxMessage = "More than quote";
+                                } else if (split_quantity == needed_quantity){
+                                    infoBoxClass = "bg-green";
+                                    infoBoxIcon = "check_circle";
+                                    infoBoxMessage = "As in quote";
+                                }  
+                            }
 
                              return '<div class="info-box info-box-xs">' +
                                     '<div class="icon '+ infoBoxClass +'">' +
