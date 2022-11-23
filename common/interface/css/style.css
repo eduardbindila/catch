@@ -8881,6 +8881,22 @@ button.revertInvoice.btn.btn-primary.waves-effect i {
   display: inline-block;
 }
 
-.label i {
-  color: grey;
+.info-box-xs {
+    height: 35px;
+    width: 186px;
+    position: relative;
+    top: 14px;
+}
+
+.info-box-xs .icon {
+  width: 44px;
+}
+
+.info-box-xs .icon i {
+  line-height: 37px;
+  font-size:  20px;
+}
+
+.info-box-xs .content .text {
+  margin:  0;
 }

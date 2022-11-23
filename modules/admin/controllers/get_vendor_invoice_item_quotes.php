@@ -9,7 +9,7 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_items qi",
-			"columns" => "qi.quote_id, q.name, qi.id, qi.order_number, qi.ordered_quantity, (qi.quantity-qi.reserved_stock) as needed_quantity, qi.quantity as quoteQuantity, qi.reserved_stock, products.saga_quantity, viis.quantity as split_quantity, viis.id as split_id, vii.delivered_quantity ",
+			"columns" => "qi.quote_id, q.name, qi.id, qi.order_number, IFNULL(qi.ordered_quantity, 0) as ordered_quantity, (qi.quantity-IFNULL(qi.reserved_stock, 0)) as needed_quantity, qi.quantity as quoteQuantity, IFNULL(qi.reserved_stock, 0) as reserved_stock, products.saga_quantity, IFNULL(viis.quantity, 0) as split_quantity, viis.id as split_id,  IFNULL(vii.delivered_quantity, 0) as delivered_quantity",
 			"innerJoin" => " quotes q on qi.quote_id = q.id 
 			inner join products on products.id = qi.product_id 
 			inner join vendor_invoice_items vii on products.id = vii.product_id and vii.id = '".$_POST['vendor_invoice_item_id']."'

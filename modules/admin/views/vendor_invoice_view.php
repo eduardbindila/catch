@@ -76,7 +76,9 @@
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
                                         <th>Delivered Quantity</th>
+                                        <th>Connected Quantity</th>
                                         <th>Connect Orders</th>
+                                        <th>Remove</th>
                                 </table>
                             </div>
                         </div>
@@ -112,9 +114,9 @@
                     <h4 class="modal-title" >Add new connection </h4>
                 </div>
                 <div class="modal-body">
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
                                 <div class="info-box bg-red">
                                     <div class="icon">
                                         <i class="material-icons">star</i>
@@ -126,7 +128,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                                 <div class="info-box bg-blue">
                                     <div class="icon">
                                         <i class="material-icons">folder</i>
@@ -138,7 +140,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                                 <div class="info-box bg-light-green">
                                     <div class="icon">
                                         <i class="material-icons">create_new_folder</i>
@@ -150,7 +152,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                                 <div class="info-box bg-green">
                                     <div class="icon">
                                         <i class="material-icons">forward</i>
@@ -158,6 +160,30 @@
                                     <div class="content">
                                         <div class="text">CONNECTED</div>
                                         <div class="number  info-box-connected">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                                <div class="info-box bg-orange">
+                                    <div class="icon">
+                                        <i class="material-icons">forward</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">FROM STOCK</div>
+                                        <div class="number  info-box-from-stock">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                                <div class="info-box bg-orange">
+                                    <div class="icon">
+                                        <i class="material-icons">forward</i>
+                                    </div>
+                                    <div class="content">
+                                        <div class="text">TO STOCK</div>
+                                        <div class="number  info-box-to-stock">0</div>
                                     </div>
                                 </div>
                             </div>
