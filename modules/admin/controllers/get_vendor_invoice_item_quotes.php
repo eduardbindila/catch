@@ -9,11 +9,11 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_items qi",
-			"columns" => "qi.quote_id, q.name, qi.id, qi.order_number, IFNULL(qi.ordered_quantity, 0) as ordered_quantity, (qi.quantity-IFNULL(qi.reserved_stock, 0)) as needed_quantity, qi.quantity as quoteQuantity, IFNULL(qi.reserved_stock, 0) as reserved_stock, products.saga_quantity, IFNULL(viis.quantity, 0) as split_quantity, viis.id as split_id,  IFNULL(vii.delivered_quantity, 0) as delivered_quantity,  (
+			"columns" => "qi.quote_id, q.name, qi.id, qi.order_number, IFNULL(qi.ordered_quantity, 0) as ordered_quantity, (qi.quantity-IFNULL(qi.reserved_stock, 0)) as needed_quantity, qi.quantity as quoteQuantity, IFNULL(qi.reserved_stock, 0) as reserved_stock, products.saga_quantity, IFNULL(viis.quantity, 0) as split_quantity, viis.id as split_id,  IFNULL(vii.delivered_quantity, 0) as delivered_quantity, vii.reception,  (
         SELECT SUM(vendor_invoice_items_split.quantity) FROM vendor_invoice_items_split
         WHERE 
         vendor_invoice_items_split.vendor_invoice_item_id = '".$_POST['vendor_invoice_item_id']."'
-    ) AS connected_total",
+    ) AS connected_total, products.id as product_id",
 			"innerJoin" => " quotes q on qi.quote_id = q.id 
 			inner join products on products.id = qi.product_id 
 			inner join vendor_invoice_items vii on products.id = vii.product_id and vii.id = '".$_POST['vendor_invoice_item_id']."'

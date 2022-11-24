@@ -121,7 +121,10 @@ $(document).ready(function() {
 
                 { 
                     "data": "reception",
+                    "className": "invoiceTableInput",
                     "render" : function(data, type, row, meta) {
+
+                        //console.log(data)
 
                         var btnClass = 'btn-default';
                         var icon = 'lock_open';
@@ -134,21 +137,24 @@ $(document).ready(function() {
                             disabled = 'disabled';
                             editClass = '';
 
+                        } else {
+                            if(Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity))) {
+                                btnClass = 'btn-danger';
+                                icon = 'lock'
+                                disabled = 'disabled';
+                                
+                            }
                         }
-                        if(Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity))) {
-                            btnClass = 'btn-danger';
-                            icon = 'lock'
-                            disabled = 'disabled';
-                            
-                        }
+
+                        
 
                             
                         return '<button type="button" '+disabled+' class="reception btn '+btnClass+' btn-xs waves-effect"'+
-                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
+                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">'+icon+'</i>'+
                                 '</button> ' +
                                 '<button type="button" class="reverseReception '+editClass+' btn btn-default btn-circle waves-effect waves-circle waves-float"'+
-                                 ' data-item='+row.id+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
+                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">refresh</i>'+
                                 '</button>'
                   }
@@ -251,7 +257,9 @@ $(document).ready(function() {
 
                         var disabled = "disabled"
 
-                        if(row.unit_price > 0) {
+                        //console.log(row.unit_price > 0 && row.reception == 0)
+
+                        if(row.unit_price > 0 && row.reception == 0) {
                             disabled = ""
                         }
                             
@@ -311,12 +319,7 @@ $(document).ready(function() {
                 
             }, 
             "drawCallback": function(settings, json) {
-                // var api = this.api();
-                // var json = api.ajax.json();
-                // //console.log(settings, json);
-                // $.each(json, function (i, item) {
-                //    // OrderSplit[item.id].setOrders(item);
-                // });
+
             }
 
         });
@@ -350,16 +353,6 @@ $(document).ready(function() {
             .animate( { color: 'black' } );
     });
 
-
-
-    // $('.body').on('click', '.removeLine', function(){
-    //     //console.log(this);
-    //     var thisSplitId = $(this).attr('data-split');
-    //     var orderNumber = $(this).attr('data-order');
-    //     var quoteItemId = $(this).attr('data-quoteItem');
-    //     var itemId = $(this).attr('data-item');
-    //     OrderSplit[itemId].removeLine(itemId, thisSplitId, orderNumber,quoteItemId, this);
-    // });
 
     $('.body').on('click', '.removeItem', function(){
         var itemId = $(this).attr('data-item');
@@ -513,7 +506,7 @@ $(document).ready(function() {
 
         var connectionsTable = $('.connections_table').DataTable();
 
-        console.log(splitId, invoiceItemId, quoteItemId, needed_quantity)
+        //console.log(splitId, invoiceItemId, quoteItemId, needed_quantity)
 
         var orderLine = {
             "vendor_invoice_item_id": invoiceItemId,
@@ -550,7 +543,7 @@ $(document).ready(function() {
 
 
     $('#addConnection-modal').on('hide.bs.modal', function(e){
-console.log('a')
+//console.log('a')
              table.ajax.reload()
         })
 
@@ -615,7 +608,7 @@ console.log('a')
 
                         var disabled = "disabled"
 
-                            if(row.split_id ) {
+                            if(row.split_id && row.reception == 0) {
                                 disabled = ""
                             }
                                 
@@ -636,6 +629,7 @@ console.log('a')
                     "className": "line-status",
                     "render" : function(data, type, row, meta) {
 
+
                         var possibleQuantity = Number(row.saga_quantity) + Number(row.delivered_quantity) - Number(row.connected_total);
                         
                         var infoBoxClass = "";
@@ -649,7 +643,7 @@ console.log('a')
                         //console.log(connected);
                         
 
-                        if (row.split_id == "") {
+                        if (row.split_id == "" || row.reception == 1) {
                             return ""
                         } else {
 
@@ -689,21 +683,25 @@ console.log('a')
                     "render" : function(data, type, row, meta) {
 
                         var checked = "";
+                        var disabled = "";
 
                             if(row.split_id ) {
                                 checked = "checked"
                             }
+
+                            if(row.reception == 1) {
+                                disabled = "disabled";
+                            }
                                 
-                            return '<input type="checkbox" id="connectItem-'+ row.id +
+                            return '<input '+ disabled +' type="checkbox" id="connectItem-'+ row.id +
                             '" data-item = "'+ row.id +'" data-vendor-item="'+ vendor_invoice_item_id +'" " data-split_id = "'+ row.split_id +'" data-neededQuantity = "'+ row.needed_quantity +'" class="filled-in chk-col-light-green toggleConnect" '+ checked +' >' +
                             '<label for="connectItem-'+ row.id +'">Connect</label>'
-
                       }
                 }
             ],
             "preDraw": function(settings, json) {
                 
-                console.log('a')
+                //console.log('a')
             },
 
             "drawCallback": function(settings, json) {
@@ -744,30 +742,6 @@ console.log('a')
                    
 
         });
-
-        
-
-        // $.ajax({
-        //     url: "/ajax/getVendorInvoiceItemQuotes",
-        //     type: "post",
-        //     dataType: "json",
-        //     data: {'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id},
-        //     async: false
-        // }).success(function(json){
-        //    //$('.updateError').addClass('hidden');
-
-       
-
-
-        //     console.log(totalConnected);
-
-
-        //    table.clear().rows.add(json).draw()
-          
-
-        // }).error(function(xhr, status, error) {
-        //    //$('.updateError').removeClass('hidden');
-        // })
     })
 
 
@@ -810,247 +784,60 @@ console.log('a')
 
 
     })
-    
-    // $('body').on('click', '.orderItem', function(){
 
-    //     var that = $(this);
+    $('.body').on('click', '.reception, .reverseReception', function(){
 
-    //     var invoiceItemId = $(this).attr('data-item');
+        var vendor_invoice_item_id = $(this).attr('data-item');
 
-    //     var quoteItemId = $(this).attr('data-quoteItem');
+        var product_id = $(this).attr('data-product');
 
-    //     var orderNumber = $(this).attr('data-order')
+        var invoice_id = $(this).attr('data-invoice');
 
-    //     var quoteId = $(this).attr('data-quoteId')
-    //     var quoteQuantity = $(this).attr('data-quoteQuantity')
-    //     var reservedStock = $(this).attr('data-reservedStock')
+        var isInverse = 0;
 
+        if($(this).hasClass('reverseReception')) {
+            isInverse = 1;
+        }
 
-    //     var quantity = $(this).attr('data_neededquantity');
+        $.ajax({
+            url: "/ajax/getVendorInvoiceItemQuotes",
+            type: "post",
+            dataType: "json",
+            async: false,
+            data: {'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id}
+        }).success(function(json){
+           $('.updateError').addClass('hidden');
 
+           var quoteItems = json;
 
-    //     OrderSplit[invoiceItemId].addOrderLine(invoiceItemId, quoteItemId, quantity, orderNumber, quoteId, quoteQuantity, reservedStock);
+           var itemDetails = {
+            "item_id": vendor_invoice_item_id,
+            "product_id": product_id,
+            "quoteItems": quoteItems,
+            "is_inverse": isInverse
+           }
 
-    // });
+           $.ajax({
+                url: "/ajax/itemReception",
+                type: "post",
+                dataType: "json",
+                data: itemDetails
+            }).success(function(json){
+               $('.updateError').addClass('hidden');
 
+               table.ajax.reload();
+  
 
-    // $('.body').on('change', '.reserve_custom', function(){
+            }).error(function(xhr, status, error) {
+               $('.updateError').removeClass('hidden');
+            })
 
-    //     var invoiceItemId = $(this).attr('data-item');
-
-    //     if($(this).is(':checked')) {
-    //         $(this).siblings('input[name="reserve_custom"]').prop('disabled', false);
-    //     } else {
-    //         $(this).siblings('input[name="reserve_custom"]').prop('disabled', true);
-           
-            
-
-    //         var splitId = $(this).attr('data-split');
-
-    //         var quantity = $(this).attr('data-neededQuantity');
-
-    //         var oldQuantity = $(this).siblings('input[name="reserve_custom"]').val()
-
-    //         $(this).siblings('input[name="reserve_custom"]').val(quantity).change();
-    //     }
-
-       
-    // });
-
-//     $('.body').on('click', '.reception', function(){
-
-//         var invoiceItemId = $(this).attr('data-item');
-
-//         var product = $(this).attr('data-product');
-
-//         var delivered = Number($(this).attr('data-delivered'));
-
-//         var stock = $(this).attr('data-stock');
-
-//         var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text();
-
-//         var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
-
-//         if(freeStock == 0 && splitLines.length == 0) {
-//             freeStock = delivered;
-//         }
-
-//         var itemDetails = {
-//             'itemId': invoiceItemId,
-//             'newStock': Number(stock) + Number(freeStock),
-//             'freeStock': freeStock,
-//             'quoteItems' :{},
-//             'product': product
-//         }
-
-//         var splitTotal = 0;
-
-//         splitLines.each(function(index, item){
-
-            
-
-//              var itemInput = $(item).find('input[name="reserve_custom"]');
-
-//              var itemQuantity = itemInput.val();
-
-//              var quoteItemId = itemInput.attr('data-quoteItem');
-//              var reservedStock = $(item).attr('data-reserved');
-
-//              //console.log(splitTotal, itemQuantity);
-
-//              splitTotal = splitTotal + Number(itemQuantity);
-
-//              var quantities = {
-//                 'splitQuantity' : itemQuantity,
-//                 'reservedStock': reservedStock
-//              }
-
-//              //console.log(itemQuantity);
-
-//              //console.log(quantities);
-
-//              itemDetails.quoteItems[quoteItemId] = quantities;
-//         })
-
-//         console.log(splitTotal, Number(delivered), itemDetails);
-
-
-//         if(delivered < splitTotal) {
-
-//             $(this).removeClass('btn-default').addClass('btn-warning');
-
-
-//         } else {
-
-//             $.ajax({
-//                 url: "/ajax/itemReception",
-//                 type: "post",
-//                 dataType: "json",
-//                 data: itemDetails
-//             }).success(function(json){
-//                //$('.updateError').addClass('hidden');
-
-//                table.ajax.reload();
-
-//                $(this).removeClass('btn-warning');
-
-//                OrderSplit[invoiceItemId].disableActions(invoiceItemId);
-                
-               
-
-//             }).error(function(xhr, status, error) {
-//                //$('.updateError').removeClass('hidden');
-//             })
-//         }
+        }).error(function(xhr, status, error) {
+           $('.updateError').removeClass('hidden');
+        }) 
 
         
-
-        
-//     });
-
-//     $('.body').on('click', '.reverseReception', function(){
-
-//         var invoiceItemId = $(this).attr('data-item');
-
-//         var product = $(this).attr('data-product');
-
-//         var stock = $(this).attr('data-stock');
-
-//         var delivered = Number($(this).attr('data-delivered'));
-
-
-//         var freeStock = $('.list-total[data-item='+invoiceItemId+'] .freeStock').text() ;
-
-
-
-//         var splitLines = $('.list-inline[data-item='+invoiceItemId+']');
-
-//         if(freeStock == 0 && splitLines.length == 0) {
-//             freeStock = delivered;
-//         }
-
-//         var itemDetails = {
-//             'itemId': invoiceItemId,
-//             'newStock': Number(stock) - Number(freeStock),
-//             'freeStock': 0,
-//             'quoteItems' :{},
-//             'product': product
-//         }
-
-//         splitLines.each(function(index, item){
-
-//             //console.log(item);
-             
-
-//              var itemInput = $(item).find('input[name="reserve_custom"]');
-
-//              var itemQuantity = itemInput.val();
-
-//              var quoteItemId = itemInput.attr('data-quoteItem');
-
-//              var quantities = {
-//                 'splitQuantity' : itemQuantity
-//              }
-
-//              //console.log(quantities);
-
-//              itemDetails.quoteItems[quoteItemId] = quantities;
-//         })
-
-//         $.ajax({
-//             url: "/ajax/itemReverseReception",
-//             type: "post",
-//             dataType: "json",
-//             data: itemDetails
-//         }).success(function(json){
-//            //$('.updateError').addClass('hidden');
-
-//            table.ajax.reload();
-
-//              OrderSplit[invoiceItemId].enableActions(invoiceItemId);     
-
-//         }).error(function(xhr, status, error) {
-//            //$('.updateError').removeClass('hidden');
-//         })
-
-        
-//     });
-
-//      $('.body').on('change', 'input[name="reserve_custom"]', function(){
-
-//         var invoiceItemId = $(this).attr('data-item');
-
-//         var splitId = $(this).attr('data-split');
-
-//         var quantity = $(this).val();
-
-//         var oldQuantity = $(this).siblings('.reserve_custom').attr('data-neededquantity');
-
-//         var invoicedQuantity = Number($('.vendor-invoice-input[name="quantity"][data-item='+invoiceItemId+']').val())
-
-//         var deliveredQuantity = Number($('.vendor-invoice-input[name="delivered_quantity"][data-item='+invoiceItemId+']').val());
-
-//             if(deliveredQuantity > 0) {
-//                 invoicedQuantity = deliveredQuantity;
-//             }
-
-//         var splitTotal = OrderSplit[invoiceItemId].getSplitTotal(invoiceItemId);
-
-//         //console.log(oldQuantity, quantity);
-
-//         if(splitTotal > invoicedQuantity)
-//         {
-//             $('.list-total[data-item='+invoiceItemId+'] .quantityError').removeClass('hidden')
-//             $('.reception[data-item='+invoiceItemId+']').addClass('btn-danger').removeClass('btn-default').removeClass('btn-warning').prop('disabled', true)
-//         } else {
-//             $('.list-total[data-item='+invoiceItemId+'] .quantityError').addClass('hidden');
-//             $('.reception[data-item='+invoiceItemId+']').removeClass('btn-danger').removeClass('btn-warning').addClass('btn-default').prop('disabled', false)
-//         }
-
-//         OrderSplit[invoiceItemId].setTotal(invoiceItemId, invoicedQuantity, splitTotal)
-//         OrderSplit[invoiceItemId].updateLine(splitId, quantity, oldQuantity); 
-
-//     });
+    });
 
  });
 
