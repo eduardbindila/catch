@@ -53,7 +53,7 @@
                         <h2>Vendor Invoice Items</h2>
                         <ul class="header-dropdown m-r-0">
                              <li>
-                                <button class="btn btn-lg btn-primary waves-effect addNewItem"  data-toggle="modal"data-target="#addConnection-modal">
+                                <button class="btn btn-lg btn-primary waves-effect addNewItem"  data-toggle="modal"data-target="#addNew-modal">
                                     Add New Invoice Items
                                 </button>
                             </li>
