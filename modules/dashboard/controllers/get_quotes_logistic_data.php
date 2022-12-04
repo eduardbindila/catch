@@ -1,0 +1,89 @@
+<?php
+
+require_once('../../../config/helpers.php');
+require_once($_PATH['COMMON_BACKEND'].'functions.php');
+	
+$conn = $QueryBuilder->dbConnection();
+
+
+$query = "select 
+			q.id as quote_id, 
+			q.name as quote_name, 
+			q.quote_price as quote_value,
+			qs.name as quote_status, 
+			q.quote_status as quote_status_id, 
+			q.start_date,
+			u.name as owner,
+			c.name as client_name,
+			qid.total_quote_items,
+			qid.total_orders_sent,
+			qid.total_quote_items_reserved,
+			(
+				case
+					when qid.total_quote_items <= (qid.total_orders_sent + qid.total_quote_items_reserved)
+						then 100
+					when 
+						qid.total_quote_items > (qid.total_orders_sent + qid.total_quote_items_reserved) 
+						and 
+						(qid.total_orders_sent + qid.total_quote_items_reserved) > 0 
+						then 1
+					when 
+						(qid.total_orders_sent + qid.total_quote_items_reserved) = 0 
+						then 0
+				end
+			) as supplier_order_sent_ratio,
+			qid.total_quote_reserved_quantity,
+			qid.total_quote_invoiced_quantity,
+			(
+				case
+					when total_quote_reserved_quantity <= total_quote_invoiced_quantity and quote_status  = 11
+						then 100
+					when 
+						total_quote_reserved_quantity > total_quote_invoiced_quantity 
+						and 
+						total_quote_invoiced_quantity > 0 
+						then 1
+					when 
+						total_quote_invoiced_quantity = 0 
+						then 0
+				end
+			) as quote_invoiced_ratio
+		from quotes q 
+		join quote_status qs on qs.id = q.quote_status
+		join users u on q.assignee_id = u.id
+		join clients c on q.client_id = c.id
+		join (
+			select 
+			count(qi.id) as total_quote_items, 
+			count(
+				if((qi.order_number is not null), 1, null)
+			) as total_orders_sent,
+			count(
+				if((qi.quantity = qi.reserved_stock), 1, null)
+			) as total_quote_items_reserved,
+			sum(qi.reserved_stock) as total_quote_reserved_quantity,
+			sum(qi.invoiced_quantity) as total_quote_invoiced_quantity,
+			qi.quote_id 
+			from quote_items qi
+			group by qi.quote_id 
+		) qid on q.id = qid.quote_id
+		where q.quote_status in (5,2,10,11)";
+
+//echo $query;
+
+	$projectsQuery = $QueryBuilder->customQuery(
+		$conn,
+		$query = $query
+	);
+
+
+// printError($valuesArray);
+  		echo$conn->error;
+
+
+echo  json_decode($projectsQuery);
+
+	$QueryBuilder->closeConnection();
+
+
+?>

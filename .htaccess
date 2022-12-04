@@ -192,6 +192,8 @@ RewriteRule ^ajax/getDashboardProjects modules/dashboard/controllers/get_project
 
 RewriteRule ^ajax/getDashboardQuotes modules/dashboard/controllers/get_quotes_data.php [L]
 
+RewriteRule ^ajax/getDashboardQuotesLogistic modules/dashboard/controllers/get_quotes_logistic_data.php [L]
+
 RewriteRule ^ajax/confirmQuote modules/projects/controllers/confirm_quote.php [L]
 
 RewriteRule ^ajax/addComment modules/projects/controllers/add_comment.php [L]
