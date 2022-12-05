@@ -56,6 +56,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
         var clientIs = <?php echo json_encode($_SESSION['user_id']); ?>;
 
+        var ownerName = <?php echo json_encode($_SESSION['name']); ?>;
+
     </script>
 
 </head>

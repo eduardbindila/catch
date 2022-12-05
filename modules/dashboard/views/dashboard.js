@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     var projectsTable = $('.projects_legacy').DataTable({
             "ajax": {
@@ -9,22 +8,51 @@ $(document).ready(function() {
                 },
                 "dataSrc": ""
             },
+           // buttons: [
+           //      {
+           //          extend: 'searchPanes',
+           //          config: {
+           //              cascadePanes: true
+           //          }
+           //      }
+           //  ],
+           //  dom: 'Bfrtip',
             searchPanes:{
                 cascadePanes: true,
                 viewTotal: true,
-                 layout: 'columns-1',
-                 dataLength: 20
+                layout: 'columns-1',
+                dataLength: 20,
+                preSelect: [
+                    {
+                        column: 11,
+                        rows: ['2022']
+                    },
+                    {
+                        column: 4,
+                        rows: [ownerName]
+                    },
+
+                ]
+
             },
             
             dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',
-            columnDefs: [
-            {
-                searchPanes: {
-                    preSelect: ['2022']
+            columnDefs: 
+            [
+                {
+                    searchPanes: {
+                        show: false
+                    },
+                    targets: [0,1,2,3,5,6,7,8,9,10,12,13,14],
                 },
-                targets: [11]
-            }
-        ],
+
+                {
+                    searchPanes: {
+                        show: true
+                    },
+                    targets: [11, 4],
+                }             
+            ],
             pageLength: 100,
                 "paging":   true,
                 "ordering": true,
@@ -133,176 +161,8 @@ $(document).ready(function() {
             "initComplete": function(settings, json) {
                 
             },
-            "headerCallback": function( settings) {
-                // $(thead).closest('table').before( 'Displaying '+(end-start)+' records' );
-                var api = this.api();
-                var filteredData = api.rows( { filter : 'applied'} ).data();
-
-
-                var arrayValues = [0,0,0,0,0,0,0,0];
-
-                var funnelValues = [];
-
-                var chartValues = {
-                                4: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                7: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                3: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                1: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                5: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                2: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                    8: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                    9: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                    10: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                    11: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                                    12: {
-                                    "label": "",
-                                    "value": 0
-                                    },
-                               
-                               
-                                
-                                
-                            } 
-
-
-                 for (row in filteredData) {
-                    var thisRow = filteredData[row];
-
-                    if(Number.isInteger(parseInt(row))) {
-                      
-                        
-                        
-                        // values.total = ~~parseFloat(values.total) + ~~parseFloat(thisRow.quote_price);
-                        //console.log(thisRow);
-                        var thisValue = ~~parseFloat(chartValues[thisRow.quote_status_id].value) + ~~parseFloat(thisRow.quote_price);
-                        // console.log(chartValues[thisRow.quote_status_id].value, ~~parseFloat(thisRow.quote_price), thisValue)
-
-                        chartValues[thisRow.quote_status_id].label = thisRow.quote_status;
-                        chartValues[thisRow.quote_status_id].value = thisValue;
-
-                        arrayValues[thisRow.quote_status_id] = thisValue;
-                    }
-                }
-
+           
                 
-
-                funnelValues = [
-                    arrayValues[4]+arrayValues[7]+arrayValues[3]+arrayValues[1]+arrayValues[5]+arrayValues[2],
-                    arrayValues[3]+arrayValues[1]+arrayValues[5]+arrayValues[2],
-                    arrayValues[1]+arrayValues[5]+arrayValues[2],
-                    arrayValues[5]+arrayValues[2],
-                    arrayValues[2],
-                ]
-
-                
-
-
-                ///console.log(chartValues);
-                if(!jQuery.isEmptyObject(chartValues)) {
-
-                    ///console.log(myChart, myFunnel);
-
-                    data = [
-                      {
-                        label: chartValues[1].label,
-                        data: [chartValues[1].value],
-                        backgroundColor: '#D6E9C6',
-                      },
-                      {
-                        label: chartValues[2].label,
-                        data: [chartValues[2].value],
-                        backgroundColor: '#FAEBCC',
-                      },
-                      {
-                        label: chartValues[3].label,
-                        data: [chartValues[3].value],
-                        backgroundColor: '#EBCCD1',
-                      },
-                      {
-                        label: chartValues[4].label,
-                        data: [chartValues[4].value],
-                        backgroundColor: 'red',
-                      },
-                      {
-                        label: chartValues[5].label,
-                        data: [chartValues[5].value],
-                        backgroundColor: 'blue',
-                      },
-                      {
-                        label: chartValues[7].label,
-                        data: [chartValues[7].value],
-                        backgroundColor: 'green',
-                      }
-                    ]
-
-                    myChart.data.datasets = data;
-
-                    myChart.update();
-
-                    //console.log(funnelValues);
-                    //console.log(arrayValues);
-
-                    myFunnel.data.datasets = [{
-                    data: funnelValues,
-                    backgroundColor: [
-                        "#FFF9C4",
-                        "#FFEB3B",
-                        "#8BC34A",
-                        "#4CAF50",
-                        "#388E3C",
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#FFCE56",
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                    ]
-                }];
-
-                myFunnel.data.labels =  [
-                   "Total Pipeline",
-                    "Offer Sent",
-                    "Advanced, Calibrating",
-                    "Final Negociation",
-                    "Delivering",
-                ];
-
-
-                    myFunnel.update();
-              }
-
-            }
                 
 
         });
