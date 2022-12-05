@@ -6,6 +6,41 @@
 			<h2>Dashboard</h2>
 		</div>
         <?php 
+            if(isset($_SESSION['user_access']['logistics'])) 
+            {
+        ?>
+
+        <div class="row">
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Logistic Details</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                               <table class="logistic_details-table table table-striped table-bordered table-hover dt-responsive display"> 
+                                    <thead>
+                                        <th>Quote ID</th>
+                                        <th>Quote Name</th>
+                                        <th>Quote Value</th>
+                                        <th>Quote Status</th>
+                                        <th>Start Date</th>
+                                        <th>Owner</th>
+                                        <th>Client</th>
+                                        <th></th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <?php }?>
+        <?php 
             if(isset($_SESSION['user_access']['sales-grid'])) 
             {
         ?>
@@ -102,6 +137,7 @@
             </div>
         </div>
         <?php }?>
+
 
         <?php 
             if(isset($_SESSION['user_access']['client-grid'])) 

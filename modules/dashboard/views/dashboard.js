@@ -371,6 +371,103 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
             }
 
         });
+
+
+
+    var logisticTable = $('.logistic_details-table').DataTable({
+            "ajax": {
+                "url": "/ajax/getDashboardLogisticData",
+                "type": "POST",
+                "dataSrc": ""
+            },
+        
+            pageLength: 100,
+                "paging":   true,
+                "ordering": true,
+                "searching": true,
+            rowId: 'category_slug',
+              
+            responsive: true,
+            "columns": [ 
+                { 
+                    "data": "quote_id",
+                    "render" : function(data, type, row) {
+                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                      } 
+                },
+                { 
+                    "data": "quote_name"
+                },
+                { 
+                    "data": "quote_value"
+                },
+                 { 
+                    "data": "quote_status"
+                },
+                 { 
+                    "data": "start_date"
+                },
+                { 
+                    "data": "owner"
+                },
+                { 
+                    "data": "client_name"
+                },
+
+                {
+                    "data": null,
+                    "render" : function(data, type, row) {
+
+                        var icon = "";
+                        var colorClass =""
+
+                        if(row.quote_status_id == 2) {
+                            if(row.supplier_order_sent_ratio == 0) {
+                                icon = "error";
+                                colorClass = "col-red";
+                            }
+
+                            if(row.supplier_order_sent_ratio == 1) {
+                                icon = "warning";
+                                colorClass = "col-yellow";
+                            }
+
+                            if (row.supplier_order_sent_ratio == 100) {
+                                icon = "check_circle";
+                                colorClass = "col-green";
+                            }
+                        }
+
+                        if(row.quote_status_id == 11) {
+                            if(row.quote_invoiced_ratio == 0) {
+                                icon = "error";
+                                colorClass = "col-red";
+                            }
+
+                            if(row.quote_invoiced_ratio == 1) {
+                                icon = "warning";
+                                colorClass = "col-yellow";
+                            }
+
+                            if (row.quote_invoiced_ratio == 100) {
+                                icon = "check_circle";
+                                colorClass = "col-green";
+                            }
+                        }
+
+                        return '<i class="material-icons '+ colorClass +'">'+ icon +'</i>'
+                      } 
+
+                }
+
+
+                
+            ],
+            "initComplete": function(settings, json) {
+                console.log(json);
+            }
+
+        });
 });
 
 
