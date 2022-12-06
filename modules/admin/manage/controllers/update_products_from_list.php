@@ -58,8 +58,19 @@ foreach ($updateListsQuery as $product => $product_details) {
 		$conn,
 		$options = array(
 			"table" => "products",
-			"columns" => "id, initial_price, saga_quantity, saga_comment",
-			"where" => "id='".$product_details['product_id']."'"
+			"columns" => "p.id, 
+				p.initial_price, 
+				p.saga_quantity, 
+				p.saga_comment,
+				qid.total_quote_reserved_quantity",
+			"innerJoin" => "(
+					select 
+					sum(qi.reserved_stock) as total_quote_reserved_quantity,
+					qi.product_id
+					from quote_items qi
+					group by qi.product_id 
+				) qid on p.id = qid.product_id",
+			"where" => "p.id='".$product_details['product_id']."'"
 		)
 	);
 
@@ -68,11 +79,13 @@ foreach ($updateListsQuery as $product => $product_details) {
 	// var_dump("</pre>");
 
 	if($thisProductQuery && $status == 1) {
+
+		$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
 		$updateQuery = $QueryBuilder->update(
 			$conn,
 			$options = array(
 				"table" => "products",
-				"set" => ["`initial_price`='".$product_details['price']."'", "`product_name`='".$product_details['name']."'", "`saga_quantity`='".$product_details['saga_quantity']."'", "`saga_comment`='".$product_details['saga_comment']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
+				"set" => ["`initial_price`='".$product_details['price']."'", "`product_name`='".$product_details['name']."'", "`saga_quantity`='".$newStock."'", "`saga_comment`='".$product_details['saga_comment']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
 				"where" => "id = '".$product_details['product_id']."'"
 			)
 		);
@@ -80,7 +93,7 @@ foreach ($updateListsQuery as $product => $product_details) {
 		if($updateQuery) {
 			$updateStatus = 5; //Succesfully Updated
 			$oldPrice = $thisProductQuery[0]['initial_price'];
-			$saga_quantity = $thisProductQuery[0]['saga_quantity'];
+			$saga_quantity = $newStock;
 			$saga_comment = $thisProductQuery[0]['saga_comment'];
 		} else {
 			$updateStatus = 2; //Error
@@ -92,11 +105,13 @@ foreach ($updateListsQuery as $product => $product_details) {
 		//var_dump($conn-> error);
 	} else if(($thisProductQuery && $status == 10)) {
 
+		$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
+
 		$updateQuery = $QueryBuilder->update(
 			$conn,
 			$options = array(
 				"table" => "products",
-				"set" => [ "`saga_quantity`='".$product_details['saga_quantity']."'", "`saga_comment`='".$product_details['saga_comment']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
+				"set" => [ "`saga_quantity`='".$newStock."'", "`saga_comment`='".$product_details['saga_comment']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
 				"where" => "id = '".$product_details['product_id']."'"
 			)
 		);
@@ -104,7 +119,7 @@ foreach ($updateListsQuery as $product => $product_details) {
 		if($updateQuery) {
 			$updateStatus = 5; //Succesfully Updated
 			$oldPrice = $thisProductQuery[0]['initial_price'];
-			$saga_quantity = $thisProductQuery[0]['saga_quantity'];
+			$saga_quantity = $newStock;
 			$saga_comment = $thisProductQuery[0]['saga_comment'];
 		} else {
 			$updateStatus = 2; //Error
