@@ -13,7 +13,7 @@ $conn = $QueryBuilder->dbConnection();
 //$_POST['import_product_list_id'] = 32; $_POST['import_status'] = 7;
 
 
-var_dump($_POST);
+//var_dump($_POST);
 
 
 if($_POST['import_status'] !== '7') {
@@ -23,7 +23,7 @@ if($_POST['import_status'] !== '7') {
 }
 
 
-var_dump($_POST);
+//var_dump($_POST);
 
 
 $date = date('Y-m-d H:i:s');
@@ -39,7 +39,7 @@ $updateListsQuery = $QueryBuilder->select(
 	)
 );
 
-var_dump($updateListsQuery);
+//var_dump($updateListsQuery);
 
 foreach ($updateListsQuery as $product => $product_details) {
 
@@ -57,7 +57,7 @@ foreach ($updateListsQuery as $product => $product_details) {
 	$thisProductQuery = $QueryBuilder->select(
 		$conn,
 		$options = array(
-			"table" => "products",
+			"table" => "products p",
 			"columns" => "p.id, 
 				p.initial_price, 
 				p.saga_quantity, 
@@ -104,6 +104,8 @@ foreach ($updateListsQuery as $product => $product_details) {
 
 		//var_dump($conn-> error);
 	} else if(($thisProductQuery && $status == 10)) {
+
+		var_dump($thisProductQuery);
 
 		$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
 
