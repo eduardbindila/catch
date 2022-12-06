@@ -113,19 +113,19 @@
                                <table class="projects_legacy table table-striped table-bordered table-hover dt-responsive display"> 
                                     <thead>
                                         <th>Project ID</th>
-                                        <th>Name</th>
+                                        <th class="hideFromfilters">Name</th>
                                         <th>Project Name</th>
                                         <th>Quote ID</th>
-                                        <th>Owner</th>
+                                        <th >Owner</th>
                                         <th>Client</th>
-                                        <th>Designer</th>
+                                        <th class="hideFromfilters">Designer</th>
                                         <th>Status</th>
                                         <th>Project Value</th>
-                                        <th>Winning Chance</th>
+                                        <th class="hideFromfilters">Winning Chance</th>
                                         <th>Is Master</th>
                                         <th>Year</th>
-                                        <th>Quarter</th>
-                                        <th>Month</th>
+                                        <th class="hideFromfilters">Quarter</th>
+                                        <th class="hideFromfilters">Month</th>
                                         <th>Project Status</th>
                                         
                                     </thead>

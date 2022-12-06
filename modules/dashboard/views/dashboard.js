@@ -24,28 +24,35 @@ $(document).ready(function() {
                 dataLength: 20,
                 // preSelect: [
                 //     {
-                //         column: 4,
-                //         rows: [ownerName]
-                //     },
-                //     {
                 //         column: 11,
                 //         rows: ['2022']
                 //     },
-                    
+                //     {
+                //         column: 4,
+                //         rows: [ownerName]
+                //     },
 
                 // ]
 
             },
             
             dom: '<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"dtsp-dataTable"frtip>>',
-           columnDefs: [
-            {
-                searchPanes: {
-                    preSelect: ['2022']
+            columnDefs: 
+            [
+                {
+                    searchPanes: {
+                        show: false
+                    },
+                    targets: ['hideFromfilters'],
                 },
-                targets: [11]
-            }
-        ],
+
+                // {
+                //     searchPanes: {
+                //         show: true
+                //     },
+                //     targets: [11, 4],
+                // }             
+            ],
             pageLength: 100,
                 "paging":   true,
                 "ordering": true,
@@ -99,6 +106,7 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "project_name",
+                    
                     "visible": false
                 },
                 { 
