@@ -44,7 +44,20 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select * from products WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
+$empQuery = "select *, 
+
+ (
+   select 
+   sum(qi.reserved_stock)
+   from quote_items qi
+   where p.id = qi.product_id
+) as reserved_quantity
+
+
+ from products p WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
+
+// echo $empQuery;
+
 $empRecords = mysqli_query($conn, $empQuery);
 $data = array();
 
@@ -70,7 +83,8 @@ while ($row = mysqli_fetch_assoc($empRecords)) {
       "last_crawled_status"=>$row['last_crawled_status'],
       'merged_id' => $row['merged_id'],
       'legacy_id' => $row['legacy_id'],
-      'active' => $row['active'] 
+      'active' => $row['active'],
+      'reserved_quantity' => isset($row['reserved_quantity']) ? $row['reserved_quantity'] : 0  
    );
 }
 

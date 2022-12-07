@@ -13,7 +13,7 @@ $(document).ready(function() {
         rowId: 'category_slug',
           
         responsive: true,
-        order: [[ 1, "asc" ]],
+        order: [[ 6, "asc" ]],
         "columns": [
              { 
                 "data": "product_image",
@@ -46,6 +46,9 @@ $(document).ready(function() {
             },
             { 
                 "data": "initial_price"
+            },
+            { 
+                "data": "reserved_quantity"
             },
             { 
                 "data": "last_crawled_status"

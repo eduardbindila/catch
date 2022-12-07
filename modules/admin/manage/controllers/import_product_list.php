@@ -23,7 +23,7 @@ $query = $QueryBuilder->insert(
 
 echo json_decode($query);
 
-//echo $conn->error;
+echo $conn->error;
 
 //var_dump($_POST);
 

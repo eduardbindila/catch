@@ -28,6 +28,7 @@
                                         <th>Product Manufacturer</th>
                                         <th>Temp</th>
                                         <th>Initial Price</th>
+                                        <th>Reserved Quantity</th>
                                         <th>Last Crawled Status</th>
                                         <th>Merged ID</th>
                                         <th>Legacy ID ID</th>
