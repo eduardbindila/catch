@@ -13,7 +13,7 @@ $(document).ready(function() {
         rowId: 'category_slug',
           
         responsive: true,
-        order: [[ 6, "asc" ]],
+        order: [[ 7, "asc" ]],
         "columns": [
              { 
                 "data": "product_image",
@@ -49,6 +49,9 @@ $(document).ready(function() {
             },
             { 
                 "data": "reserved_quantity"
+            },
+            { 
+                "data": "saga_quantity"
             },
             { 
                 "data": "last_crawled_status"
