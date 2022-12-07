@@ -109,6 +109,9 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "project_name"
+                },
+                { 
+                    "data": "reserved_stock"
                 }
             ],
             "initComplete": function(settings, json) {

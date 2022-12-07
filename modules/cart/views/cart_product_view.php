@@ -156,6 +156,7 @@
                                 <th>Quote Status</th>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
+                                <th>Reserved Stock</th>
                             </thead>
                         </table>
                     </div>

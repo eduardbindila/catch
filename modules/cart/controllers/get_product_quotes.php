@@ -12,11 +12,12 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "quote_items qi",
-			"columns" => "DISTINCT qi.quote_id, q.name, qs.name as quote_status, q.project_id, p.project_name ",
+			"columns" => "distinct quote_id, q.name, qs.name as quote_status, q.project_id, p.project_name, sum(reserved_stock) as reserved_stock",
 			"innerJoin" => "quotes q on q.id = qi.quote_id
 							join quote_status qs on qs.id = q.quote_status
 							join projects p on p.id = q.project_id",
-			"where" => "product_id = '".$_POST['product_id']."'"
+			"where" => "product_id = '".$_POST['product_id']."'",
+			"groupBy" => "qi.quote_id"
 		)
 	);
 
