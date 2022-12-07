@@ -62,8 +62,8 @@ foreach ($updateListsQuery as $product => $product_details) {
 				p.initial_price, 
 				p.saga_quantity, 
 				p.saga_comment,
-				qid.total_quote_reserved_quantity",
-			"innerJoin" => "(
+				coalesce(qid.total_quote_reserved_quantity, 0) as total_quote_reserved_quantity",
+			"leftJoin" => "(
 					select 
 					sum(qi.reserved_stock) as total_quote_reserved_quantity,
 					qi.product_id
@@ -100,12 +100,11 @@ foreach ($updateListsQuery as $product => $product_details) {
 			$comment = addslashes($conn->error);
 		}
 
-		//var_dump($comment);
 
 		//var_dump($conn-> error);
 	} else if(($thisProductQuery && $status == 10)) {
 
-		var_dump($thisProductQuery);
+		//var_dump($thisProductQuery);
 
 		$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
 
@@ -117,6 +116,8 @@ foreach ($updateListsQuery as $product => $product_details) {
 				"where" => "id = '".$product_details['product_id']."'"
 			)
 		);
+
+		//var_dump($updateQuery);
 
 		if($updateQuery) {
 			$updateStatus = 5; //Succesfully Updated
