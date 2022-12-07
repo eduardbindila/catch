@@ -26,6 +26,7 @@
                                         <th>Saga Comment</th>
                                         <th>New Product ID</th>
                                         <th>Manufacturer</th>
+                                        <th>New Price</th>
                                         <th>Old Price</th>
                                         <th>Comment</th>
                                         <th>Status ID </th>

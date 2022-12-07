@@ -40,6 +40,9 @@ $(document).ready(function() {
             { 
                 "data": "manufacturer"
             },
+             { 
+                "data": "price"
+            },
             { 
                 "data": "old_price"
             },
