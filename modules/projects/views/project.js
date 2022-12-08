@@ -1272,7 +1272,7 @@ $(document).ready(function() {
                             } 
 
                              
-                                    html = '<span class="reserved_stock" data-item="'+row.quote_item_id+'">'+row.reserved_stock + '</span> ';
+                                    html = '<span class="reserved_stock" data-type="reserved" data-item="'+row.quote_item_id+'">'+row.reserved_stock + '</span> ';
                                 
 
                                 html = html +'<button class="btn btn-xs btn-link waves-effect"' + 
@@ -1325,7 +1325,7 @@ $(document).ready(function() {
                         "data": "saga_quantity",
                          "render" : function(data, type, row, meta) {
                                 //console.log(row);
-                              return '<span class="stockData" data-item="'+row.quote_item_id+'"  data-product="'+row.id+'">'+row.saga_quantity + '</span> '
+                              return '<span class="stockData" data-type="stock" data-item="'+row.quote_item_id+'"  data-product="'+row.id+'">'+row.saga_quantity + '</span> '
                           },
  
                         "visible": isl
@@ -1360,7 +1360,7 @@ $(document).ready(function() {
                                     editableClass = 'editable'
                                 }
 
-                                console.log(row.saga_quantity);
+                                //console.log(row.saga_quantity);
                               return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
                                             '<input class="form-control order-input  '+editableClass+'"' + 
@@ -1370,6 +1370,7 @@ $(document).ready(function() {
                                             '" data-product="'+row.id+
                                             '" data-quantity="'+row.quantity+
                                             '" data-reserved="'+row.reserved_stock+
+                                            '" data-table="'+ val['id'] +
                                             '" data-stock="'+row.saga_quantity+
                                             '" data-row="'+meta.row+
                                             '" data-col="'+meta.col+'" name="ordered_quantity" placeholder="Order Quantity" value="'+row.ordered_quantity+'" type="number" min="0" step="1">' + 
@@ -1513,6 +1514,8 @@ $(document).ready(function() {
 
 
          $('body').on('change', '.order-input', function(){
+
+            var that = this;
             var quoteIndex = $(this).attr('data-index');
             var rowId = $(this).attr('data-row');
 
@@ -1532,6 +1535,7 @@ $(document).ready(function() {
 
             var value = $(this).val()
 
+            var tableID = $(this).attr('data-table')
 
 
 
@@ -1542,46 +1546,35 @@ $(document).ready(function() {
                 'value': value
             };
 
-
-            if(name == 'ordered_quantity') {
-
-                var newReserve = (quantity - value);
-
-                var newStock = 0;
-                
-
-                if(newReserve >= 0 && itemStock >= newReserve) {
-                    newReserve = newReserve
-                } 
-                else {
-                    newReserve = 0;
-                }
-
-                if(itemStock >= newReserve) {
-                    newStock = itemStock - newReserve
-                } else {
-                    newStock = itemStock;
-                }
-
-                //console.log(newStock, newReserve);
-                orderDetail['reserved_stock'] = newReserve;
-
-                orderDetail['stock'] = newStock;
-
-                $('span.reserved_stock[data-item='+quoteItemId+']').text(newReserve)
-
-                $('span.stockData[data-product='+productId+']').text(newStock)
-            }
-
              $.ajax({
                 url: "/ajax/updateItemOrderDetails",
                 type: "post",
                 dataType: "json",
-                data: orderDetail
+                data: orderDetail,
             }).success(function(json){
                $('.updateError').addClass('hidden');
-               
 
+               //console.log(json);
+
+                if(json.result && json.result != "") {
+
+                    //console.log('here');
+
+                    //$('#quote-'+ tableID).DataTable().ajax.reload()
+
+
+                    params = {
+                        'el': $(that),
+                        'reserved': json.reserved,
+                        'stock': json.stock
+                    }
+
+                     QuotePricing[quoteIndex][rowId].updateStocks(params);
+
+                     $('.stockData[data-product="'+productId+'"]').text(json.stock)
+
+
+                }
             }).error(function(xhr, status, error) {
                $('.updateError').removeClass('hidden');
             })
@@ -2834,6 +2827,13 @@ class PriceDetails {
         this.updateEl(tr, "profitPercent", this.profitPercent);
         this.updateEl(tr, "quantity", this.quantity);
         this.updateEl(tr, "finalPrice", this.finalPrice);       
+    }
+
+    updateStocks(params) {
+        //console.log(params);
+        var tr = params.el.closest('tr');
+        this.updateEl(tr, "reserved", params.reserved);
+        this.updateEl(tr, "stock", params.stock);      
     }
 
     updateEl(tr, type, newValue) {
