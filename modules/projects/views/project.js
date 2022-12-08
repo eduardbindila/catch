@@ -1359,6 +1359,8 @@ $(document).ready(function() {
                                 if(quoteList[index].quote_status == 2) {
                                     editableClass = 'editable'
                                 }
+
+                                console.log(row.saga_quantity);
                               return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
                                             '<input class="form-control order-input  '+editableClass+'"' + 
@@ -1516,7 +1518,7 @@ $(document).ready(function() {
 
             var quoteItemId = $(this).attr('data-item');
 
-            var currentStock = Number($(this).attr('data-stock'));
+            var currentStock = Number($('.stockData[data-item='+ quoteItemId +']').text());
 
             var currentReserve = Number($(this).attr('data-reserved'));
 
@@ -1561,7 +1563,7 @@ $(document).ready(function() {
                     newStock = itemStock;
                 }
 
-                console.log(newStock, newReserve);
+                //console.log(newStock, newReserve);
                 orderDetail['reserved_stock'] = newReserve;
 
                 orderDetail['stock'] = newStock;
