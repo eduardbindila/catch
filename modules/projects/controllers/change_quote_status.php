@@ -52,9 +52,12 @@ $conn = $QueryBuilder->dbConnection();
 			'next'=> '11'
 		),
 		'11' => array(
-			'next'=> '12'
+			'next'=> '13'
 		),
 		'12' => array(
+			'next'=> '12'
+		),
+		'13' => array(
 			'next'=> '12'
 		)
 	);

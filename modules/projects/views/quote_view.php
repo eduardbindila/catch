@@ -302,8 +302,9 @@ $quoteLockedClass = "";
                                     <button type="button" data-status="2" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Processing Order</button>
                                     <button type="button" data-status="10" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Supplier Order Sent</button>
                                     <button type="button" data-status="11" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Supplier Order Arrived</button>
+                                    <button type="button" data-status="13" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Order Invoiced</button>  
                                     <button type="button" data-status="12" class="btn btn-default waves-effect" <?php echo $disableNonMaster ?>>Order Completed</button>
-                                    <button type="button" data-status="8" class="btn btn-danger waves-effect" >Lost Quote</button>
+                                                                      <button type="button" data-status="8" class="btn btn-danger waves-effect" >Lost Quote</button>
                                     <button type="button" data-status="9" class="btn btn-danger waves-effect">Quote Canceled</button>
                                 </div>
                             </div>
