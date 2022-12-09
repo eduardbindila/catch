@@ -126,6 +126,9 @@
                             <div class="input-group">
                                 <input type="number" class="form-control" step="any" name="initial_price" placeholder="Aquisition Price" value="<?php echo $aquisitionPrice?>" required>
                             </div>
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="stock" placeholder="Stock" value="<?php echo $stock?>" required>
+                            </div>
                             <textarea class="tinymce" name="product_description" placeholder="Product Description">
                                     <?php echo $productDescription?>
                                 </textarea>

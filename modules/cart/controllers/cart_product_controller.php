@@ -26,6 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				"`product_name`='".$_POST['product_name']."'",
 				"`product_description`='". htmlspecialchars($_POST['product_description'])."'",
 				"`initial_price`='".$_POST['initial_price']."'",
+				"`saga_quantity`='".$_POST['stock']."'",
 				],
 			"where" => "id ='".$productID."'"
 		)
@@ -46,6 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 	$productName = $productQuery[0]['product_name'];
 	$aquisitionPrice = $productQuery[0]['initial_price'];
+	$stock = $productQuery[0]['saga_quantity'];
 
 	if($_SESSION['client_discount'] > 0) {
 		$productPrice = $aquisitionPrice / $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 
