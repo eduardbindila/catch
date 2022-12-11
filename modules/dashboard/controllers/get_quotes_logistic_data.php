@@ -103,11 +103,27 @@ $conn = $QueryBuilder->dbConnection();
 						then 0
 				end
 			) as supplier_order_sent_ratio,
+			qid.total_ordered_quantity,
+			qid.total_quote_delivered_quantity,
+			(
+				case
+					when total_ordered_quantity <= total_quote_delivered_quantity
+						then 100
+					when 
+						total_ordered_quantity > total_quote_delivered_quantity 
+						and 
+						total_quote_delivered_quantity > 0 
+						then 1
+					when 
+						total_quote_delivered_quantity = 0 
+						then 0
+				end
+			) as quote_delivered_ratio,
 			qid.total_quote_reserved_quantity,
 			qid.total_quote_invoiced_quantity,
 			(
 				case
-					when total_quote_reserved_quantity <= total_quote_invoiced_quantity and quote_status  = 11
+					when total_quote_reserved_quantity <= total_quote_invoiced_quantity
 						then 100
 					when 
 						total_quote_reserved_quantity > total_quote_invoiced_quantity 
@@ -136,8 +152,12 @@ $conn = $QueryBuilder->dbConnection();
 				) as total_quote_items_reserved,
 				sum(qi.reserved_stock) as total_quote_reserved_quantity,
 				sum(qi.invoiced_quantity) as total_quote_invoiced_quantity,
+				sum(ifnull(qi.ordered_quantity, 0)) as total_ordered_quantity,
+				SUM(case when vii.reception  = 1 then ifnull(vii.delivered_quantity, 0)  else 0 end) as total_quote_delivered_quantity,
 				qi.quote_id 
 				from quote_items qi
+				join vendor_invoice_items_split viis on viis.quote_item_id = qi.id
+				join vendor_invoice_items vii on vii.id = viis.vendor_invoice_item_id 
 				group by qi.quote_id 
 			) qid on q.id = qid.quote_id
 			",

@@ -28,7 +28,9 @@
                                         <th>Start Date</th>
                                         <th>Owner</th>
                                         <th>Client</th>
-                                        <th></th>
+                                        <th>Order Sent %</th>
+                                        <th>Quote Delivered %</th>
+                                        <th>Quote Invoiced %</th>
                                     </thead>
                                 </table>
                             </div>

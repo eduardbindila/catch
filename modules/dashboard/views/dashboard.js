@@ -416,47 +416,34 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 },
 
                 {
-                    "data": null,
+                    "data": 'supplier_order_sent_ratio',
                     "render" : function(data, type, row) {
 
-                        var icon = "";
-                        var colorClass =""
+                        var ratio = getRatio(data);
 
-                        if(row.quote_status_id == 2) {
-                            if(row.supplier_order_sent_ratio == 0) {
-                                icon = "error";
-                                colorClass = "col-red";
-                            }
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+                      } 
 
-                            if(row.supplier_order_sent_ratio == 1) {
-                                icon = "warning";
-                                colorClass = "col-yellow";
-                            }
+                },
+                {
+                    "data": 'quote_delivered_ratio',
+                    "render" : function(data, type, row) {
 
-                            if (row.supplier_order_sent_ratio == 100) {
-                                icon = "check_circle";
-                                colorClass = "col-green";
-                            }
-                        }
+                        var ratio = getRatio(data);
 
-                        if(row.quote_status_id == 11) {
-                            if(row.quote_invoiced_ratio == 0) {
-                                icon = "error";
-                                colorClass = "col-red";
-                            }
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+                      } 
 
-                            if(row.quote_invoiced_ratio == 1) {
-                                icon = "warning";
-                                colorClass = "col-yellow";
-                            }
+                },
+                {
+                    "data": 'quote_invoiced_ratio',
+                    "render" : function(data, type, row) {
 
-                            if (row.quote_invoiced_ratio == 100) {
-                                icon = "check_circle";
-                                colorClass = "col-green";
-                            }
-                        }
+                        var ratio = getRatio(data);
 
-                        return '<i class="material-icons '+ colorClass +'">'+ icon +'</i>'
+                        //console.log(ratio);
+
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
                       } 
 
                 }
@@ -465,10 +452,44 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 
             ],
             "initComplete": function(settings, json) {
-                console.log(json);
+                //console.log(json);
             }
 
         });
 });
 
 
+function getRatio(value){
+
+    //console.log(value);
+
+    var ratioObject = {
+        "icon": "",
+        "colorClass": ""
+    };
+
+    switch(Number(value)) {
+      case 0:
+
+        ratioObject.icon = "error";
+        ratioObject.colorClass = "col-red";
+        
+        break;
+
+      case 1:
+
+        ratioObject.icon = icon = "warning";
+        ratioObject.colorClass = "col-yellow";
+        
+        break;
+
+    case 100:
+
+        ratioObject.icon =  "check_circle";
+        ratioObject.colorClass = "col-green";
+        
+        break;
+    }
+
+    return ratioObject
+}
