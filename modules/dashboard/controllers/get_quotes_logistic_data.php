@@ -141,7 +141,7 @@ $conn = $QueryBuilder->dbConnection();
 				quote_status qs on qs.id = q.quote_status
 			join users u on q.assignee_id = u.id
 			join clients c on q.client_id = c.id
-			join (
+			left join (
 				select 
 				count(qi.id) as total_quote_items, 
 				count(
