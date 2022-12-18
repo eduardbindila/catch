@@ -156,8 +156,8 @@ $conn = $QueryBuilder->dbConnection();
 				SUM(case when vii.reception  = 1 then ifnull(vii.delivered_quantity, 0)  else 0 end) as total_quote_delivered_quantity,
 				qi.quote_id 
 				from quote_items qi
-				join vendor_invoice_items_split viis on viis.quote_item_id = qi.id
-				join vendor_invoice_items vii on vii.id = viis.vendor_invoice_item_id 
+				left join vendor_invoice_items_split viis on viis.quote_item_id = qi.id
+				left join vendor_invoice_items vii on vii.id = viis.vendor_invoice_item_id 
 				group by qi.quote_id 
 			) qid on q.id = qid.quote_id
 			",
