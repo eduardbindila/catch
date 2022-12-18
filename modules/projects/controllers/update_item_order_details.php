@@ -49,12 +49,15 @@ $params = array(
         if(($newReserve >= 0) && ($itemStock >= $newReserve))  {
             $newReserve = $newReserve;
             $newStock = $itemStock - $newReserve;
-        } 
+        } else if(($newReserve < 0) && ($itemStock >= $_POST['value']))
+        {
+        	$newReserve =  0;
+            $newStock = $itemStock;
+        }
         else {
             $newReserve = $itemStock;
             $newStock = 0;
         }
-
 
 		if($quoteItemsQuery) {
 			$projectsQuery = $QueryBuilder->update(
@@ -68,20 +71,11 @@ $params = array(
 
 
 			$reserve_stock = ",`reserved_stock`='".$newReserve."'";
-
-
-
 		}
 
 		$params["reserved"] = $newReserve;
 		$params["stock"] = $newStock;
 	}
-
-	//echo "  ".$newReserve.' '.$newStock;
-
-
-	
-
 
 	$projectsQuery = $QueryBuilder->update(
 		$conn,
