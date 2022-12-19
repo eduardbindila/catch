@@ -8871,6 +8871,8 @@ button.revertInvoice.btn.btn-primary.waves-effect i {
 
 .modal-xl { width:1280px !important; }
 
+.modal-xxl { width:90% !important; }
+
 .exchange_rate_preloader {
     position: absolute;
     z-index: 20000;

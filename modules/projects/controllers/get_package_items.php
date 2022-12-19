@@ -49,8 +49,11 @@ $total = $value.' + '.$vatValue.' + '.$green_tax_value;
 			$conn,
 			$options = array(
 				"table" => "package_items",
-				"columns" => "package_items.*, products.id as product_id, products.product_name, products.saga_quantity, quote_items.reserved_stock, quote_items.quantity, quote_items.invoiced_quantity, quote_items.quote_id, ".$unit_price." as unit_price, ".$value." as value, ".$vatValue." as vat_value, ". $green_tax_value." as green_tax_value, ".$total." as total",
-				"leftJoin" => 'quote_items on package_items.quote_item_id = quote_items.id left join products on quote_items.product_id = products.id left join green_tax on products.green_tax_id = green_tax.id',
+				"columns" => "package_items.*, products.id as product_id, products.product_name, products.saga_quantity, quote_items.reserved_stock, quote_items.quantity, quote_items.discount, quotes.extra_discount, quote_items.invoiced_quantity, quote_items.quote_id, ".$unit_price." as unit_price, ".$value." as value, ".$vatValue." as vat_value, ". $green_tax_value." as green_tax_value, ".$total." as total",
+				"leftJoin" => 'quote_items on package_items.quote_item_id = quote_items.id 
+						left join products on quote_items.product_id = products.id 
+						left join green_tax on products.green_tax_id = green_tax.id
+						left join quotes on quote_items.quote_id = quotes.id',
 				"where" => "package_id = '".$_POST['package_id']."'",
 				"orderBy" => 'package_items.id',
 				"orderType" => 'ASC'

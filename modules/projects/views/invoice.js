@@ -132,6 +132,7 @@ class Invoices {
                                         '<th>Reserved</th>'+
                                         '<th>Stock</th>'+
                                         '<th>Invoiced</th>'+
+                                        '<th>Discount</th>'+
                                         '<th>Unit Price</th>'+
                                         '<th>Package Quantity</th>'+
                                         '<th>Package Quantity</th>'+
@@ -143,9 +144,10 @@ class Invoices {
                                         '<th>Owner</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
-                                        '<th colspan=15>Totals('+ params.currency +')</th>'+
+                                        '<th colspan=14>Totals('+ params.currency +')</th>'+
+                                        '<th>Package Quantity</th>'+
+                                        '<th>Package Quantity</th>'+
                                         '<th>Value</th>'+
-                                        '<th>Green Tax</th>'+
                                         '<th>Green Tax</th>'+
                                         '<th>VAT</th>'+
                                         '<th>Item Total</th>'+
@@ -290,7 +292,18 @@ class Invoices {
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 2,7,12, 14,15,16, 18]
+                              columns: [ 
+                                    2,//Index
+                                    6,//Product Id
+                                    7,//Product Name
+                                    12,//Discount
+                                    13,//Unit Price
+                                    15,//Package Quantity
+                                    16,//Value
+                                    17, //Green Tax
+                                    19,//Vat
+                                    20,//Item Total
+                                    ]
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -573,21 +586,23 @@ class Invoices {
 
                                 var tableLength = doc.content[1].table.body.length;
 
-                                doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*', '*']
+                                //doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*', '*', '*']
 
                                 console.log(doc.content[1]);
 
+                                //Hide SubFooter Cell Content
                                 doc.content[1].table.body[tableLength-1][0] = "";
                                 doc.content[1].table.body[tableLength-1][1] = "";
                                 doc.content[1].table.body[tableLength-1][2] = "";
+                                doc.content[1].table.body[tableLength-1][3] = "";
 
-                                var totalValue = doc.content[1].table.body[tableLength-1][4].text;
+                                var totalValue = doc.content[1].table.body[tableLength-1][6].text;
                                 totalValue = parseFloat(totalValue);
 
-                                var totalVat = doc.content[1].table.body[tableLength-1][5].text;
+                                var totalVat = doc.content[1].table.body[tableLength-1][8].text;
                                 totalVat = parseFloat(totalVat);
 
-                                var totalGreenTax = doc.content[1].table.body[tableLength-1][6].text;
+                                var totalGreenTax = doc.content[1].table.body[tableLength-1][7].text;
                                 totalGreenTax = parseFloat(totalGreenTax);
 
 
@@ -721,7 +736,7 @@ class Invoices {
                         { 
                             "data": "product_name",
                             "render" : function(data, type, row, meta) {
-                                //console.log(row);
+                                
                             var product = data;
 
                              var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
@@ -759,9 +774,12 @@ class Invoices {
                             "data": "invoiced_quantity",
                         },
                         { 
+                            "data": "discount",
+                        },
+                        { 
                             "data": "unit_price",
                             "render" : function(data, type, row, meta) {
-                                //console.log(row);
+                                //console.log(meta.col);
                                 var price = row.unit_price;
 
                                 var product = row.product_id;
@@ -802,7 +820,7 @@ class Invoices {
                         { 
                             "data": "null",
                              "render" : function(data, type, row, meta) {
-
+                                //console.log(meta.col);
                                 var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
 
                                 if(row.product = 0 && row.external_item_name =='') {
@@ -839,8 +857,9 @@ class Invoices {
                         },
                         { 
                             "data": "green_tax_value",
+                            "visible":packageDetails.currency == "Euro" ? false : true,
                             "render" : function(data, type, row, meta) {
-                                //console.log(row);
+                               console.log(meta.col);
                                 var value = row.green_tax_value;
 
                                 var product = row.product_id;
@@ -904,8 +923,14 @@ class Invoices {
 
                         var totalArray = {};
                         api.columns().every(function () {
-
                            
+
+                           //Total for Package Quantity Web
+                            $( api.column( 14 ).footer() ).html(
+                                api.column( 15 ).data().reduce( function ( a, b ) {
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                                }, 0 )
+                            ); 
 
                             $( api.column( 15 ).footer() ).html(
                                 api.column( 15 ).data().reduce( function ( a, b ) {
@@ -925,8 +950,9 @@ class Invoices {
                                 }, 0 )
                             );                         
 
+                            //Total for Green Tax Web
                             $( api.column( 18 ).footer() ).html(
-                                api.column( 18 ).data().reduce( function ( a, b ) {
+                                api.column( 17 ).data().reduce( function ( a, b ) {
                                     return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
                             ); 
@@ -935,6 +961,12 @@ class Invoices {
 
                             $( api.column( 19 ).footer() ).html(
                                 api.column( 19 ).data().reduce( function ( a, b ) {
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                                }, 0 )
+                            ); 
+
+                            $( api.column( 20 ).footer() ).html(
+                                api.column( 20 ).data().reduce( function ( a, b ) {
                                     return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
                             ); 

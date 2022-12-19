@@ -497,7 +497,7 @@ $quoteLockedClass = "";
 
         <!-- Large Size -->
         <div class="modal fade viewPackages-modal" tabindex="-1" role="dialog" data-quote="<?php echo $quote['id']?>">
-            <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-dialog modal-xxl" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" >Quote #<span class="quoteNumberEdit"></span>  Packages</h4>
