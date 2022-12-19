@@ -849,9 +849,9 @@ class Invoices {
 
                                 //console.log(product !== "");
 
-                                if(product !== "" && value == "0.00")  {
+                                if(product !== "" && Number(value) == 0 )  {
 
-                                    value = row.green_tax_value + 
+                                    value =  
                                             '<div class="btn-group">'+
                                                 '<button class="btn btn-default btn-xs "' + 
                                                 ' data-row="'+meta.row+

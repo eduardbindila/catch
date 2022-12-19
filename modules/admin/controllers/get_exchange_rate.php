@@ -67,6 +67,8 @@ function getExchangeRateByDate($year, $date)
 
 	$cubeDate_dt = new DateTime($cubeDate);
 
+	$cubeDate_dt = $cubeDate_dt->modify('-1 day');
+
 	$exchange_rate = 0;
 
 	$exchange_rate = getExchangeRateByDate($dateObj['year'], $cubeDate_dt);
