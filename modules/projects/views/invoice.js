@@ -132,7 +132,7 @@ class Invoices {
                                         '<th>Reserved</th>'+
                                         '<th>Stock</th>'+
                                         '<th>Invoiced</th>'+
-                                        '<th>Discount</th>'+
+                                        '<th>Extra Discount(%)</th>'+
                                         '<th>Unit Price</th>'+
                                         '<th>Package Quantity</th>'+
                                         '<th>Package Quantity</th>'+
@@ -605,6 +605,9 @@ class Invoices {
                                 var totalGreenTax = doc.content[1].table.body[tableLength-1][7].text;
                                 totalGreenTax = parseFloat(totalGreenTax);
 
+                                var total = doc.content[1].table.body[tableLength-1][9].text;
+                                totalGreenTax = parseFloat(totalGreenTax);
+
 
                                     // var totalGreenTax = 0;
 
@@ -630,7 +633,7 @@ class Invoices {
                                                 // extraDiscountArray,
                                                 [
                                                     {text: 'Invoice Total ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
-                                                    {text: totalValue + totalVat + totalGreenTax, style: 'offerPriceValue'}
+                                                    {text: total, style: 'offerPriceValue'}
                                                 ],
                                                 [
                                                     {text: "Due Date: " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
@@ -774,7 +777,7 @@ class Invoices {
                             "data": "invoiced_quantity",
                         },
                         { 
-                            "data": "discount",
+                            "data": "extra_discount",
                         },
                         { 
                             "data": "unit_price",

@@ -41,7 +41,11 @@ $green_tax_value = $exchange_rate == 1 ?  0 : $green_tax;
 
 $vatValue = 'TRUNCATE((('.$value.' + '.$green_tax_value. ') *  '.$vat .'), 2)';
 
-$total = $value.' + '.$vatValue.' + '.$green_tax_value;
+$total = "(".$value.' + '.$vatValue.' + '.$green_tax_value.")";
+
+$extra_discount_value = "TRUNCATE (".$total." * quotes.extra_discount / 100, 2)";
+
+$total = $total.'-'.$extra_discount_value;
 
 
 
@@ -49,7 +53,7 @@ $total = $value.' + '.$vatValue.' + '.$green_tax_value;
 			$conn,
 			$options = array(
 				"table" => "package_items",
-				"columns" => "package_items.*, products.id as product_id, products.product_name, products.saga_quantity, quote_items.reserved_stock, quote_items.quantity, quote_items.discount, quotes.extra_discount, quote_items.invoiced_quantity, quote_items.quote_id, ".$unit_price." as unit_price, ".$value." as value, ".$vatValue." as vat_value, ". $green_tax_value." as green_tax_value, ".$total." as total",
+				"columns" => "package_items.*, products.id as product_id, products.product_name, products.saga_quantity, quote_items.reserved_stock, quote_items.quantity, quote_items.discount, quotes.extra_discount, ".$extra_discount_value." as extra_discount_value, quote_items.invoiced_quantity, quote_items.quote_id, ".$unit_price." as unit_price, ".$value." as value, ".$vatValue." as vat_value, ". $green_tax_value." as green_tax_value, ".$total." as total",
 				"leftJoin" => 'quote_items on package_items.quote_item_id = quote_items.id 
 						left join products on quote_items.product_id = products.id 
 						left join green_tax on products.green_tax_id = green_tax.id
