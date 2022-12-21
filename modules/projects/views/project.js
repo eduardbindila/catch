@@ -374,6 +374,39 @@ $(document).ready(function() {
                         },
 
                         {
+                            className: 'createInvoice btn btn-lg btn-success waves-effect',
+                            text: 'Create Simple Invoice',
+                            action: function ( e, dt, button, config ) {
+
+                                var packageDetail = {
+                                    'quote_id' : val['id'],
+                                }
+
+
+                                $.ajax({
+                                    url: "/ajax/createPackage",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: packageDetail
+                                }).success(function(json){
+                                   $('.updateError').addClass('hidden');
+
+                                   packageDetail['package_id'] = json;
+
+                                   console.log(json, packageDetail);  
+
+                                   $('.viewPackages[data-quote='+val['id']+']').click();                                
+
+                                }).error(function(xhr, status, error) {
+                                   $('.updateError').removeClass('hidden');
+                                })
+
+                                console.log(packageDetail);
+
+                            }
+                        },
+
+                        {
                             extend: 'selected',
                             className: 'btn btn-lg btn-success waves-effect',
                             text: 'Invoiced in Saga',

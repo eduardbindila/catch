@@ -37,13 +37,25 @@ $green_tax = "(
 	        END
    	 )";
 
+
+  $extra_discount = "( 
+		CASE 
+	        	WHEN 
+	        		quotes.extra_discount is NULL
+	       		THEN  
+	        		0
+	        ELSE
+	         quotes.extra_discount
+	        END
+   	 )";
+
 $green_tax_value = $exchange_rate == 1 ?  0 : $green_tax;
 
 $vatValue = 'TRUNCATE((('.$value.' + '.$green_tax_value. ') *  '.$vat .'), 2)';
 
 $total = "(".$value.' + '.$vatValue.' + '.$green_tax_value.")";
 
-$extra_discount_value = "TRUNCATE (".$total." * quotes.extra_discount / 100, 2)";
+$extra_discount_value = "TRUNCATE (".$total." * ".$extra_discount." / 100, 2)";
 
 $total = $total.'-'.$extra_discount_value;
 
