@@ -13,7 +13,9 @@ $conn = $QueryBuilder->dbConnection();
 				"table" => "packages",
 				"columns" => "packages.*, package_status.name",
 				"innerJoin" => 'package_status on package_status_id = package_status.id',
-				"where" => "quote_id = '".$_POST['quote_id']."'"
+				"where" => "quote_id = '".$_POST['quote_id']."'",
+				"orderBy" => 'packages.id',
+				"orderType" => 'DESC'
 			)
 		);
 

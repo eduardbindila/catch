@@ -5,21 +5,18 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
-//printError($_POST);
 
-	$query = $QueryBuilder->insert(
+
+	$projectsQuery = $QueryBuilder->update(
 		$conn,
 		$options = array(
 			"table" => "package_items",
-			"keys" => ["package_id", "external_item_name"],
-			"values" => [$_POST['package_id'], $_POST['external_item_name']]
+			"set" => [" type =".$_POST['item_type_id']],
+			"where" => "id = '".$_POST['package_item']."'"
 		)
 	);
 
-
-	//print_r($conn->error);
-
-	echo json_encode($query);
+	echo json_encode($projectsQuery);
 
 	$QueryBuilder->closeConnection();
 ?>

@@ -2657,7 +2657,8 @@ Dropzone.autoDiscover = false;
       greenTaxData = {
         'product_id' : $(this).parents('ul').attr('data-product'),
         'green_tax_id' : $(this).attr('data-green_tax_id'),
-        'package' : $(this).parents('ul').attr('data-package')
+        'package' : $(this).parents('ul').attr('data-package'),
+        'package_item' : $(this).parents('ul').attr('data-package_item')
       }
 
       //console.log(greenTaxData)
@@ -2670,6 +2671,36 @@ Dropzone.autoDiscover = false;
             type: "post",
             dataType: "json",
             data: greenTaxData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           //console.log(json);
+           table.ajax.reload()
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
+     $('body').on('click', '.setItemType', function(e){
+
+      itemTypesData = {
+        'product_id' : $(this).parents('ul').attr('data-product'),
+        'item_type_id' : $(this).attr('data-item_type_id'),
+        'package' : $(this).parents('ul').attr('data-package'),
+        'package_item' : $(this).parents('ul').attr('data-package_item')
+      }
+
+      //console.log(itemTypesData)
+
+      var table = $('.packages_table-'+itemTypesData.package).DataTable();
+
+
+      $.ajax({
+            url: "/ajax/updateItemType",
+            type: "post",
+            dataType: "json",
+            data: itemTypesData
         }).success(function(json){
            $('.updatePackageItemError').addClass('hidden');
            //console.log(json);
