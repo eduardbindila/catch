@@ -54,11 +54,16 @@ function getExchangeRateByDate($year, $date)
 
 	$dateObj = date_parse_from_format("d/m/Y", $date);
 
+
 	
 
 	if($dateObj['error_count'] > 0) {
 		$dateObj = date_parse_from_format("Y-m-d", $date);
 	}
+
+	
+
+
 
 	$cubeDate = date("Y-m-d", strtotime($date));
 
@@ -69,19 +74,34 @@ function getExchangeRateByDate($year, $date)
 
 	$cubeDate_dt = $cubeDate_dt->modify('-1 day');
 
+	
+
 	$exchange_rate = 0;
 
-	$exchange_rate = getExchangeRateByDate($dateObj['year'], $cubeDate_dt);
+	$exchange_rate = getExchangeRateByDate($cubeDate_dt->format("Y"), $cubeDate_dt);
+
+
+	//print_r($exchange_rate);
+
+	$iterator = 0;
 
 
 	while ($exchange_rate == 0) {
 
-		$exchange_rate = getExchangeRateByDate($dateObj['year'], $cubeDate_dt);
+		$iterator ++;
+
+		$exchange_rate = getExchangeRateByDate($cubeDate_dt->format("Y"), $cubeDate_dt);
 
 		$cubeDate_dt = $cubeDate_dt->modify('-1 day');
+
+		//print_r($exchange_rate);
+
+		if ($iterator > 5) {
+			break;
+		}
 	}
 
-	// print_r($currency[0]['value'];
+	//print_r($currency[0]['value']);
 
 	echo json_encode($exchange_rate);
 ?>
