@@ -82,6 +82,8 @@ class Invoices {
         invoiceForm = that.getInvoiceDetailsForm(params);
        }
 
+       //console.log(params);
+
       var packageLine = '<div class="package_line m-t-10 package-'+packageId+'">'+
                            '<div class="package_wrapper">'+
                                '<button class="btn btn-default collapser triggerPackageItems"'+
@@ -144,31 +146,31 @@ class Invoices {
                                '<table class="packages_table-'+packageId+' table table-striped table-bordered table-hover dt-responsive display">'+
                                    '<thead>'+
                                         '<th></th>'+
-                                        '<th>Quote ID</th>'+
-                                        '<th>Index</th>'+
-                                        '<th>Client Name</th>'+
-                                        '<th>Warehouse</th>'+
-                                        '<th>Quote Item ID</th>'+
-                                        '<th>Product Id</th>'+
-                                        '<th>Product Name</th>'+
-                                        '<th>QQuantity</th>'+
-                                        '<th>Reserved</th>'+
-                                        '<th>Stock</th>'+
-                                        '<th>Invoiced</th>'+
-                                        '<th>Extra Discount(%)</th>'+
-                                        '<th>Unit Price</th>'+
-                                        '<th>Package Quantity</th>'+
-                                        '<th>Package Quantity</th>'+
-                                        '<th>Value</th>'+
-                                        '<th>Green Tax Total</th>'+
-                                        '<th>Green Tax/pc</th>'+
-                                        '<th>VAT('+ params.vat +')</th>'+
-                                        '<th>Item Total</th>'+
-                                        '<th>Owner</th>'+
-                                        '<th>Type</th>'+
+                                        '<th>'+that.getTranslation('Quote_Id',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Index',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Client_Name',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Warehouse',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Quote_Item_Id',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Product_Id',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Product_Name',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Quote_Quantity',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Reserved',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Stock',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Invoiced',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Extra_Discount',params.currency)+'(%)</th>'+
+                                        '<th>'+that.getTranslation('Unit_Price',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Package_Quantity',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Package_Quantity',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Value',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Green_Tax_Total',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Green_Tax_PC',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('VAT',params.currency)+'('+ params.vat +')</th>'+
+                                        '<th>'+that.getTranslation('Item_Total',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Owner',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Type',params.currency)+'</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
-                                        '<th colspan=16>Subotals('+ params.currency +')</th>'+
+                                        '<th colspan=16>'+that.getTranslation('Subtotals',params.currency)+'('+ params.currency +')</th>'+
                                         '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
@@ -179,9 +181,9 @@ class Invoices {
                                '</table>'+
                                '<table class="advanceTable-'+ quote_id + ' table ">'+
                                    '<thead>'+
-                                        '<th>Total Advance(EURO)</th>'+
-                                        '<th>Total Reversal</th>'+
-                                        '<th>Remaining</th>'+
+                                        '<th>'+that.getTranslation('Total_Advance',params.currency)+'(EURO)</th>'+
+                                        '<th>'+that.getTranslation('Total_Reversal',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Remaining',params.currency)+'</th>'+
                                    '</thead>'+
                                    '<tr>'+
                                         '<td class="totalAdvance">-</td>'+
@@ -249,6 +251,37 @@ class Invoices {
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
+
+         var invoiceColumns = [ 
+                                    2,//Index
+                                    6,//Product Id
+                                    7,//Product Name
+                                    //12,//Discount
+                                    15,//Package Quantity
+                                    13,//Unit Price
+                                    18, //Green Tax 
+                                    16,//Value
+                                    19,//Vat
+                                    20,//Item Total
+                                    17, //Green Tax Total
+                                    ]
+
+
+         if(packageDetails.currency == "Euro") {
+            invoiceColumns = [ 
+                                    2,//Index
+                                    6,//Product Id
+                                    7,//Product Name
+                                    //12,//Discount
+                                    15,//Package Quantity
+                                    13,//Unit Price
+                                    
+                                    16,//Value
+                                    19,//Vat
+                                    20,//Item Total
+                                    
+                                    ] 
+         }
 
          that.packageTable[thisPackage.id] = $('.packages_table-'+thisPackage.id).DataTable({
                      "ajax": {
@@ -358,7 +391,6 @@ class Invoices {
                                //console.log(thisPDFData);
 
                                doc.content[0] = thisPDFData.invoiceDetails;
-                               
                                 
                                 doc.styles =  thisPDFData.docStyles;
                                 
@@ -383,19 +415,7 @@ class Invoices {
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
-                              columns: [ 
-                                    2,//Index
-                                    6,//Product Id
-                                    7,//Product Name
-                                    //12,//Discount
-                                    15,//Package Quantity
-                                    13,//Unit Price
-                                    18, //Green Tax 
-                                    16,//Value
-                                    19,//Vat
-                                    20,//Item Total
-                                    17, //Green Tax Total
-                                    ]
+                              columns: invoiceColumns,
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -405,6 +425,8 @@ class Invoices {
                                //console.log(thisPDFData);
 
                                doc.content[0] = thisPDFData.invoiceDetails;
+
+                               console.log(doc);
                                
                                 
                                 doc.styles =  thisPDFData.docStyles;
@@ -428,26 +450,67 @@ class Invoices {
                                 doc.content[1].table.body[tableLength-1][2] = "";
                                 doc.content[1].table.body[tableLength-1][3] = "";
                                 doc.content[1].table.body[tableLength-1][4] = "";
+
+                                if(packageDetails.currency == "Ron") {
+                                     var totalGreenTax = doc.content[1].table.body[tableLength-1][9].text;
+                                    totalGreenTax = parseFloat(totalGreenTax);
+
+                                    doc.content[1].table.body[tableLength-1][9] = "";
+
+
+                                    //doc.content[1].table.body[tableLength-1][6] = "";
+
+                                    // var totalValue = doc.content[1].table.body[tableLength-1][6].text;
+                                    // totalValue = parseFloat(totalValue);
+
+                                    var totalVat = doc.content[1].table.body[tableLength-1][7].text;
+                                    totalVat = parseFloat(totalVat);
+
+                                   
+
+                                    var total = doc.content[1].table.body[tableLength-1][8].text;
+                                    total = parseFloat(total);
+
+                                    var total = [
+                                                
+                                                    [
+                                                        {text: that.getTranslation('Green_Tax_Total',packageDetails.currency) + ':', style: 'offerTotal'}, 
+                                                        {text: totalGreenTax, style: 'offerTotalValue'}
+                                                    ],
+                                                    [
+                                                        {text: that.getTranslation('Invoice_Total',packageDetails.currency)+' ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
+                                                        {text: total + totalGreenTax, style: 'offerPriceValue'}
+                                                    ],
+                                                    [
+                                                        {text: that.getTranslation('Due_Date',packageDetails.currency)+": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
+                                                        {text: that.getTranslation('Exchange_Rate',packageDetails.currency) + ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
+                                                    ]
+                                            ]
+                                } else {
+                                     var totalVat = doc.content[1].table.body[tableLength-1][6].text;
+                                    totalVat = parseFloat(totalVat);
+
+                                   
+
+                                    var total = doc.content[1].table.body[tableLength-1][7].text;
+                                    total = parseFloat(total);
+
+                                    var total = [
+                                                
+                                                    
+                                                    [
+                                                        {text: that.getTranslation('Invoice_Total',packageDetails.currency)+' ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
+                                                        {text: total, style: 'offerPriceValue'}
+                                                    ],
+                                                    [
+                                                        {text: that.getTranslation('Due_Date',packageDetails.currency)+": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
+                                                        {text: that.getTranslation('Exchange_Rate',packageDetails.currency) + ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
+                                                    ]
+                                            ]
+                                }
                                 
 
-                                var totalGreenTax = doc.content[1].table.body[tableLength-1][9].text;
-                                totalGreenTax = parseFloat(totalGreenTax);
-
-                                doc.content[1].table.body[tableLength-1][9] = "";
-
-
-                                //doc.content[1].table.body[tableLength-1][6] = "";
-
-                                // var totalValue = doc.content[1].table.body[tableLength-1][6].text;
-                                // totalValue = parseFloat(totalValue);
-
-                                var totalVat = doc.content[1].table.body[tableLength-1][7].text;
-                                totalVat = parseFloat(totalVat);
-
                                
-
-                                var total = doc.content[1].table.body[tableLength-1][8].text;
-                                total = parseFloat(total);
 
 
                                     // var totalGreenTax = 0;
@@ -469,22 +532,7 @@ class Invoices {
                                         table: 
                                         {
                                             widths: [250, 250],
-                                            body: [
-                                                // priceBeforeArray,
-                                                // extraDiscountArray,
-                                                [
-                                                    {text: 'Green Tax Total:', style: 'offerTotal'}, 
-                                                    {text: totalGreenTax, style: 'offerTotalValue'}
-                                                ],
-                                                [
-                                                    {text: 'Invoice Total ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
-                                                    {text: total + totalGreenTax, style: 'offerPriceValue'}
-                                                ],
-                                                [
-                                                    {text: "Due Date: " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
-                                                    {text: "Exchange Rate: " + packageDetails.exchangeRate, style: 'dueDateValue'}
-                                                ]
-                                            ]
+                                            body: total
                                         },
                                         layout: 'lightHorizontalLines'
                                     }
@@ -915,7 +963,7 @@ class Invoices {
     }
 
     getInvoiceDetailsForm(params){
-        console.log( params);
+        //console.log( params);
 
         var orderDetail = params;
 
@@ -1004,6 +1052,16 @@ class Invoices {
     }
 
     getPDFData(packageDetails, params){
+
+        var that = this;
+
+
+        //console.log(packageDetails)
+
+
+
+
+
             var invoiceDetails = [
              
                                         {
@@ -1025,7 +1083,7 @@ class Invoices {
                                                         
                                                     },
                                                     {
-                                                        text: 'Warehouse: Str. Virginia nr.3, km 13, A1, Bussiness Park,'
+                                                        text: that.getTranslation('Warehouse',packageDetails.currency)+': Str. Virginia nr.3, km 13, A1, Bussiness Park,'
                                                     },
                                                     {
                                                         text: 'Neamtiu Spedition, 077096, Dragomiresti Deal, Jud.Ilfov',
@@ -1033,7 +1091,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Share Capital:',  width: 100 },
+                                                            {text: that.getTranslation('Share_Capital',packageDetails.currency)+':',  width: 100 },
                                                             {text: '200 RON'},
                                                         ],
                                                         style: 'separator'
@@ -1041,21 +1099,21 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'VAT  Number:',  width: 100},
+                                                            {text: that.getTranslation('VAT_Number',packageDetails.currency)+':',  width: 100},
                                                             {text: 'RO33302129'},
                                                         ]
                                                     },
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Registration Number:',  width: 100},
+                                                            {text: that.getTranslation('Registration_Number',packageDetails.currency)+':',  width: 100},
                                                             {text: 'J40/7381/2014'},
                                                         ]
                                                     },
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Bank:', width: 100},
+                                                            {text: that.getTranslation('Bank',packageDetails.currency)+':', width: 100},
                                                             {text: 'BRD - Groupe Societe Generale S.A.'},
                                                             
                                                         ],
@@ -1101,7 +1159,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Date:',  width: 100},
+                                                            {text: that.getTranslation('Date',packageDetails.currency)+':',  width: 100},
                                                             {text: convertMysqlDate(packageDetails.invoiceDate)},
                                                             
                                                         ],
@@ -1110,7 +1168,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Quote Number:',  width: 100},
+                                                            {text: that.getTranslation('Quote_Number',packageDetails.currency)+':',  width: 100},
                                                             {text: packageDetails.quote_id},
                                                             
                                                         ],
@@ -1119,7 +1177,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Quote Name:',  width: 100},
+                                                            {text: that.getTranslation('Quote_Name',packageDetails.currency)+':',  width: 100},
                                                             {text: params.quoteName},
                                                             
                                                         ],
@@ -1136,7 +1194,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'VAT Number:',  width: 100 },
+                                                            {text: that.getTranslation('VAT_Number',packageDetails.currency)+':',  width: 100 },
                                                             {text: packageDetails.clientDetails.fiscal_code},
                                                         ],
                                                         style: 'columnRight'
@@ -1144,7 +1202,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Registration Number:',  width: 100 },
+                                                            {text: that.getTranslation('Registration_Number',packageDetails.currency)+':',  width: 100 },
                                                             {text: packageDetails.clientDetails.registry},
                                                         ],
                                                         style: 'columnRight'
@@ -1152,7 +1210,7 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Bank:', width: 100},
+                                                            {text: that.getTranslation('Bank',packageDetails.currency)+':', width: 100},
                                                             {text: packageDetails.clientDetails.bank},
                                                             
                                                         ],
@@ -1287,5 +1345,169 @@ class Invoices {
         };
 
         return pdfData
+    }
+
+
+    getTranslation(key, currency){
+        var translation = {
+            "Warehouse": {
+                "Ron": "Depozit",
+                "Euro": "Warehouse"
+            },
+            "Share_Capital": {
+                "Ron": "Capital Social",
+                "Euro": "Share Capital"
+            },
+            "VAT_Number": {
+                "Ron": "Numar TVA",
+                "Euro": "VAT Number"
+            },
+            "Registration_Number": {
+                "Ron": "Numar Inregistrare:",
+                "Euro": "Registration Number"
+            },
+            "Bank": {
+                "Ron": "Banca",
+                "Euro": "Bank"
+            },
+            "Date": {
+                "Ron": "Data",
+                "Euro": "Date"
+            },
+            "Quote_Number": {
+                "Ron": "Numar Oferta",
+                "Euro": "Quote Number"
+            },
+            "Quote_Name": {
+                "Ron": "Nume Oferta",
+                "Euro": "Quote Name"
+            },
+            "Quote_Id": {
+                "Ron": "Numar Oferta",
+                "Euro": "Quote Id"
+            },
+            "Index": {
+                "Ron": "Nr. Crt",
+                "Euro": "Index"
+            },
+            "Client_Name": {
+                "Ron": "Nume Client",
+                "Euro": "Client Name"
+            },
+            "Quote_Item_Id": {
+                "Ron": "Quote Item Id",
+                "Euro": "Quote Item Id"
+            },
+            "Product_Id": {
+                "Ron": "Cod Produs",
+                "Euro": "Product Id"
+            },
+            "Product_Name": {
+                "Ron": "Nume Produs",
+                "Euro": "Product Name"
+            },
+            "Quote_Quantity": {
+                "Ron": "Cantitate Oferta",
+                "Euro": "Quote Quantity"
+            },
+            "Reserved": {
+                "Ron": "Rezervat",
+                "Euro": "Reserved"
+            },
+            "Stock": {
+                "Ron": "Stoc",
+                "Euro": "Stock"
+            },
+            "Invoiced": {
+                "Ron": "Facturat",
+                "Euro": "Invoiced"
+            },
+            "Extra_Discount": {
+                "Ron": "Extra Discount",
+                "Euro": "Extra_ Discount"
+            },
+            "Unit_Price": {
+                "Ron": "Pret Unitar",
+                "Euro": "Unit_Price"
+            },
+            "Package_Quantity": {
+                "Ron": "Cantitate Pachet",
+                "Euro": "Package Quantity"
+            },
+            "Value": {
+                "Ron": "Valoare",
+                "Euro": "Value"
+            },
+            "Green_Tax_Total": {
+                "Ron": "Total Taxa Verde",
+                "Euro": "Green Tax Total"
+            },
+            "Green_Tax_PC": {
+                "Ron": "Taxa Verde/buc",
+                "Euro": "Green Tax/pc"
+            },
+            "VAT": {
+                "Ron": "TVA",
+                "Euro": "VAT"
+            },
+             "Item_Total": {
+                "Ron": "Total Linie",
+                "Euro": "Item Total"
+            },
+            "Owner": {
+                "Ron": "Responsabil",
+                "Euro": "Owner"
+            },
+            "Type": {
+                "Ron": "Tip",
+                "Euro": "Type"
+            },
+             "Subtotals": {
+                "Ron": "Subtotal",
+                "Euro": "Subtotals"
+            },
+            "Total_Advance": {
+                "Ron": "Total Avans",
+                "Euro": "Total Advance"
+            },
+            "Total_Reversal": {
+                "Ron": "Total Storno",
+                "Euro": "Total Reversal"
+            },
+             "Remaining": {
+                "Ron": "Ramas",
+                "Euro": "Remaining"
+            },
+            "Invoice_Total": {
+                "Ron": "Total Factura",
+                "Euro": "Invoice Total"
+            },
+             "Due_Date": {
+                "Ron": "Data Scadenta",
+                "Euro": "Due Date"
+            },
+            "Exchange_Rate": {
+                "Ron": "Curs Valutar",
+                "Euro": "Exchange Rate"
+            },
+            "Bank": {
+                "Ron": "Banca",
+                "Euro": "Bank"
+            },
+             "Bank": {
+                "Ron": "Banca",
+                "Euro": "Bank"
+            },
+            "Bank": {
+                "Ron": "Banca",
+                "Euro": "Bank"
+            },
+
+        };
+
+        //console.log(key, currency, translation[key][currency]);
+
+
+        return translation[key][currency]
     }
 }
