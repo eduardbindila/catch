@@ -70,7 +70,9 @@ $green_tax_total = "(
    	 )";
 
 
-// $green_tax_value = $exchange_rate == 1 ?  0 : $green_tax;
+$green_tax_value = $exchange_rate == 1 ?  0 : $green_tax_value;
+
+$green_tax_total = $exchange_rate == 1 ?  0 : $green_tax_total;
 
 $vatValue = 'TRUNCATE(('.$value.' *  '.$vat .'), 2)';
 

@@ -8859,13 +8859,15 @@ div.dtsp-panesContainer div.dtsp-searchPanes div.dtsp-searchPane div.dataTables_
 }
 
 button.removePackage.btn.btn-danger.waves-effect,
-button.revertInvoice.btn.btn-primary.waves-effect {
+button.revertInvoice.btn.btn-primary.waves-effect,
+button.prevStatusButton.btn.btn-default.waves-effect {
     margin-left: 1px;
     font-size: 6px !important;
 }
 
 button.removePackage.btn.btn-danger.waves-effect i,
-button.revertInvoice.btn.btn-primary.waves-effect i {
+button.revertInvoice.btn.btn-primary.waves-effect i,
+button.prevStatusButton.btn.btn-default.waves-effect i {
     font-size: 17px !important;
 }
 

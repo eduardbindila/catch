@@ -49,7 +49,7 @@ if(isset($_POST['invoiceNumber']))
             
             <div class="input-group">
                 <div class="form-line" id="bs_datepicker_container">
-                    <input type="date" class="form-control invoice-date" name="date" value="<?php echo $invoiceData['invoiceDate']?>" required placeholder="Invoicing Date">
+                    <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" class="form-control invoice-date" name="date" value="<?php echo $invoiceData['invoiceDate']?>" required placeholder="Invoicing Date">
                 </div>
             </div>
             
@@ -57,7 +57,7 @@ if(isset($_POST['invoiceNumber']))
         <div class="col-lg-6">
             <div class="input-group">
                 <div class="form-line" id="bs_datepicker_container">
-                    <input type="date" class="form-control due-date" name="due_date" required placeholder="Due Date" value="<?php echo $invoiceData['dueDate']?>">
+                    <input type="text" onfocus="(this.type='date')"  onblur="(this.type='text')" class="form-control due-date" name="due_date" required placeholder="Due Date" value="<?php echo $invoiceData['dueDate']?>">
                 </div>
             </div>
              <div class="input-group">
