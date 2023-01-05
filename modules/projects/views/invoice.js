@@ -78,7 +78,7 @@ class Invoices {
 
        var invoiceForm = '';
 
-       if(packageStatus == 3) {
+       if(packageStatus > 2) {
         invoiceForm = that.getInvoiceDetailsForm(params);
        }
 
@@ -289,6 +289,12 @@ console.log(packageDetails);
                                     ] 
          }
 
+         var enableInvoiceCreation = false;
+
+         if( packageDetails.packageStatus > 2) {
+            enableInvoiceCreation = $(".form-package-"+packageDetails.packageId).valid()
+         }
+
          that.packageTable[thisPackage.id] = $('.packages_table-'+thisPackage.id).DataTable({
                      "ajax": {
                         "url": "/ajax/getPackageItems/",
@@ -418,7 +424,7 @@ console.log(packageDetails);
                          {
                             extend: 'pdfHtml5',
                             name:"4", 
-                            enabled: thisPackage.package_status_id > 2,
+                            enabled: enableInvoiceCreation,
                             text: 'Generate Invoice',
                             filename: 'Invoice-'+thisPackage.quote_id + '-' + thisPackage.id,
                             className: 'btn btn-lg btn-primary waves-effect',
@@ -979,7 +985,7 @@ console.log(packageDetails);
     }
 
     changeStatus(params){
-        
+
         //console.log( params);
         //this.packageTable[params.packageId].ajax.reload();
         this.packageTable[params.packageId].buttons(params.nextStatus+':name').trigger();
