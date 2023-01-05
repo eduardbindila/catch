@@ -2496,30 +2496,44 @@ $(document).ready(function() {
 
      $('body').on('click', '.package_status_change', function(){
 
+
+
          var params = {
                 'nextStatus': $(this).attr('data-nextStatus'),
                 'packageId': $(this).attr('data-package')
             }
 
+            var valid = true;
 
-            Invoice.changeStatus(params);
+            if(params.nextStatus == "4") {
+               valid = $(".form-package-"+params.packageId).valid()
+            }
 
-         $.ajax({
-                url: "/ajax/updatePackageStatus",
-                type: "post",
-                dataType: "json",
-                data: params
-           }).success(function(json){
-               
-              if(json==0) {
-                  $('.updatePackageItemError').removeClass('hidden');
-              } else {
-                $('.updatePackageItemError').addClass('hidden');
-                location.reload();
-              }
-            }).error(function(xhr, status, error) {
+
+            if(valid) {
+                 Invoice.changeStatus(params);
+
+                 $.ajax({
+                    url: "/ajax/updatePackageStatus",
+                    type: "post",
+                    dataType: "json",
+                    data: params
+               }).success(function(json){
+                   
+                  if(json==0) {
+                      $('.updatePackageItemError').removeClass('hidden');
+                  } else {
+                    $('.updatePackageItemError').addClass('hidden');
+                    location.reload();
+                  }
+                }).error(function(xhr, status, error) {
+                    $('.updatePackageItemError').removeClass('hidden');
+                })
+            } else {
                 $('.updatePackageItemError').removeClass('hidden');
-            })
+            }
+
+           
 
         
     });

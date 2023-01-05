@@ -169,9 +169,11 @@ class Invoices {
                                         '<th>'+that.getTranslation('Owner',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Type',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Green_Tax_PC',params.currency)+'</th>'+
+                                        '<th>ID</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
                                         '<th colspan=16>'+that.getTranslation('Subtotals',params.currency)+'('+ params.currency +')</th>'+
+                                        '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
@@ -234,6 +236,8 @@ class Invoices {
             'packageStatus': packages[index].package_status_id,
             'clientDetails': quoteList[params.quoteIndex].client_details,
             'invoiceDate': packages[index].invoice_date,
+            'pos_date': packages[index].pos_date,
+            'awb_date': packages[index].awb_date,
             'dueDate': packages[index].invoice_due_date,
             'exchangeRate': quoteList[params.quoteIndex].client_details.country == "RO" ? packages[index].exchange_rate : 1,
             'invoiceNumber': packages[index].invoice_number,
@@ -249,7 +253,7 @@ class Invoices {
 
             
 
-//console.log(packageDetails);
+console.log(packageDetails);
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
@@ -344,13 +348,14 @@ class Invoices {
                             extend: 'csv',
                             className: 'btn btn-lg btn-primary waves-effect',
                             name:"2",
+                            enabled: thisPackage.package_status_id > 1,
                             text:'Generate POS',
                             filename: 'POS-'+ thisPackage.quote_id + '-' + thisPackage.id,
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
                               columns: [ 
-                                  1,//Quote ID
+                                  24,//Quote ID
                                   2,//Index
                                   3,//Client Name
                                   4,//Warehous
@@ -359,6 +364,7 @@ class Invoices {
                                   21 //Owner
                               ]
                             }, footer: false,
+
                             action: function ( e, dt, node, config ) {
                                 
                                this.ajax.reload(() => {
@@ -369,6 +375,7 @@ class Invoices {
                         {
                             extend: 'pdfHtml5',
                             name:"3", 
+                            enabled: thisPackage.package_status_id > 2,
                             text: 'Generate AWB',
                             filename: 'AWB-'+thisPackage.quote_id + '-' + thisPackage.id,
                             className: 'btn btn-lg btn-primary waves-effect',
@@ -388,7 +395,7 @@ class Invoices {
 
                                //console.log(params);
 
-                               var thisPDFData = that.getPDFData(packageDetails, params);
+                               var thisPDFData = that.getPDFData(packageDetails, params, "awb");
 
                                //console.log(thisPDFData);
 
@@ -411,6 +418,7 @@ class Invoices {
                          {
                             extend: 'pdfHtml5',
                             name:"4", 
+                            enabled: thisPackage.package_status_id > 2,
                             text: 'Generate Invoice',
                             filename: 'Invoice-'+thisPackage.quote_id + '-' + thisPackage.id,
                             className: 'btn btn-lg btn-primary waves-effect',
@@ -422,7 +430,7 @@ class Invoices {
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
                                 
-                                var thisPDFData = that.getPDFData(packageDetails, params);
+                                var thisPDFData = that.getPDFData(packageDetails, params, "invoice");
 
                                //console.log(thisPDFData);
 
@@ -866,6 +874,13 @@ class Invoices {
                             "data": "green_tax_value",
                             "visible": false
                         },
+                        { 
+                            "data": "null",
+                            "visible": false,
+                            "render" : function(data, type, row, meta) {
+                                return thisPackage.quote_id + '-' + thisPackage.id
+                              }
+                        },
 
                     ],
                     "initComplete": function(settings, json) {
@@ -964,6 +979,7 @@ class Invoices {
     }
 
     changeStatus(params){
+        
         //console.log( params);
         //this.packageTable[params.packageId].ajax.reload();
         this.packageTable[params.packageId].buttons(params.nextStatus+':name').trigger();
@@ -1058,12 +1074,25 @@ class Invoices {
         return itemTypesList
     }
 
-    getPDFData(packageDetails, params){
+    getPDFData(packageDetails, params, type){
 
         var that = this;
 
 
         //console.log(packageDetails)
+
+        var typeName = "Invoice"
+
+        var generatedDate = packageDetails.invoiceDate
+
+        var fileNumber = packageDetails.invoiceNumber
+
+        if (type == "awb")
+        {
+            typeName = "AWB"
+            generatedDate = packageDetails.awb_date
+            fileNumber = packageDetails.quote_id+"-"+packageDetails.packageId
+        }
 
 
 
@@ -1157,8 +1186,8 @@ class Invoices {
                                                     {
                                                         columns: 
                                                         [
-                                                            {text: 'Number:',  width: 100},
-                                                            {text: packageDetails.invoiceNumber},
+                                                            {text: that.getTranslation(typeName+'_Number',packageDetails.currency) + ':',  width: 100},
+                                                            {text: fileNumber},
                                                             
                                                         ],
                                                         style: 'boldInfoRight'
@@ -1167,7 +1196,7 @@ class Invoices {
                                                         columns: 
                                                         [
                                                             {text: that.getTranslation('Date',packageDetails.currency)+':',  width: 100},
-                                                            {text: convertMysqlDate(packageDetails.invoiceDate)},
+                                                            {text: convertMysqlDate(generatedDate)},
                                                             
                                                         ],
                                                         style: 'boldInfoRight'
@@ -1497,13 +1526,13 @@ class Invoices {
                 "Ron": "Curs Valutar",
                 "Euro": "Exchange Rate"
             },
-            "Bank": {
-                "Ron": "Banca",
-                "Euro": "Bank"
+            "AWB_Number": {
+                "Ron": "Numar Aviz",
+                "Euro": "AWB Number"
             },
-             "Bank": {
-                "Ron": "Banca",
-                "Euro": "Bank"
+             "Invoice_Number": {
+                "Ron": "Numar Factura",
+                "Euro": "Invoice Number"
             },
             "Bank": {
                 "Ron": "Banca",

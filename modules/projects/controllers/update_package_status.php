@@ -7,14 +7,25 @@ $conn = $QueryBuilder->dbConnection();
 
 //printError($_POST);
 
+
+if($_POST['nextStatus'] == 2) {
+	$set = ["`package_status_id`=".$_POST['nextStatus']."", "`pos_date`=COALESCE(pos_date, NOW())"];
+} else if ($_POST['nextStatus'] == 3) {
+	$set = ["`package_status_id`=".$_POST['nextStatus']."", "`awb_date`=COALESCE(awb_date, NOW())"];
+} else {
+	$set = ["`package_status_id`=".$_POST['nextStatus'].""];
+}
+
 	$updatePackageItem = $QueryBuilder->update(
 		$conn,
 		$options = array(
 			"table" => "packages",
-			"set" => ["`package_status_id`=".$_POST['nextStatus'].""],
+			"set" => $set,
 			"where" => "id = ".$_POST['packageId']
 		)
 	);
+
+	echo $conn->error;
 
 	if($_POST['nextStatus'] == 4) {
 		$packageItems = $QueryBuilder->select(
