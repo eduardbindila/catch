@@ -168,9 +168,11 @@ class Invoices {
                                         '<th>'+that.getTranslation('Item_Total',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Owner',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Type',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Green_Tax_PC',params.currency)+'</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
                                         '<th colspan=16>'+that.getTranslation('Subtotals',params.currency)+'('+ params.currency +')</th>'+
+                                        '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
@@ -259,7 +261,7 @@ class Invoices {
                                     //12,//Discount
                                     15,//Package Quantity
                                     13,//Unit Price
-                                    18, //Green Tax 
+                                    23, //Green Tax 
                                     16,//Value
                                     19,//Vat
                                     20,//Item Total
@@ -860,6 +862,11 @@ class Invoices {
                             }, 
 
                         },
+                        { 
+                            "data": "green_tax_value",
+                            "visible": false
+                        },
+
                     ],
                     "initComplete": function(settings, json) {
 
