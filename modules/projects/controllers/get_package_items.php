@@ -32,7 +32,34 @@ $unit_price = 'TRUNCATE((
 	       		THEN  
 	        		package_items.external_item_unit_price
 	        ELSE
+	         quote_items.unit_price - (quotes.extra_discount *quote_items.unit_price / 100)
+	        END
+   	 ) * '.$exchange_rate. '), 2)';
+
+
+$unit_price_before_discount = 'TRUNCATE((
+	(
+	        CASE 
+	        	WHEN 
+	        		package_items.quote_item_id is NULL
+	       		THEN  
+	        		package_items.external_item_unit_price
+	        ELSE
 	         quote_items.unit_price
+	        END
+   	 ) * '.$exchange_rate. '), 2)';
+
+
+
+$extra_discount_value = 'TRUNCATE((
+	(
+	        CASE 
+	        	WHEN 
+	        		package_items.quote_item_id is NULL
+	       		THEN  
+	        		0
+	        ELSE
+	         quotes.extra_discount *quote_items.unit_price / 100
 	        END
    	 ) * '.$exchange_rate. '), 2)';
 
@@ -101,6 +128,8 @@ $total = "(".$value." + ".$vatValue." )";
 							package_item_types.name as type_name,
 							".$value." as value, 
 							".$unit_price." as unit_price, 
+							".$unit_price_before_discount." as unit_price_before_discount, 
+							".$extra_discount_value." as extra_discount_value, 
 							".$vatValue." as vat_value, 
 							". $green_tax_id." as green_tax_id,
 							".$green_tax_value." as green_tax_value,

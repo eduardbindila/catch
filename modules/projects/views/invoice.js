@@ -161,10 +161,10 @@ class Invoices {
                                         '<th>'+that.getTranslation('Unit_Price',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Package_Quantity',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Package_Quantity',params.currency)+'</th>'+
-                                        '<th>'+that.getTranslation('Value',params.currency)+'</th>'+
+                                        '<th>'+that.getTranslation('Value',params.currency)+' ('+ params.currency +')</th>'+
                                         '<th>'+that.getTranslation('Green_Tax_Total',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Green_Tax_PC',params.currency)+'</th>'+
-                                        '<th>'+that.getTranslation('VAT',params.currency)+'('+ params.vat +')</th>'+
+                                        '<th>'+that.getTranslation('VAT',params.currency)+' ('+ params.vat +')</th>'+
                                         '<th>'+that.getTranslation('Item_Total',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Owner',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Type',params.currency)+'</th>'+
@@ -226,7 +226,7 @@ class Invoices {
          }
 
          
-         //console.log(packages);
+         console.log(thisPackage);
 
          var packageDetails = {
             'packageId': thisPackage.id,
@@ -253,7 +253,7 @@ class Invoices {
 
             
 
-console.log(packageDetails);
+//console.log(packageDetails);
          var packageLine = Invoice.setPackageLine(packageDetails);
 
          $(packageContainer).append(packageLine);
@@ -686,10 +686,12 @@ console.log(packageDetails);
                         { 
                             "data": "invoiced_quantity",
                         },
+
                         { 
                             "data": "extra_discount",
-                            "visible": false
+                            "visible": Number(thisPackage.extra_discount) > 0 ? true : false
                         },
+                       
                         { 
                             "data": "unit_price",
                             "render" : function(data, type, row, meta) {
@@ -761,6 +763,8 @@ console.log(packageDetails);
                             "data": "package_quantity",
                             'visible': false
                         },
+
+                         
                         
                         { 
                             "data": "value",
@@ -1469,11 +1473,11 @@ console.log(packageDetails);
                 "Euro": "Extra_ Discount"
             },
             "Unit_Price": {
-                "Ron": "Pret Unitar",
-                "Euro": "Unit_Price"
+                "Ron": "Pret Unitar fara TVA",
+                "Euro": "Unit Price"
             },
             "Package_Quantity": {
-                "Ron": "Cantitate Pachet",
+                "Ron": "Cantitate",
                 "Euro": "Package Quantity"
             },
             "Value": {
@@ -1493,7 +1497,7 @@ console.log(packageDetails);
                 "Euro": "VAT"
             },
              "Item_Total": {
-                "Ron": "Total Linie",
+                "Ron": "Total TVA Inclus",
                 "Euro": "Item Total"
             },
             "Owner": {
