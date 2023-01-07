@@ -157,7 +157,7 @@ class Invoices {
                                         '<th>'+that.getTranslation('Reserved',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Stock',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Invoiced',params.currency)+'</th>'+
-                                        '<th>'+that.getTranslation('Extra_Discount',params.currency)+'(%)</th>'+
+                                        '<th>'+that.getTranslation('Extra_Discount',params.currency)+' (%)</th>'+
                                         '<th>'+that.getTranslation('Unit_Price',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Package_Quantity',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Package_Quantity',params.currency)+'</th>'+
@@ -258,36 +258,47 @@ class Invoices {
 
          $(packageContainer).append(packageLine);
 
-         var invoiceColumns = [ 
-                                    2,//Index
-                                    6,//Product Id
-                                    7,//Product Name
-                                    //12,//Discount
-                                    15,//Package Quantity
-                                    13,//Unit Price
-                                    23, //Green Tax 
-                                    16,//Value
-                                    19,//Vat
-                                    20,//Item Total
-                                    17, //Green Tax Total
-                                    ]
-
-
-         if(packageDetails.currency == "Euro") {
-            invoiceColumns = [ 
-                                    2,//Index
-                                    6,//Product Id
-                                    7,//Product Name
-                                    //12,//Discount
-                                    15,//Package Quantity
-                                    13,//Unit Price
-                                    
-                                    16,//Value
-                                    19,//Vat
-                                    20,//Item Total
-                                    
-                                    ] 
+         var columnsArrayParams = {
+            "euro": !packageDetails.showRon,
+            "ron": packageDetails.showRon,
+            "extra_discount": thisPackage.extra_discount >  0
          }
+
+         console.log(columnsArrayParams);
+
+         var columnsObject =  that.getColumnsArray(columnsArrayParams);
+
+
+        var invoiceColumns = columnsObject.columns_order;
+        //[ 
+         //                            2,//Index
+         //                            6,//Product Id
+         //                            7,//Product Name
+         //                            // 12,//Discount
+         //                            15,//Package Quantity
+         //                            13,//Unit Price
+         //                            23, //Green Tax 
+         //                            16,//Value
+         //                            19,//Vat
+         //                            20,//Item Total
+         //                            17, //Green Tax Total
+         //                            ]
+
+
+         // if(packageDetails.currency == "Euro") {
+         //    invoiceColumns = [ 
+         //                            2,//Index
+         //                            6,//Product Id
+         //                            7,//Product Name
+         //                            // 12,//Discount
+         //                            15,//Package Quantity
+         //                            13,//Unit Price
+         //                            16,//Value
+         //                            19,//Vat
+         //                            20,//Item Total
+                                    
+         //                            ] 
+         // }
 
          var enableInvoiceCreation = false;
 
@@ -411,7 +422,7 @@ class Invoices {
                                 
                                  doc.defaultStyle = 
                                  {
-                                    fontSize: 9
+                                    fontSize: 8
                                 };
 
                                 doc.content[1].layout = 'lightHorizontalLines';
@@ -449,14 +460,35 @@ class Invoices {
                                 
                                  doc.defaultStyle = 
                                  {
-                                    fontSize: 9
+                                    fontSize: 8
                                 };
 
-                                doc.content[1].layout = 'lightHorizontalLines';
+                                doc.content[1].layout =  {
+                hLineWidth: function (i, node) {
+                    return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                },
+                vLineWidth: function (i, node) {
+                    return 0;
+                },
+                hLineColor: function (i, node) {
+                    return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                },
+
+                // vLineColor: function (i, node) {
+                //     return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                // },
+                // hLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+                // vLineStyle: function (i, node) { return {dash: { length: 10, space: 4 }}; },
+                // paddingLeft: function(i, node) { return 4; },
+                // paddingRight: function(i, node) { return 4; },
+                // paddingTop: function(i, node) { return 2; },
+                // paddingBottom: function(i, node) { return 2; },
+                // fillColor: function (rowIndex, node, columnIndex) { return null; }
+            }
 
                                 var tableLength = doc.content[1].table.body.length;
 
-                                //doc.content[1].table.widths = ['*', 'auto', 'auto', '*', '*', '*', '*', '*']
+                                doc.content[1].table.widths = columnsObject.widths
 
                                 //console.log(doc.content[1]);
 
@@ -466,97 +498,95 @@ class Invoices {
                                 doc.content[1].table.body[tableLength-1][2] = "";
                                 doc.content[1].table.body[tableLength-1][3] = "";
                                 doc.content[1].table.body[tableLength-1][4] = "";
+                                doc.content[1].table.body[tableLength-1][5] = "";
 
-                                if(packageDetails.currency == "Ron") {
-                                     var totalGreenTax = doc.content[1].table.body[tableLength-1][9].text;
-                                    totalGreenTax = parseFloat(totalGreenTax);
+                                var columnPosition = columnsObject.columns_data;
 
-                                    doc.content[1].table.body[tableLength-1][9] = "";
+                                var totalGreenTaxWithVat = 0;
+
+                                var greenTaxTable = [];
+
+                                if(columnPosition.green_tax > 0) {
+                                    var totalGreenTax = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.green_tax_total].text);
+
+                                    var totalGreenTaxVat = parseFloat(totalGreenTax*0.19).toFixed(2);
+
+                                    totalGreenTaxWithVat = (parseFloat(totalGreenTax) + parseFloat(totalGreenTaxVat)).toFixed(2);
+
+                                    totalGreenTaxWithVat = parseFloat(totalGreenTaxWithVat);
+
+                                    var colspan = 6; 
+
+                                     if(columnPosition.extra_discount > 0) {
+                                        colspan = 7;
+                                    }
+
+                                    var greenTaxArray = []
+
+                                    console.log(columnsObject.widths);
 
 
-                                    //doc.content[1].table.body[tableLength-1][6] = "";
+                                    for (var i = 0; i < columnsObject.widths.length; i++) {
+                                            greenTaxArray[i] = {}
+                                        }
+                                    greenTaxArray[0] = {text: that.getTranslation('Green_Tax_Total',packageDetails.currency)+
+                                                        ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
 
-                                    // var totalValue = doc.content[1].table.body[tableLength-1][6].text;
-                                    // totalValue = parseFloat(totalValue);
+                                    greenTaxArray[colspan+1] = {text: totalGreenTax.toFixed(2), alignment: 'center'};
 
-                                    var totalVat = doc.content[1].table.body[tableLength-1][7].text;
-                                    totalVat = parseFloat(totalVat);
+                                    greenTaxArray[colspan+2] = {text: totalGreenTaxVat, alignment: 'center'},
 
-                                   
+                                    greenTaxArray[colspan+3] = {text: totalGreenTaxWithVat, alignment: 'center'},
 
-                                    var total = doc.content[1].table.body[tableLength-1][8].text;
-                                    total = parseFloat(total);
 
-                                    var total = [
-                                                
-                                                    [
-                                                        {text: that.getTranslation('Green_Tax_Total',packageDetails.currency) + ':', style: 'offerTotal'}, 
-                                                        {text: totalGreenTax, style: 'offerTotalValue'}
-                                                    ],
-                                                    [
-                                                        {text: that.getTranslation('Invoice_Total',packageDetails.currency)+' ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
-                                                        {text: total + totalGreenTax, style: 'offerPriceValue'}
-                                                    ],
-                                                    [
-                                                        {text: that.getTranslation('Due_Date',packageDetails.currency)+": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
-                                                        {text: that.getTranslation('Exchange_Rate',packageDetails.currency) + ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
-                                                    ]
-                                            ]
-                                } else {
-                                     var totalVat = doc.content[1].table.body[tableLength-1][6].text;
-                                    totalVat = parseFloat(totalVat);
+                                    doc.content[1].table.body[tableLength-1][columnPosition.green_tax_total] = "";
 
-                                   
 
-                                    var total = doc.content[1].table.body[tableLength-1][7].text;
-                                    total = parseFloat(total);
+                                    console.log(greenTaxArray);
 
-                                    var total = [
-                                                
-                                                    
-                                                    [
-                                                        {text: that.getTranslation('Invoice_Total',packageDetails.currency)+' ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
-                                                        {text: total, style: 'offerPriceValue'}
-                                                    ],
-                                                    [
-                                                        {text: that.getTranslation('Due_Date',packageDetails.currency)+": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
-                                                        {text: that.getTranslation('Exchange_Rate',packageDetails.currency) + ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
-                                                    ]
-                                            ]
+
+                                     doc.content[1].table.body[tableLength] = greenTaxArray;
                                 }
-                                
+
 
                                
 
+                                var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalGreenTaxWithVat;
 
-                                    // var totalGreenTax = 0;
-
-                                //console.log(totalValue, totalVat);
-
-                                var extraDiscountArray = ["",""];
-
-                                var priceBeforeArray = ["",""];
-
-                                // if(1) {
-                                //     priceBeforeArray = [{text: 'Total Price:', style: 'bold'}, 0];
-                                // }
+            
 
                                 doc.content[2] = [
-                                    {canvas: [ { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 } ]},
+                                    // {canvas: [ { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 } ]},
                                     { 
                                        
                                         table: 
                                         {
                                             widths: [250, 250],
-                                            body: total
+                                            body: [
+                                                
+                                                    
+                                                    [
+                                                        {text: that.getTranslation('Invoice_Total',packageDetails.currency)+
+                                                        ' ('+ packageDetails.currency +'):', style: 'offerPrice'}, 
+                                                        {text: total.toFixed(2), style: 'offerPriceValue'}
+                                                    ],
+                                                    [
+                                                        {text: that.getTranslation('Due_Date',packageDetails.currency)+
+                                                        ": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
+                                                        {text: that.getTranslation('Exchange_Rate',packageDetails.currency) +
+                                                         ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
+                                                    ]
+                                            ]
                                         },
                                         layout: 'lightHorizontalLines'
                                     }
                                 ];
+
+
+                                console.log(doc.content);
                                
                             },
                         },
-
                         // {
                         //     extend: 'selected',
                         //     className: 'deleteSelectedFiles btn btn-lg btn-danger waves-effect',
@@ -1332,29 +1362,29 @@ class Invoices {
                                        },
                                        tableHeader: {
                                             //fillColor: '#dbdbdb',
-                                            margin: [3,3,3,3],
+                                            margin: [1,1,1,1],
                                             bold: true,
                                             alignment: 'center',
-                                            fontSize: 8
+                                            fontSize: 7
                                         
                                         },
                                         tableFooter: {
                                             //fillColor: '#dbdbdb',
-                                            margin: [0,5,0,5],
+                                            margin: [1,1,1,1],
                                             bold: true,
-                                            fontSize: 8,
+                                            fontSize: 7,
                                             alignment:'center'
                                         },
                                         tableBodyEven: {
                                             alignment: 'center',
                                             //fillColor: '#eeeeee',
-                                            margin: [0,5,0,5],
-                                            fontSize: 8
+                                            margin: [1,1,1,1],
+                                            fontSize: 7
                                         },
                                         tableBodyOdd: {
                                             alignment: 'center',
-                                            margin: [0,5,0,5],
-                                            fontSize: 8
+                                            margin: [1,1,1,1],
+                                            fontSize: 7
                                         },
                                         offerPrice: {
                                             fontSize: 12,
@@ -1469,19 +1499,19 @@ class Invoices {
                 "Euro": "Invoiced"
             },
             "Extra_Discount": {
-                "Ron": "Extra Discount",
-                "Euro": "Extra_ Discount"
+                "Ron": "Discount",
+                "Euro": "Discount"
             },
             "Unit_Price": {
-                "Ron": "Pret Unitar fara TVA",
+                "Ron": "Pret / buc fara TVA",
                 "Euro": "Unit Price"
             },
             "Package_Quantity": {
-                "Ron": "Cantitate",
-                "Euro": "Package Quantity"
+                "Ron": "Cant.",
+                "Euro": "Qty."
             },
             "Value": {
-                "Ron": "Valoare",
+                "Ron": "Valoare fara TVA",
                 "Euro": "Value"
             },
             "Green_Tax_Total": {
@@ -1489,15 +1519,15 @@ class Invoices {
                 "Euro": "Green Tax Total"
             },
             "Green_Tax_PC": {
-                "Ron": "Taxa Verde/buc",
-                "Euro": "Green Tax/pc"
+                "Ron": "Taxa Verde / buc",
+                "Euro": "Green Tax / pc"
             },
             "VAT": {
                 "Ron": "TVA",
                 "Euro": "VAT"
             },
              "Item_Total": {
-                "Ron": "Total TVA Inclus",
+                "Ron": "Total + TVA",
                 "Euro": "Item Total"
             },
             "Owner": {
@@ -1556,4 +1586,166 @@ class Invoices {
 
         return translation[key][currency]
     }
+
+    getColumnsArray(params){
+
+        var columnMapping = {
+                "index" : {
+                    "column_id": 2,
+                    "initial_position": 1,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 0,
+                        "ron": 0
+                    },
+                    "width": 12
+
+                },
+                "product_id" : {
+                    "column_id": 6,
+                    "initial_position": 2,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 0,
+                        "ron": 0
+                    },
+                    "width": 45
+
+                },
+                "product_name" : {
+                    "column_id": 7,
+                    "initial_position": 3,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 0,
+                        "ron": 0
+                    },
+                    "width": 100
+
+                },
+                "discount" : {
+                    "column_id": 12,
+                    "initial_position": 0,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 4,
+                        "ron": 0
+                    },
+                    "width": 30
+                },
+                "package_quantity" : {
+                    "column_id": 15,
+                    "initial_position": 4,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 0
+                    },
+                    "width": 21
+                },
+                "unit_price" : {
+                    "column_id": 13,
+                    "initial_position": 5,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 0
+                    },
+                    "width": 40
+                },
+                "green_tax" : {
+                    "column_id": 23,
+                    "initial_position": 0,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 6
+                    },
+                    "width": 21
+                },
+                "value" : {
+                    "column_id": 16,
+                    "initial_position": 6,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 1
+                    },
+                    "width": 45
+                },
+                "vat" : {
+                    "column_id": 19,
+                    "initial_position": 7,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 1
+                    },
+                    "width": 35
+                },
+                "item_total" : {
+                    "column_id": 20,
+                    "initial_position": 8,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 1
+                    },
+                    "width": 45
+                },
+                "green_tax_total" : {
+                    "column_id": 17,
+                    "initial_position": 0,
+                    "position_increment": {
+                        "euro" : 0,
+                        "extra_discount": 1,
+                        "ron": 10
+                    },
+                    "width": 25
+                },
+
+            }
+
+            var columnsArray = {
+                "columns_order": [],
+                "widths": [],
+                "columns_data": {}
+            }
+
+            Object.keys(columnMapping).forEach(function(key, index){
+
+                var val = columnMapping[key];
+
+                var euro_increment = params.euro ? val.position_increment.euro : 0;
+
+                var extra_discount_increment = params.extra_discount ? val.position_increment.extra_discount : 0;
+
+                var ron_increment = params.ron ? val.position_increment.ron : 0;
+
+
+                var final_position_increment = euro_increment + extra_discount_increment + ron_increment
+
+                var arrayPosition = (val.initial_position - 1) + final_position_increment;
+
+                console.log(val.column_id, arrayPosition)
+
+                if( (arrayPosition == 0 && columnsArray.columns_order.length == 0) || arrayPosition > 0)
+                {
+                    columnsArray.columns_order[arrayPosition] = val.column_id
+                    columnsArray.widths[arrayPosition] = val.width
+                }
+
+                columnsArray.columns_data[key] = arrayPosition
+
+                
+            });
+
+            console.log(columnsArray);
+
+            return columnsArray
+
+    }
+
+
 }
+

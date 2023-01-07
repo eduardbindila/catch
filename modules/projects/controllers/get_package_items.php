@@ -11,18 +11,6 @@ $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $exchange_rate = floatVal($_POST['exchange_rate']); 
 
-$value = 'TRUNCATE((
-	(
-	        CASE 
-	        	WHEN 
-	        		package_items.quote_item_id is NULL
-	       		THEN  
-	        		package_items.package_quantity * package_items.external_item_unit_price
-	        ELSE
-	         package_items.package_quantity * quote_items.unit_price
-	        END
-   	 ) * '.$exchange_rate. '), 2)';
-
 
 $unit_price = 'TRUNCATE((
 	(
@@ -64,6 +52,18 @@ $extra_discount_value = 'TRUNCATE((
    	 ) * '.$exchange_rate. '), 2)';
 
 
+
+$value = 'TRUNCATE((
+	(
+	        CASE 
+	        	WHEN 
+	        		package_items.quote_item_id is NULL
+	       		THEN  
+	        		package_items.package_quantity * package_items.external_item_unit_price
+	        ELSE
+	         package_items.package_quantity * '.$unit_price.'
+	        END
+   	 ) * '.$exchange_rate. '), 2)';
 
 $green_tax_id = 'CASE 
         	WHEN 
