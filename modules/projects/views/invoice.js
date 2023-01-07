@@ -1620,7 +1620,7 @@ class Invoices {
                         "extra_discount": 0,
                         "ron": 0
                     },
-                    "width": 100
+                    "width": "*"
 
                 },
                 "discount" : {
@@ -1641,7 +1641,7 @@ class Invoices {
                         "extra_discount": 1,
                         "ron": 0
                     },
-                    "width": 21
+                    "width": 'auto'
                 },
                 "unit_price" : {
                     "column_id": 13,
