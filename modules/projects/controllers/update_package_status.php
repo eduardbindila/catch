@@ -25,7 +25,7 @@ if($_POST['nextStatus'] == 2) {
 		)
 	);
 
-	echo $conn->error;
+	
 
 	if($_POST['nextStatus'] == 4) {
 		$packageItems = $QueryBuilder->select(
@@ -36,24 +36,29 @@ if($_POST['nextStatus'] == 2) {
 			"where" => "package_id = ".$_POST['packageId']
 		));
 
+		$updateQuoteItems = true;
+
 		if($packageItems) {
 			foreach ($packageItems as $key => $quoteItem) {
 
 				//printError($quoteItem);
-
-				$updateQuoteItems = $QueryBuilder->update(
-					$conn,
-					$options = array(
-						"table" => "quote_items",
-						"set" => [
-							"`reserved_stock`= reserved_stock - ".$quoteItem['package_quantity']."",
-							"`invoiced_quantity`=  invoiced_quantity + ".$quoteItem['package_quantity'].""],
-						"where" => "`id` = ".$quoteItem['quote_item_id'].";"
-					)
-				);
+				if($quoteItem['quote_item_id']) {
+					$updateQuoteItems = $QueryBuilder->update(
+						$conn,
+						$options = array(
+							"table" => "quote_items",
+							"set" => [
+								"`reserved_stock`= reserved_stock - ".$quoteItem['package_quantity']."",
+								"`invoiced_quantity`=  invoiced_quantity + ".$quoteItem['package_quantity'].""],
+							"where" => "`id` = ".$quoteItem['quote_item_id'].";"
+						)
+					);
+				}
+				
 
 			}
 			echo json_encode($updateQuoteItems);
+			//echo $conn->error;
 		}
 	} else {
 		echo json_encode($updatePackageItem);

@@ -172,7 +172,7 @@ class Invoices {
                                         '<th>ID</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
-                                        '<th colspan=16>'+that.getTranslation('Subtotals',params.currency)+'('+ params.currency +')</th>'+
+                                        '<th colspan=16>'+that.getTranslation('Subtotals',params.currency)+' ('+ params.currency +')</th>'+
                                         '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
@@ -226,7 +226,7 @@ class Invoices {
          }
 
          
-         console.log(thisPackage);
+         //console.log(thisPackage, params);
 
          var packageDetails = {
             'packageId': thisPackage.id,
@@ -264,7 +264,7 @@ class Invoices {
             "extra_discount": thisPackage.extra_discount >  0
          }
 
-         console.log(columnsArrayParams);
+         //console.log(columnsArrayParams);
 
          var columnsObject =  that.getColumnsArray(columnsArrayParams);
 
@@ -453,7 +453,7 @@ class Invoices {
 
                                doc.content[0] = thisPDFData.invoiceDetails;
 
-                               console.log(doc);
+                               //console.log(doc);
                                
                                 
                                 doc.styles =  thisPDFData.docStyles;
@@ -493,7 +493,8 @@ class Invoices {
                                 //console.log(doc.content[1]);
 
                                 //Hide SubFooter Cell Content
-                                doc.content[1].table.body[tableLength-1][0] = "";
+                                //doc.content[1].table.body[tableLength-1][0] = "";
+                                doc.content[1].table.body[tableLength-1][0]['colSpan'] = "2";
                                 doc.content[1].table.body[tableLength-1][1] = "";
                                 doc.content[1].table.body[tableLength-1][2] = "";
                                 doc.content[1].table.body[tableLength-1][3] = "";
@@ -523,7 +524,7 @@ class Invoices {
 
                                     var greenTaxArray = []
 
-                                    console.log(columnsObject.widths);
+                                    //console.log(columnsObject.widths);
 
 
                                     for (var i = 0; i < columnsObject.widths.length; i++) {
@@ -542,7 +543,7 @@ class Invoices {
                                     doc.content[1].table.body[tableLength-1][columnPosition.green_tax_total] = "";
 
 
-                                    console.log(greenTaxArray);
+                                    //console.log(greenTaxArray);
 
 
                                      doc.content[1].table.body[tableLength] = greenTaxArray;
@@ -583,7 +584,7 @@ class Invoices {
                                 ];
 
 
-                                console.log(doc.content);
+                                //console.log(doc.content);
                                
                             },
                         },
@@ -804,11 +805,11 @@ class Invoices {
                             'visible': false
                         },
                         { 
-                            "data": "green_tax",
+                            "data": "green_tax_value",
                             "visible":packageDetails.currency == "Euro" ? false : true,
                             "render" : function(data, type, row, meta) {
                                //console.log(meta.col);
-                                var value = row.green_tax;
+                                var value = row.green_tax_value;
 
                                 var product = row.product_id;
 
@@ -912,6 +913,9 @@ class Invoices {
                         },
                         { 
                             "data": "green_tax_value",
+                             "render" : function(data, type, row, meta) {
+                                return data == "" ? 0 : data
+                              },
                             "visible": false
                         },
                         { 
@@ -924,6 +928,8 @@ class Invoices {
 
                     ],
                     "initComplete": function(settings, json) {
+
+                        console.log(json);
 
                     },
                     "footerCallback": function( row, data, start, end, display ) {
@@ -962,11 +968,11 @@ class Invoices {
                             // ); 
 
 
-                            $( api.column( 15 ).footer() ).html(
-                                api.column( 15 ).data().reduce( function ( a, b ) {
-                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
-                                }, 0 )
-                            ); 
+                            // $( api.column( 15 ).footer() ).html(
+                            //     api.column( 15 ).data().reduce( function ( a, b ) {
+                            //         return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                            //     }, 0 )
+                            // ); 
 
                             $( api.column( 16 ).footer() ).html(
                                 api.column( 16 ).data().reduce( function ( a, b ) {
@@ -1727,7 +1733,7 @@ class Invoices {
 
                 var arrayPosition = (val.initial_position - 1) + final_position_increment;
 
-                console.log(val.column_id, arrayPosition)
+                //console.log(val.column_id, arrayPosition)
 
                 if( (arrayPosition == 0 && columnsArray.columns_order.length == 0) || arrayPosition > 0)
                 {
@@ -1740,7 +1746,7 @@ class Invoices {
                 
             });
 
-            console.log(columnsArray);
+            //console.log(columnsArray);
 
             return columnsArray
 

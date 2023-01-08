@@ -18,7 +18,7 @@ $conn = $QueryBuilder->dbConnection();
 							) AS reversal_sum",
 			"innerJoin" => "packages p  on p.id = pi.package_id
 							join quotes q on q.id = p.quote_id",
-			"where" =>"q.id = ".$_POST['quote_id'],
+			"where" =>"q.id = ".$_POST['quote_id']." and p.package_status_id = 4",
 			"groupby" => "q.id"
 			)
 		);
