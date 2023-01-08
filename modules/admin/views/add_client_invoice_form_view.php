@@ -5,7 +5,8 @@ $invoiceData = array(
     "dueDate" => "",
     "exchangeRate" => "",
     "invoiceNumber" => "",
-    "packageId" => ""
+    "packageId" => "",
+    "otherDetails" => ""
 
 );
 
@@ -19,6 +20,7 @@ if(isset($_POST['invoiceNumber']))
         "exchangeRate" => $_POST['exchangeRate'],
         "invoiceNumber" => $_POST['invoiceNumber'],
         "packageId" => $_POST['packageId'],
+        "otherDetails" =>  $_POST['other_details']
     );
 
 
@@ -73,6 +75,15 @@ if(isset($_POST['invoiceNumber']))
                         </div>
                     </div>
                     <input type="text" class="form-control <?php echo $exchange_rate_class?>" placeholder="Exchange Rate" name="exchange_rate" value="<?php echo $invoiceData['exchangeRate']?>" >
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="input-group">
+                <div class="form-line">
+                    <textarea name="other_details" class="form-control" placeholder="Aditional Details"><?php echo $invoiceData['otherDetails']?></textarea>
                 </div>
             </div>
         </div>

@@ -82,7 +82,7 @@ class Invoices {
         invoiceForm = that.getInvoiceDetailsForm(params);
        }
 
-       //console.log(params);
+       console.log(params);
 
       var packageLine = '<div class="package_line m-t-10 package-'+packageId+'">'+
                            '<div class="package_wrapper">'+
@@ -238,6 +238,7 @@ class Invoices {
             'invoiceDate': packages[index].invoice_date,
             'pos_date': packages[index].pos_date,
             'awb_date': packages[index].awb_date,
+            'other_details': packages[index].other_details,
             'dueDate': packages[index].invoice_due_date,
             'exchangeRate': quoteList[params.quoteIndex].client_details.country == "RO" ? packages[index].exchange_rate : 1,
             'invoiceNumber': packages[index].invoice_number,
@@ -576,6 +577,10 @@ class Invoices {
                                                         ": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
                                                         {text: that.getTranslation('Exchange_Rate',packageDetails.currency) +
                                                          ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
+                                                    ],
+                                                     [
+                                                        {text:packageDetails.other_details, colSpan: 2}, 
+                                                        {}
                                                     ]
                                             ]
                                         },
