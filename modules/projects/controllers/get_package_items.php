@@ -22,7 +22,7 @@ $unit_price = 'TRUNCATE((
 	        ELSE
 	         quote_items.unit_price - (quotes.extra_discount *quote_items.unit_price / 100)
 	        END
-   	 ) * '.$exchange_rate. '), 2)';
+   	 )* '.$exchange_rate. ' ), 2)';
 
 
 $unit_price_before_discount = 'TRUNCATE((
@@ -55,15 +55,8 @@ $extra_discount_value = 'TRUNCATE((
 
 $value = 'TRUNCATE((
 	(
-	        CASE 
-	        	WHEN 
-	        		package_items.quote_item_id is NULL
-	       		THEN  
-	        		package_items.package_quantity * package_items.external_item_unit_price
-	        ELSE
 	         package_items.package_quantity * '.$unit_price.'
-	        END
-   	 ) * '.$exchange_rate. '), 2)';
+   	 )), 2)';
 
 $green_tax_id = 'CASE 
         	WHEN 
