@@ -185,7 +185,7 @@ class Invoices {
                                '</table>'+
                                '<table class="advanceTable-'+ quote_id + ' table ">'+
                                    '<thead>'+
-                                        '<th>'+that.getTranslation('Total_Advance',params.currency)+'(EURO)</th>'+
+                                        '<th>'+that.getTranslation('Total_Advance',params.currency)+'('+ params.currency +')</th>'+
                                         '<th>'+that.getTranslation('Total_Reversal',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Remaining',params.currency)+'</th>'+
                                    '</thead>'+
@@ -223,6 +223,15 @@ class Invoices {
             editDisabled = 'disabled';
             showForInvoice = true;
             hideForInvoice = false;
+         }
+
+         if(quoteList[params.quoteIndex].client_details.country == "RO") {
+            if(packages[index].exchange_rate) {
+                packages[index].exchange_rate = packages[index].exchange_rate
+            } else 
+            {
+                packages[index].exchange_rate = 4.99;
+            }
          }
 
          

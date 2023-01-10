@@ -11,6 +11,12 @@ $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $exchange_rate = floatVal($_POST['exchange_rate']); 
 
+$external_exchange_rate = $exchange_rate;
+
+if($_POST['country'] == 'RO') {
+	$external_exchange_rate = 1;
+}
+
 
 $unit_price = 'TRUNCATE((
 	(
@@ -18,11 +24,11 @@ $unit_price = 'TRUNCATE((
 	        	WHEN 
 	        		package_items.quote_item_id is NULL
 	       		THEN  
-	        		package_items.external_item_unit_price
+	        		package_items.external_item_unit_price * '.$external_exchange_rate.'
 	        ELSE
-	         quote_items.unit_price - (quotes.extra_discount *quote_items.unit_price / 100)
+	         (quote_items.unit_price - (quotes.extra_discount *quote_items.unit_price / 100) ) * '.$exchange_rate. '
 	        END
-   	 )* '.$exchange_rate. ' ), 2)';
+   	 ) ), 2)';
 
 
 $unit_price_before_discount = 'TRUNCATE((
@@ -31,11 +37,11 @@ $unit_price_before_discount = 'TRUNCATE((
 	        	WHEN 
 	        		package_items.quote_item_id is NULL
 	       		THEN  
-	        		package_items.external_item_unit_price
+	        		package_items.external_item_unit_price * '.$external_exchange_rate.'
 	        ELSE
-	         quote_items.unit_price
+	         quote_items.unit_price * '.$exchange_rate. '
 	        END
-   	 ) * '.$exchange_rate. '), 2)';
+   	 )), 2)';
 
 
 
