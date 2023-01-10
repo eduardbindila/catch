@@ -12,7 +12,7 @@ if(isset($_GET['temp'])) {
 	$is_temporary = 0;
 }
 
-$productID =  urldecode(basename($_SERVER['REQUEST_URI'], '?'.$_SERVER['QUERY_STRING']));
+$productID =  urldecode($_GET['id']);
 
 $conn = $QueryBuilder->dbConnection();
 

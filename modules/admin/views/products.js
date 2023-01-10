@@ -31,7 +31,7 @@ $(document).ready(function() {
             { 
                 "data": "id",
                 "render" : function(data, type, row) {
-                    return '<a href="../cart/product/'+data+'" target="_blank">'+data+'</a>'
+                    return '<a href="../cart/product?id='+encodeURIComponent(data)+'" target="_blank">'+data+'</a>'
                   } 
             },
             { 
