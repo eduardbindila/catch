@@ -53,7 +53,7 @@ $extra_discount_value = 'TRUNCATE((
 	       		THEN  
 	        		0
 	        ELSE
-	         quotes.extra_discount *quote_items.unit_price / 100
+	         quotes.extra_discount * quote_items.unit_price / 100 * package_items.package_quantity 
 	        END
    	 ) * '.$exchange_rate. '), 2)';
 

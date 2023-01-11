@@ -82,7 +82,7 @@ class Invoices {
         invoiceForm = that.getInvoiceDetailsForm(params);
        }
 
-       console.log(params);
+       //console.log(params);
 
       var packageLine = '<div class="package_line m-t-10 package-'+packageId+'">'+
                            '<div class="package_wrapper">'+
@@ -253,7 +253,9 @@ class Invoices {
             'invoiceNumber': packages[index].invoice_number,
             'showRon':  (quoteList[params.quoteIndex].client_details.country == "RO"),
             'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== '' ? "Ron" : "Euro",
-            'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19%" : "0%"
+            'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19" : "0%",
+            'vat_value':   quoteList[params.quoteIndex].client_details.country == "RO" ? 0.19 : 0,
+            'totals' : {}
          }
         
 
@@ -515,42 +517,65 @@ class Invoices {
 
                                 var totalGreenTaxWithVat = 0;
 
-                                var greenTaxTable = [];
+                                var totalExtraDiscount = 0
 
-                                if(columnPosition.green_tax > 0) {
-                                    var totalGreenTax = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.green_tax_total].text);
+                                    //console.log(columnsObject.widths);
 
-                                    var totalGreenTaxVat = parseFloat(totalGreenTax*0.19).toFixed(2);
+                                var colspan = 5; 
+
+                                var emptyArray = [];
+
+                                for (var i = 0; i < columnsObject.widths.length; i++) {
+                                        emptyArray[i] = {}
+                                    }
+
+
+                                var greenTaxArray = emptyArray;
+
+                                if(packageDetails.totals.extra_discount > 0) {
+
+
+                                    var extraDiscountArray = emptyArray;
+
+                                    extraDiscountArray[0] = {text: that.getTranslation('Extra_Discount',packageDetails.currency)+
+                                                            ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
+                                    var extraDiscountValue = -1 * parseFloat(packageDetails.totals.extra_discount);
+
+                                    var extraDiscountVAT = -1 * parseFloat(packageDetails.vat_value) * parseFloat(packageDetails.totals.extra_discount) ;
+                                    var totalExtraDiscount = parseFloat(extraDiscountValue) + parseFloat(extraDiscountVAT)
+
+                                    extraDiscountArray[colspan+1] = {text: extraDiscountValue.toFixed(2), alignment: 'center'};
+                                    extraDiscountArray[colspan+2] = {text: extraDiscountVAT.toFixed(2), alignment: 'center'};
+                                    extraDiscountArray[colspan+3] = {text: totalExtraDiscount.toFixed(2), alignment: 'center'};
+
+
+                                    doc.content[1].table.body[tableLength] = extraDiscountArray;
+                                    //tableLength = tableLength + 1
+                                }
+
+                                console.log(doc.content[1]);
+
+                                if(packageDetails.totals.green_tax_value > 0) {
+                                    var totalGreenTax = parseFloat(packageDetails.totals.green_tax_value);
+
+                                    var totalGreenTaxVat = parseFloat(totalGreenTax*packageDetails.totals.vat_value).toFixed(2);
 
                                     totalGreenTaxWithVat = (parseFloat(totalGreenTax) + parseFloat(totalGreenTaxVat)).toFixed(2);
 
                                     totalGreenTaxWithVat = parseFloat(totalGreenTaxWithVat);
 
-                                    var colspan = 6; 
-
-                                     if(columnPosition.extra_discount > 0) {
-                                        colspan = 7;
-                                    }
-
-                                    var greenTaxArray = []
-
                                     //console.log(columnsObject.widths);
 
 
-                                    for (var i = 0; i < columnsObject.widths.length; i++) {
-                                            greenTaxArray[i] = {}
-                                        }
                                     greenTaxArray[0] = {text: that.getTranslation('Green_Tax_Total',packageDetails.currency)+
                                                         ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
 
                                     greenTaxArray[colspan+1] = {text: totalGreenTax.toFixed(2), alignment: 'center'};
 
-                                    greenTaxArray[colspan+2] = {text: totalGreenTaxVat, alignment: 'center'},
+                                    greenTaxArray[colspan+2] = {text: totalGreenTaxVat, alignment: 'center'};
 
-                                    greenTaxArray[colspan+3] = {text: totalGreenTaxWithVat, alignment: 'center'},
+                                    greenTaxArray[colspan+3] = {text: totalGreenTaxWithVat, alignment: 'center'};
 
-
-                                    doc.content[1].table.body[tableLength-1][columnPosition.green_tax_total] = "";
 
 
                                     //console.log(greenTaxArray);
@@ -560,9 +585,13 @@ class Invoices {
                                 }
 
 
-                               
+                               console.log(tableLength);
 
-                                var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalGreenTaxWithVat;
+                                // var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalGreenTaxWithVat;
+
+                                var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalExtraDiscount;
+
+                                console.log(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text);
 
             
 
@@ -687,6 +716,7 @@ class Invoices {
                         },
                         { 
                             "data": "quote_item_id",
+                            "name": "quote_item_id",
                         },
                          { 
                             "data": "product_id",
@@ -733,15 +763,18 @@ class Invoices {
                         },
 
                         { 
-                            "data": "extra_discount",
-                            "visible": Number(thisPackage.extra_discount) > 0 ? true : false
+                            "data": "extra_discount_value",
+                            "name": "extra_discount",
+                            // "visible": Number(thisPackage.extra_discount) > 0 ? true : false
+                            "visible": false
                         },
                        
                         { 
-                            "data": "unit_price",
+                            "data": "unit_price_before_discount",
+
                             "render" : function(data, type, row, meta) {
                                 //console.log(meta.col);
-                                var price = row.unit_price;
+                                var price = row.unit_price_before_discount;
 
                                 var product = row.product_id;
 
@@ -749,7 +782,7 @@ class Invoices {
 
                                 if(product == 0)  {
 
-                                    if(row.external_item_unit_price =='') {
+                                    if(row.external_item_unit_price_before_discount =='') {
 
                                         if(row.external_item_name =='') {
                                             disabled = "disabled"
@@ -768,7 +801,7 @@ class Invoices {
                                                 '</div>' + 
                                             '</div>'
                                     } else {
-                                        price = row.unit_price
+                                        price = row.unit_price_before_discount
                                     }
 
                                     //console.log('asd')
@@ -784,7 +817,7 @@ class Invoices {
                                 //console.log(meta.col);
                                 var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
 
-                                if(row.product = 0 && row.external_item_name =='') {
+                                if(row.product == 0 && row.external_item_name =='') {
                                         disabled = "disabled"
                                 }
 
@@ -927,6 +960,7 @@ class Invoices {
                         },
                         { 
                             "data": "green_tax_value",
+                             "name": "green_tax_value",
                              "render" : function(data, type, row, meta) {
                                 return data == "" ? 0 : data
                               },
@@ -943,7 +977,7 @@ class Invoices {
                     ],
                     "initComplete": function(settings, json) {
 
-                        console.log(json);
+                        //console.log(json);
 
                     },
                     "footerCallback": function( row, data, start, end, display ) {
@@ -972,7 +1006,15 @@ class Invoices {
 
                         var totalArray = {};
                         api.columns().every(function () {
-                           
+
+                           packageDetails.totals['extra_discount'] = api.column('extra_discount:name' ).data().reduce( function ( a, b ) {
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                                }, 0 )
+
+
+                           packageDetails.totals['green_tax_value'] = api.column('green_tax_value:name' ).data().reduce( function ( a, b ) {
+                                    return (parseFloat(a) + parseFloat(b)).toFixed(2);
+                                }, 0 )
 
                            //Total for Package Quantity Web
                             // $( api.column( 14 ).footer() ).html(
@@ -1022,6 +1064,8 @@ class Invoices {
                             ); 
 
                         });
+
+                        console.log(packageDetails);
                     }
 
             })
@@ -1643,16 +1687,16 @@ class Invoices {
                     "width": "*"
 
                 },
-                "discount" : {
-                    "column_id": 12,
-                    "initial_position": 0,
-                    "position_increment": {
-                        "euro" : 0,
-                        "extra_discount": 4,
-                        "ron": 0
-                    },
-                    "width": 30
-                },
+                // "extra_discount_value" : {
+                //     "column_id": 12,
+                //     "initial_position": 0,
+                //     "position_increment": {
+                //         "euro" : 0,
+                //         "extra_discount": 0,
+                //         "ron": 0
+                //     },
+                //     "width": 30
+                // },
                 "package_quantity" : {
                     "column_id": 15,
                     "initial_position": 4,
@@ -1663,7 +1707,7 @@ class Invoices {
                     },
                     "width": 'auto'
                 },
-                "unit_price" : {
+                "unit_price_before_discount" : {
                     "column_id": 13,
                     "initial_position": 5,
                     "position_increment": {
@@ -1713,16 +1757,16 @@ class Invoices {
                     },
                     "width": 45
                 },
-                "green_tax_total" : {
-                    "column_id": 17,
-                    "initial_position": 0,
-                    "position_increment": {
-                        "euro" : 0,
-                        "extra_discount": 1,
-                        "ron": 10
-                    },
-                    "width": 25
-                },
+                // "green_tax_total" : {
+                //     "column_id": 17,
+                //     "initial_position": 0,
+                //     "position_increment": {
+                //         "euro" : 0,
+                //         "extra_discount": 1,
+                //         "ron": 10
+                //     },
+                //     "width": 25
+                // },
 
             }
 
@@ -1739,6 +1783,8 @@ class Invoices {
                 var euro_increment = params.euro ? val.position_increment.euro : 0;
 
                 var extra_discount_increment = params.extra_discount ? val.position_increment.extra_discount : 0;
+
+                extra_discount_increment =  0; //Removed from line position
 
                 var ron_increment = params.ron ? val.position_increment.ron : 0;
 
@@ -1760,7 +1806,7 @@ class Invoices {
                 
             });
 
-            //console.log(columnsArray);
+            console.log(columnsArray);
 
             return columnsArray
 
