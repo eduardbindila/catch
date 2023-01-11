@@ -529,21 +529,26 @@ class Invoices {
                                         emptyArray[i] = {}
                                     }
 
+                                console.log(emptyArray);
 
-                                var greenTaxArray = emptyArray;
+                                 doc.content[1].table.body[tableLength] = emptyArray;
+
+                                  doc.content[1].table.body[tableLength+1] = emptyArray;
+
+                                var greenTaxArray = [];
+                                var extraDiscountArray = [];
 
                                 if(packageDetails.totals.extra_discount > 0) {
 
 
-                                    var extraDiscountArray = emptyArray;
-
-                                    extraDiscountArray[0] = {text: that.getTranslation('Extra_Discount',packageDetails.currency)+
-                                                            ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
                                     var extraDiscountValue = -1 * parseFloat(packageDetails.totals.extra_discount);
 
                                     var extraDiscountVAT = -1 * parseFloat(packageDetails.vat_value) * parseFloat(packageDetails.totals.extra_discount) ;
                                     var totalExtraDiscount = parseFloat(extraDiscountValue) + parseFloat(extraDiscountVAT)
 
+                                    extraDiscountArray[0] = {text: that.getTranslation('Extra_Discount',packageDetails.currency)+
+                                                            ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
+                                    extraDiscountArray[colspan] = {};
                                     extraDiscountArray[colspan+1] = {text: extraDiscountValue.toFixed(2), alignment: 'center'};
                                     extraDiscountArray[colspan+2] = {text: extraDiscountVAT.toFixed(2), alignment: 'center'};
                                     extraDiscountArray[colspan+3] = {text: totalExtraDiscount.toFixed(2), alignment: 'center'};
@@ -555,12 +560,12 @@ class Invoices {
 
                                 console.log(doc.content[1]);
 
-                                if(packageDetails.totals.green_tax_value > 0) {
-                                    var totalGreenTax = parseFloat(packageDetails.totals.green_tax_value);
+                                if(packageDetails.totals.green_tax_total > 0) {
+                                    var totalGreenTax = parseFloat(packageDetails.totals.green_tax_total);
 
-                                    var totalGreenTaxVat = parseFloat(totalGreenTax*packageDetails.totals.vat_value).toFixed(2);
+                                    var totalGreenTaxVat = totalGreenTax * parseFloat(packageDetails.vat_value);
 
-                                    totalGreenTaxWithVat = (parseFloat(totalGreenTax) + parseFloat(totalGreenTaxVat)).toFixed(2);
+                                    totalGreenTaxWithVat = (parseFloat(totalGreenTax) + parseFloat(totalGreenTaxVat));
 
                                     totalGreenTaxWithVat = parseFloat(totalGreenTaxWithVat);
 
@@ -569,19 +574,19 @@ class Invoices {
 
                                     greenTaxArray[0] = {text: that.getTranslation('Green_Tax_Total',packageDetails.currency)+
                                                         ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
-
+                                    greenTaxArray[colspan] = {};
                                     greenTaxArray[colspan+1] = {text: totalGreenTax.toFixed(2), alignment: 'center'};
 
-                                    greenTaxArray[colspan+2] = {text: totalGreenTaxVat, alignment: 'center'};
+                                    greenTaxArray[colspan+2] = {text: totalGreenTaxVat.toFixed(2), alignment: 'center'};
 
-                                    greenTaxArray[colspan+3] = {text: totalGreenTaxWithVat, alignment: 'center'};
+                                    greenTaxArray[colspan+3] = {text: totalGreenTaxWithVat.toFixed(2), alignment: 'center'};
 
 
 
                                     //console.log(greenTaxArray);
 
 
-                                     doc.content[1].table.body[tableLength] = greenTaxArray;
+                                     doc.content[1].table.body[tableLength+1] = greenTaxArray;
                                 }
 
 
@@ -589,7 +594,7 @@ class Invoices {
 
                                 // var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalGreenTaxWithVat;
 
-                                var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalExtraDiscount;
+                                var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalExtraDiscount + totalGreenTaxWithVat;
 
                                 console.log(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text);
 
@@ -959,8 +964,8 @@ class Invoices {
 
                         },
                         { 
-                            "data": "green_tax_value",
-                             "name": "green_tax_value",
+                            "data": "green_tax_total",
+                             "name": "green_tax_total",
                              "render" : function(data, type, row, meta) {
                                 return data == "" ? 0 : data
                               },
@@ -1012,7 +1017,7 @@ class Invoices {
                                 }, 0 )
 
 
-                           packageDetails.totals['green_tax_value'] = api.column('green_tax_value:name' ).data().reduce( function ( a, b ) {
+                           packageDetails.totals['green_tax_total'] = api.column('green_tax_total:name' ).data().reduce( function ( a, b ) {
                                     return (parseFloat(a) + parseFloat(b)).toFixed(2);
                                 }, 0 )
 
