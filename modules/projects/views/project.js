@@ -2448,6 +2448,78 @@ $(document).ready(function() {
         
     });
 
+    $('body').on('change', '.reserved_stock-input', function(){
+       
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
+            'external_unit_price':  $(this).attr('data-external-price'),
+            'reserved_stock': $(this).val()
+        }
+
+        //console.log(packageItem);
+
+        var table = $('.packages_table-'+packageItem.package_id).DataTable();
+
+
+         $.ajax({
+                url: "/ajax/updateReservedStock",
+                type: "post",
+                dataType: "json",
+                data: packageItem
+           }).success(function(json){
+               
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+                 table.ajax.reload()
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
+
+        
+    });
+
+    $('body').on('change', '.saga_quantity-input', function(){
+       
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
+            'external_unit_price':  $(this).attr('data-external-price'),
+            'saga_quantity': $(this).val()
+        }
+
+        //console.log(packageItem);
+
+        var table = $('.packages_table-'+packageItem.package_id).DataTable();
+
+
+         $.ajax({
+                url: "/ajax/updateSagaQuantity",
+                type: "post",
+                dataType: "json",
+                data: packageItem
+           }).success(function(json){
+               
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+                 table.ajax.reload()
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
+
+        
+    });
+
 
 
 

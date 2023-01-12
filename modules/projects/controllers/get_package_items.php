@@ -59,7 +59,13 @@ $extra_discount_value = 'TRUNCATE((
 
 
 
-$value = 'TRUNCATE((
+$value_before_discount = 'TRUNCATE((
+	(
+	         package_items.package_quantity * '.$unit_price_before_discount.'
+   	 )), 2)';
+
+
+  $value = 'TRUNCATE((
 	(
 	         package_items.package_quantity * '.$unit_price.'
    	 )), 2)';
@@ -126,6 +132,7 @@ $total = "(".$value." + ".$vatValue." )";
 							external_green_tax.value as external_green_tax,
 							package_item_types.name as type_name,
 							".$value." as value, 
+							".$value_before_discount." as value_before_discount,
 							".$unit_price." as unit_price, 
 							".$unit_price_before_discount." as unit_price_before_discount, 
 							".$extra_discount_value." as extra_discount_value, 

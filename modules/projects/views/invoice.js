@@ -511,7 +511,7 @@ class Invoices {
                                 doc.content[1].table.body[tableLength-1][2] = "";
                                 doc.content[1].table.body[tableLength-1][3] = "";
                                 doc.content[1].table.body[tableLength-1][4] = "";
-                                doc.content[1].table.body[tableLength-1][5] = "";
+                                
 
                                 var columnPosition = columnsObject.columns_data;
 
@@ -521,22 +521,27 @@ class Invoices {
 
                                     //console.log(columnsObject.widths);
 
-                                var colspan = 5; 
+                                var colspan = columnsObject.widths.length-4; 
 
-                                var emptyArray = [];
+                                 ;
+                                var extraDiscountArray = [];
+                                var greenTaxArray = []
 
                                 for (var i = 0; i < columnsObject.widths.length; i++) {
-                                        emptyArray[i] = {}
+                                        extraDiscountArray[i] = {text: ''};
+                                        greenTaxArray[i] = {text: ''};
+                                       
                                     }
 
-                                console.log(emptyArray);
+                               
 
-                                 doc.content[1].table.body[tableLength] = emptyArray;
+                                
 
-                                  doc.content[1].table.body[tableLength+1] = emptyArray;
+                                 doc.content[1].table.body[tableLength] = extraDiscountArray;
 
-                                var greenTaxArray = [];
-                                var extraDiscountArray = [];
+                                  doc.content[1].table.body[tableLength+1] = greenTaxArray;
+
+                               
 
                                 if(packageDetails.totals.extra_discount > 0) {
 
@@ -548,17 +553,16 @@ class Invoices {
 
                                     extraDiscountArray[0] = {text: that.getTranslation('Extra_Discount',packageDetails.currency)+
                                                             ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
-                                    extraDiscountArray[colspan] = {};
                                     extraDiscountArray[colspan+1] = {text: extraDiscountValue.toFixed(2), alignment: 'center'};
                                     extraDiscountArray[colspan+2] = {text: extraDiscountVAT.toFixed(2), alignment: 'center'};
                                     extraDiscountArray[colspan+3] = {text: totalExtraDiscount.toFixed(2), alignment: 'center'};
 
 
-                                    doc.content[1].table.body[tableLength] = extraDiscountArray;
+                                    
                                     //tableLength = tableLength + 1
                                 }
 
-                                console.log(doc.content[1]);
+
 
                                 if(packageDetails.totals.green_tax_total > 0) {
                                     var totalGreenTax = parseFloat(packageDetails.totals.green_tax_total);
@@ -574,7 +578,7 @@ class Invoices {
 
                                     greenTaxArray[0] = {text: that.getTranslation('Green_Tax_Total',packageDetails.currency)+
                                                         ' ('+ packageDetails.currency +'):', colSpan: colspan,alignment: 'left' };
-                                    greenTaxArray[colspan] = {};
+
                                     greenTaxArray[colspan+1] = {text: totalGreenTax.toFixed(2), alignment: 'center'};
 
                                     greenTaxArray[colspan+2] = {text: totalGreenTaxVat.toFixed(2), alignment: 'center'};
@@ -586,17 +590,21 @@ class Invoices {
                                     //console.log(greenTaxArray);
 
 
-                                     doc.content[1].table.body[tableLength+1] = greenTaxArray;
+                                     //doc.content[1].table.body[tableLength+1] = greenTaxArray;
                                 }
 
+                                // doc.content[1].table.body.push(extraDiscountArray) ;
 
-                               console.log(tableLength);
+                                //console.log(extraDiscountArray, greenTaxArray);
+
+
+                               //console.log(tableLength);
 
                                 // var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalGreenTaxWithVat;
 
                                 var total = parseFloat(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text) + totalExtraDiscount + totalGreenTaxWithVat;
 
-                                console.log(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text);
+                                //console.log(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text);
 
             
 
@@ -759,9 +767,55 @@ class Invoices {
                         },
                         { 
                             "data": "reserved_stock",
+                            "render" : function(data, type, row, meta) {
+                                //console.log(meta.col);
+                                var disabled = '';
+
+                                if(row.external_item_name !=='') {
+                                        disabled = "disabled"
+                                }
+
+                                return '<div class="form-group">' + 
+                                            '<div class="form-line">' + 
+                                                '<input class="form-control reserved_stock-input"' + 
+                                                ' data-type="reserved_stock" data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+
+                                                
+                                                '" value="'+row.reserved_stock+'" type="number" name="reserved_stock"'+
+                                                ' placeholder=Reserved Stock"  min=0 required '+ disabled +'>' + 
+                                            '</div>' + 
+                                        '</div>'
+                              }
                         },
                         { 
                             "data": "saga_quantity",
+                            "render" : function(data, type, row, meta) {
+                                //console.log(meta.col);
+                                var disabled = '';
+
+                                if(row.external_item_name !=='') {
+                                        disabled = "disabled"
+                                }
+
+                               return '<div class="form-group">' + 
+                                            '<div class="form-line">' + 
+                                                '<input class="form-control saga_quantity-input"' + 
+                                                ' data-type="saga_quantity" data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+
+                                                
+                                                '" value="'+row.saga_quantity+'" type="number" name="saga_quantity"'+
+                                                ' placeholder=Stock"  min=0 required '+ disabled +'>' + 
+                                            '</div>' + 
+                                        '</div>'
+                              }
                         },
                         { 
                             "data": "invoiced_quantity",
@@ -850,7 +904,7 @@ class Invoices {
                          
                         
                         { 
-                            "data": "value",
+                            "data": "value_before_discount",
                         },
                         { 
                             "data": "green_tax_total",
@@ -982,7 +1036,7 @@ class Invoices {
                     ],
                     "initComplete": function(settings, json) {
 
-                        //console.log(json);
+                        console.log(json);
 
                     },
                     "footerCallback": function( row, data, start, end, display ) {
@@ -1070,7 +1124,7 @@ class Invoices {
 
                         });
 
-                        console.log(packageDetails);
+                        //console.log(packageDetails);
                     }
 
             })
@@ -1732,7 +1786,7 @@ class Invoices {
                     },
                     "width": 21
                 },
-                "value" : {
+                "value_before_discount" : {
                     "column_id": 16,
                     "initial_position": 6,
                     "position_increment": {
@@ -1811,7 +1865,7 @@ class Invoices {
                 
             });
 
-            console.log(columnsArray);
+            //console.log(columnsArray);
 
             return columnsArray
 

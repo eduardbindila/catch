@@ -160,6 +160,10 @@ RewriteRule ^ajax/removePackage modules/admin/controllers/remove_package.php [L]
 
 RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_Item_quantity.php [L]
 
+RewriteRule ^ajax/updateReservedStock modules/projects/controllers/update_reserved_stock.php [L]
+
+RewriteRule ^ajax/updateSagaQuantity modules/projects/controllers/update_saga_quantity.php [L]
+
 RewriteRule ^ajax/insertPackageExternalItem modules/projects/controllers/insert_external_package_item.php [L]
 
 RewriteRule ^ajax/updateExternalPackageItem modules/projects/controllers/update_external_package_item.php [L]
