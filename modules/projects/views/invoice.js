@@ -511,6 +511,7 @@ class Invoices {
                                 doc.content[1].table.body[tableLength-1][2] = "";
                                 doc.content[1].table.body[tableLength-1][3] = "";
                                 doc.content[1].table.body[tableLength-1][4] = "";
+
                                 
 
                                 var columnPosition = columnsObject.columns_data;
@@ -565,6 +566,7 @@ class Invoices {
 
 
                                 if(packageDetails.totals.green_tax_total > 0) {
+                                    doc.content[1].table.body[tableLength-1][5] = "";
                                     var totalGreenTax = parseFloat(packageDetails.totals.green_tax_total);
 
                                     var totalGreenTaxVat = totalGreenTax * parseFloat(packageDetails.vat_value);
@@ -907,7 +909,7 @@ class Invoices {
                             "data": "value_before_discount",
                         },
                         { 
-                            "data": "green_tax_total",
+                            "data": "green_tax_value",
                             'visible': false
                         },
                         { 
@@ -959,11 +961,11 @@ class Invoices {
                             }, 
                         },
                         { 
-                            "data": "vat_value",
+                            "data": "vat_value_before_discount",
                         },
                         
                         { 
-                            "data": "total",
+                            "data": "total_before_discount",
                         },
                         { 
                             "data": "null",
@@ -1777,7 +1779,7 @@ class Invoices {
                     "width": 40
                 },
                 "green_tax" : {
-                    "column_id": 23,
+                    "column_id": 17,
                     "initial_position": 0,
                     "position_increment": {
                         "euro" : 0,
@@ -1796,7 +1798,7 @@ class Invoices {
                     },
                     "width": 45
                 },
-                "vat" : {
+                "vat_value_before_discount" : {
                     "column_id": 19,
                     "initial_position": 7,
                     "position_increment": {

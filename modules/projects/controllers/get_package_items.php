@@ -110,7 +110,11 @@ $green_tax_total = $exchange_rate == 1 ?  0 : $green_tax_total;
 
 $vatValue = 'TRUNCATE(('.$value.' *  '.$vat .'), 2)';
 
+$vatValue_before_discount = 'TRUNCATE(('.$value_before_discount.' *  '.$vat .'), 2)';
+
 $total = "(".$value." + ".$vatValue." )";
+
+$total_before_discount = "(".$value_before_discount." + ".$vatValue_before_discount." )";
 
 
 
@@ -136,10 +140,12 @@ $total = "(".$value." + ".$vatValue." )";
 							".$unit_price." as unit_price, 
 							".$unit_price_before_discount." as unit_price_before_discount, 
 							".$extra_discount_value." as extra_discount_value, 
-							".$vatValue." as vat_value, 
+							".$vatValue." as vat_value,
+							".$vatValue_before_discount." as vat_value_before_discount,  
 							". $green_tax_id." as green_tax_id,
 							".$green_tax_value." as green_tax_value,
 							".$green_tax_total." as green_tax_total,
+							".$total_before_discount." as total_before_discount,
 							".$total." as total",
 
 
