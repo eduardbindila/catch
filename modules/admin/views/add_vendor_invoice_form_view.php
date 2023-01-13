@@ -69,7 +69,7 @@
                 <div class="col-lg-6">
                      <div class="input-group">
                         <div class="form-line">
-                            <input type="text" class="form-control" name="invoice_value" placeholder="Invoice Value" required>
+                            <input type="text" class="form-control" name="invoice_value" placeholder="Invoice Value (no VAT)" required>
                         </div>
                     </div>
                 </div>

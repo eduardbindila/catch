@@ -25,6 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					"`due_date`='".$_POST['due_date']."'",
 					"`currency`='".$_POST['currency']."'",
 					"`exchange_rate`='".$_POST['exchange_rate']."'",
+					"`vat_value`='".$_POST['vat_value']."'",
 					"`invoice_value`='".$_POST['invoice_value']."'"
 					],
 				"where" => "id =".$userId
@@ -35,8 +36,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$conn,
 			$options = array(
 				"table" => "vendor_invoices",
-				"keys" => ["invoice_no", "vendor", "date", "due_date", "currency", "exchange_rate", "invoice_value"],
-				"values" => [$_POST["invoice_no"], $_POST["vendor"], $_POST["date"], $_POST["due_date"], $_POST["currency"], $_POST["exchange_rate"],$_POST["invoice_value"]]
+				"keys" => ["invoice_no", "vendor", "date", "due_date", "currency", "exchange_rate", "vat_value", "invoice_value"],
+				"values" => [$_POST["invoice_no"], $_POST["vendor"], $_POST["date"], $_POST["due_date"], $_POST["currency"], $_POST["exchange_rate"],$_POST["invoice_value"], $_POST["vat_value"]]
 			),
 			$multi = false
 		);
