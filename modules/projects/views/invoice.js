@@ -834,7 +834,7 @@ class Invoices {
                             "data": "unit_price_before_discount",
 
                             "render" : function(data, type, row, meta) {
-                                //console.log(meta.col);
+                                //console.log(row);
                                 var price = row.unit_price_before_discount;
 
                                 var product = row.product_id;
@@ -843,7 +843,7 @@ class Invoices {
 
                                 if(product == 0)  {
 
-                                    if(row.external_item_unit_price_before_discount =='') {
+                                    if(row.external_item_unit_price =='') {
 
                                         if(row.external_item_name =='') {
                                             disabled = "disabled"
