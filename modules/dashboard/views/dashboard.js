@@ -456,6 +456,53 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
             }
 
         });
+
+    var invoicesTable = $('.invoices-table').DataTable({
+            "ajax": {
+                "url": "/ajax/getInvoicedPackages",
+                "type": "POST",
+                "dataSrc": ""
+            },
+        
+            pageLength: 100,
+                "paging":   true,
+                "ordering": true,
+                "searching": true,
+            rowId: 'category_slug',
+              
+            responsive: true,
+            "columns": [ 
+                { 
+                    "data": "quote_id",
+                    "render" : function(data, type, row) {
+                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                      } 
+                },
+                { 
+                    "data": "quote_name"
+                },
+                { 
+                    "data": "id"
+                },
+                 { 
+                    "data": "invoice_number"
+                },
+                 { 
+                    "data": "invoice_date"
+                },
+                { 
+                    "data": "owner"
+                },
+                { 
+                    "data": "client_name"
+                },
+                
+            ],
+            "initComplete": function(settings, json) {
+                //console.log(json);
+            }
+
+        });
 });
 
 

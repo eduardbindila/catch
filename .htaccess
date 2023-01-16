@@ -202,6 +202,8 @@ RewriteRule ^ajax/getDashboardQuotes modules/dashboard/controllers/get_quotes_da
 
 RewriteRule ^ajax/getDashboardLogisticData modules/dashboard/controllers/get_quotes_logistic_data.php [L]
 
+RewriteRule ^ajax/getInvoicedPackages modules/dashboard/controllers/get_invoiced_packages.php [L]
+
 RewriteRule ^ajax/confirmQuote modules/projects/controllers/confirm_quote.php [L]
 
 RewriteRule ^ajax/addComment modules/projects/controllers/add_comment.php [L]

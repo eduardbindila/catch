@@ -40,6 +40,32 @@
             </div>
         </div>
 
+        <div class="row">
+           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Client Invoices</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                               <table class="invoices-table table table-striped table-bordered table-hover dt-responsive display"> 
+                                    <thead>
+                                        <th>Quote ID</th>
+                                        <th>Quote Name</th>
+                                        <th>Package ID</th>
+                                        <th>Invoice Number</th>
+                                        <th>Invoice Date</th>
+                                        <th>Owner</th>
+                                        <th>Client</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <?php }?>
         <?php 
