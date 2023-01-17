@@ -12842,6 +12842,24 @@ Document.prototype.getBlob = function (cb, options) {
 	}, options);
 };
 
+
+
+Document.prototype.returnBlob = function (cb, options) {
+  if (!cb) {
+    throw 'getBlob is an async method and needs a callback argument';
+  }
+  console.log(cb);
+  var that = this;
+  var thisBlob;
+  this.getBuffer(function (result) {
+    thisBlob = that._bufferToBlob(result);
+    that['blob'] = thisBlob;
+    cb(thisBlob);
+  }, options);
+  return that
+
+}
+
 Document.prototype.getBuffer = function (cb, options) {
 	if (!cb) {
 		throw 'getBuffer is an async method and needs a callback argument';
