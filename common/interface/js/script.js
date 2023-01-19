@@ -168,3 +168,44 @@ function convertMysqlDate(date){
 
     return formatteDate
 }
+
+function saveGeneratedFileToServer(params) {
+
+    var fd = new FormData();
+    fd.append('file_name', params.file_name);
+    fd.append('file_extension', params.file_extension);
+    fd.append('data', params.blob);
+    $.ajax({
+        type: 'POST',
+        url: '/ajax/saveBlob',
+        data: fd,
+        processData: false,
+        contentType: false
+    }).done(function(data) {
+           //console.log(data);
+
+           //"values" => [$_POST['quote_id'], $_POST['file_name'], strtotime('now'), $_SESSION['user_id'], $_POST['file_type'], $_POST['send_to_client']]
+
+           var saveFileDetails = {
+            "quote_id": params.quote_id,
+            "file_name": params.file_name+'.'+params.file_extension,
+            "file_type": params.file_type,
+            "file_extension": params.file_extension,
+            "send_to_client": 0
+           }
+
+           $.ajax({
+                url: "/ajax/saveFilesToQuote",
+                type: "post",
+                dataType: "json",
+                data: saveFileDetails
+            }).success(function(json){
+               
+            }).error(function(xhr, status, error) {
+               
+            })
+
+
+    });
+        
+}

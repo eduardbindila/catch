@@ -17,6 +17,8 @@ $conn = $QueryBuilder->dbConnection();
 		)
 	);
 
+	echo $conn->error;
+
 	echo json_encode($query);
 
 	$QueryBuilder->closeConnection();

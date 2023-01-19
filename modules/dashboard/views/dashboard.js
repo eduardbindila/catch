@@ -496,6 +496,12 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 { 
                     "data": "client_name"
                 },
+                  { 
+                    "data": "file_path",
+                    "render" : function(data, type, row) {
+                        return  '<a href="/download?f='+data+'" target="_blank" >'+data+'</a>'
+                      }
+                },
                 
             ],
             "initComplete": function(settings, json) {

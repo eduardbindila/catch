@@ -318,6 +318,8 @@ class Invoices {
             enableInvoiceCreation = $(".form-package-"+packageDetails.packageId).valid()
          }
 
+         var fileNameData = thisPackage.quote_id + '-' + thisPackage.id;
+
          that.packageTable[thisPackage.id] = $('.packages_table-'+thisPackage.id).DataTable({
                      "ajax": {
                         "url": "/ajax/getPackageItems/",
@@ -379,10 +381,17 @@ class Invoices {
                             name:"2",
                             enabled: thisPackage.package_status_id > 1,
                             text:'Generate POS',
-                            filename: 'POS-'+ thisPackage.quote_id + '-' + thisPackage.id,
+                            filename: 'POS-'+ fileNameData + '-' + Date.now(),
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
+                              saveToServer: true,
+                              fileData: {
+                                 "quote_id": thisPackage.quote_id,
+                                "file_name": 'POS-'+ fileNameData + '-' + Date.now(),
+                                "file_type": 2,
+                                "file_extension": "csv"
+                              },
                               columns: [ 
                                   24,//Quote ID
                                   2,//Index
@@ -406,11 +415,18 @@ class Invoices {
                             name:"3", 
                             enabled: thisPackage.package_status_id > 2,
                             text: 'Generate AWB',
-                            filename: 'AWB-'+thisPackage.quote_id + '-' + thisPackage.id,
+                            filename: 'AWB-'+ fileNameData + '-' + Date.now(),
                             className: 'btn btn-lg btn-primary waves-effect',
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
+                                saveToServer: true,
+                              fileData: {
+                                 "quote_id": thisPackage.quote_id,
+                                "file_name": 'AWB-'+ fileNameData + '-' + Date.now(),
+                                "file_type": 5,
+                                "file_extension": "pdf"
+                              },
                               columns: [ 
                                     2,//Index
                                     6,//Product Id
@@ -449,12 +465,19 @@ class Invoices {
                             name:"4", 
                             enabled: enableInvoiceCreation,
                             text: 'Generate Invoice',
-                            filename: 'Invoice-'+thisPackage.quote_id + '-' + thisPackage.id,
+                            filename: 'Invoice-'+ fileNameData + '-' + Date.now(),
                             className: 'btn btn-lg btn-primary waves-effect',
                              exportOptions: {
                               stripHtml: true,
                               orthogonal: true,
                               columns: invoiceColumns,
+                              saveToServer: true,
+                              fileData: {
+                                 "quote_id": thisPackage.quote_id,
+                                "file_name": 'Invoice-'+ fileNameData + '-' + Date.now(),
+                                "file_type": 1,
+                                "file_extension": "pdf"
+                              },
                             }, footer: true,
                             customize: function ( doc ) {
                                //that.setInvoiceObject();
@@ -1872,7 +1895,5 @@ class Invoices {
             return columnsArray
 
     }
-
-
 }
 

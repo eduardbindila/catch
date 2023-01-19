@@ -58,6 +58,7 @@
                                         <th>Invoice Date</th>
                                         <th>Owner</th>
                                         <th>Client</th>
+                                        <th>File</th>
                                     </thead>
                                 </table>
                             </div>
