@@ -767,7 +767,10 @@ class Invoices {
 
                              var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
 
-                            if(product == 0 && row.external_item_name =='') {
+                             disabled = false //added to keep this field editable
+
+                            // if(product == 0 && row.external_item_name =='') {//added to keep this field editable
+                                if(product == 0 && thisPackage.package_status_id < 2) {
                                 //console.log('asd')
                                 product = '<div class="form-group">' + 
                                         '<div class="form-line">' + 
@@ -778,7 +781,7 @@ class Invoices {
                                             '" data-quote_item="'+row.quote_item_id+
                                             '" data-package_item="'+row.id+
                                             '" data-product="'+row.product_id+
-                                            '" value="" type="text" name="external_item_name" placeholder="New Item" '+ disabled +'  required>' + 
+                                            '" value="'+row.external_item_name+'" type="text" name="external_item_name" placeholder="New Item" '+ disabled +'  required>' + 
                                         '</div>' + 
                                     '</div>'
                             } else if(!product) { product = row.external_item_name }
@@ -864,13 +867,20 @@ class Invoices {
 
                                 var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
 
-                                if(product == 0)  {
+                                if(product == 0 && thisPackage.package_status_id < 2 )  {
 
-                                    if(row.external_item_unit_price =='') {
+                                    // if(row.external_item_unit_price =='') {
 
-                                        if(row.external_item_name =='') {
-                                            disabled = "disabled"
-                                        }
+                                    //     if(row.external_item_name =='') {
+                                    //         disabled = "disabled"
+                                    //     }
+
+                                        
+                                    // } else {
+                                    //     price = row.unit_price_before_discount
+                                    // }
+
+                                    disabled = false //added to keep this field editable
 
                                         price = '<div class="form-group">' + 
                                                 '<div class="form-line">' + 
@@ -881,12 +891,9 @@ class Invoices {
                                                     '" data-quote_item="'+row.quote_item_id+
                                                     '" data-package_item="'+row.id+
                                                     '" data-product="'+row.product_id+
-                                                    '" value="" type="text" name="external_item_price" placeholder="Unit Price" '+ disabled +' required>' + 
+                                                    '" value="'+row.unit_price_before_discount+'" type="text" name="external_item_price" placeholder="Unit Price" '+ disabled +' required>' + 
                                                 '</div>' + 
                                             '</div>'
-                                    } else {
-                                        price = row.unit_price_before_discount
-                                    }
 
                                     //console.log('asd')
 
@@ -1061,7 +1068,7 @@ class Invoices {
                     ],
                     "initComplete": function(settings, json) {
 
-                        console.log(json);
+                        //console.log(json);
 
                     },
                     "footerCallback": function( row, data, start, end, display ) {

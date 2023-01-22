@@ -7,6 +7,17 @@ $conn = $QueryBuilder->dbConnection();
 
 //printError($_POST);
 
+if($_POST['package_item_id'] > 0) {
+		$query = $QueryBuilder->update(
+			$conn,
+			$options = array(
+				"table" => "package_items",
+				"set" => ["`external_item_name`='".$_POST['external_item_name']."'"],
+				"where" => "id = ".$_POST['package_item_id']
+			)
+		);
+}
+else {
 	$query = $QueryBuilder->insert(
 		$conn,
 		$options = array(
@@ -15,9 +26,11 @@ $conn = $QueryBuilder->dbConnection();
 			"values" => [$_POST['package_id'], $_POST['external_item_name']]
 		)
 	);
+ }
+	
 
 
-	//print_r($conn->error);
+	// print_r($conn->error);
 
 	echo json_encode($query);
 
