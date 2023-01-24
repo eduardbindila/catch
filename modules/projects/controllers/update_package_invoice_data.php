@@ -7,12 +7,18 @@ $conn = $QueryBuilder->dbConnection();
 
 //printError($_POST);
 
+if(isset($_POST['invoice_no'])) {
+	$invoiceString = "`invoice_number`=".$_POST['invoice_no']."";
+} else {
+	$invoiceString = "`invoice_number`= NULL";
+}
+
 	$updatePackageItem = $QueryBuilder->update(
 		$conn,
 		$options = array(
 			"table" => "packages",
 			"set" => [
-				"`invoice_number`=".$_POST['invoice_no']."",
+				$invoiceString,
 				"`invoice_date`='".$_POST['date']."'",
 				"`invoice_due_date`='".$_POST['due_date']."'",
 				"`exchange_rate`=".$_POST['exchange_rate']."",
@@ -21,7 +27,7 @@ $conn = $QueryBuilder->dbConnection();
 			"where" => "id = ".$_POST['package_id']
 		)
 	);
-
+//echo $conn->error;
 	
 	echo json_encode($updatePackageItem);
 	

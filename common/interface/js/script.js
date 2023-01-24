@@ -209,3 +209,19 @@ function saveGeneratedFileToServer(params) {
     });
         
 }
+
+function getLatestInvoiceNumber(params) {
+    var latestInvoiceNumber;
+
+    $.ajax({
+            url: "/ajax/getLatestInvoiceNumber",
+            type: "post",
+            dataType: "json",
+            data: params,
+            async: false
+        }).success(function(json){
+           
+            latestInvoiceNumber = json
+        })
+    return latestInvoiceNumber
+}

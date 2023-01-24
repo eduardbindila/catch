@@ -204,6 +204,8 @@ RewriteRule ^ajax/getDashboardLogisticData modules/dashboard/controllers/get_quo
 
 RewriteRule ^ajax/getInvoicedPackages modules/dashboard/controllers/get_invoiced_packages.php [L]
 
+RewriteRule ^ajax/getLatestInvoiceNumber modules/dashboard/controllers/get_last_invoice_number.php [L]
+
 RewriteRule ^ajax/confirmQuote modules/projects/controllers/confirm_quote.php [L]
 
 RewriteRule ^ajax/addComment modules/projects/controllers/add_comment.php [L]

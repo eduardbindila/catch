@@ -251,6 +251,7 @@ class Invoices {
             'dueDate': packages[index].invoice_due_date,
             'exchangeRate': quoteList[params.quoteIndex].client_details.country == "RO" ? packages[index].exchange_rate : 1,
             'invoiceNumber': packages[index].invoice_number,
+            'country': quoteList[params.quoteIndex].client_details.country,
             'showRon':  (quoteList[params.quoteIndex].client_details.country == "RO"),
             'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== '' ? "Ron" : "Euro",
             'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19" : "0%",
@@ -480,6 +481,18 @@ class Invoices {
                               },
                             }, footer: true,
                             customize: function ( doc ) {
+
+                                var invoiceNumber = packageDetails.invoiceNumber;
+
+                                if(packageDetails.invoiceNumber == "" ) {
+                                    invoiceNumber = getLatestInvoiceNumber(packageDetails)
+                                }
+
+                                // console.log(invoiceNumber)
+
+                               params['fileNumber'] = invoiceNumber;
+
+
                                //that.setInvoiceObject();
                                 
                                 var thisPDFData = that.getPDFData(packageDetails, params, "invoice");
@@ -1287,6 +1300,15 @@ class Invoices {
             typeName = "AWB"
             generatedDate = packageDetails.awb_date
             fileNumber = packageDetails.quote_id+"-"+packageDetails.packageId
+        } else {
+
+                var prefix = "RON";
+
+                if(packageDetails.country !== "RO") {
+                        prefix = "EXT"
+                }
+
+            fileNumber = prefix+'-'+params.fileNumber
         }
 
 

@@ -44,7 +44,7 @@ if(isset($_POST['invoiceNumber']))
          <div class="col-lg-6">
             <div class="input-group">
                 <div class="form-line">
-                    <input type="text" class="form-control" name="invoice_no" placeholder="Invoice Number" value="<?php echo $invoiceData['invoiceNumber']?>" required>
+                    <input type="text" class="form-control" name="invoice_no" placeholder="Invoice Number" value="<?php echo $invoiceData['invoiceNumber']?>" disabled>
                     <input type="hidden" class="form-control" name="package_id" value="<?php echo $invoiceData['packageId']?>">
                 </div>
             </div>
