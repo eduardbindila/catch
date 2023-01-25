@@ -2572,13 +2572,21 @@ $(document).ready(function() {
 
          var params = {
                 'nextStatus': $(this).attr('data-nextStatus'),
-                'packageId': $(this).attr('data-package')
+                'packageId': $(this).attr('data-package'),
+                'country': $(this).attr('data-country')
             }
 
             var valid = true;
 
             if(params.nextStatus == "4") {
-               valid = $(".form-package-"+params.packageId).valid()
+
+                var form = $(".form-package-"+params.packageId);
+
+                var invoiceInput = form.find('input[name="invoice_no"]')
+               valid = form.valid();
+
+               params['invoiceNumber'] = invoiceInput.val();
+               // params['invoiceInput'] = invoiceInput
             }
 
 

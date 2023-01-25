@@ -1,6 +1,8 @@
 class Invoices {
     constructor() { 
       this.packageTable = [];
+
+      this.packageDetails;
     }
 
     setPackageLine(params) {
@@ -14,6 +16,8 @@ class Invoices {
       var packageStatus = params.packageStatus;
 
       var packageStatusName = params.packageStatusName;
+
+      var country = params.country;
 
       var quote_id = params.quote_id;
 
@@ -42,7 +46,7 @@ class Invoices {
                 nextStatusAction = "Generate POS";
                 revertInvoiceClass = "hidden"
                 removePackageClass = "";
-                backButtonClass = "hidden"
+                backButtonClass = "hidden";
 
             break;
 
@@ -118,6 +122,7 @@ class Invoices {
 
                                  '<button type="button" data-package='+packageId+
                                                 ' data-nextStatus="'+nextStatus+
+                                                '" data-country="'+country+
                                                     '" class="btn '+nextStatusClass+
                                                     ' waves-effect package_status_change">'+
                                                             nextStatusAction+
@@ -259,6 +264,7 @@ class Invoices {
             'totals' : {}
          }
         
+        that.packageDetails = packageDetails;
 
             var greenTaxDropDown = that.getGreenTaxlist();
 
@@ -466,7 +472,10 @@ class Invoices {
                             name:"4", 
                             enabled: enableInvoiceCreation,
                             text: 'Generate Invoice',
-                            filename: 'Invoice-'+ fileNameData + '-' + Date.now(),
+                            //filename: 'Invoice-'+ packageDetails.invoiceNumber + '-' + Date.now(),
+                            filename: function () {
+         return that.getExportFileName(params);
+      },
                             className: 'btn btn-lg btn-primary waves-effect',
                              exportOptions: {
                               stripHtml: true,
@@ -475,25 +484,28 @@ class Invoices {
                               saveToServer: true,
                               fileData: {
                                  "quote_id": thisPackage.quote_id,
-                                "file_name": 'Invoice-'+ fileNameData + '-' + Date.now(),
+                                //"file_name": 'Invoice-'+ packageDetails.invoiceNumber + '-' + Date.now(),
+                                "file_name": that.getExportFileName(),
                                 "file_type": 1,
                                 "file_extension": "pdf"
                               },
                             }, footer: true,
                             customize: function ( doc ) {
 
-                                var invoiceNumber = packageDetails.invoiceNumber;
+                               //  var invoiceNumber = packageDetails.invoiceNumber;
 
-                                if(packageDetails.invoiceNumber == "" ) {
-                                    invoiceNumber = getLatestInvoiceNumber(packageDetails)
-                                }
+                               //  if(packageDetails.invoiceNumber == "" ) {
+                               //      invoiceNumber = getLatestInvoiceNumber(packageDetails)
+                               //  }
 
-                                // console.log(invoiceNumber)
+                               //  // console.log(invoiceNumber)
 
-                               params['fileNumber'] = invoiceNumber;
+                               // params['fileNumber'] = invoiceNumber;
 
 
                                //that.setInvoiceObject();
+
+                               //console.log(that.packageDetails, packageDetails);
                                 
                                 var thisPDFData = that.getPDFData(packageDetails, params, "invoice");
 
@@ -1081,8 +1093,11 @@ class Invoices {
                     ],
                     "initComplete": function(settings, json) {
 
-                        //console.log(json);
+                        
 
+                    },
+                     "drawCallback": function( settings ) {
+                        //console.log(that.packageDetails);
                     },
                     "footerCallback": function( row, data, start, end, display ) {
                         // console.log(packageDetails, '.advanceTable-'+packageDetails.quote_id+' .totalAdvance')
@@ -1189,7 +1204,25 @@ class Invoices {
     changeStatus(params){
 
         //console.log( params);
-        //this.packageTable[params.packageId].ajax.reload();
+       
+
+        //this.packageTable[params.packageId].draw();
+
+        if(params.nextStatus == 4) {
+             if(params.invoiceNumber == "" ) {
+              var invoiceNumber = getLatestInvoiceNumber(params);
+
+              this.packageDetails['invoiceNumber'] = invoiceNumber;
+            }
+        }
+
+
+
+        this.packageTable[params.packageId].ajax.reload();
+
+        console.log(this.packageTable[params.packageId]);
+
+
         this.packageTable[params.packageId].buttons(params.nextStatus+':name').trigger();
     }
 
@@ -1308,7 +1341,7 @@ class Invoices {
                         prefix = "EXT"
                 }
 
-            fileNumber = prefix+'-'+params.fileNumber
+            fileNumber = prefix+'-'+ packageDetails.invoiceNumber
         }
 
 
@@ -1923,6 +1956,18 @@ class Invoices {
 
             return columnsArray
 
+    }
+
+    getExportFileName(params){
+        //console.log('a',this, params )
+
+        var prefix = "RON";
+
+        if(this.packageDetails.country !== "RO") {
+                prefix = "EXT"
+        }
+
+        return prefix+'-'+this.packageDetails.invoiceNumber+'-'+Date.now();
     }
 }
 
