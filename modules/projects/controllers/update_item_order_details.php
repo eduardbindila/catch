@@ -4,7 +4,13 @@ require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $reserve_stock = '';
+
+$setPostValue = "`".$_POST['name']."`='".$_POST['value']."'";
 $conn = $QueryBuilder->dbConnection();
+
+function notempty($var) {
+    return ($var==="0"||$var);
+}
 
 $params = array(
 	"reserved" => "",
@@ -15,7 +21,6 @@ $params = array(
 
 
 	if($_POST['name'] == 'ordered_quantity') {
-
 
 		$quoteItemsQuery = $QueryBuilder->select(
 			$conn,
@@ -33,31 +38,46 @@ $params = array(
 
 		//echo $quoteItemsQuery[0]['quantity']. ' ' .$_POST['value'];
 
+		$itemStock = (int)$quoteItemsQuery[0]['saga_quantity'] + (int)$quoteItemsQuery[0]['reserved_stock'];
+
+		//echo notempty($_POST['value']);
+
+		if(!notempty($_POST['value'])) { //NULL Order Quantity will reset the stock and reserved
 
 
-		$newReserve = ($quoteItemsQuery[0]['quantity'] - $_POST['value']);
+			$newReserve = 0;
+
+			$newStock = $itemStock;
+
+			$setPostValue = "`".$_POST['name']."`= NULL";
+
+		}else {
+			$newReserve = ($quoteItemsQuery[0]['quantity'] - $_POST['value']);
+			$newStock = 0;
+
+			if(($newReserve >= 0) && ($itemStock >= $newReserve))  {
+	            $newReserve = $newReserve;
+	            $newStock = $itemStock - $newReserve;
+	        } else if(($newReserve < 0) && ($itemStock >= $_POST['value']))
+	        {
+	        	$newReserve =  0;
+	            $newStock = $itemStock;
+	        }
+	        else {
+	            $newReserve = $itemStock;
+	            $newStock = 0;
+	        }
+		}
+
+		
 
 		//echo $newReserve;
 
-		$itemStock = (int)$quoteItemsQuery[0]['saga_quantity'] + (int)$quoteItemsQuery[0]['reserved_stock'];
-
+		
 		//echo $itemStock;
 
-        $newStock = 0;
-                
-
-        if(($newReserve >= 0) && ($itemStock >= $newReserve))  {
-            $newReserve = $newReserve;
-            $newStock = $itemStock - $newReserve;
-        } else if(($newReserve < 0) && ($itemStock >= $_POST['value']))
-        {
-        	$newReserve =  0;
-            $newStock = $itemStock;
-        }
-        else {
-            $newReserve = $itemStock;
-            $newStock = 0;
-        }
+        
+        
 
 		if($quoteItemsQuery) {
 			$projectsQuery = $QueryBuilder->update(
@@ -81,7 +101,7 @@ $params = array(
 		$conn,
 		$options = array(
 			"table" => "quote_items",
-			"set" => ["`".$_POST['name']."`='".$_POST['value']."'".$reserve_stock],
+			"set" => [$setPostValue.$reserve_stock],
 			"where" => "id = ".$_POST['item_id']
 		)
 	);
