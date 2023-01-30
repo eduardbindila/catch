@@ -196,7 +196,7 @@ $quoteLockedClass = "";
                                 <th>Fixture luminous flux (lm)</th>
                                 <th>Aq Price</th>
                                 <th>Min Price</th>
-                                <th>Euro</th>
+                                <th>List Price</th>
                                 <th>%Discount</th>
                                 <th>Eur/pcs</th>
                                 <th>Profit</th>

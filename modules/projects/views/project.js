@@ -1224,7 +1224,7 @@ $(document).ready(function() {
                         "visible": false
                     },
                     { 
-                        "data": "initial_price",
+                        "data": "aquisition_price",
                         "visible": iss
                     },
                     { 

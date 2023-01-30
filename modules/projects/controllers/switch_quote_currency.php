@@ -5,7 +5,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
-var_dump($_POST);
+//var_dump($_POST);
 
 $exchange_rate = $_POST['exchange_rate'];
 
