@@ -319,6 +319,49 @@ $(document).ready(function() {
                             }
                         },
                         {
+                            text: 'Switch Currency',
+                            className: 'switchCurrency btn btn-lg btn-primary waves-effect',
+                            action: function ( e, dt, node, config ) {
+
+
+                                var date = new Date().toISOString().slice(0, 19).replace('T', ' ');;
+
+                                $.ajax({
+                                    url: "/ajax/getExchangeRate",
+                                    type: "post",
+                                    dataType: "json",
+                                    data: {'date': date}
+                                }).success(function(json){
+                                   //$('.updateError').addClass('hidden');
+                                   
+
+                                   var dataObj = {
+                                    'quote_id': quoteList[index].id,
+                                    'exchange_rate': json[0],
+                                    'isRon' : quoteList[index].isRon
+                                   }
+                                   
+
+                                    $.ajax({
+                                        url: "/ajax/switchQuoteCurrency",
+                                        type: "post",
+                                        dataType: "json",
+                                        data: dataObj
+                                    }).success(function(json){
+                                       //$('.updateError').addClass('hidden');
+                                       location.reload();
+                                       
+                                    }).error(function(xhr, status, error) {
+                                       //$('.updateError').removeClass('hidden');
+                                    })
+
+                                }).error(function(xhr, status, error) {
+                                   //$('.updateError').removeClass('hidden');
+                                })
+                      
+                            }
+                        },
+                        {
                             extend: 'selected',
                             className: 'createPackage btn btn-lg btn-success waves-effect',
                             text: 'Create Package',
@@ -2562,6 +2605,80 @@ $(document).ready(function() {
         }).error(function(xhr, status, error) {
            $('.updatePackageItemError').removeClass('hidden');
         })
+
+
+    })
+
+    $('.viewPackages-modal').on('shown.bs.modal', function() {
+    $(document).off('focusin.modal');
+});
+
+
+
+    $('body').on('click', '.changePriceDialog', function(){
+
+
+
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
+            'exchange_rate':  $(this).attr('data-exchange_rate'),
+        }
+
+         var table = $('.packages_table-'+packageItem.package_id).DataTable();
+
+            swal({
+                title: "Change Selling price/pc (no VAT)",
+                text: "Product ID: " + packageItem.product_id + ' (Quote Item ID: ' + packageItem.quote_item_id +')',
+                type: "input",
+                inputType: "number",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "New price"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("You need to write something!"); return false
+                }
+
+                packageItem['new_euro_unit_price'] = (inputValue / packageItem.exchange_rate).toFixed(2);
+
+                packageItem['target_price'] = inputValue;
+
+                // packageItem.new_euro_unit_price = Math.trunc(number*100)/100
+
+                swal({
+                    title: "Are you sure?",
+                    text: "The new price will be: " + inputValue + ' RON ( ~ ' + packageItem.new_euro_unit_price + ' EURO)'  ,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, Save it!",
+                    closeOnConfirm: false
+                }, function () {
+
+                    $.ajax({
+                        url: "/ajax/updateQuoteItemsUnitPrice",
+                        type: "post",
+                        dataType: "json",
+                        data: packageItem
+                    }).success(function(json){
+                       swal({
+                        title: "Saved!",
+                        text: "I will close in 1 seconds. Please refresh the quote if needed.",
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                        table.ajax.reload()
+                    }).error(function(xhr, status, error) {
+                       $('.updatePackageItemError').removeClass('hidden');
+                    })
+ 
+                });
+            });
 
 
     })

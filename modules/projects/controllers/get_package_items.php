@@ -11,6 +11,8 @@ $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $exchange_rate = floatVal($_POST['exchange_rate']); 
 
+// echo $exchange_rate;
+
 $external_exchange_rate = $exchange_rate;
 
 if($_POST['country'] == 'RO') {

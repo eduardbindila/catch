@@ -126,6 +126,10 @@ RewriteRule ^ajax/getRejectionReason modules/projects/controllers/get_rejection_
 
 RewriteRule ^ajax/updateQuantity modules/projects/controllers/update_quantity.php [L]
 
+RewriteRule ^ajax/updateQuoteItemsUnitPrice modules/projects/controllers/update_quote_items_unit_price.php [L]
+
+RewriteRule ^ajax/switchQuoteCurrency modules/projects/controllers/switch_quote_currency.php [L]
+
 RewriteRule ^ajax/updateGreenTax modules/projects/controllers/update_green_tax.php [L]
 
 RewriteRule ^ajax/updateItemType modules/projects/controllers/update_item_type.php [L]

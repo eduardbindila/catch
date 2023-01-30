@@ -1039,11 +1039,27 @@ class Invoices {
 
                                 // var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
 
-                                // //console.log(product !== "");
+                                // console.log(parseFloat(thisPackage.exchange_rate) !== 4.99);
+
+                                // console.log(parseFloat(thisPackage.exchange_rate));
+
+                                // if(thisPackage.exchange_rate !== 4.99) {
+                                //     value = row.type_name + '<button class="btn btn-default btn-xs changePriceDialog"' + 
+                                //                 ' data-row="'+meta.row+
+                                //                 '" data-col="'+meta.col+
+                                //                 '" data-package="'+thisPackage.id+
+                                //                 '" data-quote_item="'+row.quote_item_id+
+                                //                 '" data-package_item="'+row.id+
+                                //                 '" data-exchange_rate="'+thisPackage.exchange_rate+
+                                //                 '" data-product="'+row.product_id+'">'+
+                                //                         '<i class="material-icons">euro_symbol</i>'+ 
+                                //                 '</button>';
+                                // }
+                                
 
                                 if(!product )  {
 
-                                    value = row.type_name + 
+                                    value = value + 
                                             ' <div class="btn-group">'+
                                                 '<button class="btn btn-default btn-xs "' + 
                                                 ' data-row="'+meta.row+
