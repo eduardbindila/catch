@@ -9,9 +9,8 @@ $conn = $QueryBuilder->dbConnection();
 
 $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
-$exchange_rate = floatVal($_POST['exchange_rate']); 
+$exchange_rate = $_POST['isRon'] = 1 ? 1 :  floatVal($_POST['exchange_rate']); 
 
-// echo $exchange_rate;
 
 $external_exchange_rate = $exchange_rate;
 

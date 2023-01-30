@@ -336,7 +336,8 @@ class Invoices {
                             'package_id': thisPackage.id, 
                             'country': quoteList[params.quoteIndex].client_details.country,
                             'exchange_rate': packageDetails.exchangeRate == '' ? 1 : packageDetails.exchangeRate,
-                            'vat': packageDetails.vat
+                            'vat': packageDetails.vat,
+                            'isRon': thisPackage.isRon
                         }
                     },
                     dom: 'Bfrtip',                
