@@ -159,6 +159,12 @@ $(document).ready(function() {
 
         quoteList.forEach(function(val, index){
 
+            var thisCurrency = "Euro"
+
+            if(parseInt(val['isRon'])) {
+                    thisCurrency = "Ron"
+            }
+
             $('.quote-list').append('<li><a href="#linkQuote-'+quoteList[index].id+'">Quote '+quoteList[index].id+'</a></li>')
 
             QuotePricing[index] = [];
@@ -319,7 +325,7 @@ $(document).ready(function() {
                             }
                         },
                         {
-                            text: 'Switch Currency',
+                            text: 'Currency: '+ thisCurrency +'. Switch',
                             className: 'switchCurrency btn btn-lg btn-primary waves-effect',
                             action: function ( e, dt, node, config ) {
 
