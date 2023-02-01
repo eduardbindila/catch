@@ -197,8 +197,8 @@ $conn = $QueryBuilder->dbConnection();
 			
 			$temporary_product = isset($quoteProductDetails[0]['is_temporary']) ? $quoteProductDetails[0]['is_temporary'] : 0;
 
-			$list_price = $quoteValues['aquisition_price'] ?$Pricing->getListPrice($quoteValues['aquisition_price']) : $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
-			$min_price = $quoteValues['aquisition_price'] ? $Pricing->getMinPrice($quoteValues['aquisition_price']) : $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
+			$list_price = intval($quoteValues['aquisition_price']) > 0 ?$Pricing->getListPrice($quoteValues['aquisition_price']) : $Pricing->getListPrice($quoteProductDetails[0]['initial_price']);
+			$min_price = intval($quoteValues['aquisition_price']) > 0 ? $Pricing->getMinPrice($quoteValues['aquisition_price']) : $Pricing->getMinPrice($quoteProductDetails[0]['initial_price']);
 
 			$db_unit_price = $quoteValues['unit_price'];
 
