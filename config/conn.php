@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.98561';
+$_VERSION = '0.1.98562';
 
 
 function getPage(){

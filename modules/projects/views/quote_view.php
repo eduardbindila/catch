@@ -198,7 +198,7 @@ $quoteLockedClass = "";
                                 <th>Min Price</th>
                                 <th>List Price</th>
                                 <th>%Discount</th>
-                                <th>Eur/pcs</th>
+                                <th>Price/pcs</th>
                                 <th>Profit</th>
                                 <th>Profit %</th>
                                 <th>QTY</th>

@@ -326,6 +326,7 @@ $(document).ready(function() {
                         },
                         {
                             text: 'Currency: '+ thisCurrency +'. Switch',
+                            enabled: val['quote_status'] == 1,
                             className: 'switchCurrency btn btn-lg btn-primary waves-effect',
                             action: function ( e, dt, node, config ) {
 
