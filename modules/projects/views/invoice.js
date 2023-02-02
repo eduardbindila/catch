@@ -384,40 +384,34 @@ class Invoices {
                             }
                         },
                         {
-                            extend: 'csv',
-                            className: 'btn btn-lg btn-primary waves-effect',
-                            name:"2",
-                            enabled: thisPackage.package_status_id > 1,
-                            text:'Generate POS',
-                            filename: 'POS-'+ fileNameData + '-' + Date.now(),
-                            exportOptions: {
-                              stripHtml: true,
-                              orthogonal: true,
-                              saveToServer: true,
-                              fileData: {
-                                 "quote_id": thisPackage.quote_id,
-                                "file_name": 'POS-'+ fileNameData + '-' + Date.now(),
-                                "file_type": 2,
-                                "file_extension": "csv"
-                              },
-                              columns: [ 
-                                  24,//Quote ID
-                                  2,//Index
-                                  3,//Client Name
-                                  4,//Warehous
-                                  6,//Product ID
-                                  15,//Package Quantity
-                                  21 //Owner
-                              ]
-                            }, footer: false,
-
-                            action: function ( e, dt, node, config ) {
+                    extend: 'excelHtml5',
+                     className: 'btn btn-lg btn-primary waves-effect',
+                                name:"2",
+                                enabled: thisPackage.package_status_id > 1,
+                                text:'Generate POS',
+                                filename: 'POS-'+ fileNameData + '-' + Date.now(),
+                                exportOptions: {
+                                  stripHtml: true,
+                                  orthogonal: true,
+                                  saveToServer: true,
+                                  fileData: {
+                                     "quote_id": thisPackage.quote_id,
+                                    "file_name": 'POS-'+ fileNameData + '-' + Date.now(),
+                                    "file_type": 2,
+                                    "file_extension": "xlsx"
+                                  },
+                                  columns: [ 
+                                      24,//Quote ID
+                                      2,//Index
+                                      3,//Client Name
+                                      4,//Warehous
+                                      6,//Product ID
+                                      15,//Package Quantity
+                                      21 //Owner
+                                  ]
+                                }, footer: false,
                                 
-                               this.ajax.reload(() => {
-                                    $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, node, config);
-                                   });
-                            }
-                        },
+                },
                         {
                             extend: 'pdfHtml5',
                             name:"3", 
