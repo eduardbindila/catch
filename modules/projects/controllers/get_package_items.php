@@ -9,7 +9,7 @@ $conn = $QueryBuilder->dbConnection();
 
 $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
-$exchange_rate = $_POST['isRon'] = 1 ? 1 :  floatVal($_POST['exchange_rate']); 
+$exchange_rate = ($_POST['isRon'] = 1) ? 1 :  floatVal($_POST['exchange_rate']); 
 
 
 $external_exchange_rate = $exchange_rate;
@@ -103,9 +103,9 @@ $green_tax_total = "(
    	 )";
 
 
-$green_tax_value = $exchange_rate == 1 ?  0 : $green_tax_value;
+$green_tax_value = $_POST['country'] == 'RO' ?  $green_tax_value : 0;
 
-$green_tax_total = $exchange_rate == 1 ?  0 : $green_tax_total;
+$green_tax_total = $_POST['country'] == 'RO' ?  $green_tax_total : 0;
 
 //$green_tax_value = $green_tax_total ? 0 : $green_tax_value;
 
@@ -143,7 +143,7 @@ $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_disco
 							".$extra_discount_value." as extra_discount_value, 
 							".$vatValue." as vat_value,
 							".$vatValue_before_discount." as vat_value_before_discount,  
-							". $green_tax_id." as green_tax_id,
+							".$green_tax_id." as green_tax_id,
 							".$green_tax_value." as green_tax_value,
 							".$green_tax_total." as green_tax_total,
 							".$total_before_discount." as total_before_discount,
