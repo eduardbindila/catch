@@ -47,6 +47,9 @@ $(document).ready(function() {
             { 
                 "data": "initial_price"
             },
+             { 
+                "data": "list_price"
+            },
             { 
                 "data": "reserved_quantity"
             },

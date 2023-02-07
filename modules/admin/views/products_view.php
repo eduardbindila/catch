@@ -28,6 +28,7 @@
                                         <th>Product Manufacturer</th>
                                         <th>Temp</th>
                                         <th>Initial Price</th>
+                                        <th>List Price</th>
                                         <th>Reserved Quantity</th>
                                         <th>Stock</th>
                                         <th>Last Crawled Status</th>
