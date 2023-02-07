@@ -128,10 +128,10 @@ class Invoices {
                                                             nextStatusAction+
                                 '</button>'+
 
-                               '<button type="button" data-package='+packageId+' class="'+removePackageClass+
-                                ' btn btn-danger waves-effect removePackage">'+
-                                 '<i class="material-icons">close</i>'+
-                                '</button>'+
+                               // '<button type="button" data-package='+packageId+' class="'+removePackageClass+
+                               //  ' btn btn-danger waves-effect removePackage">'+
+                               //   '<i class="material-icons">close</i>'+
+                               //  '</button>'+
 
                                 '<button type="button" data-package='+packageId+' class="'+revertInvoiceClass+
                                     ' btn btn-primary waves-effect revertInvoice">'+
