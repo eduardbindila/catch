@@ -19,7 +19,7 @@ if($_POST['country'] == 'RO') {
 }
 
 
-$unit_price = 'TRUNCATE((
+$unit_price = 'Round((
 	(
 	        CASE 
 	        	WHEN 
@@ -32,7 +32,7 @@ $unit_price = 'TRUNCATE((
    	 ) ), 2)';
 
 
-$unit_price_before_discount = 'TRUNCATE((
+$unit_price_before_discount = 'Round((
 	(
 	        CASE 
 	        	WHEN 
@@ -46,7 +46,7 @@ $unit_price_before_discount = 'TRUNCATE((
 
 
 
-$extra_discount_value = 'TRUNCATE((
+$extra_discount_value = 'Round((
 	(
 	        CASE 
 	        	WHEN 
@@ -60,13 +60,13 @@ $extra_discount_value = 'TRUNCATE((
 
 
 
-$value_before_discount = 'TRUNCATE((
+$value_before_discount = 'Round((
 	(
 	         package_items.package_quantity * '.$unit_price_before_discount.'
    	 )), 2)';
 
 
-  $value = 'TRUNCATE((
+  $value = 'Round((
 	(
 	         package_items.package_quantity * '.$unit_price.'
    	 )), 2)';
@@ -109,9 +109,9 @@ $green_tax_total = $_POST['country'] == 'RO' ?  $green_tax_total : 0;
 
 //$green_tax_value = $green_tax_total ? 0 : $green_tax_value;
 
-$vatValue = 'TRUNCATE(('.$value.' *  '.$vat .'), 2)';
+$vatValue = 'Round(('.$value.' *  '.$vat .'), 2)';
 
-$vatValue_before_discount = 'TRUNCATE(('.$value_before_discount.' *  '.$vat .'), 2)';
+$vatValue_before_discount = 'Round(('.$value_before_discount.' *  '.$vat .'), 2)';
 
 $total = "(".$value." + ".$vatValue." )";
 
