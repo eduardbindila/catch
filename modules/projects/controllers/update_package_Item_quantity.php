@@ -16,7 +16,7 @@ $conn = $QueryBuilder->dbConnection();
 		$package_item_id = $_POST['package_item_id'];
 
 
-		if($_POST['quote_item_id'] == "") {
+		if($_POST['quote_item_id'] == "" || $package_item_quantity < 0 ) {
 			$updatePackageItem = $QueryBuilder->update(
 				$conn,
 				$options = array(

@@ -954,7 +954,7 @@ class Invoices {
                                                 '" data-product="'+row.product_id+
                                                 '" data-external-price="'+row.external_item_unit_price+
                                                 '" value="'+row.package_quantity+'" type="number" name="package_quantity"'+
-                                                ' placeholder="Package Quantity"  min=0 required '+disabled+'>' + 
+                                                ' placeholder="Package Quantity" required '+disabled+'>' + 
                                             '</div>' + 
                                         '</div>'
                               }

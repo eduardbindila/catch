@@ -33,6 +33,7 @@ if($_POST['nextStatus'] == 2) {
 		$options = array(
 			"table" => "package_items",
 			"columns" => "*",
+			"innerJoin" => "quote_items on package_items.quote_item_id = quote_items.id",
 			"where" => "package_id = ".$_POST['packageId']
 		));
 
@@ -43,13 +44,31 @@ if($_POST['nextStatus'] == 2) {
 
 				//printError($quoteItem);
 				if($quoteItem['quote_item_id']) {
+
+					$invoicedQuantity = "`invoiced_quantity`=  invoiced_quantity + ".$quoteItem['package_quantity']."";
+					$reservedQauntity = "`reserved_stock`= reserved_stock - ".$quoteItem['package_quantity']."";
+
+					if($quoteItem['package_quantity'] < 0) {
+
+						//print_r($quoteItem);
+				
+							$reservedQauntity = "`reserved_stock`= reserved_stock";
+
+							$updateProducts = $QueryBuilder->update(
+							$conn,
+							$options = array(
+								"table" => "products",
+								"set" => ["`saga_quantity`= saga_quantity - '".$quoteItem['package_quantity']."'"],
+								"where" => "id = '".$quoteItem['product_id']."'"
+							)
+						);
+					}
+
 					$updateQuoteItems = $QueryBuilder->update(
 						$conn,
 						$options = array(
 							"table" => "quote_items",
-							"set" => [
-								"`reserved_stock`= reserved_stock - ".$quoteItem['package_quantity']."",
-								"`invoiced_quantity`=  invoiced_quantity + ".$quoteItem['package_quantity'].""],
+							"set" => [$reservedQauntity, $invoicedQuantity],
 							"where" => "`id` = ".$quoteItem['quote_item_id'].";"
 						)
 					);
