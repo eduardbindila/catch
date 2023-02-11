@@ -38,6 +38,8 @@ class Invoices {
       var removePackageClass = ""
       var backButtonClass = ""
 
+      var hideStorno = "hidden";
+
         switch(parseInt(packageStatus)) {
             case 1:
                 statusClass = 'btn-default';
@@ -76,6 +78,7 @@ class Invoices {
                  revertInvoiceClass = ""
                 removePackageClass = "hidden";
                 backButtonClass = "hidden";
+                hideStorno = "";
         }
 
         //console.log(nextStatusClass, packageStatus);
@@ -126,6 +129,14 @@ class Invoices {
                                                     '" class="btn '+nextStatusClass+
                                                     ' waves-effect package_status_change">'+
                                                             nextStatusAction+
+                                '</button>'+
+
+                                '<button type="button" data-package='+packageId+
+                                                
+                                                '" data-country="'+country+
+                                                    '" class="'+ hideStorno + 
+                                            ' createStorno btn btn-default waves-effect"> Storno'+
+                                                           
                                 '</button>'+
 
                                // '<button type="button" data-package='+packageId+' class="'+removePackageClass+

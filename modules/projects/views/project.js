@@ -2930,6 +2930,30 @@ Dropzone.autoDiscover = false;
 
     })
 
+     $('body').on('click', '.createStorno', function(e){
+
+      packageData = {
+        'package' : $(this).attr('data-package'),
+      }
+
+      //console.log(itemTypesData)
+
+      $.ajax({
+            url: "/ajax/createStorno",
+            type: "post",
+            dataType: "json",
+            data: packageData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           console.log(json);
+           location.ajax.reload()
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
 });
 
 
