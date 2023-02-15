@@ -75,7 +75,7 @@ class Invoices {
             case 4:
                 statusClass = 'btn-success';
                  nextStatusClass = 'hidden';
-                 revertInvoiceClass = ""
+                 revertInvoiceClass = params.isStorno > 0 ? "hidden" : "";
                 removePackageClass = "hidden";
                 backButtonClass = "hidden";
                 hideStorno = "";
