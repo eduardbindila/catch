@@ -7,10 +7,10 @@ $conn = $QueryBuilder->dbConnection();
 
 //printError($_POST);
 
-if(isset($_POST['invoice_no'])) {
-	$invoiceString = "`invoice_number`=".$_POST['invoice_no']."";
-} else {
+if(empty($_POST['invoice_no'])) {
 	$invoiceString = "`invoice_number`= NULL";
+} else {
+	$invoiceString = "`invoice_number`=".$_POST['invoice_no']."";
 }
 
 	$updatePackageItem = $QueryBuilder->update(

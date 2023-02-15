@@ -131,7 +131,7 @@ class Invoices {
                                                             nextStatusAction+
                                 '</button>'+
 
-                                '<button type="button" data-package='+packageId+
+                                '<button type="button" data-package="'+packageId+
                                                 
                                                 '" data-country="'+country+
                                                     '" class="'+ hideStorno + 
@@ -139,10 +139,10 @@ class Invoices {
                                                            
                                 '</button>'+
 
-                               // '<button type="button" data-package='+packageId+' class="'+removePackageClass+
-                               //  ' btn btn-danger waves-effect removePackage">'+
-                               //   '<i class="material-icons">close</i>'+
-                               //  '</button>'+
+                               '<button type="button" data-package='+packageId+' class="'+removePackageClass+
+                                ' btn btn-danger waves-effect removePackage">'+
+                                 'Delete <i class="material-icons">close</i>'+
+                                '</button>'+
 
                                 '<button type="button" data-package='+packageId+' class="'+revertInvoiceClass+
                                     ' btn btn-primary waves-effect revertInvoice">'+
@@ -264,6 +264,7 @@ class Invoices {
             'pos_date': packages[index].pos_date,
             'awb_date': packages[index].awb_date,
             'other_details': packages[index].other_details,
+            'isStorno': packages[index].isStorno,
             'dueDate': packages[index].invoice_due_date,
             'exchangeRate': quoteList[params.quoteIndex].client_details.country == "RO" ? packages[index].exchange_rate : 1,
             'invoiceNumber': packages[index].invoice_number,
@@ -597,8 +598,8 @@ class Invoices {
                                   doc.content[1].table.body[tableLength+1] = greenTaxArray;
 
                                
-
-                                if(packageDetails.totals.extra_discount > 0) {
+console.log(packageDetails);
+                                if(packageDetails.totals.extra_discount !== "") {
 
 
                                     var extraDiscountValue = -1 * parseFloat(packageDetails.totals.extra_discount);
@@ -619,7 +620,7 @@ class Invoices {
 
 
 
-                                if(packageDetails.totals.green_tax_total > 0) {
+                                if(packageDetails.totals.green_tax_total !== "") {
                                     doc.content[1].table.body[tableLength-1][5] = "";
                                     var totalGreenTax = parseFloat(packageDetails.totals.green_tax_total);
 

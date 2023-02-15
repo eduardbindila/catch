@@ -16,9 +16,14 @@ $packageQuery = $QueryBuilder->select(
 	);
 
 
+//print_R($_POST);
+
+
 $packageQuery[0]['created_date'] = date("Y-m-d H:i:s");
 
 $packageQuery[0]['package_status_id'] = 1;
+
+$packageQuery[0]['isStorno'] = $_POST['package'] ;
 
 unset($packageQuery[0]['id']);
 unset($packageQuery[0]['pos_date']);
@@ -55,43 +60,56 @@ if($insertPackage) {
 	);
 
 
-	unset($packageItemsQuery[0]['id']);
-
-	$package_items_keys = array_keys($packageItemsQuery[0]);
-
-	$package_items_values = array();
-
 	foreach ($packageItemsQuery as $key => $quoteItem) {
 
+		
+
+		unset($quoteItem['id']);
 
 		$quoteItem['package_quantity'] = - $quoteItem['package_quantity'];
 
 		$quoteItem['package_id'] = $insertPackage;
 
-		$quoteItem['external_item_unit_price'] = $quoteItem['external_item_unit_price'] == "" ? 0 : $quoteItem['external_item_unit_price'] ;
-	
-		array_push($package_items_values, $quoteItem);
+		if($quoteItem['external_item_unit_price'] == "")
+		{
+			unset($quoteItem['external_item_unit_price']);
+		}
 
+		if($quoteItem['quote_item_id'] == "")
+		{
+			unset($quoteItem['quote_item_id']);
+		}
+
+		$package_items_keys = array_keys($quoteItem);
+
+		$package_items_values = array_values($quoteItem);
+	
+		//array_push($package_items_values, $quoteItem);
+
+		$insertPackageItemsQuery = $QueryBuilder->insert(
+	    $conn,
+	    $options = array(
+	        "table" => "package_items",
+	        "keys" => $package_items_keys,
+	        "values" => $package_items_values
+	    )
+	);
 	}
 
 
-	$insertPackageItemsQuery = $QueryBuilder->insert(
-    $conn,
-    $options = array(
-        "table" => "package_items",
-        "keys" => $package_items_keys,
-        "values" => $package_items_values
-    ),
-    $multi = true
-);
+	
 }
 
 
-
+// print_r($conn);
 
 	echo $conn->error;
 
-echo json_encode($insertPackageItemsQuery);
+//echo json_encode($package_items_keys);
+
+echo json_encode($package_values);
+
+
 
 	$QueryBuilder->closeConnection();
 

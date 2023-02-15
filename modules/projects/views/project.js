@@ -2756,7 +2756,8 @@ Dropzone.autoDiscover = false;
 
         var date = $(this).val();
 
-        $.ajax({
+        if(isStorno == 0) {
+            $.ajax({
             url: "/ajax/getExchangeRate",
             type: "post",
             dataType: "json",
@@ -2771,6 +2772,9 @@ Dropzone.autoDiscover = false;
            //$('.updateError').removeClass('hidden');
         })
 
+        }
+
+        
     })
 
      $('body').on('change', '.invoice-external-name', function(){
@@ -2946,7 +2950,7 @@ Dropzone.autoDiscover = false;
         }).success(function(json){
            $('.updatePackageItemError').addClass('hidden');
            console.log(json);
-           location.ajax.reload()
+           location.reload()
 
         }).error(function(xhr, status, error) {
             $('.updatePackageItemError').removeClass('hidden');
