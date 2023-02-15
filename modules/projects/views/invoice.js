@@ -333,6 +333,8 @@ class Invoices {
 
          var enableInvoiceCreation = false;
 
+
+
          if( packageDetails.packageStatus > 2) {
             enableInvoiceCreation = $(".form-package-"+packageDetails.packageId).valid()
          }
@@ -366,6 +368,47 @@ class Invoices {
                         {
                             extend: 'selectNone',
                             className: 'btn btn-lg btn-primary waves-effect',
+                        },
+                         {
+                            extend: 'selected',
+                            className: 'deleteSelected btn btn-lg btn-danger waves-effect',
+                            text: 'Delete Selected',
+                            action: function ( e, dt, button, config ) {
+
+                                if(parseFloat(thisPackage.package_status_id) == 1) {
+                                     var selectedItems = []
+
+                                    var selection = dt.rows( { selected: true } ).data();
+                                    var i;
+                                
+                                    for ( i = 0; i < selection.length; i++) {
+                                        selectedItems.push(selection[i].id);
+                                        
+                                    }
+
+                                    console.log(selectedItems);
+
+                                    var data = {
+                                        "id" : selectedItems
+                                    }
+
+                                    $.ajax({
+                                        url: "/ajax/deletePackageItems",
+                                        type: "post",
+                                        dataType: "json",
+                                        data: data
+                                   }).success(function(json){
+                                       that.packageTable[thisPackage.id].ajax.reload();
+                                       console.log(that.packageTable);
+                                       $('.updateError').addClass('hidden');
+
+                                    }).error(function(xhr, status, error) {
+                                       $('.updateError').removeClass('hidden');
+                                    })
+                                }
+
+                               
+                            }
                         },
                         {
                             text: 'Add External Item',
@@ -701,35 +744,7 @@ console.log(packageDetails);
                                
                             },
                         },
-                        // {
-                        //     extend: 'selected',
-                        //     className: 'deleteSelectedFiles btn btn-lg btn-danger waves-effect',
-                        //     text: 'Delete Selected',
-                        //     action: function ( e, dt, button, config ) {
-                        //         if(!isc) {
-                        //          var selection = dt.rows( { selected: true } ).data();
-                        //             var i;
-                                
-                        //             for ( i = 0; i < selection.length; i++) {
-                        //                 selectedItems.push(selection[i].file_path);
-                        //             }
-                                 
 
-                        //            //  $.ajax({
-                        //            //      url: "/ajax/removeFilesFromQuote",
-                        //            //      type: "post",
-                        //            //      dataType: "json",
-                        //            //      data: {'file_path': selectedItems, 'quote_id': quoteID}
-                        //            // }).success(function(json){
-                        //            //     location.reload();
-
-                        //            //  }).error(function(xhr, status, error) {
-                        //            //     //$('.addNewTemporaryProduct').removeClass('hidden');
-                        //            //  })   
-                        //         }
-                                
-                        //     }
-                        // },
                         {
                             className: 'comments btn btn-lg btn-danger waves-effect',
                             text: ' Add Comments',
