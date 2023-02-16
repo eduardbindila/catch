@@ -42,13 +42,13 @@ $(document).ready(function() {
                 "data": "manufacturer"
             } ,
             { 
-                "data": "is_temporary"
-            },
-            { 
                 "data": "initial_price"
             },
              { 
                 "data": "list_price"
+            },
+            { 
+                "data": "green_tax_value"
             },
             { 
                 "data": "reserved_quantity"

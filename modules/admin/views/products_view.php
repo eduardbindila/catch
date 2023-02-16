@@ -26,9 +26,9 @@
                                         <th>Product ID</th>
                                         <th>Product Name</th>
                                         <th>Product Manufacturer</th>
-                                        <th>Temp</th>
                                         <th>Initial Price</th>
                                         <th>List Price</th>
+                                        <th>Green Tax</th>
                                         <th>Reserved Quantity</th>
                                         <th>Stock</th>
                                         <th>Last Crawled Status</th>
