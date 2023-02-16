@@ -2752,9 +2752,13 @@ Dropzone.autoDiscover = false;
        
        $('.viewPackages-modal.in .exchange_rate_preloader').removeClass('hidden');
 
+        var isStorno =  $(this).attr('data-isStorno');
+
 
 
         var date = $(this).val();
+
+        console.log(isStorno);
 
         if(isStorno == 0) {
             $.ajax({
