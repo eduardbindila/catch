@@ -642,7 +642,7 @@ class Invoices {
 
                                
 console.log(packageDetails);
-                                if(packageDetails.totals.extra_discount !== "") {
+                                if(packageDetails.totals.extra_discount !== "" && packageDetails.totals.extra_discount !== "0.00") {
 
 
                                     var extraDiscountValue = -1 * parseFloat(packageDetails.totals.extra_discount);
@@ -663,7 +663,7 @@ console.log(packageDetails);
 
 
 
-                                if(packageDetails.totals.green_tax_total !== "") {
+                                if(packageDetails.totals.green_tax_total !== "" && packageDetails.totals.extra_discount !== "0.00") {
                                     doc.content[1].table.body[tableLength-1][5] = "";
                                     var totalGreenTax = parseFloat(packageDetails.totals.green_tax_total);
 
