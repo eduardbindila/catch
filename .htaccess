@@ -166,6 +166,8 @@ RewriteRule ^ajax/removePackage modules/admin/controllers/remove_package.php [L]
 
 RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_Item_quantity.php [L]
 
+RewriteRule ^ajax/updateProductType modules/projects/controllers/update_product_type.php [L]
+
 RewriteRule ^ajax/deletePackageItems modules/projects/controllers/remove_package_items.php [L]
 
 RewriteRule ^ajax/updateReservedStock modules/projects/controllers/update_reserved_stock.php [L]

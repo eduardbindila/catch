@@ -125,6 +125,7 @@ $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_disco
 				"table" => "package_items",
 				"columns" => "package_items.*, 
 							products.id as product_id, 
+							products.isService,
 							products.product_name, 
 							products.saga_quantity, 
 							quote_items.reserved_stock, 

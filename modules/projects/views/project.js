@@ -2938,6 +2938,36 @@ Dropzone.autoDiscover = false;
 
     })
 
+      $('body').on('click', '.markAsService', function(e){
+
+      itemTypesData = {
+        'product_id' : $(this).parents('ul').attr('data-product'),
+        'isService' : +!parseInt($(this).attr('data-isService')),
+        'package' : $(this).parents('ul').attr('data-package'),
+        'package_item' : $(this).parents('ul').attr('data-package_item')
+      }
+
+      //console.log(itemTypesData)
+
+      var table = $('.packages_table-'+itemTypesData.package).DataTable();
+
+
+      $.ajax({
+            url: "/ajax/updateProductType",
+            type: "post",
+            dataType: "json",
+            data: itemTypesData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           //console.log(json);
+           table.ajax.reload()
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
      $('body').on('click', '.createStorno', function(e){
 
       packageData = {

@@ -641,7 +641,7 @@ class Invoices {
                                   doc.content[1].table.body[tableLength+1] = greenTaxArray;
 
                                
-console.log(packageDetails);
+//console.log(packageDetails);
                                 if(packageDetails.totals.extra_discount !== "" && packageDetails.totals.extra_discount !== "0.00") {
 
 
@@ -1103,10 +1103,39 @@ console.log(packageDetails);
                                                         itemTypesDropDown
                                                 '</ul>'
                                             '</div>';
-                                } 
+                                } else {
 
-                                    //console.log('asd')
+                                    var label = (parseInt(row.isService) == 0) ? "Mark as Service" : "Mark as Product";
 
+                                    var labelType = (parseInt(row.isService) == 0) ? "Product" : "Service";
+
+                                    value = labelType + 
+                                            ' <div class="btn-group">'+
+                                                '<button class="btn btn-default btn-xs "' + 
+                                                ' data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+'" data-toggle="dropdown'+
+                                                '" aria-haspopup="true" aria-expanded="true">'+
+                                                        '<i class="material-icons">edit</i>'+ 
+                                                '</button>'+
+                                                '<ul class="dropdown-menu"'+
+                                                ' data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+'" data-toggle="dropdown">'+
+                                                     '<li class="">' + 
+                                                        '<a class="markAsService waves-effect waves-block" data-isService="'+row.isService+'">' +
+                                                            label +
+                                                        '</a>'+
+                                                    '</li>'
+                                                '</ul>'
+                                            '</div>';
+                                }
 
                                 return value
                             }, 
