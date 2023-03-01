@@ -44,7 +44,7 @@ $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
 ## Fetch records
-$empQuery = "select *, green_tax.value,
+$empQuery = "select p.*, green_tax.value_2023,
 
  (
    select 
@@ -56,7 +56,7 @@ $empQuery = "select *, green_tax.value,
 
  from products p join green_tax on p.green_tax_id = green_tax.id WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
 
-// echo $empQuery;
+//echo $empQuery;
 
 $empRecords = mysqli_query($conn, $empQuery);
 $data = array();
@@ -79,7 +79,7 @@ while ($row = mysqli_fetch_assoc($empRecords)) {
       "product_name"=>$row['product_name'],
       "manufacturer"=>$row['manufacturer'],
       "is_temporary"=>$row['is_temporary'],
-      "green_tax_value"=>$row['value'],
+      "green_tax_value"=>$row['value_2023'],
       "initial_price"=>$row['initial_price'],
       "list_price"=>$Pricing->getListPrice($row['initial_price']),
       "last_crawled_status"=>$row['last_crawled_status'],
