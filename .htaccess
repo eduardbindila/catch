@@ -164,7 +164,7 @@ RewriteRule ^ajax/createPackage modules/projects/controllers/create_package.php 
 
 RewriteRule ^ajax/removePackage modules/admin/controllers/remove_package.php [L]
 
-RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_Item_quantity.php [L]
+RewriteRule ^ajax/updatePackageItem modules/projects/controllers/update_package_item_quantity.php [L]
 
 RewriteRule ^ajax/updateProductType modules/projects/controllers/update_product_type.php [L]
 
@@ -177,6 +177,8 @@ RewriteRule ^ajax/updateSagaQuantity modules/projects/controllers/update_saga_qu
 RewriteRule ^ajax/insertPackageExternalItem modules/projects/controllers/insert_external_package_item.php [L]
 
 RewriteRule ^ajax/updateExternalPackageItem modules/projects/controllers/update_external_package_item.php [L]
+
+RewriteRule ^ajax/changePackageItemDetails modules/projects/controllers/change_package_item_details.php [L]
 
 RewriteRule ^ajax/updatePackageStatus modules/projects/controllers/update_package_status.php [L]
 

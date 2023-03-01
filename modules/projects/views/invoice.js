@@ -186,9 +186,11 @@ class Invoices {
                                         '<th>'+that.getTranslation('Type',params.currency)+'</th>'+
                                         '<th>'+that.getTranslation('Green_Tax_PC',params.currency)+'</th>'+
                                         '<th>ID</th>'+
+                                        '<th>'+that.getTranslation('Item_Details',params.currency)+'</th>'+
                                    '</thead>'+
                                    '<tfoot>'+
                                         '<th colspan=16>'+that.getTranslation('Subtotals',params.currency)+' ('+ params.currency +')</th>'+
+                                        '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
                                         '<th></th>'+
@@ -1157,6 +1159,25 @@ class Invoices {
                                 return thisPackage.quote_id + '-' + thisPackage.id
                               }
                         },
+                        { 
+                            "data": "item_details",
+                            "render" : function(data, type, row, meta) {
+                                return '<div class="form-group">' + 
+                                            '<div class="form-line">' + 
+                                                '<textarea class="form-control item_details-input"' + 
+                                                ' data-type="item_details" data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+thisPackage.id+
+                                                '" data-quote_item="'+row.quote_item_id+
+                                                '" data-package_item="'+row.id+
+                                                '" data-product="'+row.product_id+
+                                                
+                                                '" name="item_details"'+
+                                                ' placeholder="Item Details" >'+ row.item_details +'</textarea>' + 
+                                            '</div>' + 
+                                        '</div>'
+                              }
+                        },
 
                     ],
                     "initComplete": function(settings, json) {
@@ -1855,6 +1876,10 @@ class Invoices {
             "Bank": {
                 "Ron": "Banca",
                 "Euro": "Bank"
+            },
+            "Item_Details": {
+                "Ron": "Detalii Produs",
+                "Euro": "Item Details"
             },
 
         };

@@ -2851,6 +2851,41 @@ Dropzone.autoDiscover = false;
         
     });
 
+      $('body').on('change keyup input', '.item_details-input', function(){
+       
+        var packageItem = {
+            'package_item_id': $(this).attr('data-package_item'),
+            'quote_item_id':  $(this).attr('data-quote_item'),
+            'product_id':  $(this).attr('data-product'),
+            'package_id':  $(this).attr('data-package'),
+            'item_details': $(this).val()
+        }
+
+        console.log(packageItem);
+
+        var table = $('.packages_table-'+packageItem.package_id).DataTable();
+
+
+         $.ajax({
+                url: "/ajax/changePackageItemDetails",
+                type: "post",
+                dataType: "json",
+                data: packageItem
+           }).success(function(json){
+               
+              if(json==0) {
+                  $('.updatePackageItemError').removeClass('hidden');
+              } else {
+                $('.updatePackageItemError').addClass('hidden');
+                 table.ajax.reload()
+              }
+            }).error(function(xhr, status, error) {
+                $('.updatePackageItemError').removeClass('hidden');
+            })
+
+        
+    });
+
     $('body').on('submit', '#invoiceData', function(e){
 
        e.preventDefault();
