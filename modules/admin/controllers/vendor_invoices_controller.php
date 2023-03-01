@@ -37,10 +37,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$options = array(
 				"table" => "vendor_invoices",
 				"keys" => ["invoice_no", "vendor", "date", "due_date", "currency", "exchange_rate", "vat_value", "invoice_value"],
-				"values" => [$_POST["invoice_no"], $_POST["vendor"], $_POST["date"], $_POST["due_date"], $_POST["currency"], $_POST["exchange_rate"],$_POST["invoice_value"], $_POST["vat_value"]]
+				"values" => [$_POST["invoice_no"], $_POST["vendor"], $_POST["date"], $_POST["due_date"], $_POST["currency"], $_POST["exchange_rate"],$_POST["vat_value"], $_POST["invoice_value"]]
 			),
 			$multi = false
 		);
+
+		//echo $conn->error;
 	}
 
 	$insertResult = json_decode($query);
