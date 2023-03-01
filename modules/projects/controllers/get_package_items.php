@@ -11,6 +11,7 @@ $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $exchange_rate = ($_POST['isRon'] == 1) ? 1 :  floatVal($_POST['exchange_rate']); 
 
+$green_tax_value_field = $_POST['invoice_date'] > '2023-02-28' ? "value_2023" : "value";
 
 $external_exchange_rate = $exchange_rate;
 
@@ -85,9 +86,9 @@ $green_tax_id = 'CASE
         	WHEN 
         		package_items.quote_item_id is NULL
        		THEN  
-        		external_green_tax.value
+        		external_green_tax.'.$green_tax_value_field.'
         ELSE
-         green_tax.value
+         green_tax.'.$green_tax_value_field.'
         END';
 
 
@@ -134,8 +135,6 @@ $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_disco
 							quotes.extra_discount, 
 							quote_items.invoiced_quantity, 
 							quote_items.quote_id,
-							green_tax.value as green_tax,
-							external_green_tax.value as external_green_tax,
 							package_item_types.name as type_name,
 							".$value." as value, 
 							".$value_before_discount." as value_before_discount,

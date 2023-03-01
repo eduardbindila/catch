@@ -351,7 +351,8 @@ class Invoices {
                             'country': quoteList[params.quoteIndex].client_details.country,
                             'exchange_rate': packageDetails.exchangeRate == '' ? 1 : packageDetails.exchangeRate,
                             'vat': packageDetails.vat,
-                            'isRon': thisPackage.isRon
+                            'isRon': thisPackage.isRon,
+                            'invoice_date' : thisPackage.invoice_date
                         }
                     },
                     dom: 'Bfrtip',                
@@ -1338,7 +1339,7 @@ class Invoices {
             JSON.parse(json).forEach(function(val, index){
                 greenTaxDropDown = greenTaxDropDown + 
                   '<li class=""><a class="addGreenTax waves-effect waves-block" data-green_tax_id="'+ val.id +'">'+
-                             val.ee_category+' '+ val.name + ': '+ val.value +
+                             val.ee_category+' '+ val.name + ': '+ val.value_2023 +
                                 '</a>'+
                             '</li>'
            })
