@@ -2851,7 +2851,7 @@ Dropzone.autoDiscover = false;
         
     });
 
-      $('body').on('change keyup input', '.item_details-input', function(){
+      $('body').on('change', '.item_details-input', function(){
        
         var packageItem = {
             'package_item_id': $(this).attr('data-package_item'),
