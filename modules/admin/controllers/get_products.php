@@ -28,18 +28,18 @@ if($searchValue != ''){
         manufacturer like '%".$searchValue."%' or 
         initial_price like'%".$searchValue."%' or 
         last_crawled_status like'%".$searchValue."%' or 
-        id like'%".$searchValue."%' or 
+        p.id like'%".$searchValue."%' or 
         legacy_id like'%".$searchValue."%' ) ";
 }
 
 
 ## Total number of records without filtering
-$sel = mysqli_query($conn,"select count(*) as allcount from products");
+$sel = mysqli_query($conn,"select count(*) as allcount from products p");
 $records = mysqli_fetch_assoc($sel);
 $totalRecords = $records['allcount'];
 
 ## Total number of record with filtering
-$sel = mysqli_query($conn,"select count(*) as allcount from products WHERE 1 ".$searchQuery);
+$sel = mysqli_query($conn,"select count(*) as allcount from products p WHERE 1 ".$searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecordwithFilter = $records['allcount'];
 
@@ -71,6 +71,9 @@ $data = array();
 	// );
 
 	//var_dump($projectsQuery);
+
+
+//print_r($empRecords);
 
 while ($row = mysqli_fetch_assoc($empRecords)) {
    $data[] = array(
