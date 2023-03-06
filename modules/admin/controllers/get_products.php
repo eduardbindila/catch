@@ -54,7 +54,7 @@ $empQuery = "select p.*, green_tax.value_2023,
 ) as reserved_quantity
 
 
- from products p join green_tax on p.green_tax_id = green_tax.id WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
+ from products p left join green_tax on p.green_tax_id = green_tax.id WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".$row.",".$rowperpage;
 
 //echo $empQuery;
 
@@ -70,7 +70,7 @@ $data = array();
 	// 	)
 	// );
 
-	//var_dump($projectsQuery);
+	//var_dump($empQuery);
 
 
 //print_r($empRecords);
