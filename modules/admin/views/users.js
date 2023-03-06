@@ -27,6 +27,9 @@ $(document).ready(function() {
             ,
             { 
                 "data": "user_type_name"
+            },
+            { 
+                "data": "active"
             }
         ],
         "initComplete": function(settings, json) {
@@ -79,6 +82,8 @@ $(document).ready(function() {
         $('.addUserError').removeClass('hidden')
     }
 
+    //console.log(userDetails);
+
     if(isDisabled) {
         $('#userData').find('input, textarea, button, select').attr('disabled','disabled');
         userDetails = userDetails[0];
@@ -87,6 +92,9 @@ $(document).ready(function() {
         $("#userData input[name=email]").val(userDetails.email);
         $("#userData input[name=phone]").val(userDetails.phone);
         $("#userData input[name=password]").val(userDetails.password);
+        $("#userData input[name=kpi_igm]").val(userDetails.kpi_igm);
+        $("#userData input[name=kpi_selling_value]").val(userDetails.kpi_selling_value);
+        $("#userData select[name=user_active]").val(userDetails.active);
     }
 
      $('.editSwitch').change(function() {

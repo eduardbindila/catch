@@ -43,6 +43,22 @@
             <option value="">Link client to this user (user when User Type is Self customer)>
         </select>
     </div>
+    <div class="input-group">
+        <div class="form-line">
+            <input type="text" class="form-control" name="kpi_igm" placeholder="KPI IGM" required>
+        </div>
+    </div>
+    <div class="input-group">
+        <div class="form-line">
+            <input type="text" class="form-control" name="kpi_selling_value" placeholder="KPI Selling Value" required>
+        </div>
+    </div>
+    <div class="input-group">
+        <select class="form-control userActiveSelector" required name="user_active">
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <button id="submitUserData" class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit user data</button>

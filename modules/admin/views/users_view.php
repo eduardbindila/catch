@@ -40,6 +40,7 @@
                                         <th>User ID</th>
                                         <th>User Name</th>
                                         <th>User Type</th>
+                                        <th>Active</th>
                                     </thead>
                                 </table>
                             </div>

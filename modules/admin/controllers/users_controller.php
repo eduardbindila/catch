@@ -24,7 +24,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					"`password`='".$_POST['password']."'",
 					"`type_id`='".$_POST['user_type']."'",
 					"`phone`='".$_POST['phone']."'",
-					"`isclient`='".$_POST['client_id']."'"
+					"`isclient`='".$_POST['client_id']."'",
+					"`active`='".$_POST['user_active']."'",
+					"`kpi_igm`='".$_POST['kpi_igm']."'",
+					"`kpi_selling_value`='".$_POST['kpi_selling_value']."'"
 					],
 				"where" => "id =".$userId
 			)
@@ -34,8 +37,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$conn,
 			$options = array(
 				"table" => "users",
-				"keys" => ["name", "username", "email", "password", "type_id", "phone", "isclient"],
-				"values" => [$_POST["name"], $_POST["username"], $_POST["email"], $_POST["password"], $_POST["user_type"], $_POST["phone"], $_POST["client_id"]]
+				"keys" => ["name", "username", "email", "password", "type_id", "phone", "isclient", "active", "kpi_igm", "kpi_selling_value"],
+				"values" => [$_POST["name"], $_POST["username"], $_POST["email"], $_POST["password"], $_POST["user_type"], $_POST["phone"], $_POST["client_id"], $_POST['user_active'], $_POST['kpi_igm'],$_POST['kpi_selling_value']]
 			),
 			$multi = false
 		);

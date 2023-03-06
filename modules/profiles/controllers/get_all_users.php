@@ -10,7 +10,7 @@ $conn = $QueryBuilder->dbConnection();
 		$conn,
 		$options = array(
 			"table" => "users",
-			"columns" => "users.id, users.name, user_types.user_type_name",
+			"columns" => "users.id, users.name, user_types.user_type_name, users.active",
 			"innerJoin" => 'user_types ON user_types.id = users.type_id',
 			"orderBy" => "users.name",
 			"orderType" => "ASC"
