@@ -268,7 +268,7 @@ class Invoices {
             'other_details': packages[index].other_details,
             'isStorno': packages[index].isStorno,
             'dueDate': packages[index].invoice_due_date,
-            'exchangeRate': quoteList[params.quoteIndex].client_details.country == "RO" ? packages[index].exchange_rate : 1,
+            'exchangeRate': packages[index].exchange_rate,
             'invoiceNumber': packages[index].invoice_number,
             'country': quoteList[params.quoteIndex].client_details.country,
             'showRon':  (quoteList[params.quoteIndex].client_details.country == "RO"),

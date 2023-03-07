@@ -9,16 +9,24 @@ $conn = $QueryBuilder->dbConnection();
 
 $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
-$exchange_rate = ($_POST['isRon'] == 1) ? 1 :  floatVal($_POST['exchange_rate']); 
-
 $green_tax_value_field = $_POST['invoice_date'] > '2023-02-28' ? "value_2023" : "value";
 
-$external_exchange_rate = $exchange_rate;
+if($_POST['isRon'] == 1) {
+	$exchange_rate = 1;
+} else{
+	if($_POST['country'] !== 'RO') {
+		$exchange_rate =  1;
+	} else {
+		$exchange_rate =  floatVal($_POST['exchange_rate']);
+	}	
+}
 
 if($_POST['country'] == 'RO') {
 	$external_exchange_rate = 1;
 }
-
+else {
+	$external_exchange_rate = $exchange_rate;
+}
 
 $unit_price = 'Round((
 	(

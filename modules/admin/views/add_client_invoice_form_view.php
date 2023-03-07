@@ -24,12 +24,12 @@ if(isset($_POST['invoiceNumber']))
     );
 
 
-    if($invoiceData['exchangeRate'] == 1) {
-        $exchange_rate_class = "hidden";
-    }
-    else {
-        $exchange_rate_class = '';
-    }
+    // if($invoiceData['exchangeRate'] == 1) {
+    //     $exchange_rate_class = "hidden";
+    // }
+    // else {
+    //     $exchange_rate_class = '';
+    // }
 }
 
 ?>
@@ -74,7 +74,7 @@ if(isset($_POST['invoiceNumber']))
                             </div>
                         </div>
                     </div>
-                    <input type="text" class="form-control <?php echo $exchange_rate_class?>" placeholder="Exchange Rate" name="exchange_rate" value="<?php echo $invoiceData['exchangeRate']?>" >
+                    <input type="text" class="form-control" placeholder="Exchange Rate" name="exchange_rate" value="<?php echo $invoiceData['exchangeRate']?>" >
                 </div>
             </div>
         </div>
