@@ -40,21 +40,22 @@
     </div>
      <div class="input-group">
         <select class="form-control clientSelector" name="client_id">
-            <option value="">Link client to this user (user when User Type is Self customer)>
+            <option value="">Link client to this user (user when User Type is Self customer)</option>
         </select>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="kpi_igm" placeholder="KPI IGM" required>
+            <input type="text" class="form-control" name="igm" placeholder="KPI IGM" required>
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="kpi_selling_value" placeholder="KPI Selling Value" required>
+            <input type="text" class="form-control" name="selling_value" placeholder="KPI Sellin" reqguired>
         </div>
     </div>
     <div class="input-group">
         <select class="form-control userActiveSelector" required name="user_active">
+            <option value="">Active</option>
             <option value="1">Yes</option>
             <option value="0">No</option>
         </select>
