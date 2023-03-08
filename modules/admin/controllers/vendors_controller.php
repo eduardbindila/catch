@@ -5,21 +5,24 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $insertResult = 'undefined';
 
+$vendorID =  urldecode($_GET['id']);
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
 
 	//printError($_POST);
 
 	$conn = $QueryBuilder->dbConnection();
 
-	if(is_numeric($userId)) {
+	if($vendorID) {
 		$query = $QueryBuilder->update(
 			$conn,
 			$options = array(
 				"table" => "vendors",
 				"set" => [
-					"`name`='".$_POST['name']."'",
+					"`name`='".$_POST['name']."'","`code`='".$_POST['code']."'",
 					],
-				"where" => "id =".$userId
+				"where" => "id ='".$vendorID."'"
 			)
 		);
 	} else {
@@ -27,8 +30,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$conn,
 			$options = array(
 				"table" => "vendors",
-				"keys" => ["name", "id"],
-				"values" => [$_POST["name"], $_POST["id"]]
+				"keys" => ["name", "id", "code"],
+				"values" => [$_POST["name"], $_POST["id"], $_POST["code"]]
 			),
 			$multi = false
 		);
@@ -41,11 +44,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	} else {
 		$insertResult = 0;
 	}
-
+//echo $conn->error;
 	$QueryBuilder->closeConnection();
 }
 
-if(is_numeric($userId)) {
+if($vendorID) {
 
 	$conn = $QueryBuilder->dbConnection();
 
@@ -54,13 +57,13 @@ if(is_numeric($userId)) {
 		$options = array(
 			"table" => "vendors",
 			"columns" => "*",
-			"where" => 'id = '.$userId
+			"where" => 'id = "'.$vendorID.'"'
 		)
 	);
 
 	$QueryBuilder->closeConnection();
 
-	include($_MPATH['ADMIN_VIEWS'].'vendors_view.php');
+	include($_MPATH['ADMIN_VIEWS'].'vendor_view.php');
 } else {
 	include($_MPATH['ADMIN_VIEWS'].'vendors_view.php');
 }

@@ -39,6 +39,7 @@
                                     <thead>
                                         <th>Vendor ID</th>
                                         <th>Vendor Name</th>
+                                        <th>Vendor Code</th>
                                 </table>
                             </div>
                         </div>

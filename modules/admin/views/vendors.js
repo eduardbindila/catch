@@ -17,9 +17,15 @@ $(document).ready(function() {
         "columns": [ 
             { 
                 "data": "id",
+                "render" : function(data, type, row) {
+                    return '<a href="vendor?id='+encodeURIComponent(data)+'" target="_blank">'+data+'</a>'
+                  } 
             },
             { 
                 "data": "name"
+            },
+             { 
+                "data": "code"
             }
         ],
         "initComplete": function(settings, json) {
@@ -38,16 +44,8 @@ $(document).ready(function() {
         $('#userData').find('input, textarea, button, select').attr('disabled','disabled');
         userDetails = userDetails[0];
         $("#userData input[name=name]").val(userDetails.name);
-        $("#userData input[name=fiscal_code]").val(userDetails.fiscal_code);
-        $("#userData input[name=email]").val(userDetails.email);
-        $("#userData input[name=phone]").val(userDetails.phone);
-        $("#userData input[name=country]").val(userDetails.country);
-        $("#userData input[name=state]").val(userDetails.state);
-        $("#userData input[name=address]").val(userDetails.address);
-        $("#userData input[name=bank_account]").val(userDetails.bank_account);
-        $("#userData input[name=bank]").val(userDetails.bank);
-        $("#userData input[name=registry]").val(userDetails.registry);
-        $("#userData input[name=discount]").val(userDetails.discount);
+        $("#userData input[name=id]").val(userDetails.id);
+        $("#userData input[name=code]").val(userDetails.code);
     }
 
      $('.editSwitch').change(function() {
