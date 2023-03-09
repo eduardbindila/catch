@@ -67,11 +67,89 @@ $(document).ready(function() {
             },
             {
                 "data": "active"
+            },
+            {
+                "data":"null",
+                "render" : function(data,type,row){
+
+                                var label = (parseInt(row.isService) == 0) ? "Mark as Service" : "Mark as Product";
+
+                                var labelType = (parseInt(row.isService) == 0) ? "Product" : "Service";
+
+                                console.log(parseInt(row.isService) == 0, row.isService);
+
+                                var value = labelType + 
+
+                                        ' <div class="btn-group">'+
+                                            '<button class="btn btn-default btn-xs "' + 
+                                            
+                                            '" data-product="'+row.id+'" data-toggle="dropdown'+
+                                            '" aria-haspopup="true" aria-expanded="true">'+
+                                                    '<i class="material-icons">edit</i>'+ 
+                                            '</button>'+
+                                            '<div class="preloader pl-size-vxs hidden exchange_rate_preloader">' +
+                        '<div class="spinner-layer pl-red-grey">' +
+                            '<div class="circle-clipper left">' +
+                                '<div class="circle"></div>' +
+                            '</div>' +
+                            '<div class="circle-clipper right">' +
+                                '<div class="circle"></div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                                            '<ul class="dropdown-menu"'+
+                                            
+                                            
+                                            '" data-product="'+row.id+'" data-toggle="dropdown">'+
+                                                 '<li class="">' + 
+                                                 
+                                                    '<a class="markAsService waves-effect waves-block" data-isService="'+row.isService+'">' +
+                                                        label +
+                                                    '</a>'+
+                                                '</li>'
+                                            '</ul>'
+                                        '</div>';
+
+                        return value
+                }
             }
         ],
         "initComplete": function(settings, json) {
+            $('.exchange_rate_preloader').addClass('hidden');
         }
 
     });
+
+
+$('body').on('click', '.markAsService', function(e){
+
+      itemTypesData = {
+        'product_id' : $(this).parents('ul').attr('data-product'),
+        'isService' : +!parseInt($(this).attr('data-isService')),
+      }
+
+      //console.log(itemTypesData)
+
+      $('.exchange_rate_preloader').removeClass('hidden');
+
+
+      $.ajax({
+            url: "/ajax/updateProductType",
+            type: "post",
+            dataType: "json",
+            data: itemTypesData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           //console.log(json);
+
+           productsTable.ajax.reload()
+            
+
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
 
 });

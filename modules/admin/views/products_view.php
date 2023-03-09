@@ -35,6 +35,7 @@
                                         <th>Merged ID</th>
                                         <th>Legacy ID ID</th>
                                         <th>Active</th>
+                                        <th>Type</th>
                                     </thead>
                                 </table>
                             </div>
