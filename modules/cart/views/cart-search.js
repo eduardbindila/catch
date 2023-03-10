@@ -85,8 +85,8 @@ $(document).ready(function() {
             data: [],
             pageLength: 5000,
                 "paging":   false,
-                "ordering": false,
-                "searching": false,
+                "ordering": true,
+                "searching": true,
             rowId: 'category_slug',
              buttons: [
                 {
@@ -358,7 +358,7 @@ $(document).ready(function() {
                                     html = '<button class="btn btn-xs btn-link waves-effect editQuoteItem" data-toggle="modal" data-target="#editItem-modal"  data-row="'+ meta.row +'"><i class="material-icons">mode_edit</i></button>'
                                 }
                                 else {
-                                    html = '<a class="btn btn-xs btn-link" href="https://www.sylvania-lighting.com/product/en-int/products/'+row.id+'">'+
+                                    html = '<a class="btn btn-xs btn-link" target="_blank" href="https://www.sylvania-lighting.com/product/en-int/products/'+row.id+'">'+
                                     '<i class="material-icons">link</i></a>'+
                                     '<button class="btn btn-xs btn-link waves-effect editQuoteItem"  data-toggle="modal"'+ 
                                         'data-target="#editItem-modal"  data-row="'+ meta.row +'">'+ 
