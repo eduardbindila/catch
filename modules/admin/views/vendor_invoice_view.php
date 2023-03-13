@@ -71,6 +71,7 @@
                                     <thead>
                                         <th></th>
                                         <th>Product</th>
+                                        <th>Type</th>
                                         <th>Free Stock</th>
                                         <th>Quantity</th>
                                         <th>Unit Price</th>
@@ -79,6 +80,7 @@
                                         <th>Connected Quantity</th>
                                         <th>Connect Orders</th>
                                         <th>Remove</th>
+
                                 </table>
                             </div>
                         </div>

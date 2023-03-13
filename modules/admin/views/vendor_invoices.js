@@ -2,6 +2,66 @@
 $(document).ready(function() {
 
 
+    function itemTypesList(){
+
+        var itemTypesList = "";
+
+        $.ajax({
+            url: "/ajax/getVendorItemTypesList",
+            type: "post",
+            dataType: "text",
+            async:false
+        }).success(function(json){
+           $('.updateError').addClass('hidden');
+
+            JSON.parse(json).forEach(function(val, index){
+                itemTypesList = itemTypesList + 
+                  '<li class=""><a class="setItemType waves-effect waves-block" data-item_type_id="'+ val.id +'">'+
+                            val.name +
+                                '</a>'+
+                            '</li>'
+           })
+           
+        }).error(function(xhr, status, error) {
+           $('.updateError').removeClass('hidden');
+        })
+
+        //console.log(itemTypesList);
+
+        return itemTypesList
+    }
+
+    $('body').on('click', '.setItemType', function(e){
+
+      itemTypesData = {
+        'product_id' : $(this).parents('ul').attr('data-product'),
+        'item_type_id' : $(this).attr('data-item_type_id'),
+        
+        'vendor_item' : $(this).parents('ul').attr('data-vendor_item')
+      }
+
+      //console.log(itemTypesData)
+
+
+      $.ajax({
+            url: "/ajax/updateVendorItemType",
+            type: "post",
+            dataType: "json",
+            data: itemTypesData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           //console.log(json);
+           itemsTable.ajax.reload()
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
+
+    var itemTypesDropDown = itemTypesList();
+
     var connectedQuotes = [];
 
     //var connected;
@@ -182,6 +242,43 @@ $(document).ready(function() {
                   }
 
                 },
+                {
+                    "data": "type_name",
+                    "render" : function(data, type, row, meta) {
+
+                        var value = data;
+
+                         if(!row.product_id )  {
+
+                             value = value + 
+                                            ' <div class="btn-group">'+
+                                                '<button class="btn btn-default btn-xs "' + 
+                                                ' data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+invoiceId+
+                                               
+                                                '" data-vendor_item="'+row.id+
+                                                '" data-product="'+row.product_id+'" data-toggle="dropdown'+
+                                                '" aria-haspopup="true" aria-expanded="true">'+
+                                                        '<i class="material-icons">edit</i>'+ 
+                                                '</button>'+
+                                                '<ul class="dropdown-menu"'+
+                                                ' data-row="'+meta.row+
+                                                '" data-col="'+meta.col+
+                                                '" data-package="'+invoiceId+
+                                                
+                                                '" data-vendor_item="'+row.id+
+                                                '" data-product="'+row.product_id+'" data-toggle="dropdown">'+
+                                                        itemTypesDropDown
+                                                '</ul>'
+                                            '</div>';
+                        }
+                       
+                            return  value
+                         
+                      }
+
+                },
                 { 
                     "data": "saga_quantity",
                     
@@ -312,7 +409,8 @@ $(document).ready(function() {
                          
                       }
 
-                }
+                },
+                 
             ],
             "initComplete": function(settings, json) {
                 //console.log(json);

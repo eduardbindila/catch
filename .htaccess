@@ -67,6 +67,7 @@ RewriteRule ^download download.php [L]
  RewriteRule ^ajax/getGreenTaxList modules/admin/controllers/get_green_tax_list.php [L]
  RewriteRule ^ajax/getAdvanceStatus modules/admin/controllers/get_advance_status.php [L]
  RewriteRule ^ajax/getItemTypesList modules/admin/controllers/get_item_types_list.php [L]
+  RewriteRule ^ajax/getVendorItemTypesList modules/admin/controllers/get_vendor_item_types_list.php [L]
  RewriteRule ^ajax/getAllClients modules/admin/controllers/get_all_clients.php [L]
  RewriteRule ^ajax/updateClientsActive modules/admin/controllers/update_clients_active.php [L]
  RewriteRule ^ajax/getCountries modules/admin/controllers/get_countries.php [L]
@@ -136,6 +137,7 @@ RewriteRule ^ajax/createStorno modules/projects/controllers/create_storno.php [L
 RewriteRule ^ajax/updateGreenTax modules/projects/controllers/update_green_tax.php [L]
 
 RewriteRule ^ajax/updateItemType modules/projects/controllers/update_item_type.php [L]
+RewriteRule ^ajax/updateVendorItemType modules/projects/controllers/update_vendor_item_type.php [L]
 
 RewriteRule ^ajax/revertInvoice modules/projects/controllers/revert_invoice.php [L]
 
