@@ -13,8 +13,8 @@
             </div>
             
             <div class="input-group">
-                <div class="form-line" id="bs_datepicker_container">
-                    <input type="text" class="form-control invoice-date" name="date" required placeholder="Invoicing Date">
+                <div class="form-line" >
+                    <input type="date"  onfocus="(this.type='date')"  onblur="(this.type='text')" class="form-control invoice-date" name="date" required placeholder="Invoicing Date">
                 </div>
             </div>
             
@@ -26,8 +26,8 @@
                 </select>
             </div>
             <div class="input-group">
-                <div class="form-line" id="bs_datepicker_container">
-                    <input type="text" class="form-control due-date" name="due_date" required placeholder="Due Date">
+                <div class="form-line">
+                    <input type="date"  onfocus="(this.type='date')"  onblur="(this.type='text')" class="form-control due-date" name="due_date" required placeholder="Due Date">
                 </div>
             </div>
         </div>

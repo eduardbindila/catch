@@ -138,7 +138,7 @@ $(document).ready(function() {
     if(isDisabled) {
         $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
         invoiceData = invoiceData[0];
-        //console.log(invoiceData);
+        console.log(invoiceData);
         $("#invoiceData input[name=invoice_no]").val(invoiceData.invoice_no);
         $("#invoiceData input[name=vendor]").val(invoiceData.vendor);
         $("#invoiceData input[name=date]").val(invoiceData.date);
