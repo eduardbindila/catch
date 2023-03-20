@@ -815,12 +815,12 @@ class Invoices {
                                 
                             var product = data;
 
-                             var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+                             var disabled = (thisPackage.package_status_id > 3) ? 'disabled' : '';
 
                              disabled = false //added to keep this field editable
 
                             // if(product == 0 && row.external_item_name =='') {//added to keep this field editable
-                                if(product == 0 && thisPackage.package_status_id < 2) {
+                                if(product == 0 && thisPackage.package_status_id < 4) {
                                 //console.log('asd')
                                 product = '<div class="form-group">' + 
                                         '<div class="form-line">' + 
@@ -915,9 +915,9 @@ class Invoices {
 
                                 var product = row.product_id;
 
-                                var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+                                var disabled = (thisPackage.package_status_id > 3) ? 'disabled' : '';
 
-                                if(product == 0 && thisPackage.package_status_id < 2 )  {
+                                if(product == 0 && thisPackage.package_status_id < 4 )  {
 
                                     // if(row.external_item_unit_price =='') {
 
@@ -956,7 +956,7 @@ class Invoices {
                             "data": "null",
                              "render" : function(data, type, row, meta) {
                                 //console.log(meta.col);
-                                var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+                                var disabled = (thisPackage.package_status_id > 3) ? 'disabled' : '';
 
                                 if(row.product == 0 && row.external_item_name =='') {
                                         disabled = "disabled"

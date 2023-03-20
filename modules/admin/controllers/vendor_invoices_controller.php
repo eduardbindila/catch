@@ -9,7 +9,7 @@ $exchange_rate = '';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
 
-	//printError($_POST);
+	printError($_POST);
 
 	$conn = $QueryBuilder->dbConnection();
 
@@ -31,6 +31,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				"where" => "id =".$userId
 			)
 		);
+
+		echo $conn->error;
 	} else {
 		$query = $QueryBuilder->insert(
 			$conn,
@@ -42,7 +44,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$multi = false
 		);
 
-		//echo $conn->error;
+		echo $conn->error;
 	}
 
 	$insertResult = json_decode($query);
