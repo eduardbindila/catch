@@ -198,7 +198,7 @@ $(document).ready(function() {
                             editClass = '';
 
                         } else {
-                            if(Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity)) && Number(row.saga_quantity) > 0) {
+                            if(Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity))) {
                                 btnClass = 'btn-danger';
                                 icon = 'lock'
                                 disabled = 'disabled';
