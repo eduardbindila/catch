@@ -9,7 +9,7 @@ $exchange_rate = '';
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
 
-	printError($_POST);
+	//printError($_POST);
 
 	$conn = $QueryBuilder->dbConnection();
 
