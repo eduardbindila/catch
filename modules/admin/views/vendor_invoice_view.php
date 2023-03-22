@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="content">
                                         <div class="text">PRODUCT</div>
-                                        <div class="number info-box-productID">125</div>
+                                        <div class="number info-box-productID">-</div>
                                     </div>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="content">
                                         <div class="text">STOCK</div>
-                                        <div class="number info-box-stock">125</div>
+                                        <div class="number info-box-stock">-</div>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="content">
                                         <div class="text">DELIVERED</div>
-                                        <div class="number  info-box-deliveredQuantity">125</div>
+                                        <div class="number  info-box-deliveredQuantity">-</div>
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="content">
                                         <div class="text">CONNECTED</div>
-                                        <div class="number  info-box-connected">0</div>
+                                        <div class="number  info-box-connected">-</div>
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +173,7 @@
                                     </div>
                                     <div class="content">
                                         <div class="text">FROM STOCK</div>
-                                        <div class="number  info-box-from-stock">0</div>
+                                        <div class="number  info-box-from-stock">-</div>
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                                     </div>
                                     <div class="content">
                                         <div class="text">TO STOCK</div>
-                                        <div class="number  info-box-to-stock">0</div>
+                                        <div class="number  info-box-to-stock">-</div>
                                     </div>
                                 </div>
                             </div>
