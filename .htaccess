@@ -159,6 +159,8 @@ RewriteRule ^ajax/uploadCustomProductImage modules/projects/controllers/upload_c
 
 RewriteRule ^ajax/uploadFile common/backend/upload_file.php [L]
 
+RewriteRule ^ajax/generateDBF common/backend/generate_dbf.php [L]
+
 RewriteRule ^ajax/getImageBase common/backend/get_image_base.php [L]
 
 RewriteRule ^ajax/createQuote modules/projects/controllers/create_quote.php [L]
