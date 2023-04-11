@@ -8,6 +8,7 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
 
 
 
+
     $conn = $QueryBuilder->dbConnection();
 
     $productQuery = $QueryBuilder->select(
@@ -15,6 +16,7 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
         $options = array(
             "table" => "products",
             "columns" => "id",
+            //"where" => "is_b2c = 1",
             "where" => "manufacturer ='syl' AND last_crawled_date <= CURRENT_DATE() - INTERVAL 1 MONTH",
             "orderBy" => "last_crawled_date",
             "orderType" => "ASC",
@@ -65,6 +67,8 @@ CLASS ScrapHelpers {
 foreach ($productQuery as $key => $value) {
     # code...
 
+    //$key = '0045973';
+
     $html = file_get_contents($root.$key.'/');
 
     $crawling_status = strpos($http_response_header[0], "200") ? 1 : $http_response_header[0];
@@ -82,6 +86,8 @@ foreach ($productQuery as $key => $value) {
         $product_title_class = "intro-block__title";
         $product_infopanels_class = "info-panels";
         $product_table_class = "info-panels";
+        $energy_label_image_class = "EnergyLabelContainer";
+        $energy_label_link_class = "info-panels__link";
         $product_data_section_id = "tab-product-data-table";
         $breadcrumbData = $dom->saveHTML($xpath->query('//div[contains(@class,"breadcrumb")]')[0]);
         $breadcrumbRaw = $xpath->query('//div[contains(@class,"breadcrumb")]/div')[0];
@@ -98,6 +104,8 @@ foreach ($productQuery as $key => $value) {
         $product_infopanels = $dom->saveHTML($xpath->query('//div[contains(@class,"'.$product_infopanels_class.'")]')[0]);
 
         $product_data = $xpath->query('//section[contains(@id,"'.$product_data_section_id.'")]');
+
+        $energy_label = $xpath->query('//div[contains(@class,"'.$product_infopanels_class.'")] //a[@data-modal-caption="EU"]')->length;
 
 
 
@@ -132,9 +140,10 @@ foreach ($productQuery as $key => $value) {
                 "product_image" => $product_image,
                 "parent_id" => $categoryId,
                 "product_diagrams" => addslashes(htmlspecialchars($product_infopanels)),
+                "energy_label" => $energy_label
         );
 
-        //var_dump($this_product);
+        //printError($this_product);
         
         $updateQuery = $QueryBuilder->update(
             $conn,
@@ -147,7 +156,8 @@ foreach ($productQuery as $key => $value) {
                     "`product_diagrams`='".$this_product['product_diagrams']."'",
                     "`parent_id`='".$this_product['parent_id']."'",
                     "`last_crawled_date`=NOW()",
-                    "`last_crawled_status`='".$crawling_status."'"   
+                    "`last_crawled_status`='".$crawling_status."'",
+                    "`has_energy_label`='".$this_product['energy_label']."'"   
                 ],
                 "where" => "id='".$this_product['product_id']."'"
             )
@@ -181,7 +191,7 @@ foreach ($productQuery as $key => $value) {
                     "table" => "products",
                     "set" => [
                         "`last_crawled_date`=NOW()",
-                        "`last_crawled_status`='".$crawling_status."'"   
+                        "`last_crawled_status`=0"   
                     ],
                     "where" => "id = '".$key."'"
                 )
