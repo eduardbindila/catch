@@ -20,7 +20,7 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
             "where" => "manufacturer ='syl' AND last_crawled_date <= CURRENT_DATE() - INTERVAL 1 MONTH",
             "orderBy" => "last_crawled_date",
             "orderType" => "ASC",
-            "limit" => "20"
+            "limit" => "1"
 
         ),
         $returnType = 'insertedProducts'
@@ -67,7 +67,7 @@ CLASS ScrapHelpers {
 foreach ($productQuery as $key => $value) {
     # code...
 
-    //$key = '0045973';
+    $key = '0029106';
 
     $html = file_get_contents($root.$key.'/');
 
@@ -144,6 +144,105 @@ foreach ($productQuery as $key => $value) {
         );
 
         //printError($this_product);
+
+        foreach ($product_data as $keyf => $valuef) {
+            
+
+            $table = $valuef->getElementsByTagName('table');
+
+            foreach($table as $k => $val) {
+
+                $feature_category = $val->getElementsByTagName('thead')[0]->textContent;
+
+                $feature_category_name = trim($feature_category);
+
+                //var_dump($feature_category);
+
+                $featureCategoryQuery = $QueryBuilder->insert(
+                    $conn,
+                    $options = array(
+                        "table" => "feature_categories",
+                        "keys" => ["id","feature_category_name"],
+                        "values" => [
+                            $_ScrapHelpers->sluggify($feature_category_name),
+                            $feature_category_name, 
+                        ]
+                    )
+                );
+
+                $tbody = $val->getElementsByTagName('tbody');
+
+                foreach ($tbody as $i => $v) {
+                    # code...
+                    $tr = $v->getElementsByTagName('tr');
+
+                    $features_array = array ();
+
+                     foreach ($tr as $x => $w) {
+                         # code...
+
+                        $td = $w->getElementsByTagName('td');
+
+                        $feature_name = trim($td[0]->textContent);
+
+                        $feature_value_name = trim($td[1]->textContent);
+
+                        $featuresQuery = $QueryBuilder->insert(
+                            $conn,
+                            $options = array(
+                                "table" => "features",
+                                "keys" => ["id","feature_name", "feature_category_id"],
+                                "values" => [
+                                    $_ScrapHelpers->sluggify($feature_name),
+                                    $feature_name,
+                                    $_ScrapHelpers->sluggify($feature_category_name) 
+                                ]
+                            )
+                        );
+
+                        $featureValues[$x] = array(
+                            "feature_name" => $feature_name,
+                            "feature_slug" => $_ScrapHelpers->sluggify($feature_name),
+                            "feature_value_name" => $feature_value_name,
+                            "feature_value_slug" => $_ScrapHelpers->sluggify($feature_value_name),
+                        );
+
+
+
+                        $featureValuesQuery = $QueryBuilder->insert(
+                            $conn,
+                            $options = array(
+                                "table" => "feature_values",
+                                "keys" => ["id","feature_value"],
+                                "values" => [
+                                    $_ScrapHelpers->sluggify($feature_value_name),
+                                    $feature_value_name 
+                                ]
+                            )
+                        );
+
+
+                         $productFeaturesQuery = $QueryBuilder->insert(
+                            $conn,
+                            $options = array(
+                                "table" => "product_features",
+                                "keys" => ["product_id","feature_value_id","feature_id"],
+                                "values" => [
+                                    $key,
+                                    $_ScrapHelpers->sluggify($feature_value_name),
+                                    $_ScrapHelpers->sluggify($feature_name)
+                                ]
+                            )
+                        );
+                     }
+
+                 //printError($featureValues);    
+
+                      
+                }
+
+            }
+        }
         
         $updateQuery = $QueryBuilder->update(
             $conn,
