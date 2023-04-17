@@ -114,7 +114,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: "/ajax/getUsers",
+        url: "/ajax/getAgentUsers",
         type: "post",
         dataType: "json",
     }).done(function(json){
