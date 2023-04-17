@@ -64,6 +64,8 @@ CLASS ScrapHelpers {
       die();
     }
 
+    printError($productQuery);
+
 foreach ($productQuery as $key => $value) {
     # code...
 
