@@ -16,8 +16,8 @@ $root = "https://www.sylvania-lighting.com/product/en-int/products/";
         $options = array(
             "table" => "products",
             "columns" => "id",
-            "where" => "is_b2c = 1 AND last_crawled_date <= CURRENT_DATE()",
-            //"where" => "manufacturer ='syl' AND last_crawled_date <= CURRENT_DATE() - INTERVAL 1 MONTH",
+            //"where" => "is_b2c = 1 AND last_crawled_date <= CURRENT_DATE()",
+            "where" => "manufacturer ='syl' AND last_crawled_date >= (NOW() - INTERVAL 1 MONTH) and active=1",
             "orderBy" => "last_crawled_date",
             "orderType" => "ASC",
             "limit" => "20"
