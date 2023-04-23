@@ -233,6 +233,8 @@ RewriteRule ^ajax/getComments modules/projects/controllers/get_comments.php [L]
 
 RewriteRule ^ajax/saveBlob modules/projects/controllers/save_blob.php [L]
 
+RewriteRule ^ajax/savePublicProductFile modules/projects/controllers/save_public_product_file.php [L]
+
 RewriteRule ^ajax/getQuoteStatusLog modules/projects/controllers/get_quote_status_log.php [L]
 
 RewriteRule ^ajax/saveFilesToQuote modules/projects/controllers/save_quote_files.php [L]

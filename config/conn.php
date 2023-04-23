@@ -1042,5 +1042,13 @@ function printError($val) {
 	<?php
 }
 
+// function saveImageToLocal ($file, $url){
+// 	$location = $target_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/products/".$file;
+// 	$content = file_get_contents($url);
+// 	file_put_contents($location, $content);
+
+// 	return $location
+// }
+
 
 ?>

@@ -89,6 +89,14 @@ $(document).ready(function() {
                 "searching": true,
             rowId: 'category_slug',
              buttons: [
+             {
+                extend: 'excel',
+                text: 'Download',
+                exportOptions: {
+                    stripHtml: false,
+                }
+            },
+
                 {
                     extend: 'selectAll',
                     className: 'btn btn-lg btn-primary waves-effect',
@@ -301,6 +309,18 @@ $(document).ready(function() {
 
                 },
                 { 
+                    "data": "product_image",
+                    "render" : function(data, type, row) {
+                         if(!data){
+                            return '<img src="http://ideyafoana.com/api/public/storage/photo/no-image.png" class="table-image" />'
+                            
+                        } else {
+                            return ''
+                        }                       
+                      },
+                    "visible": false
+                },
+                { 
                     "data": "id",
                     className: "product_id",
                       "render" : function(data, type, row, meta) {
@@ -324,6 +344,70 @@ $(document).ready(function() {
                             return '<div class="form-group"><div class="form-line"><input class="form-control" data-type="id" name="product_name" placeholder="Add a Name" value="'+data+'" form="newProducts-'+meta.row+'" required></div></div>'
                           }
                     }
+
+                },
+                { 
+                    "data": "product_description",
+                    className: "product_description",
+                    "render" : function(data, type, row, meta) {
+                        if(row.from_db) {
+                            if(row.manufacturer == 'Syl') {
+                            var thisHtml = $.parseHTML( data )
+
+                            var data = $(thisHtml[0].data).find('ul').html();
+
+                        }
+
+                            return data;
+                        }else {
+                            return ''
+                          }
+                        
+                    },
+                    "visible": false
+
+                },
+                { 
+                    "data": "product_diagrams",
+                    className: "product_diagrams",
+                    "render" : function(data, type, row, meta) {
+                        if(row.from_db) {
+
+                            if(row.manufacturer == 'Syl') {
+
+                            var thisHtml = $.parseHTML( data )
+
+                            var file =  row.id + "_energy_label.jpg"
+
+                            var onlyURL = $(thisHtml[0].data).find('a[data-modal-caption="EU"]').attr('data-modal-image');
+
+                        
+
+                                $.ajax({
+                url: "/ajax/savePublicProductFile",
+                type: "post",
+                dataType: "json",
+                data: {"url": onlyURL, "file": file },
+                async:false
+            }).success(function(json){
+
+               data = json;
+
+               
+            }).error(function(xhr, status, error) {
+
+            })
+                                }
+
+                            
+
+                            return data;
+                        }else {
+                            return ''
+                          }
+                        
+                    },
+                    "visible": false
 
                 },
                 { 

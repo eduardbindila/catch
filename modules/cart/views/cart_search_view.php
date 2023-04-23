@@ -121,8 +121,11 @@
                                 <thead>
                                     <th></th>
                                     <th>Image</th>
+                                    <th>Image URL</th>
                                     <th>Product ID</th>
                                     <th>Product Name</th>
+                                    <th>Product Description</th>
+                                    <th>Energy Label</th>
                                       <th>Stock</th>
                                     <th>Manufacturer</th>
                                      <th>Price</th>
