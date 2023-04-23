@@ -382,21 +382,21 @@ $(document).ready(function() {
                             var onlyURL = $(thisHtml[0].data).find('a[data-modal-caption="EU"]').attr('data-modal-image');
 
                         
+                            // Add to DB if file does not exist
+            //                     $.ajax({
+            //     url: "/ajax/savePublicProductFile",
+            //     type: "post",
+            //     dataType: "json",
+            //     data: {"url": onlyURL, "file": file },
+            //     async:false
+            // }).success(function(json){
 
-                                $.ajax({
-                url: "/ajax/savePublicProductFile",
-                type: "post",
-                dataType: "json",
-                data: {"url": onlyURL, "file": file },
-                async:false
-            }).success(function(json){
-
-               data = json;
+            //    data = json;
 
                
-            }).error(function(xhr, status, error) {
+            // }).error(function(xhr, status, error) {
 
-            })
+            // })
                                 }
 
                             
