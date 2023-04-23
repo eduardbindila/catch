@@ -315,7 +315,7 @@ $(document).ready(function() {
                             return '<img src="http://ideyafoana.com/api/public/storage/photo/no-image.png" class="table-image" />'
                             
                         } else {
-                            return ''
+                            return data
                         }                       
                       },
                     "visible": false
