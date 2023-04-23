@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.98642121';
+$_VERSION = '0.1.9865';
 
 
 function getPage(){
@@ -1042,13 +1042,6 @@ function printError($val) {
 	<?php
 }
 
-// function saveImageToLocal ($file, $url){
-// 	$location = $target_dir = $_SERVER['DOCUMENT_ROOT']."/uploads/products/".$file;
-// 	$content = file_get_contents($url);
-// 	file_put_contents($location, $content);
-
-// 	return $location
-// }
 
 
 ?>
