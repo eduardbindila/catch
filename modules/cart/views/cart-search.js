@@ -346,70 +346,74 @@ $(document).ready(function() {
                     }
 
                 },
-                { 
-                    "data": "product_description",
-                    className: "product_description",
-                    "render" : function(data, type, row, meta) {
-                        if(row.from_db) {
-                            if(row.manufacturer == 'Syl') {
-                            var thisHtml = $.parseHTML( data )
+                // { 
+                //     "data": "product_description",
+                //     className: "product_description",
+                //     "render" : function(data, type, row, meta) {
+                //         if(row.from_db) {
 
-                            var data = $(thisHtml[0].data).find('ul').html();
+                //             if(row.manufacturer == 'Syl') {
 
-                        }
+                //             var thisHtml = $.parseHTML( data )
 
-                            return data;
-                        }else {
-                            return ''
-                          }
+                //             console.log(thisHtml)
+
+                //             var data = $(thisHtml[0].data).find('ul').html();
+
+                //                 }
+
+                //             return data;
+                //         }else {
+                //             return ''
+                //           }
                         
-                    },
-                    "visible": false
+                //     },
+                //     "visible": false
 
-                },
-                { 
-                    "data": "product_diagrams",
-                    className: "product_diagrams",
-                    "render" : function(data, type, row, meta) {
-                        if(row.from_db) {
+                // },
+            //     { 
+            //         "data": "product_diagrams",
+            //         className: "product_diagrams",
+            //         "render" : function(data, type, row, meta) {
+            //             if(row.from_db) {
 
-                            if(row.manufacturer == 'Syl') {
+            //                 if(row.manufacturer == 'Syl') {
 
-                            var thisHtml = $.parseHTML( data )
+            //                 var thisHtml = $.parseHTML( data )
 
-                            var file =  row.id + "_energy_label.jpg"
+            //                 var file =  row.id + "_energy_label.jpg"
 
-                            var onlyURL = $(thisHtml[0].data).find('a[data-modal-caption="EU"]').attr('data-modal-image');
+            //                 var onlyURL = $(thisHtml[0].data).find('a[data-modal-caption="EU"]').attr('data-modal-image');
 
                         
-                            // Add to DB if file does not exist
-            //                     $.ajax({
-            //     url: "/ajax/savePublicProductFile",
-            //     type: "post",
-            //     dataType: "json",
-            //     data: {"url": onlyURL, "file": file },
-            //     async:false
-            // }).success(function(json){
+            //                 // Add to DB if file does not exist
+            // //                     $.ajax({
+            // //     url: "/ajax/savePublicProductFile",
+            // //     type: "post",
+            // //     dataType: "json",
+            // //     data: {"url": onlyURL, "file": file },
+            // //     async:false
+            // // }).success(function(json){
 
-            //    data = json;
+            // //    data = json;
 
                
-            // }).error(function(xhr, status, error) {
+            // // }).error(function(xhr, status, error) {
 
-            // })
-                                }
+            // // })
+            //                     }
 
                             
 
-                            return data;
-                        }else {
-                            return ''
-                          }
+            //                 return data;
+            //             }else {
+            //                 return ''
+            //               }
                         
-                    },
-                    "visible": false
+            //         },
+            //         "visible": false
 
-                },
+            //     },
                 { 
                     "data": null, 
                      "render" : function(data, type, row, meta) {
