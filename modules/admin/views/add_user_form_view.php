@@ -45,12 +45,12 @@
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="igm" placeholder="KPI IGM" required>
+            <input type="text" class="form-control" name="kpi_igm" placeholder="KPI IGM" required>
         </div>
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" class="form-control" name="selling_value" placeholder="KPI Sellin" reqguired>
+            <input type="text" class="form-control" name="kpi_selling_value" placeholder="KPI Sellin" reqguired>
         </div>
     </div>
     <div class="input-group">
