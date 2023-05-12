@@ -1337,7 +1337,7 @@ $(document).ready(function() {
                     },
                      {
                         "data": "reserved_stock",
-                        "visible": isl,
+                        "visible": islh,
                         "render" : function(data, type, row, meta) {
                             //console.log(row);
 
