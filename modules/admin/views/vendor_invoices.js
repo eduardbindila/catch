@@ -210,11 +210,11 @@ $(document).ready(function() {
 
                             
                         return '<button type="button" '+disabled+' class="reception btn '+btnClass+' btn-xs waves-effect"'+
-                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
+                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product="'+row.product_id+'" data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">'+icon+'</i>'+
                                 '</button> ' +
                                 '<button type="button" class="reverseReception '+editClass+' btn btn-default btn-circle waves-effect waves-circle waves-float"'+
-                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product='+row.product_id+' data-delivered='+row.delivered_quantity+'>'+
+                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product="'+row.product_id+'" data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">refresh</i>'+
                                 '</button>'
                   }
