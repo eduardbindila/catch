@@ -226,7 +226,7 @@ Class QueryBuilder{
 				    array_push($rows, $row);
 				}
 
-				$this->logAction("selectFeatures", "", $query, $rows);
+				//$this->logAction("selectFeatures", "", $query, $rows);
 
 				return $rows;
 		}
@@ -367,7 +367,7 @@ Class QueryBuilder{
 				    array_push($rows, $row);
 				}
 
-				$this->logAction("selectProjectsData", "", $query, $rows);
+				//$this->logAction("selectProjectsData", "", $query, $rows);
 
 				return $rows;
 		}
@@ -428,7 +428,7 @@ Class QueryBuilder{
 				    array_push($rows, $row);
 				}
 
-				$this->logAction("selectQuotesData", "", $query, $rows);
+				//$this->logAction("selectQuotesData", "", $query, $rows);
 
 				return $rows;
 		}
