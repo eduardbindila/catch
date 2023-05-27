@@ -148,7 +148,7 @@ Class QueryBuilder{
 				}
 
 
-				$this->logAction("select", $table, $query, $rows);
+				//$this->logAction("select", $table, $query, $rows);
 
 				return $rows;
 			}
@@ -163,7 +163,7 @@ Class QueryBuilder{
 				    $rows[$row['id']] = 1;
 				    
 				}
-				$this->logAction("select", $table, $query, $rows);
+				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
 			} else if($returnType == 'idAsArray') {
 				$rows = array();
@@ -172,7 +172,7 @@ Class QueryBuilder{
 					$rows[$row['id']] = $row;
 				    
 				}			
-				$this->logAction("select", $table, $query, $rows);
+				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
 
 			} else if($returnType == 'columnAsArray' && isset($options['columnAsArray'])) {
@@ -182,7 +182,7 @@ Class QueryBuilder{
 					$rows[$row[$columnAsArray]] = $row;
 				    
 				}			
-				$this->logAction("select", $table, $query, $rows);
+				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
 
 			} else if($returnType == 'columnAsGroup' && isset($options['columnAsGroup'])) {
@@ -195,7 +195,7 @@ Class QueryBuilder{
 					array_push($rows[$row[$columnAsGroup]], $row);
 				    
 				}			
-				$this->logAction("select", $table, $query, $rows);
+				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
 
 			}
