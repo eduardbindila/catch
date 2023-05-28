@@ -709,7 +709,13 @@ class Invoices {
 
                                 //console.log(doc.content[1].table.body[tableLength-1][columnPosition.item_total].text);
 
-            
+                                doc.footer = [ 
+                                                {text: that.getTranslation('Legal_Footer',packageDetails.currency), margin: [30,0]},
+                                            ];
+                                                 
+
+
+                                                                     
 
                                 doc.content[2] = [
                                     // {canvas: [ { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 } ]},
@@ -743,7 +749,7 @@ class Invoices {
                                 ];
 
 
-                                //console.log(doc.content);
+                                //console.log(doc);
                                
                             },
                         },
@@ -1711,7 +1717,7 @@ class Invoices {
                                         },
                                         dueDate: {
                                             margin: [0,5,0,5] 
-                                        }
+                                        },
                                     };
 
        var pdfData = {
@@ -1881,6 +1887,10 @@ class Invoices {
                 "Ron": "Detalii Produs",
                 "Euro": "Item Details"
             },
+            "Legal_Footer": {
+                "Ron":"Legea 227 art.19 pct. (29) Semnarea si stampilarea facturilor nu constituie elemente obligatorii pe care trebuie sa le contina factura.",
+                "Euro" : ""
+            }
 
         };
 
