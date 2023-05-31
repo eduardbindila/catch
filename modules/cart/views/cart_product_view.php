@@ -6,7 +6,8 @@
 
     <script type="text/javascript">
 
-        var productFeaturesQuery = <?php echo json_encode($productFeaturesQuery); ?>;
+        //var productFeaturesQuery = <?php echo json_encode($productFeaturesQuery); ?>;
+        var productFeaturesQuery = [];
 
         var parent_id = '<?php echo $productParentID?>';
 
