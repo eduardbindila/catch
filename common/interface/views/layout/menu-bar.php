@@ -23,6 +23,16 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                             <span>Home</span>
                         </a>
                     </li>
+                    <?php 
+                        if(isset($_SESSION['user_access']['sales-grid'])) 
+                        {
+                    ?>
+                    <li>
+                                <a href="/admin/products">
+                                    <span>Products</span>
+                                </a>
+                            </li>
+                    <?php }?>
 
                     <?php 
                         if(isset($_SESSION['user_access']['admin'])) 
@@ -130,11 +140,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                     <span>Project Categories</span>
                                 </a>
                             </li>
-                            <li>
+                           <!--  <li>
                                 <a href="/admin/products">
                                     <span>Products</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li>
                                 <a href="/admin/countries">
                                     <span>Countries</span>

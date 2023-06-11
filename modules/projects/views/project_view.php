@@ -15,6 +15,8 @@
 
     var projectName = []; 
 
+    var quoteName = []; 
+
     var clientEmail = []; 
     var clientName = []; 
     var clientPoi = []; 
@@ -56,67 +58,6 @@
                                     include($_MPATH['ADMIN_CONTROLLERS'].'projects_controller.php');
 
                                  ?>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="header">
-                        <h2>Project Revenue Details</h2>
-                    </div>
-                    <div class="body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                 <ul> <b>Delivered Quotes</b>
-                                    <li>
-                                        Project Profit: <?php echo $projectRevenue['project_profit']  ?>
-                                    </li>
-                                    <li>
-                                        Project Revenue: <?php echo $projectRevenue['project_revenue']  ?>
-                                    </li>
-                                </ul>
-
-                                <div class="table-responsive">
-                                    <table class="table table-hover dashboard-task-infos">
-                                        <thead>
-                                            <tr>
-                                                <th>Winning Chance</th>
-                                                <th>Ammount</th>
-                                                <th>Quote Progress</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                $oldRevenue = 0;
-                                                foreach ($revenueByStatus as $revenueStatus => $revenueStatusValue) {
-
-                                                    if($revenueStatus == 4) {
-                                                        $oldRevenue = $revenueStatusValue;
-                                                        continue;
-                                                    }
-
-                                                    if($revenueStatus == 7) {
-                                                        $revenueStatusValue = $oldRevenue + $revenueStatusValue;
-                                                    }
-                                            ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $winning_chance[$revenueStatus]?>%
-                                                </td>
-                                                <td>
-                                                    <?php echo $revenueStatusValue?> Euro
-                                                </td>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-green" role="progressbar" aria-valuenow="<?php echo $winning_chance[$revenueStatus]?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $winning_chance[$revenueStatus]?>%"></div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                        </tbody>
-                                    </table>
-                            </div>
                             </div>
                         </div>
                         

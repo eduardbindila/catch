@@ -172,91 +172,7 @@ $(document).ready(function() {
             var buttonsArray = [];
 
             var clientButtons = [
-                        // {
-                        //     extend: 'selected',
-                        //     className: 'acceptSelected btn btn-lg btn-success waves-effect',
-                        //     text: 'Accept Selected Items',
-                        //     action: function ( e, dt, button, config ) {
-                        //         var selection = dt.rows( { selected: true } ).data();
-                        //         var i;
-                        //         for ( i = 0; i < selection.length; i++) {
-                        //             selectedItems.push(selection[i].id);
-                        //         }
-
-                        //         $.ajax({
-                        //             url: "/ajax/updateItems",
-                        //             type: "post",
-                        //             dataType: "json",
-                        //             data: {'products': selectedItems, 'quote_id': val['id'], 'quote_item_status': 2, 'rejection_reason': 0}
-                        //        }).success(function(json){
-                        //            location.reload();
-
-                        //         }).error(function(xhr, status, error) {
-                        //            //$('.addNewTemporaryProduct').removeClass('hidden');
-                        //         })
-                        //     }
-                        // },
-                        
-                        // {
-                        //     extend: 'selected',
-                        //     className: 'rejectSelected btn btn-lg btn-danger waves-effect',
-                        //     text: 'Reject Selected Items',
-                        //     action: function ( e, dt, button, config ) {
-
-                        //         var selection = dt.rows( { selected: true } ).data();
-                        //         var i;
-                        //         for ( i = 0; i < selection.length; i++) {
-                        //             selectedItems.push(selection[i].id);
-                        //         }
-
-                        //         //console.log(selection);
-
-                        //     $.ajax({
-                        //             url: "/ajax/getRejectionReason",
-                        //             type: "post",
-                        //             dataType: "json",
-                        //        }).success(function(json){
-                        //            $.each(json, function(key, value) {   
-                        //                  $('.rejectionReason')
-                        //                      .append($("<option></option>")
-                        //                                 .attr("value",value['id'])
-                        //                                 .text(value['name'])); 
-                        //             });
-
-                        //             $('#reject-modal').modal('show');
-
-
-                        //            $('#rejectionForm').on('submit', function(e){
-                        //                 e.preventDefault();
-
-                        //                 var data = $(this).serializeArray().reduce(function(obj, item) {
-                        //                     obj[item.name] = item.value;
-                        //                     return obj;
-                        //                 }, {});
-
-                                              
-                        //                 $.ajax({
-                        //                     url: "/ajax/updateItems",
-                        //                     type: "post",
-                        //                     dataType: "json",
-                        //                     data: {'products': selectedItems, 'quote_id': val['id'], 'quote_item_status': 3, 'rejection_reason': data.rejectionReason}
-                        //                }).success(function(json){
-                        //                    location.reload();
-
-                        //                 }).error(function(xhr, status, error) {
-                        //                    //$('.addNewTemporaryProduct').removeClass('hidden');
-                        //                 })
-                        //             })
-
-
-                        //         }).error(function(xhr, status, error) {
-                        //            //$('.addNewTemporaryProduct').removeClass('hidden');
-                        //         })
-                               
-                              
-
-                        //      }
-                        // },
+                       
                     ]
 
                     var salesButtons = [
@@ -636,7 +552,10 @@ $(document).ready(function() {
                                             
                                         },
                                         {
-                                         text: "Company: " + clientName[val['id']] + " \nIn attention to: " + clientPoi[val['id']] + "\nProject Name: " + projectName[val['id']] + "",
+                                         text: "Company: " + clientName[val['id']] +
+                                          " \nIn attention to: " + clientPoi[val['id']] + 
+                                          "\nProject Name: " + projectName[val['id']] + "" + 
+                                          "\nQuote Name: " + quoteName[val['id']] + "",
                                         style: 'antent'
                                         }
                                       ],
@@ -1232,11 +1151,11 @@ $(document).ready(function() {
                     },
                     { 
                         "data": "aquisition_price",
-                        "visible": iss
+                        "visible": isa
                     },
                     { 
                         "data": "min_price",
-                        "visible": iss
+                        "visible": isa
                     },
                      { 
                         "data": "list_price",
@@ -1284,7 +1203,7 @@ $(document).ready(function() {
 
                     {
                       "data": "profit",
-                      "visible": iss,
+                      "visible": isa,
                       "render" : function(data, type, row, meta) {
                                         
                             return '<span class="profit" data-row="'+meta.row+'" data-col="'+meta.col+'" data-type="profit">'+data+'</span>';
@@ -1411,7 +1330,7 @@ $(document).ready(function() {
                               return '<span class="stockData" data-type="stock" data-item="'+row.quote_item_id+'"  data-product="'+row.id+'">'+row.saga_quantity + '</span> '
                           },
  
-                        "visible": isl
+                        "visible": iss
                     },
                     { 
                         "data": "order_number",

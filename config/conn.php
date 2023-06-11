@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.9868';
+$_VERSION = '0.1.987';
 
 
 function getPage(){
@@ -333,6 +333,7 @@ Class QueryBuilder{
 			       quotes.quote_status,
 			       quotes.assignee_id AS assignee_id,
 			       quotes.specifyer_designer,
+			       quotes.start_date,
 			       quotes.client_id,
 			       quotes.project_id,
 			       quotes.quote_price,
@@ -347,7 +348,7 @@ Class QueryBuilder{
 			       LEFT JOIN project_status 
 			              ON projects.project_status = project_status.id 
 			       LEFT JOIN users 
-			              ON projects.owner_id = users.id 
+			              ON projects.owner_id = users.id and users.active = 1
 			       LEFT JOIN quote_status 
 			              ON quotes.quote_status = quote_status.id 
 			       LEFT JOIN specifyer_designer 

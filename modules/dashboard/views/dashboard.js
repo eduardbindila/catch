@@ -53,7 +53,7 @@ $(document).ready(function() {
                 //     targets: [11, 4],
                 // }             
             ],
-            pageLength: 100,
+            pageLength: 50,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
@@ -97,7 +97,7 @@ $(document).ready(function() {
                 { 
                     "data": "project_id",
                     "render" : function(data, type, row) {
-                        return '<a href="/project/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                        return '<a href="/project/'+data+'" class="btn btn-link" target="_blank">'+data+'</a>'
                       },
                 },
                 
@@ -110,7 +110,10 @@ $(document).ready(function() {
                     "visible": false
                 },
                 { 
-                    "data": "id"
+                    "data": "id",
+                     "render" : function(data, type, row) {
+                        return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+                      },
                 },
                 { 
                     "data": "owner",
@@ -119,7 +122,11 @@ $(document).ready(function() {
                     "data": "client"
                 },
                 { 
-                    "data": "specifyer_designer"
+                    "data": "start_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
+
                 },
                 { 
                     "data": "quote_status"
@@ -211,10 +218,16 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                       } 
                 },
                 { 
-                    "data": "start_date"
+                    "data": "start_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
                 },
                 { 
-                    "data": "offer_date"
+                    "data": "offer_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
                 },
                 { 
                     "data": "quote_price"
@@ -261,7 +274,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 "dataSrc": "",
             },
         
-            pageLength: 100,
+            pageLength: 5,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
@@ -333,7 +346,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 "dataSrc": ""
             },
         
-            pageLength: 100,
+            pageLength: 5,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
@@ -349,10 +362,16 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                       } 
                 },
                 { 
-                    "data": "start_date"
+                    "data": "start_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
                 },
                 { 
-                    "data": "offer_date"
+                    "data": "offer_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
                 },
                  { 
                     "data": "name"
@@ -382,7 +401,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 "dataSrc": ""
             },
         
-            pageLength: 100,
+            pageLength: 5,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
@@ -406,7 +425,10 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "data": "quote_status"
                 },
                  { 
-                    "data": "start_date"
+                    "data": "start_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
                 },
                 { 
                     "data": "owner"
@@ -464,7 +486,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 "dataSrc": ""
             },
         
-            pageLength: 100,
+            pageLength: 5,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
@@ -488,7 +510,10 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "data": "invoice_number"
                 },
                  { 
-                    "data": "invoice_date"
+                    "data": "invoice_date",
+                     "render" : function(data, type, row) {
+                        return convertMysqlDate(data)
+                      },
                 },
                 { 
                     "data": "owner"

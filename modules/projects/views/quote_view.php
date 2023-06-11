@@ -47,6 +47,8 @@ $quoteLockedClass = "";
 
         projectName['<?php echo $quote['id']?>'] = "<?php echo $quote['project_name']?>";
 
+        quoteName['<?php echo $quote['id']?>'] = "<?php echo $quote['name']?>";
+
         clientEmail['<?php echo $quote['id']?>'] = "<?php echo $quote['client_email']?>";
         clientName['<?php echo $quote['id']?>'] = "<?php echo $quote['client_name']?>";
         clientPoi['<?php echo $quote['id']?>'] = "<?php echo $quote['client_poi']?>";

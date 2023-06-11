@@ -147,7 +147,7 @@
                                         <th>Quote ID</th>
                                         <th >Owner</th>
                                         <th>Client</th>
-                                        <th class="hideFromfilters">Designer</th>
+                                        <th class="hideFromfilters">Start Date</th>
                                         <th>Status</th>
                                         <th>Project Value</th>
                                         <th class="hideFromfilters">Winning Chance</th>
