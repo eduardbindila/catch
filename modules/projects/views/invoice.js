@@ -237,6 +237,8 @@ class Invoices {
          var showForInvoice = false;
          var hideForInvoice = true;
 
+         thisPackage.consolidate = 0;
+
          if(packages[index].package_status_id > 1) {
             editDisabled = 'disabled';
             showForInvoice = true;
@@ -343,18 +345,26 @@ class Invoices {
 
          var fileNameData = thisPackage.quote_id + '-' + thisPackage.id;
 
+         var consolidateValue = 0;
+
          that.packageTable[thisPackage.id] = $('.packages_table-'+thisPackage.id).DataTable({
                      "ajax": {
                         "url": "/ajax/getPackageItems/",
                         "dataSrc": "",
                         "type": 'POST',
-                        "data": {
-                            'package_id': thisPackage.id, 
-                            'country': quoteList[params.quoteIndex].client_details.country,
-                            'exchange_rate': packageDetails.exchangeRate == '' ? 1 : packageDetails.exchangeRate,
-                            'vat': packageDetails.vat,
-                            'isRon': thisPackage.isRon,
-                            'invoice_date' : thisPackage.invoice_date
+                        data: function (d) {
+                            // Include the existing data parameters
+                            d.package_id = thisPackage.id;
+                            d.country = quoteList[params.quoteIndex].client_details.country;
+                            d.exchange_rate = packageDetails.exchangeRate == '' ? 1 : packageDetails.exchangeRate;
+                            d.vat = packageDetails.vat;
+                            d.isRon = thisPackage.isRon;
+                            d.invoice_date = thisPackage.invoice_date;
+                            
+                            // Add the consolidate parameter
+                            d.consolidate = consolidateValue;
+
+                            return d;
                         }
                     },
                     dom: 'Bfrtip',                
@@ -468,7 +478,30 @@ class Invoices {
                                       21 //Owner
                                   ]
                                 }, footer: false,
-                                
+                               action: function (e, dt, button, config) {
+                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button, config);
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000); // Adjust the delay as needed
+                            }
+                                                
+                },
+                {
+                    text: 'Consolidate POS',
+                    className: 'consolidatePos btn btn-lg btn-primary waves-effect',
+                    action: function (e, dt, node, config) {
+                        // Update the consolidate value
+                        consolidateValue = 1;
+
+                        // Reload the DataTable
+                        that.packageTable[thisPackage.id].ajax.reload();
+
+                        setTimeout(function () {
+                                   that.packageTable[thisPackage.id].buttons('2:name').trigger();
+                                }, 1000); // Adjust the delay as needed
+
+                        
+                    }
                 },
                         {
                             extend: 'pdfHtml5',

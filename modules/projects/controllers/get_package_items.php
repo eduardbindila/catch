@@ -126,7 +126,14 @@ $total = "(".$value." + ".$vatValue." )";
 
 $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_discount." )";
 
-
+if($_POST['consolidate'] == 1) {
+	$collect_groupby = " group by products.id "; 
+	$collect_sum = "sum(package_items.package_quantity) as package_quantity,";
+}
+else {
+	$collect_groupby = "";
+	$collect_sum = "";
+}
 
 	$query = $QueryBuilder->select(
 			$conn,
@@ -144,6 +151,7 @@ $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_disco
 							quote_items.invoiced_quantity, 
 							quote_items.quote_id,
 							package_item_types.name as type_name,
+							".$collect_sum."
 							".$value." as value, 
 							".$value_before_discount." as value_before_discount,
 							".$unit_price." as unit_price, 
@@ -164,7 +172,7 @@ $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_disco
 						left join green_tax as external_green_tax on package_items.external_item_green_tax_id = external_green_tax.id
 						left join quotes on quote_items.quote_id = quotes.id
 						join package_item_types on package_items.type = package_item_types.id',
-				"where" => "package_id = '".$_POST['package_id']."'",
+				"where" => "package_id = '".$_POST['package_id']."' ".$collect_groupby ,
 				"orderBy" => 'package_items.id',
 				"orderType" => 'ASC'
 			)
@@ -174,3 +182,4 @@ $total_before_discount = "(".$value_before_discount." + ".$vatValue_before_disco
 
 	$QueryBuilder->closeConnection();
 ?>
+
