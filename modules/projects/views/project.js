@@ -525,7 +525,7 @@ $(document).ready(function() {
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: null,
-                               columns: [ 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20]
+                               columns: [ 1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 18, 19, 29]
                             },
                             customize: function (doc) {
 
@@ -661,7 +661,7 @@ $(document).ready(function() {
                                         doc.content[1].table.body[row][5].text  = "n/a"
                                     }
 
-                                    if(doc.content[1].table.body[row][12].text == "0") {
+                                    if(doc.content[1].table.body[row][12].text == "Syl") {
                                         var linkID = 'https://www.sylvania-lighting.com/product/en-int/products/'+productId.text+'/';
                                         doc.content[1].table.body[row][2] = {text: "Click", link: linkID, style: 'link'};
                                     } else {
@@ -846,7 +846,7 @@ $(document).ready(function() {
 
                         var columnDataName = columnDetails.mData;
 
-                        //console.log(this.index, columnDataName);
+                        //console.log(columnDetails);
 
                          if((this.index() > 10) && (this.index() !== 14 && this.index() !== 15)) {
 
