@@ -1174,6 +1174,10 @@ $(document).ready(function() {
                         "render" : function(data, type, row, meta) {
                             // console.log(isc, val['hide_discount'], !(isc == true && val['hide_discount'] == 1));
                             //console.log(meta, row);
+                           //console.log(quoteList[index]);
+
+                           var disabledNoClient = quoteList[index].client_id == "" ? "disabled" : ""
+            
                             return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
                                             '<input class="form-control quote-input" " name="discount"' + 
@@ -1182,7 +1186,7 @@ $(document).ready(function() {
                                                 '" data-row="'+meta.row+
                                                 '" data-col="'+meta.col+
                                                 '" data-item="'+row.quote_item_id+
-                                                '" placeholder="Discount" value="'+row.discount+'" type="number" min=0 '+ inputDisabledForClient + ' >' + 
+                                                '" placeholder="Discount" value="'+row.discount+'" type="number" min=0 '+ inputDisabledForClient +  ' '+ disabledNoClient +  ' >' + 
                                         '</div>' + 
                                     '</div>'
                           }
@@ -1191,7 +1195,7 @@ $(document).ready(function() {
                         "data": "unit_price", 
                       className: "unit-price-wrapper",
                       "render" : function(data, type, row, meta) {
-                        
+                        var disabledNoClient = quoteList[index].client_id == "" ? "disabled" : ""
                             return '<div class="form-group">' + 
                                         '<div class="form-line">' + 
                                             '<input class="form-control unit-price quote-input"' + 
@@ -1199,7 +1203,7 @@ $(document).ready(function() {
                                             '" data-row="'+meta.row+
                                             '" data-col="'+meta.col+
                                             '" data-item="'+row.quote_item_id+
-                                            '" value="'+data+'" type="number" placeholder="Unit Price"  min=0 '+ inputDisabledForClient + '>' + 
+                                            '" value="'+data+'" type="number" placeholder="Unit Price"  min=0 '+ inputDisabledForClient + ' '+ disabledNoClient +  ' >' + 
                                         '</div>' + 
                                     '</div>'
                       }
