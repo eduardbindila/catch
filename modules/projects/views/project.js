@@ -824,7 +824,11 @@ $(document).ready(function() {
                     "offer_opened" : quoteList[index].offer_opened
                 };
 
-            //console.log(quoteList[index].quote_products.data);
+            
+
+            quoteList[index].showOrderFields = (quoteList[index].quote_status == 2 || quoteList[index].quote_status == 5 || quoteList[index].quote_status > 9) ? 1 : 0;
+
+            //console.log(quoteList[index]);
 
              table[index] = $('#quote-'+val['id']).DataTable({
                 footerCallback: function ( row, data, start, end, display ) {
@@ -1151,7 +1155,7 @@ $(document).ready(function() {
                     },
                     { 
                         "data": "aquisition_price",
-                        "visible": isa
+                        "visible": iss
                     },
                     { 
                         "data": "min_price",
@@ -1159,7 +1163,7 @@ $(document).ready(function() {
                     },
                      { 
                         "data": "list_price",
-                        "visible": iss
+                        "visible": isa
                     },
                      
                     { 
@@ -1330,7 +1334,7 @@ $(document).ready(function() {
                               return '<span class="stockData" data-type="stock" data-item="'+row.quote_item_id+'"  data-product="'+row.id+'">'+row.saga_quantity + '</span> '
                           },
  
-                        "visible": iss
+                        "visible": quoteList[index].showOrderFields
                     },
                     { 
                         "data": "order_number",
@@ -1351,7 +1355,9 @@ $(document).ready(function() {
                                             '" data-col="'+meta.col+'" name="order_number" placeholder="Order Number" value="'+row.order_number+'" type="text" min="1" step="1">' + 
                                         '</div>' + 
                                     '</div>'
-                          }
+                          },
+ 
+                        "visible": quoteList[index].showOrderFields
                     },
                     { 
                         "data": "ordered_quantity",
@@ -1378,7 +1384,9 @@ $(document).ready(function() {
                                             '" data-col="'+meta.col+'" name="ordered_quantity" placeholder="Order Quantity" value="'+row.ordered_quantity+'" type="number" min="0" step="1">' + 
                                         '</div>' + 
                                     '</div>'
-                          }
+                          },
+ 
+                        "visible": quoteList[index].showOrderFields
                     },
                     { 
                         "data": "order_date",
@@ -1397,7 +1405,9 @@ $(document).ready(function() {
                                             '" data-col="'+meta.col+'" name="order_date" placeholder="Order Date" value="'+row.order_date+'" type="date" min="1" step="1">' + 
                                         '</div>' + 
                                     '</div>'
-                          }
+                          },
+ 
+                        "visible": quoteList[index].showOrderFields
                     },
                     { 
                         "data": "promise_date",
@@ -1416,7 +1426,9 @@ $(document).ready(function() {
                                             '" data-col="'+meta.col+'" name="promise_date" placeholder="Promise Date" value="'+row.promise_date+'" type="date" min="1" step="1">' + 
                                         '</div>' + 
                                     '</div>'
-                          }
+                          },
+ 
+                        "visible": quoteList[index].showOrderFields
                     },
                     { 
                         "data": "temporary_product",
