@@ -22,7 +22,7 @@ $conn = $QueryBuilder->dbConnection();
 			FROM
 			    `quote_files`
 			WHERE
-			    quote_id = 2478 AND file_type = 1
+			     file_type = 1
 			ORDER BY
 			    id DESC Limit 1
 			) qf on quotes.id = qf.quote_id',

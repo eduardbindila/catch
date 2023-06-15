@@ -8,6 +8,8 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteRule ^download download.php [L]
 
+RewriteRule ^viewFile view_file.php [L]
+
  RewriteRule ^auth/login login.php [L]
  RewriteRule ^dashboard dashboard.php [L]
  RewriteRule ^cart/create create_quote.php [L]

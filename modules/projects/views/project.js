@@ -2147,7 +2147,8 @@ $(document).ready(function() {
                         { 
                             "data": "file_path",
                             "render" : function(data, type, row) {
-                                return  '<a href="/download?f='+data+'" target="_blank" >'+data+'</a>'
+                                //return  '<a href="/download?f='+data+'" target="_blank" > Download '+data+'</a><br> <a href="/viewFile?f='+data+'" target="_blank" >View '+data+'</a>'
+                                 return  '<a href="/viewFile?f='+data+'" target="_blank" >View '+data+'</a>'
                               }
                         },
                          { 
