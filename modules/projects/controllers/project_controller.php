@@ -198,7 +198,7 @@ $conn = $QueryBuilder->dbConnection();
                 continue;
 			}
 
-			//printError($quoteValues);	
+			//var_dump($quoteProductDetails);	
 
 			
 			$temporary_product = isset($quoteProductDetails[0]['is_temporary']) ? $quoteProductDetails[0]['is_temporary'] : 0;
@@ -208,9 +208,7 @@ $conn = $QueryBuilder->dbConnection();
 
 			$db_unit_price = $quoteValues['unit_price'];
 
-			//$unit_price = $quoteValues['unit_price'] > 0 ? $quoteValues['unit_price'] : $list_price - ($quoteValues['discount'] ? ($list_price * $quoteValues['discount']/100) : 0);
-
-			$unit_price = $list_price - ($quoteValues['discount'] ? ($list_price * $quoteValues['discount']/100) : 0);
+			$unit_price = $quoteValues['unit_price'] > 0 ? $quoteValues['unit_price'] : $list_price - ($quoteValues['discount'] ? ($list_price * $quoteValues['discount']/100) : 0);
 
 			$unit_price = number_format((float)$unit_price, 2, '.', '');
 
@@ -279,8 +277,6 @@ $conn = $QueryBuilder->dbConnection();
 			
 
 		}
-
-		//printError($quoteProducts);	
 
 		$quoteQuery[$key]['quote_products'] = $quoteProducts;
 

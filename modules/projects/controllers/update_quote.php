@@ -71,32 +71,6 @@ if(isset($_POST['extra_discount'])) {
 				"where" => "id = ".$_POST['quote_id']
 			)
 		);
-
-		if($projectsQuery) {
-
-			$clientDiscountQuery = $QueryBuilder->select(
-				$conn,
-				$options = array(
-					"table" => "clients",
-					"columns" => "discount",
-					"where" => "id = ".$client_id,
-				)
-			);
-
-			$clientDiscount = $clientDiscountQuery[0]['discount'];
-
-
-			$updateDiscounts = $QueryBuilder->update(
-			$conn,
-			$options = array(
-				"table" => "quote_items",
-				"set" => [
-						"`discount`='".$clientDiscount."'",
-						],
-				"where" => "quote_id = ".$_POST['quote_id']
-			)
-		);
-		}
 	}
 }
 
