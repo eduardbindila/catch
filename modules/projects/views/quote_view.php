@@ -510,7 +510,11 @@ $quoteLockedClass = "";
                                 <div class="alert bg-red updatePackageItemError hidden">
                                     Package item has not been updated! Please contact the administrator.
                                 </div>
-                                <div class="packagesContainer"></div>
+                                <div class="clearfix">
+                                    <button type="button" data-quote="<?php echo $quote['id']?>" class="btn right bg-light-green waves-effect unifyPackages" disabled>Unify <span class="unifyCount"></span> Packages</button>
+                                </div>
+                                
+                                <div class="packagesContainer clearfix"></div>
                             </div>
                         </div>  
                     </div>

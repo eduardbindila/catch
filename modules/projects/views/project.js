@@ -2553,7 +2553,6 @@ $(document).ready(function() {
 });
 
 
-
     $('body').on('click', '.changePriceDialog', function(){
 
 
@@ -2958,6 +2957,68 @@ Dropzone.autoDiscover = false;
         })
 
     })
+
+     var unifyArray = [];
+
+     var unifyButton = $('.unifyPackages');
+
+    $('body').on('change', '.selectToUnify input', function(){
+        var packageID = $(this).attr('data-package');
+
+        
+
+        if ($(this).is(':checked')) {
+            // Add packageID to unifyArray
+            unifyArray.push(packageID);
+        } else {
+            // Remove packageID from unifyArray
+            var index = unifyArray.indexOf(packageID);
+            if (index > -1) {
+                unifyArray.splice(index, 1);
+            }
+        }
+
+        unifyButton.find('span.unifyCount').text(unifyArray.length);
+
+       if (unifyArray.length < 2) {
+            unifyButton.prop('disabled', true);
+        } else {
+            unifyButton.prop('disabled', false);
+        }
+    });
+
+    $('body').on('click', '.unifyPackages', function(e){
+
+      var quoteID =  $(this).attr('data-quote');
+
+      var unifyData = {
+        "quoteId" : quoteID,
+        "packageArray": unifyArray
+      };
+
+      $.ajax({
+            url: "/ajax/unifyPackages",
+            type: "post",
+            dataType: "json",
+            data: unifyData
+        }).success(function(json){
+           $('.updatePackageItemError').addClass('hidden');
+           //console.log(json);
+           location.reload()
+
+        }).error(function(xhr, status, error) {
+            $('.updatePackageItemError').removeClass('hidden');
+        })
+
+    })
+
+    $('.viewPackages-modal').on('hide.bs.modal', function(){
+        unifyArray.length = []; // Empty the unifyArray when the modal is closing
+        unifyButton.find('span.unifyCount').text('');
+        unifyButton.prop('disabled', true);
+    });
+
+
 
 });
 

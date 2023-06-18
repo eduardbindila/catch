@@ -60,7 +60,7 @@
 
 .label-count {
   position: absolute;
-  top: 2px;
+  top: 2px
   right: 6px;
   font-size: 10px;
   line-height: 15px;
@@ -6426,6 +6426,22 @@ fieldset[disabled] .form-control {
 .right {
   float: right !important; }
 
+  .left {
+  float: left !important; }
+
+  .selectToUnify {
+    height: 20px;
+    margin: 5px;
+}
+
+.btn.prevStatusButton {
+    height: 29px;
+}
+
+span.unifyCount {
+  top: 1px !important;
+}
+
 .gap-patch {
   position: absolute;
   top: 0;
@@ -8904,4 +8920,17 @@ button.prevStatusButton.btn.btn-default.waves-effect i {
 
 .info-box-xs .content .text {
   margin:  0;
+}
+
+.unifiedLabel {
+  position: relative;
+  top: 4px;
+  padding: 6px;
+  font-size: 14px;
+  right: 1px;
+}
+
+.unifiedLine .package_wrapper,
+.unifiedLine .triggerPackageItems{
+  background-color: #f0f0f0 !important;
 }

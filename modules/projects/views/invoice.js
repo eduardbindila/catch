@@ -36,9 +36,19 @@ class Invoices {
       var revertInvoiceClass = ""
 
       var removePackageClass = ""
+      var unifyClass = ""
       var backButtonClass = ""
 
+      var hideIfUnified = ""
+
+      var hideIfUnifier = ""
+
+      var showIfUnified = "hidden"
+
       var hideStorno = "hidden";
+
+      var unifiedClass = ""; 
+
 
         switch(parseInt(packageStatus)) {
             case 1:
@@ -49,8 +59,9 @@ class Invoices {
                 revertInvoiceClass = "hidden"
                 removePackageClass = "";
                 backButtonClass = "hidden";
+                unifyClass="hidden";
 
-            break;
+            break;;
 
               case 2:
                 statusClass = 'btn-info';
@@ -60,6 +71,7 @@ class Invoices {
                 nextStatusAction = "Generate Delivery Note";
                 revertInvoiceClass = "hidden"
                 removePackageClass = "";
+                unifyClass="hidden";
             break;
 
             case 3:
@@ -70,6 +82,8 @@ class Invoices {
                 nextStatusAction = "Generate Invoice";
                 revertInvoiceClass = "hidden"
                 removePackageClass = "";
+                unifyClass="";
+
             break;
 
             case 4:
@@ -79,6 +93,7 @@ class Invoices {
                 removePackageClass = "hidden";
                 backButtonClass = "hidden";
                 hideStorno = "";
+                unifyClass="hidden";
         }
 
         //console.log(nextStatusClass, packageStatus);
@@ -89,11 +104,22 @@ class Invoices {
         invoiceForm = that.getInvoiceDetailsForm(params);
        }
 
+       if(params.unified_package_id) {
+        hideIfUnified = "hidden";
+        showIfUnified = "";
+        unifiedClass = "unifiedLine";
+       }
+
+       if(params.is_unified_package) {
+        hideIfUnifier = "hidden";
+       }
+
+
        //console.log(params);
 
-      var packageLine = '<div class="package_line m-t-10 package-'+packageId+'">'+
-                           '<div class="package_wrapper">'+
-                               '<button class="btn btn-default collapser triggerPackageItems"'+
+      var packageLine = '<div class="package_line m-t-10 package-'+packageId+' '+unifiedClass+'">'+
+                           '<div class="package_wrapper ">'+
+                               '<button class="btn btn-default collapser collapsed triggerPackageItems"'+
                                ' type="button" data-toggle="collapse"'+
                                ' href="#'+collapserId+'" aria-expanded="false"'+
                                ' aria-controls="'+collapserId+'" data-package='+packageId+'>'+
@@ -108,11 +134,18 @@ class Invoices {
                                    //     'Status: <b>'+packageStatusName+'</b>'+
                                    // '</span>'+
                                '</button>'+
-                               '<div class="btn-group btn-group-sm right"'+
+                               '<span class="label right label-default '+showIfUnified+' unifiedLabel">Unified on Package '+params.unified_package_id+' </span>' +
+                               '<div class="btn-group btn-group-sm right '+hideIfUnified+'"'+
                                ' role="group" aria-label="Large button group">'+
+                                '<div class="left selectToUnify '+unifyClass+
+                                    '">' +
+                                     '<input type="checkbox" data-package='+packageId + 
+                                        ' id="md_checkbox_'+packageId+'" class="filled-in chk-col-light-blue">' + 
+                                    '<label for="md_checkbox_'+packageId+'"></label>'+  
+                                '</div>' +
                                 '<button type="button" data-type="generate_pos" data-package='+packageId+ 
                                     ' data-nextStatus="'+prevStatus+
-                                                    '" class="btn btn-default prevStatusButton '+backButtonClass+
+                                                    '" class="btn bg-teal prevStatusButton '+backButtonClass+
                                     ' waves-effect package_status_change">' +
                                     '<i class="material-icons">chevron_left</i>'+
                                 '</button>'+
@@ -151,9 +184,9 @@ class Invoices {
                                '</div>'+
                                
                            '</div>'+
-                           '<div class="collapse in" id="'+collapserId+'" aria-expanded="true"'+
+                           '<div class="collapse '+hideIfUnified+'" id="'+collapserId+'" aria-expanded="true"'+
                            ' style="">'+
-                           '<div class="row m-t-10 m-b-10">'+
+                           '<div class="row m-t-10 m-b-10 ">'+
                                     '<div class="col-lg-12">'+
                                          invoiceForm +
                                     '</div>'+ 
@@ -267,6 +300,8 @@ class Invoices {
             'invoiceDate': packages[index].invoice_date,
             'pos_date': packages[index].pos_date,
             'awb_date': packages[index].awb_date,
+            'is_unified_package': packages[index].is_unified_package,
+            'unified_package_id': packages[index].unified_package_id,
             'other_details': packages[index].other_details,
             'isStorno': packages[index].isStorno,
             'dueDate': packages[index].invoice_due_date,
@@ -426,6 +461,7 @@ class Invoices {
                         {
                             text: 'Add External Item',
                             className: 'btn btn-lg btn-primary waves-effect',
+                             enabled: thisPackage.package_status_id != 4,
                             action: function ( e, dt, node, config ) {
 
                                 dt.row.add( 
@@ -888,7 +924,7 @@ class Invoices {
                                 //console.log(meta.col);
                                 var disabled = '';
 
-                                if(row.external_item_name !=='') {
+                                if(row.external_item_name !=='' || thisPackage.package_status_id == 4) {
                                         disabled = "disabled"
                                 }
 
@@ -914,7 +950,7 @@ class Invoices {
                                 //console.log(meta.col);
                                 var disabled = '';
 
-                                if(row.external_item_name !=='') {
+                                if(row.external_item_name !==''|| thisPackage.package_status_id == 4) {
                                         disabled = "disabled"
                                 }
 
@@ -1040,7 +1076,7 @@ class Invoices {
 
                                 var product = row.product_id;
 
-                                var disabled = (thisPackage.package_status_id > 1) ? 'disabled' : '';
+                                var disabled = (thisPackage.package_status_id > 1 || thisPackage.package_status_id == 4) ? 'disabled' : '';
 
                                 //console.log(thisPackage.exchange_rate);
 
@@ -1201,6 +1237,11 @@ class Invoices {
                         { 
                             "data": "item_details",
                             "render" : function(data, type, row, meta) {
+                                var disabled = "";
+
+                                 if(row.external_item_name !=='' || thisPackage.package_status_id == 4) {
+                                        disabled = "disabled"
+                                }
                                 return '<div class="form-group">' + 
                                             '<div class="form-line">' + 
                                                 '<textarea class="form-control item_details-input"' + 
@@ -1212,7 +1253,7 @@ class Invoices {
                                                 '" data-product="'+row.product_id+
                                                 
                                                 '" name="item_details"'+
-                                                ' placeholder="Item Details" >'+ row.item_details +'</textarea>' + 
+                                                ' placeholder="Item Details" '+disabled+'>'+ row.item_details +'</textarea>' + 
                                             '</div>' + 
                                         '</div>'
                               }

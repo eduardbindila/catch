@@ -138,6 +138,8 @@ RewriteRule ^ajax/switchQuoteCurrency modules/projects/controllers/switch_quote_
 
 RewriteRule ^ajax/createStorno modules/projects/controllers/create_storno.php [L]
 
+RewriteRule ^ajax/unifyPackages modules/projects/controllers/unify_packages.php [L]
+
 RewriteRule ^ajax/updateGreenTax modules/projects/controllers/update_green_tax.php [L]
 
 RewriteRule ^ajax/updateItemType modules/projects/controllers/update_item_type.php [L]
