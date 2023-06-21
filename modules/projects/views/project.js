@@ -1334,7 +1334,7 @@ $(document).ready(function() {
                               return '<span class="stockData" data-type="stock" data-item="'+row.quote_item_id+'"  data-product="'+row.id+'">'+row.saga_quantity + '</span> '
                           },
  
-                        "visible": quoteList[index].showOrderFields
+                        "visible": iss
                     },
                     { 
                         "data": "order_number",

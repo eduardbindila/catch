@@ -207,7 +207,7 @@ $quoteLockedClass = "";
                                 <th>Final Price</th>
                                 <th>Reserved Stock</th>
                                 <th>Invoiced Quantity</th>
-                                <th>Saga Quantity</th>
+                                <th>Free Stock</th>
                                 <th>Order Number</th>
                                 <th>Order Quantity</th>
                                 <th>Order Date</th>
