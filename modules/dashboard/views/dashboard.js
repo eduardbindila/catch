@@ -522,7 +522,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
 
  
                 return $('<tr/>')
-                    .append( '<td> Project:'+ quoteId +'</td>')
+                    .append( '<td> Quote:'+ quoteId +'</td>')
                     // .append( '<td>'+ projectName +'</td>')
                     // .append( '<td colspan="4"></td>')
                     // .append( '<td>'+ projectStatus +'</td>')
