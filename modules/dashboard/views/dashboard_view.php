@@ -23,14 +23,15 @@
                                     <thead>
                                         <th>Quote ID</th>
                                         <th>Quote Name</th>
-                                        <th>Quote Value</th>
                                         <th>Quote Status</th>
-                                        <th>Start Date</th>
+                                        <th>Product ID</th>
+                                        <th>Action Date</th>
                                         <th>Owner</th>
                                         <th>Client</th>
-                                        <th>Order Sent %</th>
-                                        <th>Quote Delivered %</th>
-                                        <th>Quote Invoiced %</th>
+                                       <th>Quote Fullfiled</th>
+                                        <th>Order in Transit</th>
+                                        <th>Received Order</th>
+                                        <th>Invoiced Order</th>
                                     </thead>
                                 </table>
                             </div>

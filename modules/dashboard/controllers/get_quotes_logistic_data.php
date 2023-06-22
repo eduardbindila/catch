@@ -6,173 +6,107 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 $conn = $QueryBuilder->dbConnection();
 
 
-// $query = "select 
-// 			q.id as quote_id, 
-// 			q.name as quote_name, 
-// 			q.quote_price as quote_value,
-// 			qs.name as quote_status, 
-// 			q.quote_status as quote_status_id, 
-// 			q.start_date,
-// 			u.name as owner,
-// 			c.name as client_name,
-// 			qid.total_quote_items,
-// 			qid.total_orders_sent,
-// 			qid.total_quote_items_reserved,
-// 			(
-// 				case
-// 					when qid.total_quote_items <= (qid.total_orders_sent + qid.total_quote_items_reserved)
-// 						then 100
-// 					when 
-// 						qid.total_quote_items > (qid.total_orders_sent + qid.total_quote_items_reserved) 
-// 						and 
-// 						(qid.total_orders_sent + qid.total_quote_items_reserved) > 0 
-// 						then 1
-// 					when 
-// 						(qid.total_orders_sent + qid.total_quote_items_reserved) = 0 
-// 						then 0
-// 				end
-// 			) as supplier_order_sent_ratio,
-// 			qid.total_quote_reserved_quantity,
-// 			qid.total_quote_invoiced_quantity,
-// 			(
-// 				case
-// 					when total_quote_reserved_quantity <= total_quote_invoiced_quantity and quote_status  = 11
-// 						then 100
-// 					when 
-// 						total_quote_reserved_quantity > total_quote_invoiced_quantity 
-// 						and 
-// 						total_quote_invoiced_quantity > 0 
-// 						then 1
-// 					when 
-// 						total_quote_invoiced_quantity = 0 
-// 						then 0
-// 				end
-// 			) as quote_invoiced_ratio
-// 		from quotes q 
-// 		join quote_status qs on qs.id = q.quote_status
-// 		join users u on q.assignee_id = u.id
-// 		join clients c on q.client_id = c.id
-// 		join (
-// 			select 
-// 			count(qi.id) as total_quote_items, 
-// 			count(
-// 				if((qi.order_number is not null), 1, null)
-// 			) as total_orders_sent,
-// 			count(
-// 				if((qi.quantity = qi.reserved_stock), 1, null)
-// 			) as total_quote_items_reserved,
-// 			sum(qi.reserved_stock) as total_quote_reserved_quantity,
-// 			sum(qi.invoiced_quantity) as total_quote_invoiced_quantity,
-// 			qi.quote_id 
-// 			from quote_items qi
-// 			group by qi.quote_id 
-// 		) qid on q.id = qid.quote_id
-// 		where q.quote_status in (5,2,10,11)";
+$query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.client_name, sub.quote_item_id, sub.product_id, sub.quantity, sub.reserved_stock, sub.ordered_quantity,
+       sub.in_transit_quantity, sub.received_quantity, sub.invoiced_quantity, sub.date_added,
+       CASE
+           WHEN (sub.in_transit_quantity = 0 OR sub.in_transit_quantity IS NULL)
+                AND (sub.received_quantity = 0 OR sub.received_quantity IS NULL)
+                AND (sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL) THEN
+               CASE
+                   WHEN sub.quantity > (COALESCE(sub.reserved_stock, 0) + COALESCE(sub.ordered_quantity, 0)) THEN 'yellow'
+                   WHEN (COALESCE(sub.reserved_stock, 0) + COALESCE(sub.ordered_quantity, 0)) = 0 THEN 'red'
+                   ELSE 'green'
+               END
+           ELSE 'green'
+       END AS quote_fullfilled_color,
+       CASE
+           WHEN (sub.received_quantity = 0 OR sub.received_quantity IS NULL)
+                AND (sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL) THEN
+               CASE
+                   WHEN sub.in_transit_quantity > 1 THEN 'blue'
+                   WHEN sub.in_transit_quantity = 0 THEN 'red'
+                   ELSE 'green'
+               END
+           ELSE 'green'
+       END AS order_in_intransit_color,
+       CASE
+           WHEN sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL THEN
+               CASE
+                   WHEN sub.received_quantity > 0 AND sub.received_quantity != sub.ordered_quantity THEN 'yellow'
+                   WHEN sub.received_quantity = 0 THEN 'red'
+                   WHEN sub.received_quantity <= sub.ordered_quantity THEN 'green'
+               END
+           ELSE 'green'
+       END AS received_order_color,
+       CASE
+           WHEN sub.invoiced_quantity = 0 THEN 'red'
+           WHEN sub.invoiced_quantity > 1 AND sub.invoiced_quantity != sub.quantity THEN 'yellow'
+           WHEN sub.invoiced_quantity <= sub.quantity THEN 'green'
+       END AS invoiced_order_color,
+       CASE
+           WHEN sub.quantity = 0 THEN '100'
+           WHEN sub.quantity > 0 THEN
+               CASE
+                   WHEN ((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100) > 100 THEN '100'
+                   ELSE FORMAT((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100, '0.00') + '%'
+               END
+           ELSE '100'
+       END AS quote_fullfilled_ratio,
+       CASE
+           WHEN sub.in_transit_quantity = 0 THEN '100'
+           WHEN sub.in_transit_quantity > 0 THEN
+               CASE
+                   WHEN (sub.in_transit_quantity / sub.ordered_quantity * 100) > 100 THEN '100'
+                   ELSE FORMAT(sub.in_transit_quantity / sub.ordered_quantity * 100, '0.00') + '%'
+               END
+           WHEN sub.in_transit_quantity IS NULL THEN '0'
+       END AS order_in_transit_ratio,
+       CASE
+           WHEN sub.received_quantity = 0 THEN '100'
+           WHEN sub.received_quantity > 0 THEN
+               CASE
+                   WHEN (sub.received_quantity / sub.quantity * 100) > 100 THEN '100'
+                   ELSE FORMAT(sub.received_quantity / sub.quantity * 100, '0.00') + '%'
+               END
+           WHEN sub.received_quantity IS NULL THEN '0'
+       END AS received_order_ratio,
+       CASE
+           WHEN sub.invoiced_quantity = 0 THEN '0'
+           WHEN sub.invoiced_quantity > 0 THEN
+               CASE
+                   WHEN (sub.invoiced_quantity / sub.quantity * 100) > 100 THEN '100'
+                   ELSE FORMAT(sub.invoiced_quantity / sub.quantity * 100, '0.00') + '%'
+               END
+           WHEN sub.invoiced_quantity IS NULL THEN '0'
+       END AS invoiced_order_ratio
+FROM (
+    SELECT q.id AS quote_id, q.name as quote_name, qs.name as quote_status, c.name as client_name, u.name as owner, qi.id AS quote_item_id, qi.product_id, qi.quantity, qi.reserved_stock, qi.ordered_quantity,
+           SUM(CASE WHEN vii.reception = 0 THEN viis.quantity ELSE 0 END) AS in_transit_quantity,
+           SUM(CASE WHEN vii.reception = 1 THEN viis.quantity ELSE 0 END) AS received_quantity,
+           qi.invoiced_quantity, vii.date_added
+    FROM quote_items qi
+    JOIN vendor_invoice_items_split viis ON qi.id = viis.quote_item_id
+    JOIN vendor_invoice_items vii ON viis.vendor_invoice_item_id = vii.id
+    JOIN quotes q ON qi.quote_id = q.id
+    join clients c on q.client_id = c.id
+    join users u on c.user_id = u.id
+    join quote_status qs on q.quote_status = qs.id
+    WHERE q.quote_status IN (5, 2, 10, 11)
+    GROUP BY qi.id, q.id
+    ORDER BY q.id, vii.date_added
+) AS sub;
 
-//echo $query;
+";
 
 
-
-		$projectsQuery = $QueryBuilder->select(
+	$projectsQuery = $QueryBuilder->customQuery(
 		$conn,
-		$options = array(
-			"table" => "quotes q",
-			"columns" => "
-			q.id as quote_id, 
-			q.name as quote_name, 
-			q.quote_price as quote_value,
-			qs.name as quote_status, 
-			q.quote_status as quote_status_id, 
-			q.start_date,
-			u.name as owner,
-			c.name as client_name,
-			qid.total_quote_items,
-			qid.total_orders_sent,
-			qid.total_quote_items_reserved,
-			(
-				case
-					when qid.total_quote_items <= (qid.total_orders_sent + qid.total_quote_items_reserved)
-						then 100
-					when 
-						qid.total_quote_items > (qid.total_orders_sent + qid.total_quote_items_reserved) 
-						and 
-						(qid.total_orders_sent + qid.total_quote_items_reserved) > 0 
-						then 1
-					when 
-						(qid.total_orders_sent + qid.total_quote_items_reserved) = 0 
-						then 0
-				end
-			) as supplier_order_sent_ratio,
-			qid.total_ordered_quantity,
-			qid.total_quote_delivered_quantity,
-			(
-				case
-					when total_ordered_quantity <= total_quote_delivered_quantity
-						then 100
-					when 
-						total_ordered_quantity > total_quote_delivered_quantity 
-						and 
-						total_quote_delivered_quantity > 0 
-						then 1
-					when 
-						total_quote_delivered_quantity = 0 
-						then 0
-				end
-			) as quote_delivered_ratio,
-			qid.total_quote_reserved_quantity,
-			qid.total_quote_invoiced_quantity,
-			(
-				case
-					when total_quote_reserved_quantity <= total_quote_invoiced_quantity
-						then 100
-					when 
-						total_quote_reserved_quantity > total_quote_invoiced_quantity 
-						and 
-						total_quote_invoiced_quantity > 0 
-						then 1
-					when 
-						total_quote_invoiced_quantity = 0 
-						then 0
-				end
-			) as quote_invoiced_ratio
-
-			",
-			"innerJoin" => "
-				quote_status qs on qs.id = q.quote_status
-			join users u on q.assignee_id = u.id
-			join clients c on q.client_id = c.id
-			left join (
-				select 
-				count(qi.id) as total_quote_items, 
-				count(
-					if((qi.order_number is not null), 1, null)
-				) as total_orders_sent,
-				count(
-					if((qi.quantity = qi.reserved_stock), 1, null)
-				) as total_quote_items_reserved,
-				sum(qi.reserved_stock) as total_quote_reserved_quantity,
-				sum(qi.invoiced_quantity) as total_quote_invoiced_quantity,
-				sum(ifnull(qi.ordered_quantity, 0)) as total_ordered_quantity,
-				SUM(case when vii.reception  = 1 then ifnull(vii.delivered_quantity, 0)  else 0 end) as total_quote_delivered_quantity,
-				qi.quote_id 
-				from quote_items qi
-				left join vendor_invoice_items_split viis on viis.quote_item_id = qi.id
-				left join vendor_invoice_items vii on vii.id = viis.vendor_invoice_item_id 
-				group by qi.quote_id 
-			) qid on q.id = qid.quote_id
-			",
-			"where" => "q.quote_status in (5,2,10,11)"
-		)
+		$query = $query
 	);
-
-	// $projectsQuery = $QueryBuilder->customQuery(
-	// 	$conn,
-	// 	$query = $query
-	// );
 
 
 // printError($valuesArray);
-  		echo$conn->error;
+  		//echo$conn->error;
 
 
 echo  json_encode($projectsQuery);

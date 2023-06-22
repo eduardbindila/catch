@@ -394,18 +394,144 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
 
 
 
-    var logisticTable = $('.logistic_details-table').DataTable({
+    // var logisticTable = $('.logistic_details-table').DataTable({
+    //         "ajax": {
+    //             "url": "/ajax/getDashboardLogisticData",
+    //             "type": "POST",
+    //             "dataSrc": ""
+    //         },
+        
+    //         pageLength: 5,
+    //             "paging":   true,
+    //             "ordering": true,
+    //             "searching": true,
+    //         rowId: 'category_slug',
+              
+    //         responsive: true,
+    //         "columns": [ 
+    //             { 
+    //                 "data": "quote_id",
+    //                 "render" : function(data, type, row) {
+    //                     return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
+    //                   } 
+    //             },
+    //             { 
+    //                 "data": "quote_name"
+    //             },
+    //             { 
+    //                 "data": "quote_value"
+    //             },
+    //              { 
+    //                 "data": "quote_status"
+    //             },
+    //              { 
+    //                 "data": "start_date",
+    //                  "render" : function(data, type, row) {
+    //                     return convertMysqlDate(data)
+    //                   },
+    //             },
+    //             { 
+    //                 "data": "owner"
+    //             },
+    //             { 
+    //                 "data": "client_name"
+    //             },
+
+    //             {
+    //                 "data": 'supplier_order_sent_ratio',
+    //                 "render" : function(data, type, row) {
+
+    //                     var ratio = getRatio(data);
+
+    //                     return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+    //                   } 
+
+    //             },
+    //             {
+    //                 "data": 'quote_delivered_ratio',
+    //                 "render" : function(data, type, row) {
+
+    //                     var ratio = getRatio(data);
+
+    //                     return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+    //                   } 
+
+    //             },
+    //             {
+    //                 "data": 'quote_invoiced_ratio',
+    //                 "render" : function(data, type, row) {
+
+    //                     var ratio = getRatio(data);
+
+    //                     //console.log(ratio);
+
+    //                     return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+    //                   } 
+
+    //             }
+
+
+                
+    //         ],
+    //         "initComplete": function(settings, json) {
+    //             //console.log(json);
+    //         },
+    //          "rowCallback": function( row, data, index ) {
+                              
+    // if (data["quote_delivered_ratio"] == '100' && data["quote_invoiced_ratio"] == '100' && data["supplier_order_sent_ratio"] == '100') {
+    //     $(row).hide();
+    // }
+    //              },
+
+        //})
+
+
+
+         var logisticTable = $('.logistic_details-table').DataTable({
             "ajax": {
                 "url": "/ajax/getDashboardLogisticData",
                 "type": "POST",
                 "dataSrc": ""
             },
         
-            pageLength: 5,
+            pageLength: 50,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
             rowId: 'category_slug',
+ rowGroup: {
+                startRender: function ( rows, group ) {
+               
+               // var projectName = rows.data()[0].project_name;
+               var quoteId = rows.data()[0].quote_id;
+               // var projectStatus = rows.data()[0].project_status;
+
+               // var projectValue = rows.data().pluck('quote_price').reduce(function(a, b, i){
+               //  var isMaster = rows.data().pluck('isMaster');
+               //  var quoteId = rows.data().pluck('id');
+               //  //console.log(quoteId[i], isMaster[i]);
+
+               //  if(isMaster[i] > 0) {
+
+               //      a = a + parseFloat(b);
+               //  }
+
+               //  return a;
+
+               // }, 0);
+
+ 
+                return $('<tr/>')
+                    .append( '<td> Project:'+ quoteId +'</td>')
+                    // .append( '<td>'+ projectName +'</td>')
+                    // .append( '<td colspan="4"></td>')
+                    // .append( '<td>'+ projectStatus +'</td>')
+                    // .append( '<td>'+ projectValue +'</td>')
+                    // .append( '<td></td>')
+                    // .append( '<td>Is Master</td>')
+            },
+                dataSrc: "quote_id"
+            },
               
             responsive: true,
             "columns": [ 
@@ -419,13 +545,13 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "data": "quote_name"
                 },
                 { 
-                    "data": "quote_value"
-                },
-                 { 
                     "data": "quote_status"
                 },
                  { 
-                    "data": "start_date",
+                    "data": "product_id"
+                },
+                 { 
+                    "data": "date_added",
                      "render" : function(data, type, row) {
                         return convertMysqlDate(data)
                       },
@@ -438,44 +564,66 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 },
 
                 {
-                    "data": 'supplier_order_sent_ratio',
+                    "data": 'quote_fullfilled_ratio',
                     "render" : function(data, type, row) {
 
                         var ratio = getRatio(data);
+                        console.log(data);
 
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i> ' + data + '%'
                       } 
 
                 },
                 {
-                    "data": 'quote_delivered_ratio',
+                    "data": 'order_in_transit_ratio',
                     "render" : function(data, type, row) {
 
                         var ratio = getRatio(data);
 
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+                         console.log(data, row);
+
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
                       } 
 
                 },
                 {
-                    "data": 'quote_invoiced_ratio',
+                    "data": 'received_order_ratio',
                     "render" : function(data, type, row) {
 
                         var ratio = getRatio(data);
 
                         //console.log(ratio);
 
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
+                      } 
+
+                },
+                {
+                    "data": 'invoiced_order_ratio',
+                    "render" : function(data, type, row) {
+
+                        var ratio = getRatio(data);
+
+                        //console.log(ratio);
+
+                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
                       } 
 
                 }
+
 
 
                 
             ],
             "initComplete": function(settings, json) {
                 //console.log(json);
-            }
+            },
+             "rowCallback": function( row, data, index ) {
+                              
+    if (data["quote_fullfilled_ratio"] == '100' && data["order_in_transit_ratio"] == '100' && data["received_order_ratio"] == '100' && data["invoiced_order_ratio"] == '100') {
+        $(row).hide();
+    }
+                 },
 
         });
 
@@ -546,22 +694,22 @@ function getRatio(value){
         "colorClass": ""
     };
 
-    switch(Number(value)) {
-      case 0:
+    switch(true) {
+      case Number(value) == 0:
 
         ratioObject.icon = "error";
         ratioObject.colorClass = "col-red";
         
         break;
 
-      case 1:
+      case Number(value) > 0 &&  Number(value) < 100:
 
         ratioObject.icon = icon = "warning";
         ratioObject.colorClass = "col-yellow";
         
         break;
 
-    case 100:
+    case Number(value) == 100:
 
         ratioObject.icon =  "check_circle";
         ratioObject.colorClass = "col-green";

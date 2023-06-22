@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.9871112';
+$_VERSION = '0.1.98712';
 
 
 function getPage(){
@@ -243,7 +243,19 @@ Class QueryBuilder{
 
 		$this->logAction("customQuery", '', $query, "");
 
-		return $conn->query($query);			
+		if($results) {
+				$rows = array();
+				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				    array_push($rows, $row);
+				}
+
+				//$this->logAction("selectFeatures", "", $query, $rows);
+
+				return $rows;
+		}
+		else {
+			return mysqli_error($conn);
+		}			
 	}
 
 	function orderProcessingUpdateStocks($conn, $quote_id)
