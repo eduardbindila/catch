@@ -620,9 +620,9 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
             },
              "rowCallback": function( row, data, index ) {
                               
-    if (data["quote_fullfilled_ratio"] == '100' && data["order_in_transit_ratio"] == '100' && data["received_order_ratio"] == '100' && data["invoiced_order_ratio"] == '100') {
-        $(row).hide();
-    }
+    // if (data["quote_fullfilled_ratio"] == '100' && data["order_in_transit_ratio"] == '100' && data["received_order_ratio"] == '100' && data["invoiced_order_ratio"] == '100') {
+    //     $(row).hide();
+    // }
                  },
 
         });
