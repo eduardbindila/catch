@@ -13,8 +13,8 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
                 AND (sub.received_quantity = 0 OR sub.received_quantity IS NULL)
                 AND (sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL) THEN
                CASE
-                   WHEN sub.quantity > (COALESCE(sub.reserved_stock, 0) + COALESCE(sub.ordered_quantity, 0)) THEN 'yellow'
-                   WHEN (COALESCE(sub.reserved_stock, 0) + COALESCE(sub.ordered_quantity, 0)) = 0 THEN 'red'
+                   WHEN sub.quantity > (sub.reserved_stock + sub.ordered_quantity) THEN 'yellow'
+                   WHEN (sub.reserved_stock + sub.ordered_quantity) = 0 THEN 'red'
                    ELSE 'green'
                END
            ELSE 'green'
@@ -90,10 +90,10 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
            WHEN sub.invoiced_quantity IS NULL THEN '0'
        END AS invoiced_order_ratio
 FROM (
-    SELECT q.id AS quote_id, q.name as quote_name, qs.name as quote_status, c.name as client_name, u.name as owner, qi.id AS quote_item_id, qi.product_id, qi.quantity, qi.reserved_stock, qi.ordered_quantity,
+    SELECT q.id AS quote_id, q.name as quote_name, qs.name as quote_status, c.name as client_name, u.name as owner, qi.id AS quote_item_id, qi.product_id, COALESCE(qi.quantity, 0) as quantity, COALESCE(qi.reserved_stock, 0) as reserved_stock, COALESCE(qi.ordered_quantity, 0) as ordered_quantity,
            SUM(CASE WHEN vii.reception = 0 THEN viis.quantity ELSE 0 END) AS in_transit_quantity,
            SUM(CASE WHEN vii.reception = 1 THEN viis.quantity ELSE 0 END) AS received_quantity,
-           qi.invoiced_quantity, vii.date_added
+           COALESCE(qi.invoiced_quantity, 0) as invoiced_quantity, vii.date_added
     FROM quote_items qi
     JOIN vendor_invoice_items_split viis ON qi.id = viis.quote_item_id
     JOIN vendor_invoice_items vii ON viis.vendor_invoice_item_id = vii.id
@@ -104,7 +104,7 @@ FROM (
     WHERE q.quote_status IN (5, 2, 10, 11)
     GROUP BY qi.id, q.id
     ORDER BY q.id, vii.date_added
-) AS sub;;
+) AS sub;
 
 ";
 
