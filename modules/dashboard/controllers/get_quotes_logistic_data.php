@@ -20,6 +20,20 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
            ELSE 'green'
        END AS quote_fullfilled_color,
        CASE
+           WHEN (sub.in_transit_quantity = 0 OR sub.in_transit_quantity IS NULL)
+                AND (sub.received_quantity = 0 OR sub.received_quantity IS NULL)
+                AND (sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL) THEN
+               CASE
+                   WHEN sub.quantity = 0 THEN '100'
+                   WHEN sub.quantity > 0 THEN
+                       CASE
+                           WHEN ((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100) > 100 THEN '100'
+                           ELSE FORMAT((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100, '0.00') + '%'
+                       END
+               END
+           ELSE '100'
+       END AS quote_fullfilled_ratio,
+       CASE
            WHEN (sub.received_quantity = 0 OR sub.received_quantity IS NULL)
                 AND (sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL) THEN
                CASE
@@ -29,6 +43,20 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
                END
            ELSE 'green'
        END AS order_in_intransit_color,
+       CASE
+           WHEN (sub.received_quantity = 0 OR sub.received_quantity IS NULL)
+                AND (sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL) THEN
+               CASE
+                   WHEN sub.in_transit_quantity = 0 THEN '100'
+                   WHEN sub.in_transit_quantity > 0 THEN
+                       CASE
+                           WHEN (sub.in_transit_quantity / sub.ordered_quantity * 100) > 100 THEN '100'
+                           ELSE FORMAT(sub.in_transit_quantity / sub.ordered_quantity * 100, '0.00') + '%'
+                       END
+                   WHEN sub.in_transit_quantity IS NULL THEN '0'
+               END
+           ELSE '100'
+       END AS order_in_transit_ratio,
        CASE
            WHEN sub.invoiced_quantity = 0 OR sub.invoiced_quantity IS NULL THEN
                CASE
@@ -44,29 +72,11 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
            WHEN sub.invoiced_quantity <= sub.quantity THEN 'green'
        END AS invoiced_order_color,
        CASE
-           WHEN sub.quantity = 0 THEN '100'
-           WHEN sub.quantity > 0 THEN
-               CASE
-                   WHEN ((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100) > 100 THEN '100'
-                   ELSE FORMAT((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100, '0.00') + '%'
-               END
-           ELSE '100'
-       END AS quote_fullfilled_ratio,
-       CASE
-           WHEN sub.in_transit_quantity = 0 THEN '100'
-           WHEN sub.in_transit_quantity > 0 THEN
-               CASE
-                   WHEN (sub.in_transit_quantity / sub.ordered_quantity * 100) > 100 THEN '100'
-                   ELSE FORMAT(sub.in_transit_quantity / sub.ordered_quantity * 100, '0.00') + '%'
-               END
-           WHEN sub.in_transit_quantity IS NULL THEN '0'
-       END AS order_in_transit_ratio,
-       CASE
            WHEN sub.received_quantity = 0 THEN '100'
            WHEN sub.received_quantity > 0 THEN
                CASE
-                   WHEN (sub.received_quantity / sub.quantity * 100) > 100 THEN '100'
-                   ELSE FORMAT(sub.received_quantity / sub.quantity * 100, '0.00') + '%'
+                   WHEN (sub.received_quantity / sub.ordered_quantity * 100) > 100 THEN '100'
+                   ELSE FORMAT(sub.received_quantity / sub.ordered_quantity * 100, '0.00') + '%'
                END
            WHEN sub.received_quantity IS NULL THEN '0'
        END AS received_order_ratio,
@@ -88,13 +98,13 @@ FROM (
     JOIN vendor_invoice_items_split viis ON qi.id = viis.quote_item_id
     JOIN vendor_invoice_items vii ON viis.vendor_invoice_item_id = vii.id
     JOIN quotes q ON qi.quote_id = q.id
-    join clients c on q.client_id = c.id
-    join users u on c.user_id = u.id
-    join quote_status qs on q.quote_status = qs.id
+    JOIN clients c ON q.client_id = c.id
+    JOIN users u ON c.user_id = u.id
+    JOIN quote_status qs ON q.quote_status = qs.id
     WHERE q.quote_status IN (5, 2, 10, 11)
     GROUP BY qi.id, q.id
     ORDER BY q.id, vii.date_added
-) AS sub;
+) AS sub;;
 
 ";
 
