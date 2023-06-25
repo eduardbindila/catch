@@ -96,9 +96,9 @@ FROM (
            SUM(CASE WHEN vii.reception = 1 THEN viis.quantity ELSE 0 END) AS received_quantity,
            COALESCE(qi.invoiced_quantity, 0) as invoiced_quantity, vii.date_added
     FROM quote_items qi
-    JOIN vendor_invoice_items_split viis ON qi.id = viis.quote_item_id
-    JOIN vendor_invoice_items vii ON viis.vendor_invoice_item_id = vii.id
-    JOIN quotes q ON qi.quote_id = q.id
+    left JOIN vendor_invoice_items_split viis ON qi.id = viis.quote_item_id
+    left JOIN vendor_invoice_items vii ON viis.vendor_invoice_item_id = vii.id
+    left JOIN quotes q ON qi.quote_id = q.id
     JOIN clients c ON q.client_id = c.id
     JOIN users u ON c.user_id = u.id
     JOIN quote_status qs ON q.quote_status = qs.id

@@ -8934,3 +8934,9 @@ button.prevStatusButton.btn.btn-default.waves-effect i {
 .unifiedLine .triggerPackageItems{
   background-color: #f0f0f0 !important;
 }
+
+
+.parent-row.collapsible_group.dtrg-start {
+      background: #efefef!important;
+    color: black;
+}

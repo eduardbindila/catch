@@ -486,6 +486,8 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
         //})
 
 
+var collapsedGroups = {};
+
 
          var logisticTable = $('.logistic_details-table').DataTable({
             "ajax": {
@@ -494,45 +496,119 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                 "dataSrc": ""
             },
         
-            pageLength: 50,
+            pageLength: 150,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
             rowId: 'category_slug',
- rowGroup: {
-                startRender: function ( rows, group ) {
-               
-               // var projectName = rows.data()[0].project_name;
-               var quoteId = rows.data()[0].quote_id;
-               // var projectStatus = rows.data()[0].project_status;
+rowGroup: {
+  startRender: function (rows, group) {
+    var quoteId = rows.data()[0].quote_id;
+    var childRows = rows.nodes().to$();
+    var totalChildRows = childRows.length;
+    var totalFullfilledRatio = 0;
+    var totalInTransitRatio = 0;
+    var totalReceivedRatio = 0;
+    var totalInvoicedRatio = 0;
+    var fullfilledColor = '';
+    var inTransitColor = '';
+    var receivedColor = '';
+    var invoicedColor = '';
 
-               // var projectValue = rows.data().pluck('quote_price').reduce(function(a, b, i){
-               //  var isMaster = rows.data().pluck('isMaster');
-               //  var quoteId = rows.data().pluck('id');
-               //  //console.log(quoteId[i], isMaster[i]);
+    childRows.each(function () {
+     var rowData = rows.row(this).data();
+      if (parseInt(rowData.quote_fullfilled_ratio) === 100) {
+        totalFullfilledRatio += 1;
+      }
+      if (parseInt(rowData.order_in_transit_ratio) === 100) {
+        totalInTransitRatio += 1;
+      }
+      if (parseInt(rowData.received_order_ratio) === 100) {
+        totalReceivedRatio += 1;
+      }
+      if (parseInt(rowData.invoiced_order_ratio) === 100) {
+        totalInvoicedRatio += 1;
+      }
+      $(this).attr('data-child-quote-id', quoteId); // Add data attribute to child rows
+    });
 
-               //  if(isMaster[i] > 0) {
+    //console.log(totalFullfilledRatio, totalInTransitRatio, totalReceivedRatio, totalInvoicedRatio);
 
-               //      a = a + parseFloat(b);
-               //  }
+    // Calculate the fraction ratios
+    var fullfilledRatio = totalFullfilledRatio + '/' + totalChildRows;
+    var inTransitRatio = totalInTransitRatio + '/' + totalChildRows;
+    var receivedRatio = totalReceivedRatio + '/' + totalChildRows;
+    var invoicedRatio = totalInvoicedRatio + '/' + totalChildRows;
 
-               //  return a;
+    // Assign colors based on the ratios
+    if (totalFullfilledRatio === totalChildRows) {
+      fullfilledColor = 'green';
+    } else if (totalFullfilledRatio === 0) {
+      fullfilledColor = 'red';
+    } else {
+      fullfilledColor = 'yellow';
+    }
 
-               // }, 0);
+    if (totalInTransitRatio === totalChildRows) {
+      inTransitColor = 'green';
+    } else if (totalInTransitRatio === 0) {
+      inTransitColor = 'red';
+    } else {
+      inTransitColor = 'yellow';
+    }
 
- 
-                return $('<tr/>')
-                    .append( '<td> Quote:'+ quoteId +'</td>')
-                    // .append( '<td>'+ projectName +'</td>')
-                    // .append( '<td colspan="4"></td>')
-                    // .append( '<td>'+ projectStatus +'</td>')
-                    // .append( '<td>'+ projectValue +'</td>')
-                    // .append( '<td></td>')
-                    // .append( '<td>Is Master</td>')
-            },
-                dataSrc: "quote_id"
-            },
-              
+    if (totalReceivedRatio === totalChildRows) {
+      receivedColor = 'green';
+    } else if (totalReceivedRatio === 0) {
+      receivedColor = 'red';
+    } else {
+      receivedColor = 'yellow';
+    }
+
+    if (totalInvoicedRatio === totalChildRows) {
+      invoicedColor = 'green';
+    } else if (totalInvoicedRatio === 0) {
+      invoicedColor = 'red';
+    } else {
+      invoicedColor = 'yellow';
+    }
+// Calculate the ratio percent
+var totalFullfilledRatioPercent = (totalFullfilledRatio / totalChildRows) * 100;
+var totalInTransitRatioPercent = (totalInTransitRatio / totalChildRows) * 100;
+var totalReceivedRatioPercent = (totalReceivedRatio / totalChildRows) * 100;
+var totalInvoicedRatioPercent = (totalInvoicedRatio / totalChildRows) * 100;
+
+// Get the ratio icon and color class
+var fullfilledRatio = getRatio(totalFullfilledRatioPercent);
+var inTransitRatio = getRatio(totalInTransitRatioPercent);
+var receivedRatio = getRatio(totalReceivedRatioPercent);
+var invoicedRatio = getRatio(totalInvoicedRatioPercent);
+
+// Create the parent row
+var parentRow = $('<tr/>')
+  .addClass('parent-row collapsible_group')
+  .append('<td colspan="7">Quote: ' + quoteId + '</td>')
+  .append('<td><i class="material-icons ' + fullfilledRatio.colorClass + '">' + fullfilledRatio.icon + '</i> ' + totalFullfilledRatio + '/ ' + totalChildRows + '</td>')
+  .append('<td><i class="material-icons ' + inTransitRatio.colorClass + '">' + inTransitRatio.icon + '</i> ' + totalInTransitRatio  + '/ ' + totalChildRows + '</td>')
+  .append('<td><i class="material-icons ' + receivedRatio.colorClass + '">' + receivedRatio.icon + '</i> ' + totalReceivedRatio  + '/ ' + totalChildRows + '</td>')
+  .append('<td><i class="material-icons ' + invoicedRatio.colorClass + '">' + invoicedRatio.icon + '</i> ' + totalInvoicedRatio  + '/ ' + totalChildRows + '</td>');
+
+
+    // Hide the child rows initially
+    childRows.hide();
+
+    // Attach click event to parent row for toggling child rows visibility
+    parentRow.on('click', function () {
+      childRows.toggle();
+    });
+
+    // Add data attribute to parent row
+    parentRow.attr('data-parent-quote-id', quoteId);
+
+    return parentRow;
+  },
+  dataSrc: "quote_id"
+},       
             responsive: true,
             "columns": [ 
                 { 
@@ -568,7 +644,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
                     "render" : function(data, type, row) {
 
                         var ratio = getRatio(data);
-                        console.log(data);
+                        //console.log(data);
 
                         return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i> ' + data + '%'
                       } 
@@ -580,7 +656,7 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
 
                         var ratio = getRatio(data);
 
-                         console.log(data, row);
+                         //console.log(data, row);
 
                         return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
                       } 

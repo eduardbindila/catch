@@ -1,7 +1,6 @@
 ﻿
 $(document).ready(function() {
 
-
 	$('textarea, input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]):not([type="button"]):not([type="submit"])').before(function(){
 		var placeholder = $(this).attr('placeholder');
 
