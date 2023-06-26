@@ -8940,3 +8940,27 @@ button.prevStatusButton.btn.btn-default.waves-effect i {
       background: #efefef!important;
     color: black;
 }
+
+.info-box.info-box-xs .content .number {
+    font-weight: normal;
+    font-size: 16px;
+    margin-top: 0px;
+    color: #555;
+}
+
+.info-box-xs.small-width {
+    height: 35px;
+    width: 115px;
+    position: relative;
+    top: 14px;
+}
+
+.info-box.checked {
+  width: 44px;
+    margin: auto;
+    top: 0px;
+}
+
+.info-box.checked .content {
+  display: none;
+}

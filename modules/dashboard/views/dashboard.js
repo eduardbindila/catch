@@ -392,100 +392,6 @@ $('.projects_legacy').dataTable().fnFilterOnReturn();
 
         });
 
-
-
-    // var logisticTable = $('.logistic_details-table').DataTable({
-    //         "ajax": {
-    //             "url": "/ajax/getDashboardLogisticData",
-    //             "type": "POST",
-    //             "dataSrc": ""
-    //         },
-        
-    //         pageLength: 5,
-    //             "paging":   true,
-    //             "ordering": true,
-    //             "searching": true,
-    //         rowId: 'category_slug',
-              
-    //         responsive: true,
-    //         "columns": [ 
-    //             { 
-    //                 "data": "quote_id",
-    //                 "render" : function(data, type, row) {
-    //                     return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
-    //                   } 
-    //             },
-    //             { 
-    //                 "data": "quote_name"
-    //             },
-    //             { 
-    //                 "data": "quote_value"
-    //             },
-    //              { 
-    //                 "data": "quote_status"
-    //             },
-    //              { 
-    //                 "data": "start_date",
-    //                  "render" : function(data, type, row) {
-    //                     return convertMysqlDate(data)
-    //                   },
-    //             },
-    //             { 
-    //                 "data": "owner"
-    //             },
-    //             { 
-    //                 "data": "client_name"
-    //             },
-
-    //             {
-    //                 "data": 'supplier_order_sent_ratio',
-    //                 "render" : function(data, type, row) {
-
-    //                     var ratio = getRatio(data);
-
-    //                     return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
-    //                   } 
-
-    //             },
-    //             {
-    //                 "data": 'quote_delivered_ratio',
-    //                 "render" : function(data, type, row) {
-
-    //                     var ratio = getRatio(data);
-
-    //                     return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
-    //                   } 
-
-    //             },
-    //             {
-    //                 "data": 'quote_invoiced_ratio',
-    //                 "render" : function(data, type, row) {
-
-    //                     var ratio = getRatio(data);
-
-    //                     //console.log(ratio);
-
-    //                     return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>'
-    //                   } 
-
-    //             }
-
-
-                
-    //         ],
-    //         "initComplete": function(settings, json) {
-    //             //console.log(json);
-    //         },
-    //          "rowCallback": function( row, data, index ) {
-                              
-    // if (data["quote_delivered_ratio"] == '100' && data["quote_invoiced_ratio"] == '100' && data["supplier_order_sent_ratio"] == '100') {
-    //     $(row).hide();
-    // }
-    //              },
-
-        //})
-
-
 var collapsedGroups = {};
 
 
@@ -583,10 +489,10 @@ var totalReceivedRatioPercent = (totalReceivedRatio / totalChildRows) * 100;
 var totalInvoicedRatioPercent = (totalInvoicedRatio / totalChildRows) * 100;
 
 // Get the ratio icon and color class
-var fullfilledRatio = getRatio(totalFullfilledRatioPercent);
-var inTransitRatio = getRatio(totalInTransitRatioPercent);
-var receivedRatio = getRatio(totalReceivedRatioPercent);
-var invoicedRatio = getRatio(totalInvoicedRatioPercent);
+var fullfilledRatio = getRatio(totalFullfilledRatioPercent, totalFullfilledRatio + '/' + totalChildRows);
+var inTransitRatio = getRatio(totalInTransitRatioPercent, totalInTransitRatio + '/' + totalChildRows);
+var receivedRatio = getRatio(totalReceivedRatioPercent, totalReceivedRatio + '/' + totalChildRows);
+var invoicedRatio = getRatio(totalInvoicedRatioPercent, totalInvoicedRatio + '/' + totalChildRows);
 
 // Create the parent row
 var parentRow = $('<tr/>')
@@ -596,11 +502,10 @@ var parentRow = $('<tr/>')
   .append('<td colspan="2">' + quoteStatus + '</td>')
   .append('<td colspan="2">' + owner + '</td>')
   .append('<td colspan="">' + clientName + '</td>')
-  .append('<td><i class="material-icons ' + fullfilledRatio.colorClass + '">' + fullfilledRatio.icon + '</i> ' + totalFullfilledRatio + '/ ' + totalChildRows + '</td>')
-  .append('<td><i class="material-icons ' + inTransitRatio.colorClass + '">' + inTransitRatio.icon + '</i> ' + totalInTransitRatio  + '/ ' + totalChildRows + '</td>')
-  .append('<td><i class="material-icons ' + receivedRatio.colorClass + '">' + receivedRatio.icon + '</i> ' + totalReceivedRatio  + '/ ' + totalChildRows + '</td>')
-  .append('<td><i class="material-icons ' + invoicedRatio.colorClass + '">' + invoicedRatio.icon + '</i> ' + totalInvoicedRatio  + '/ ' + totalChildRows + '</td>');
-
+  .append('<td>'+ fullfilledRatio.label + '</td>')
+  .append('<td>'+ inTransitRatio.label + '</td>')
+  .append('<td>'+ receivedRatio.label + '</td>')
+  .append('<td>'+ invoicedRatio.label + '</td>')
 
     // Hide the child rows initially
     childRows.hide();
@@ -651,10 +556,10 @@ var parentRow = $('<tr/>')
                     "data": 'quote_fullfilled_ratio',
                     "render" : function(data, type, row) {
 
-                        var ratio = getRatio(data);
+                        var ratio = getRatio(data,data + '%',"" );
                         //console.log(data);
 
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i> ' + data + '%'
+                        return ratio.label
                       } 
 
                 },
@@ -662,11 +567,10 @@ var parentRow = $('<tr/>')
                     "data": 'order_in_transit_ratio',
                     "render" : function(data, type, row) {
 
-                        var ratio = getRatio(data);
+                         var ratio = getRatio(data,data + '%',"" );
+                        //console.log(data);
 
-                         //console.log(data, row);
-
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
+                        return ratio.label
                       } 
 
                 },
@@ -674,11 +578,10 @@ var parentRow = $('<tr/>')
                     "data": 'received_order_ratio',
                     "render" : function(data, type, row) {
 
-                        var ratio = getRatio(data);
+                         var ratio = getRatio(data,data + '%',"" );
+                        //console.log(data);
 
-                        //console.log(ratio);
-
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
+                        return ratio.label
                       } 
 
                 },
@@ -686,11 +589,10 @@ var parentRow = $('<tr/>')
                     "data": 'invoiced_order_ratio',
                     "render" : function(data, type, row) {
 
-                        var ratio = getRatio(data);
+                        var ratio = getRatio(data,data + '%',"" );
+                        //console.log(data);
 
-                        //console.log(ratio);
-
-                        return '<i class="material-icons '+ ratio.colorClass +'">'+ ratio.icon +'</i>' + data + '%'
+                        return ratio.label
                       } 
 
                 }
@@ -769,37 +671,59 @@ var parentRow = $('<tr/>')
 });
 
 
-function getRatio(value){
+function getRatio(value, rate="", type="full"){
 
     //console.log(value);
 
     var ratioObject = {
         "icon": "",
-        "colorClass": ""
+        "colorClass": "",
+        "fullClass": "",
+        "label" : "",
+        "rate": rate,
+        "checkedClass": ""
     };
 
     switch(true) {
       case Number(value) == 0:
 
         ratioObject.icon = "error";
-        ratioObject.colorClass = "col-red";
+        ratioObject.colorClass = "bg-red";
         
         break;
 
       case Number(value) > 0 &&  Number(value) < 100:
 
         ratioObject.icon = icon = "warning";
-        ratioObject.colorClass = "col-yellow";
+        ratioObject.colorClass = "bg-orange";
         
         break;
 
     case Number(value) == 100:
 
         ratioObject.icon =  "check_circle";
-        ratioObject.colorClass = "col-green";
+        ratioObject.colorClass = "bg-green";
+        ratioObject.checkedClass = "checked"
         
         break;
     }
 
+    if(type == 'full') {
+        ratioObject.colorClassFull = ratioObject.colorClass;
+        ratioObject.colorClass = "";
+        ratioObject.checkedClass = ""
+    } 
+
+
+    ratioObject.label = '<div class="info-box info-box-xs ' + ratioObject.checkedClass + ' small-width ' + ratioObject.colorClassFull + ' hover-expand-effect">'+
+                    '<div class="icon '+ ratioObject.colorClass +'">'+ 
+                        '<i class="material-icons">'+ ratioObject.icon +'</i>'+
+                    '</div>'+
+                    '<div class="content">'+
+                        '<div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">'+ ratioObject.rate +'</div>'+
+                    '</div>'+
+                '</div>'
+
     return ratioObject
 }
+
