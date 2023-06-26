@@ -504,6 +504,10 @@ var collapsedGroups = {};
 rowGroup: {
   startRender: function (rows, group) {
     var quoteId = rows.data()[0].quote_id;
+    var quoteName = rows.data()[0].quote_name;
+    var quoteStatus = rows.data()[0].quote_status;
+    var owner = rows.data()[0].owner;
+    var clientName = rows.data()[0].client_name;
     var childRows = rows.nodes().to$();
     var totalChildRows = childRows.length;
     var totalFullfilledRatio = 0;
@@ -587,7 +591,11 @@ var invoicedRatio = getRatio(totalInvoicedRatioPercent);
 // Create the parent row
 var parentRow = $('<tr/>')
   .addClass('parent-row collapsible_group')
-  .append('<td colspan="7">Quote: ' + quoteId + '</td>')
+  .append('<td colspan="">' + quoteId + '</td>')
+  .append('<td colspan="">' + quoteName + '</td>')
+  .append('<td colspan="2">' + quoteStatus + '</td>')
+  .append('<td colspan="2">' + owner + '</td>')
+  .append('<td colspan="">' + clientName + '</td>')
   .append('<td><i class="material-icons ' + fullfilledRatio.colorClass + '">' + fullfilledRatio.icon + '</i> ' + totalFullfilledRatio + '/ ' + totalChildRows + '</td>')
   .append('<td><i class="material-icons ' + inTransitRatio.colorClass + '">' + inTransitRatio.icon + '</i> ' + totalInTransitRatio  + '/ ' + totalChildRows + '</td>')
   .append('<td><i class="material-icons ' + receivedRatio.colorClass + '">' + receivedRatio.icon + '</i> ' + totalReceivedRatio  + '/ ' + totalChildRows + '</td>')
