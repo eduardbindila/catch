@@ -84,6 +84,7 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
        END AS received_order_ratio,
        CASE
            WHEN sub.invoiced_quantity = 0 && sub.quantity > 0 THEN '0'
+           WHEN sub.invoiced_quantity = 0 && sub.quantity = 0 THEN '100'
            WHEN sub.invoiced_quantity > 0 THEN
                CASE
                    WHEN (sub.invoiced_quantity / sub.quantity * 100) > 100 THEN '100'
