@@ -818,7 +818,7 @@ class Invoices {
                                 ];
 
 
-                                //console.log(doc);
+                                console.log(doc);
                                
                             },
                         },
@@ -897,6 +897,7 @@ class Invoices {
                             // if(product == 0 && row.external_item_name =='') {//added to keep this field editable
                                 if(product == 0 && thisPackage.package_status_id < 4) {
                                 //console.log('asd')
+                                    row.product_name = row.external_item_name;
                                 product = '<div class="form-group">' + 
                                         '<div class="form-line">' + 
                                             '<input class="form-control invoice-external-name"' + 
