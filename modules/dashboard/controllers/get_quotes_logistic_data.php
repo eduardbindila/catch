@@ -6,12 +6,27 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 $conn = $QueryBuilder->dbConnection();
 
 
-$query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.client_name, sub.quote_item_id, sub.product_id, sub.quantity, sub.reserved_stock, sub.ordered_quantity, sub.reserved_stock + sub.ordered_quantity as quote_fulfilled_quantity,
-       sub.in_transit_quantity, sub.received_quantity, sub.invoiced_quantity, sub.date_added,
+$query = "SELECT 
+	sub.quote_id, 
+	sub.quote_name, 
+	sub.quote_status, 
+	sub.owner, 
+	sub.client_name, 
+	sub.quote_item_id, 
+	sub.product_id, 
+	sub.quantity, 
+	sub.reserved_stock, 
+	sub.ordered_quantity, 
+	sub.reserved_stock + sub.ordered_quantity as quote_fulfilled_quantity,
+	sub.in_transit_quantity, 
+	sub.received_quantity, 
+	sub.invoiced_quantity, 
+	sub.date_added,
        CASE
            WHEN (sub.in_transit_quantity = 0)
                 AND (sub.received_quantity = 0)
-                AND (sub.invoiced_quantity = 0) THEN
+                AND (sub.invoiced_quantity = 0)  
+                AND (sub.quantity > 0)THEN
                CASE
                    WHEN (sub.quantity > sub.reserved_stock + sub.ordered_quantity) THEN 'yellow'
                    WHEN (sub.reserved_stock + sub.ordered_quantity) = 0 THEN 'red'
@@ -22,9 +37,10 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
        CASE
            WHEN (sub.in_transit_quantity = 0)
                 AND (sub.received_quantity = 0)
-                AND (sub.invoiced_quantity = 0) THEN
+                AND (sub.invoiced_quantity = 0)
+                AND (sub.quantity > 0)THEN
                CASE
-                   WHEN sub.quantity = 0 THEN '100'
+                   WHEN sub.quantity = 0 THEN '0'
                    WHEN sub.quantity > 0 THEN
                        CASE
                            WHEN ((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100) >= 100 THEN '100'
@@ -35,7 +51,8 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
        END AS quote_fullfilled_ratio,
        CASE
            WHEN (sub.received_quantity = 0)
-                AND (sub.invoiced_quantity = 0) THEN
+                AND (sub.invoiced_quantity = 0)
+                 AND (sub.quantity > 0) THEN
                CASE
                    WHEN sub.in_transit_quantity > 1 THEN 'blue'
                    WHEN sub.in_transit_quantity = 0 THEN 'red'
@@ -45,7 +62,8 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
        END AS order_in_intransit_color,
        CASE
            WHEN (sub.received_quantity = 0)
-                AND (sub.invoiced_quantity = 0) THEN
+                AND (sub.invoiced_quantity = 0)
+                 AND (sub.quantity > 0) THEN
                CASE
                    WHEN sub.in_transit_quantity = 0 THEN '-'
                    WHEN sub.in_transit_quantity > 0 THEN
@@ -57,7 +75,8 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
            ELSE '-'
        END AS order_in_transit_ratio,
        CASE
-           WHEN sub.invoiced_quantity = 0 THEN
+           WHEN sub.invoiced_quantity = 0  
+           AND (sub.quantity > 0) THEN
                CASE
                    WHEN sub.received_quantity > 0 AND sub.received_quantity != sub.ordered_quantity THEN 'yellow'
                    WHEN sub.received_quantity = 0 THEN 'red'
@@ -71,7 +90,8 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
            WHEN sub.invoiced_quantity <= sub.quantity THEN 'green'
        END AS invoiced_order_color,
        CASE
-           WHEN sub.invoiced_quantity = 0 THEN
+           WHEN sub.invoiced_quantity = 0
+            AND (sub.quantity > 0) THEN
                CASE
 		           WHEN sub.received_quantity = 0 THEN '0'
 		           WHEN sub.received_quantity > 0 THEN
@@ -85,7 +105,8 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
        CASE
            WHEN sub.invoiced_quantity = 0 && sub.quantity > 0 THEN '0'
            WHEN sub.invoiced_quantity = 0 && sub.quantity = 0 THEN '100'
-           WHEN sub.invoiced_quantity > 0 THEN
+           WHEN sub.invoiced_quantity > 0 
+            AND (sub.quantity > 0) THEN
                CASE
                    WHEN (sub.invoiced_quantity / sub.quantity * 100) >= 100 THEN '100'
                    ELSE FORMAT(sub.invoiced_quantity / sub.quantity * 100, '0.00') + '%'
@@ -106,7 +127,7 @@ FROM (
     WHERE q.quote_status IN (5, 2, 10, 11)
     GROUP BY qi.id, q.id
     ORDER BY q.id, vii.date_added
-) AS sub order by sub.in_transit_quantity desc;
+) AS sub order by sub.in_transit_quantity desc ;
 ";
 
 
