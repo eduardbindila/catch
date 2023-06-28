@@ -127,7 +127,7 @@ FROM (
     WHERE q.quote_status IN (5, 2, 10, 11)
     GROUP BY qi.id, q.id
     ORDER BY q.id, vii.date_added
-) AS sub order by sub.in_transit_quantity desc ;
+) AS sub;
 ";
 
 
