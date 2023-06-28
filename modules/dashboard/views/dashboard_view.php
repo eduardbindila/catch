@@ -6,7 +6,7 @@
 			<h2>Dashboard</h2>
 		</div>
         <?php 
-            if(isset($_SESSION['user_access']['logistics'])) 
+            if(isset($_SESSION['user_access']['sales-grid'])) 
             {
         ?>
 
@@ -21,6 +21,7 @@
                             <div class="col-lg-12">
                                <table class="logistic_details-table table table-striped table-bordered table-hover dt-responsive display"> 
                                     <thead>
+                                        <th></th>
                                         <th>Quote ID</th>
                                         <th>Quote Name</th>
                                         <th>Quote Status</th>

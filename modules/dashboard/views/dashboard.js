@@ -401,7 +401,7 @@ var collapsedGroups = {};
                 "type": "POST",
                 "dataSrc": ""
             },
-        
+        order: [[0, 'desc']],
             pageLength: 150,
                 "paging":   true,
                 "ordering": true,
@@ -418,6 +418,8 @@ rowGroup: {
     var totalChildRows = childRows.length;
     var totalFullfilledRatio = 0;
     var totalInTransitRatio = 0;
+    var totalInTransitQuantity = 0;
+    var totalOrderedQuantity = 0;
     var totalReceivedRatio = 0;
     var totalInvoicedRatio = 0;
     var fullfilledColor = '';
@@ -430,9 +432,21 @@ rowGroup: {
       if (parseInt(rowData.quote_fullfilled_ratio) === 100) {
         totalFullfilledRatio += 1;
       }
-      if (parseInt(rowData.order_in_transit_ratio) === 100) {
+
+      if (parseInt(rowData.totalInTransitRatio) === 100 ) {
         totalInTransitRatio += 1;
       }
+
+      if (parseInt(rowData.in_transit_quantity) ) {
+        totalInTransitQuantity += parseInt(rowData.in_transit_quantity);
+      }
+
+      if(totalInTransitQuantity == 0) totalInTransitQuantity = "-";
+
+      if (parseInt(rowData.ordered_quantity)) {
+        totalOrderedQuantity += parseInt(rowData.ordered_quantity);
+      }
+
       if (parseInt(rowData.received_order_ratio) === 100) {
         totalReceivedRatio += 1;
       }
@@ -450,38 +464,6 @@ rowGroup: {
     var receivedRatio = totalReceivedRatio + '/' + totalChildRows;
     var invoicedRatio = totalInvoicedRatio + '/' + totalChildRows;
 
-    // Assign colors based on the ratios
-    if (totalFullfilledRatio === totalChildRows) {
-      fullfilledColor = 'green';
-    } else if (totalFullfilledRatio === 0) {
-      fullfilledColor = 'red';
-    } else {
-      fullfilledColor = 'yellow';
-    }
-
-    if (totalInTransitRatio === totalChildRows) {
-      inTransitColor = 'green';
-    } else if (totalInTransitRatio === 0) {
-      inTransitColor = 'red';
-    } else {
-      inTransitColor = 'yellow';
-    }
-
-    if (totalReceivedRatio === totalChildRows) {
-      receivedColor = 'green';
-    } else if (totalReceivedRatio === 0) {
-      receivedColor = 'red';
-    } else {
-      receivedColor = 'yellow';
-    }
-
-    if (totalInvoicedRatio === totalChildRows) {
-      invoicedColor = 'green';
-    } else if (totalInvoicedRatio === 0) {
-      invoicedColor = 'red';
-    } else {
-      invoicedColor = 'yellow';
-    }
 // Calculate the ratio percent
 var totalFullfilledRatioPercent = (totalFullfilledRatio / totalChildRows) * 100;
 var totalInTransitRatioPercent = (totalInTransitRatio / totalChildRows) * 100;
@@ -490,7 +472,7 @@ var totalInvoicedRatioPercent = (totalInvoicedRatio / totalChildRows) * 100;
 
 // Get the ratio icon and color class
 var fullfilledRatio = getRatio(totalFullfilledRatioPercent, totalFullfilledRatio + '/' + totalChildRows);
-var inTransitRatio = getRatio(totalInTransitRatioPercent, totalInTransitRatio + '/' + totalChildRows);
+var inTransitRatio = getRatio(totalInTransitQuantity, totalInTransitQuantity + '/' + totalOrderedQuantity,"full", 1);
 var receivedRatio = getRatio(totalReceivedRatioPercent, totalReceivedRatio + '/' + totalChildRows);
 var invoicedRatio = getRatio(totalInvoicedRatioPercent, totalInvoicedRatio + '/' + totalChildRows);
 
@@ -525,6 +507,10 @@ var parentRow = $('<tr/>')
             responsive: true,
             "columns": [ 
                 { 
+                    "data": "in_transit_quantity",
+                    "visible": false
+                },
+                { 
                     "data": "quote_id",
                     "render" : function(data, type, row) {
                         return '<a href="/quote/'+data+'" class="btn btn-block" target="_blank">'+data+'</a>'
@@ -556,8 +542,8 @@ var parentRow = $('<tr/>')
                     "data": 'quote_fullfilled_ratio',
                     "render" : function(data, type, row) {
 
-                        var ratio = getRatio(data,data + '%',"" );
-                        //console.log(data);
+                        var ratio = getRatio(data,row.quote_fulfilled_quantity + '/' + row.quantity,"" );
+                        //console.log(row);
 
                         return ratio.label
                       } 
@@ -567,7 +553,7 @@ var parentRow = $('<tr/>')
                     "data": 'order_in_transit_ratio',
                     "render" : function(data, type, row) {
 
-                         var ratio = getRatio(data,data + '%',"" );
+                         var ratio = getRatio(data,row.in_transit_quantity + '/' + row.ordered_quantity,"", 1 );
                         //console.log(data);
 
                         return ratio.label
@@ -578,7 +564,7 @@ var parentRow = $('<tr/>')
                     "data": 'received_order_ratio',
                     "render" : function(data, type, row) {
 
-                         var ratio = getRatio(data,data + '%',"" );
+                         var ratio = getRatio(data,row.received_quantity + '/' + row.quantity,""  );
                         //console.log(data);
 
                         return ratio.label
@@ -589,13 +575,14 @@ var parentRow = $('<tr/>')
                     "data": 'invoiced_order_ratio',
                     "render" : function(data, type, row) {
 
-                        var ratio = getRatio(data,data + '%',"" );
+                        var ratio = getRatio(data,row.invoiced_quantity + '/' + row.quantity,"" );
                         //console.log(data);
 
                         return ratio.label
                       } 
 
-                }
+                },
+
 
 
 
@@ -671,7 +658,7 @@ var parentRow = $('<tr/>')
 });
 
 
-function getRatio(value, rate="", type="full"){
+function getRatio(value, rate="", type="full", inTransit = "0"){
 
     //console.log(value);
 
@@ -685,6 +672,24 @@ function getRatio(value, rate="", type="full"){
     };
 
     switch(true) {
+
+        case inTransit == 1 && value != "-" :
+
+            ratioObject.icon =  "local_shipping";
+            ratioObject.colorClass = "bg-blue";
+            ratioObject.checkedClass = ""
+
+        break; 
+
+        case value == "-":
+
+        ratioObject.icon = "local_shipping";
+        ratioObject.colorClass = "bg-grey";
+        ratioObject.checkedClass = "checked"
+        ratioObject.rate = "-"
+        
+        break;
+
       case Number(value) == 0:
 
         ratioObject.icon = "error";
@@ -704,7 +709,7 @@ function getRatio(value, rate="", type="full"){
         ratioObject.icon =  "check_circle";
         ratioObject.colorClass = "bg-green";
         ratioObject.checkedClass = "checked"
-        
+                
         break;
     }
 
