@@ -401,7 +401,6 @@ var collapsedGroups = {};
                 "type": "POST",
                 "dataSrc": ""
             },
-        order: [[0, 'desc']],
             pageLength: 150,
                 "paging":   true,
                 "ordering": true,
@@ -506,10 +505,6 @@ var parentRow = $('<tr/>')
 },       
             responsive: true,
             "columns": [ 
-                { 
-                    "data": "in_transit_quantity",
-                    "visible": false
-                },
                 { 
                     "data": "quote_id",
                     "render" : function(data, type, row) {
