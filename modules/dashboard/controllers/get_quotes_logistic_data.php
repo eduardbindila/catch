@@ -27,7 +27,7 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
                    WHEN sub.quantity = 0 THEN '100'
                    WHEN sub.quantity > 0 THEN
                        CASE
-                           WHEN ((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100) > 100 THEN '100'
+                           WHEN ((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100) >= 100 THEN '100'
                            ELSE FORMAT((sub.reserved_stock + sub.ordered_quantity) / sub.quantity * 100, '0.00') + '%'
                        END
                END
@@ -50,7 +50,7 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
                    WHEN sub.in_transit_quantity = 0 THEN '0'
                    WHEN sub.in_transit_quantity > 0 THEN
                        CASE
-                           WHEN (sub.in_transit_quantity / sub.ordered_quantity * 100) > 100 THEN '100'
+                           WHEN (sub.in_transit_quantity / sub.ordered_quantity * 100) >= 100 THEN '100'
                            ELSE FORMAT(sub.in_transit_quantity, 0 / sub.ordered_quantity * 100, '0.00') + '%'
                        END
                END
@@ -76,7 +76,7 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
 		           WHEN sub.received_quantity = 0 THEN '0'
 		           WHEN sub.received_quantity > 0 THEN
 		               CASE
-		                   WHEN (sub.received_quantity / sub.ordered_quantity * 100) > 100 THEN '100'
+		                   WHEN (sub.received_quantity / sub.ordered_quantity * 100) >= 100 THEN '100'
 		                   ELSE FORMAT(sub.received_quantity / sub.ordered_quantity * 100, '0.00') + '%'
 		               END
 		        END
@@ -87,7 +87,7 @@ $query = "SELECT sub.quote_id, sub.quote_name, sub.quote_status, sub.owner, sub.
            WHEN sub.invoiced_quantity = 0 && sub.quantity = 0 THEN '100'
            WHEN sub.invoiced_quantity > 0 THEN
                CASE
-                   WHEN (sub.invoiced_quantity / sub.quantity * 100) > 100 THEN '100'
+                   WHEN (sub.invoiced_quantity / sub.quantity * 100) >= 100 THEN '100'
                    ELSE FORMAT(sub.invoiced_quantity / sub.quantity * 100, '0.00') + '%'
                END
        END AS invoiced_order_ratio
