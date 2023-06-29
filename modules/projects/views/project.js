@@ -183,7 +183,16 @@ $(document).ready(function() {
                             exportOptions: {
                               stripHtml: true,
                               orthogonal: null,
-                              columns: [ 1, 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
+                              columns: [ 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
+                            }, footer: true
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'btn btn-lg btn-primary waves-effect',
+                            exportOptions: {
+                              stripHtml: true,
+                              orthogonal: null,
+                              columns: [  4,24 ]
                             }, footer: true
                         },
                         {
@@ -1361,6 +1370,7 @@ $(document).ready(function() {
                     },
                     { 
                         "data": "ordered_quantity",
+                        "className" : "orderedQuantity",
                             "render" : function(data, type, row, meta) {
                                 //console.log( quoteList[index].qu );
                                 var editableClass = ""

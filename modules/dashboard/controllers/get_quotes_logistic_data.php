@@ -96,8 +96,8 @@ $query = "SELECT
 		           WHEN sub.received_quantity = 0 THEN '0'
 		           WHEN sub.received_quantity > 0 THEN
 		               CASE
-		                   WHEN (sub.received_quantity / sub.ordered_quantity * 100) >= 100 THEN '100'
-		                   ELSE FORMAT(sub.received_quantity / sub.ordered_quantity * 100, '0.00') + '%'
+		                   WHEN (sub.received_quantity / (sub.ordered_quantity + sub.reserved_stock) * 100) >= 100 THEN '100'
+		                   ELSE FORMAT(sub.received_quantity / (sub.ordered_quantity + sub.reserved_stock) * 100, '0.00') + '%'
 		               END
 		        END
 		    ELSE '100'
@@ -115,7 +115,7 @@ $query = "SELECT
 FROM (
     SELECT q.id AS quote_id, q.name as quote_name, qs.name as quote_status, c.name as client_name, u.name as owner, qi.id AS quote_item_id, qi.product_id, COALESCE(qi.quantity, 0) as quantity, COALESCE(qi.reserved_stock, 0) as reserved_stock, COALESCE(qi.ordered_quantity, 0) as ordered_quantity,
            SUM(CASE WHEN coalesce(vii.reception,0) = 0 THEN coalesce(viis.quantity, 0) ELSE 0 END) AS in_transit_quantity,
-           SUM(CASE WHEN vii.reception = 1 THEN coalesce(viis.quantity, 0) ELSE 0 END) AS received_quantity,
+           SUM(CASE WHEN vii.reception = 1 THEN coalesce(viis.quantity, 0) + coalesce(qi.reserved_stock) ELSE 0 END) AS received_quantity,
            COALESCE(qi.invoiced_quantity, 0) as invoiced_quantity, vii.date_added
     FROM quote_items qi
     left JOIN vendor_invoice_items_split viis ON qi.id = viis.quote_item_id

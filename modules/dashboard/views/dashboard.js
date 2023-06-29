@@ -401,7 +401,7 @@ var collapsedGroups = {};
                 "type": "POST",
                 "dataSrc": ""
             },
-            pageLength: 150,
+            pageLength: 500,
                 "paging":   true,
                 "ordering": true,
                 "searching": true,
