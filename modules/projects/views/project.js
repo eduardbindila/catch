@@ -214,7 +214,7 @@ $(document).ready(function() {
       return data['manufacturer'].toLowerCase() === "syl";
     }).data().toArray();
 
-    console.log(filteredData);
+    //console.log(filteredData);
 // Create a new DataTable object with the filtered data
     var newDt = dt.context[0].oInstance.api().clear().rows.add(filteredData).draw();
 
