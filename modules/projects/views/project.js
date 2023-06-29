@@ -186,15 +186,43 @@ $(document).ready(function() {
                               columns: [ 4, 5, 6, 7, 13, 14, 15, 18, 19, 20 ]
                             }, footer: true
                         },
+
                         {
-                            extend: 'csv',
-                            className: 'btn btn-lg btn-primary waves-effect',
-                            exportOptions: {
-                              stripHtml: true,
-                              orthogonal: null,
-                              columns: [  4,24 ]
-                            }, footer: true
-                        },
+  extend: 'csvHtml5',
+  className: 'btn btn-lg btn-primary waves-effect',
+  text: 'Order CSV',
+  exportOptions: {
+    stripHtml: true,
+    orthogonal: null,
+    columns: [4, 24],
+    
+  },
+  footer: true,
+  action: function (e,dt,button,config) {
+
+
+// var filteredData = dt.rows().data().filter(function (row) {
+//        return row['manufacturer'].toLowerCase() == "syl";
+//     });
+
+//     console.log(e,dt,button,config);
+
+     //$.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
+
+// Create a new DataTable object with the filtered rows
+    var filteredData = dt.rows(function (idx, data, node) {
+      return data['manufacturer'].toLowerCase() === "syl";
+    }).data().toArray();
+
+    console.log(filteredData);
+// Create a new DataTable object with the filtered data
+    var newDt = dt.context[0].oInstance.api().clear().rows.add(filteredData).draw();
+
+    // Trigger the CSV export with the new DataTable object
+    $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, newDt, button, config);
+    // return doc
+    }
+},
                         {
                             extend: 'selected',
                             className: 'duplicateQuote btn btn-lg btn-success waves-effect',
