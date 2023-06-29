@@ -195,19 +195,23 @@ $(document).ready(function() {
     stripHtml: true,
     orthogonal: null,
     columns: [4, 24],
+      
     
   },
   footer: true,
+  customize: function (data) {
+  // Split the data into an array of rows
+  var rows = data.split('\n');
+  
+  // Remove the first line (header)
+  rows.splice(0, 1);
+  
+  // Join the rows back into a string
+  var modifiedData = rows.join('\n');
+  
+  return modifiedData;
+},
   action: function (e,dt,button,config) {
-
-
-// var filteredData = dt.rows().data().filter(function (row) {
-//        return row['manufacturer'].toLowerCase() == "syl";
-//     });
-
-//     console.log(e,dt,button,config);
-
-     //$.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, dt, button, config);
 
 // Create a new DataTable object with the filtered rows
     var filteredData = dt.rows(function (idx, data, node) {
@@ -220,7 +224,6 @@ $(document).ready(function() {
 
     // Trigger the CSV export with the new DataTable object
     $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, newDt, button, config);
-    // return doc
     }
 },
                         {
