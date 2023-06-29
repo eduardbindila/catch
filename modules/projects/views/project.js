@@ -224,7 +224,12 @@ $(document).ready(function() {
 
     // Trigger the CSV export with the new DataTable object
     $.fn.dataTable.ext.buttons.csvHtml5.action.call(this, e, newDt, button, config);
+    setTimeout(function () {
+                                    location.reload();
+                                }, 1000); // Adjust the delay as needed
     }
+
+
 },
                         {
                             extend: 'selected',
