@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.987125';
+$_VERSION = '0.1.9871251';
 
 
 function getPage(){
@@ -44,6 +44,12 @@ $_pageName = $getPage['pageName'];
 $_sectionName = $getPage['section'];
 
 $_subSectionName = $getPage['subsection'];
+
+
+// WooCommerce API credentials
+$consumer_key = 'ck_6bb064b8c3fc1c48d5c9b4345a0b728733cae950';
+$consumer_secret = 'cs_442198654f8dfd30cc06a29773708deeaf3966d7';
+$store_url = 'https://shop.icatch.ro';
 
 
 Class QueryBuilder{

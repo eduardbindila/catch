@@ -538,7 +538,7 @@ $(document).ready(function() {
 
 
                                     $.ajax({
-                                        url: "https://aws.icatch.ro:3131/getPromiseDate",
+                                        url: "https://puppet.icatch.ro:3131/getPromiseDate",
                                         type: "post",
                                         dataType: "json",
                                         //data: {products: productsForDeliveryDate}
