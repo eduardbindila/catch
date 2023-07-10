@@ -502,67 +502,98 @@ $(document).ready(function() {
                                 })
                             }
                         },
-                         {
-                            text: 'Get Delivery Date',
-                            className: 'deliveryDate btn btn-lg btn-warning waves-effect',
-                            action: function ( e, dt, node, config ) {
-                                //console.log(e,node,config)
+{
+        text: 'Get Delivery Date',
+        className: 'deliveryDate btn btn-lg btn-warning waves-effect',
+        action: function(e, dt, node, config) {
+  var indexes = dt.rows().indexes().filter(function(value, index) {
+    return (
+      dt.row(value).data()['manufacturer'].toLowerCase() === 'syl' &&
+      dt.row(value).data()['saga_quantity'] < dt.row(value).data()['quantity']
+    );
+  });
 
-                                var thisButton = $(e.currentTarget);
+  var sylvaniaProducts = dt.rows(indexes).data().toArray();
 
-                                thisButton.append('<div class="loadingDeliveryData" style="float:left"><div class="preloader pl-size-vxs"> <div class="spinner-layer pl-white"> <div class="circle-clipper left"> <div class="circle"></div> </div> <div class="circle-clipper right"> <div class="circle"></div> </div> </div></div>');
+  var productsForDeliveryDate = [];
 
-                                //console.log(thisButton);
+  for (let index in sylvaniaProducts) {
+    productsForDeliveryDate.push({
+      id: sylvaniaProducts[index].id,
+      quantity: sylvaniaProducts[index].quantity
+    });
+  }
 
-                                   var indexes = dt.rows().indexes().filter( 
-                                        function ( value, index ) {    
-                                            //console.log(dt.row(value).data()['saga_quantity'] < dt.row(value).data()['quantity']);
-                                            return 'syl' === dt.row(value).data()['manufacturer'].toLowerCase() && dt.row(value).data()['saga_quantity'] < dt.row(value).data()['quantity'];
-                                        }
-                                    );
+  var socket = new WebSocket('ws://localhost:8080');
 
-                                    var sylvaniaProducts = dt.rows( indexes ).data().toArray();
+  // WebSocket event: connection established
+  socket.onopen = function() {
+    console.log('WebSocket connection established');
+    socket.send(JSON.stringify(productsForDeliveryDate));
+  };
 
-                                    var productsForDeliveryDate = [];
+  // WebSocket event: message received
+  socket.onmessage = function(event) {
+    var data = event.data;
+    console.log('Received:', data);
 
-                                    for (let index in sylvaniaProducts) {
-                                        // productsForDeliveryDate[sylvaniaProducts[index].id] = {
-                                        //     'quantity' : sylvaniaProducts[index].quantity
-                                        // }
+    // Show the response in the modal window
+      
+      $('#getDeliveryStatus-modal').modal('show');
 
-                                        productsForDeliveryDate[index] = {'id': sylvaniaProducts[index].id, 'quantity': sylvaniaProducts[index].quantity};
+     
+    // WebSocket event: message received
+socket.onmessage = function(event) {
+  var data = event.data;
+  console.log('Received:', data);
 
-                                    }
+  var messageObj;
 
-                                    //console.log(sylvaniaProducts);
+  try {
+    messageObj = JSON.parse(data);
+
+    // Check if the received data is an array
+    if (Array.isArray(messageObj)) {
+      // Iterate over the array elements
+      messageObj.forEach(function(element) {
+        var thisElement = $('[data-id="' + element.id + '"][data-quantity="' + element.quantity + '"]');
+        thisElement.html(element.promiseDate);
+      });
+    }
+
+    // Process the received JSON data as needed
+    // ...
+
+  } catch (error) {
+    // Handle the case when the received message is not valid JSON
+    // This is a plain text message
+    console.log('Received message:', data);
+    // Show the message to the user
+    // ...
+
+    var listItem = document.createElement('li');
+    listItem.textContent = data;
+
+    var timeline = document.getElementById('timeline');
+    timeline.appendChild(listItem);
+
+    // Scroll to the bottom of the timeline
+    timeline.scrollTop = timeline.scrollHeight;
+  }
+};
 
 
-                                    $.ajax({
-                                        url: "https://puppet.icatch.ro:3131/getPromiseDate",
-                                        type: "post",
-                                        dataType: "json",
-                                        //data: {products: productsForDeliveryDate}
-                                         data: {'products': JSON.stringify(productsForDeliveryDate)}
-                                   }).success(function(json){
-                                       $('.updateError').addClass('hidden');
 
-                                        console.log(json);
+  };
 
-                                        json.forEach(function(e){
-                                            var thisElement = $('[data-id="' + e.id + '"][data-quantity="'+ e.quantity +'"]');
-                                            thisElement.html(e.promiseDate);
-                                        })
+  // WebSocket event: connection closed
+  socket.onclose = function() {
+    console.log('WebSocket connection closed');
+  };
+}
 
-                                    }).error(function(xhr, status, error) {
-                                       $('.updateError').removeClass('hidden');
-                                    }).done(function() {
-                                        console.log(thisButton);
-                                        thisButton.find('.loadingDeliveryData').remove();
-                                    })
-
-                                
-                            } 
-                        },
+      }
+,
                         {
                             extend: 'pdf',
                             className: 'btn btn-lg btn-primary waves-effect',
@@ -3063,6 +3094,14 @@ Dropzone.autoDiscover = false;
         unifyButton.find('span.unifyCount').text('');
         unifyButton.prop('disabled', true);
     });
+
+    $('#getDeliveryStatus-modal').on('hide.bs.modal', function() {
+  // Clear the timeline
+  var timeline = document.getElementById('timeline');
+  while (timeline.firstChild) {
+    timeline.removeChild(timeline.firstChild);
+  }
+});
 
 
 

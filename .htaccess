@@ -159,6 +159,8 @@ RewriteRule ^ajax/updateVendorInvoiceItems modules/admin/controllers/update_vend
 
 RewriteRule ^ajax/getExchangeRate modules/admin/controllers/get_exchange_rate.php [L]
 
+RewriteRule ^ajax/updateWooCategories modules/admin/controllers/update_woo_categories.php [L]
+
 RewriteRule ^ajax/updateMaster modules/projects/controllers/update_master.php [L]
 
 RewriteRule ^ajax/uploadCustomProductImage modules/projects/controllers/upload_custom_product_image.php [L]

@@ -12,6 +12,10 @@ $_PATH['COMMON_VIEW'] = $_PATH['COMMON_INTERFACE'].'views/';
 
 $_PATH['COMMON_LAYOUT'] = $_PATH['COMMON_INTERFACE'].'views/layout/';
 
+//LIB PATHS
+//========================//
+$_PATH["LIB"] = $_SERVER['DOCUMENT_ROOT'].'/lib/';
+
 
 
 //WEB PATHS
@@ -22,6 +26,7 @@ $_WPATH['COMMON_BACKEND'] = '/common/backend/';
 $_WPATH['COMMON_VIEW'] = $_WPATH['COMMON_INTERFACE'].'views/';
 
 $_WPATH['COMMON_LAYOUT'] = $_WPATH['COMMON_INTERFACE'].'views/layout/';
+
 
 
 //MODULE PATHS

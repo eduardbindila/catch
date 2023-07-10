@@ -583,4 +583,22 @@ $quoteLockedClass = "";
             </div>
         </div>
 
+        <div class="modal fade" id="getDeliveryStatus-modal" tabindex="-1" role="dialog" data-quote="<?php echo $quote['id']?>">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" >Quote #<span class="quoteNumberStatus"> - Delivery Status <span id=""></span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                         <ul id="timeline" class="timeline"></ul>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         
