@@ -524,7 +524,7 @@ $(document).ready(function() {
     });
   }
 
-  var socket = new WebSocket('ws://localhost:8080');
+  var socket = new WebSocket('wss://puppet.icatch.ro:3131');
 
   // WebSocket event: connection established
   socket.onopen = function() {
