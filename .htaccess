@@ -227,6 +227,8 @@ RewriteRule ^ajax/getDashboardQuotes modules/dashboard/controllers/get_quotes_da
 
 RewriteRule ^ajax/getDashboardLogisticData modules/dashboard/controllers/get_quotes_logistic_data.php [L]
 
+RewriteRule ^ajax/getStockData modules/dashboard/controllers/get_stock_data.php [L]
+
 RewriteRule ^ajax/getInvoicedPackages modules/dashboard/controllers/get_invoiced_packages.php [L]
 
 RewriteRule ^ajax/getLatestInvoiceNumber modules/dashboard/controllers/get_last_invoice_number.php [L]
