@@ -10,128 +10,13 @@ function getDataFromDatabase($QueryBuilder, $conn)
 {
     // Execute the SQL query
     $query = "
-        SELECT t1.product_id, t1.mpp, t2.month, t2.type, t2.quantity
+        SELECT 
+    t1.month,
+    t1.product_id,
+    SUM(CASE WHEN t1.type = 'entry' THEN t1.quantity ELSE 0 END) AS sum_entries,
+    SUM(CASE WHEN t1.type = 'exit' THEN t1.quantity ELSE 0 END) AS sum_exits,
+    t2.mpp
 FROM (
-    SELECT `source`.`product_id`, `source`.`mpp`
-    FROM (
-        SELECT `source`.`product_id` AS `product_id`, max(`source`.`vendor_invoice_item_id`) AS `max`, `source`.`mpp` AS `mpp`
-        FROM (
-            SELECT
-                `vron`.`invoice_no` AS `invoice_no`,
-                `vron`.`vendor_invoice_item_id` AS `vendor_invoice_item_id`,
-                `vron`.`product_id` AS `product_id`,
-                `vron`.`unit_price` AS `unit_price`,
-                `vron`.`quantity` AS `quantity`,
-                `vron`.`total_price_ron` AS `total_price_ron`,
-                `vron`.`currency` AS `currency`,
-                `vron`.`exchange_rate` AS `exchange_rate`,
-                `vron`.`date_added` AS `date_added`,
-                `vron`.`date` AS `date`,
-                SUM(`vron`.`quantity`) over (
-                    PARTITION BY `vron`.`product_id`
-                    ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-                ) AS `quantity_evolution`,
-                SUM(`vron`.`total_price_ron`) over (
-                    PARTITION BY `vron`.`product_id`
-                    ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-                ) AS `value_evolution`,
-                TRUNCATE(
-                    SUM(`vron`.`total_price_ron`) over (
-                        PARTITION BY `vron`.`product_id`
-                        ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-                    ) / SUM(`vron`.`quantity`) over (
-                        PARTITION BY `vron`.`product_id`
-                        ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-                    ),
-                    2
-                ) AS `mpp`
-            FROM (
-                SELECT
-                    `vi`.`invoice_no` AS `invoice_no`,
-                    `vii`.`id` AS `vendor_invoice_item_id`,
-                    `vii`.`product_id` AS `product_id`,
-                    `vii`.`unit_price` AS `unit_price`,
-                    `vii`.`quantity` AS `quantity`,
-                    `vii`.`total_price` AS `total_price`,
-                    `vi`.`currency` AS `currency`,
-                    `vi`.`exchange_rate` AS `exchange_rate`,
-                    `vii`.`date_added` AS `date_added`,
-                    `vi`.`date` AS `date`,
-                    ROUND(
-                        CASE WHEN `vi`.`currency` = 'Ron' THEN `vii`.`total_price` WHEN `vi`.`currency` = 'Euro' THEN `vii`.`total_price` * `vi`.`exchange_rate`
-                    END,
-                    2
-                ) AS `total_price_ron`
-                FROM
-                    `vendor_invoice_items` `vii`
-                JOIN `vendor_invoices` `vi`
-                    ON (`vii`.`vendor_invoice_id` = `vi`.`id`)
-                WHERE `date` > '2022-12-31'
-                ORDER BY `vi`.`date`
-            ) `vron`
-            ORDER BY `vron`.`date`
-        ) `source`
-        GROUP BY `source`.`product_id`, `source`.`mpp`
-    ) `source`
-    LEFT JOIN (
-        SELECT
-            `vron`.`invoice_no` AS `invoice_no`,
-            `vron`.`vendor_invoice_item_id` AS `vendor_invoice_item_id`,
-            `vron`.`product_id` AS `product_id`,
-            `vron`.`unit_price` AS `unit_price`,
-            `vron`.`quantity` AS `quantity`,
-            `vron`.`total_price_ron` AS `total_price_ron`,
-            `vron`.`currency` AS `currency`,
-            `vron`.`exchange_rate` AS `exchange_rate`,
-            `vron`.`date_added` AS `date_added`,
-            `vron`.`date` AS `date`,
-            SUM(`vron`.`quantity`) over (
-                PARTITION BY `vron`.`product_id`
-                ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-            ) AS `quantity_evolution`,
-            SUM(`vron`.`total_price_ron`) over (
-                PARTITION BY `vron`.`product_id`
-                ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-            ) AS `value_evolution`,
-            TRUNCATE(
-                SUM(`vron`.`total_price_ron`) over (
-                    PARTITION BY `vron`.`product_id`
-                    ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-                ) / SUM(`vron`.`quantity`) over (
-                    PARTITION BY `vron`.`product_id`
-                    ORDER BY `vron`.`date` ROWS BETWEEN unbounded preceding AND CURRENT ROW
-                ),
-                2
-            ) AS `mpp`
-        FROM (
-            SELECT
-                `vi`.`invoice_no` AS `invoice_no`,
-                `vii`.`id` AS `vendor_invoice_item_id`,
-                `vii`.`product_id` AS `product_id`,
-                `vii`.`unit_price` AS `unit_price`,
-                `vii`.`quantity` AS `quantity`,
-                `vii`.`total_price` AS `total_price`,
-                `vi`.`currency` AS `currency`,
-                `vi`.`exchange_rate` AS `exchange_rate`,
-                `vii`.`date_added` AS `date_added`,
-                `vi`.`date` AS `date`,
-                ROUND(
-                    CASE WHEN `vi`.`currency` = 'Ron' THEN `vii`.`total_price` WHEN `vi`.`currency` = 'Euro' THEN `vii`.`total_price` * `vi`.`exchange_rate`
-                END,
-                2
-            ) AS `total_price_ron`
-            FROM
-                `vendor_invoice_items` `vii`
-            JOIN `vendor_invoices` `vi`
-                ON (`vii`.`vendor_invoice_id` = `vi`.`id`)
-            WHERE `date` > '2022-12-31'
-            ORDER BY `vi`.`date`
-        ) `vron`
-        ORDER BY `vron`.`date`
-    ) `Question 46`
-    ON `source`.`max` = `Question 46`.`vendor_invoice_item_id`
-) t1
-JOIN (
     SELECT vii.product_id,
             DATE_FORMAT(vi.date, '%m-%y') AS month,
             'entry' AS type,
@@ -148,10 +33,24 @@ JOIN (
         JOIN quote_items qi ON qi.id = pi.quote_item_id
         JOIN packages p ON p.id = pi.package_id
         WHERE p.package_status_id = 4 AND p.invoice_date >= '2023-01-01'
+) t1
+LEFT JOIN (
+    SELECT 
+        product_id,
+        MAX(vii.id) AS max_id,
+        ROUND(unit_price * vi.exchange_rate, 2) AS mpp
+    FROM 
+        vendor_invoice_items vii
+    JOIN 
+        vendor_invoices vi ON vi.id = vii.vendor_invoice_id 
+    GROUP BY 
+        product_id
 ) AS t2
 ON t1.product_id = t2.product_id
-WHERE t1.product_id IS NOT NULL
-ORDER BY t1.product_id, t2.month, t2.type
+-- WHERE t1.product_id = '0048915'
+GROUP BY t1.month, t1.product_id, t2.mpp
+ORDER BY t1.product_id, t1.month;
+
     ";
 
     // Use your custom query builder to execute the query
@@ -161,6 +60,10 @@ ORDER BY t1.product_id, t2.month, t2.type
     );
 
     return $projectsQuery;
+
+
+
+
 }
 
 // Function to display the table for each month
@@ -171,40 +74,37 @@ function displayMonthlyTable($data)
 
     // Organize data by month
     foreach ($data as $row) {
+        //printError($row);
         $month = $row['month'];
         $productID = $row['product_id'];
-        $type = $row['type'];
         $mpp = $row['mpp'];
-        $quantity = $row['quantity'];
+        $month_entries = $row['sum_entries'];
+        $month_exits = $row['sum_exits'];
+
+        //$remainingStock = $row['remaining_stock'];
+
 
         // Initialize the month entry if it does not exist
-        if (!isset($months[$month][$productID])) {
-            $months[$month][$productID] = array(
-                'initial_stock' => 0,
-                'month_entries' => 0,
-                'month_exits' => 0,
-                'remaining_stock' => 0
-            );
-        }
-
-        // Update the quantity based on the type (entry or exit)
-        if ($type === 'entry') {
-            $months[$month][$productID]['month_entries'] += $quantity;
-        } elseif ($type === 'exit') {
-            $months[$month][$productID]['month_exits'] += $quantity;
+        if (!isset($latestRemainingStock[$productID])) {
+           $latestRemainingStock[$productID] = 0;
         }
 
 
+        $months[$month][$productID]['mpp'] = $mpp;
 
-         $months[$month][$productID]['initial_stock'] = isset($latestRemainingStock[$productID]) ? $latestRemainingStock[$productID] : 0; 
+        $months[$month][$productID]['month_entries'] = $month_entries;
+
+        $months[$month][$productID]['month_exits'] = $month_exits;
+
+       
+         $months[$month][$productID]['initial_stock'] = $latestRemainingStock[$productID]; 
 
 
         $months[$month][$productID]['remaining_stock'] = $months[$month][$productID]['initial_stock'] + $months[$month][$productID]['month_entries'] - $months[$month][$productID]['month_exits'];
 
+        // echo $month.' - '.$latestRemainingStock[$productID].' / ' ;
 
         $latestRemainingStock[$productID] = $months[$month][$productID]['remaining_stock'];
-        $months[$month][$productID]['mpp'] = $mpp;
-
 
     }
 
