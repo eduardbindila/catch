@@ -38,7 +38,10 @@ LEFT JOIN (
     SELECT 
         product_id,
         MAX(vii.id) AS max_id,
-        ROUND(unit_price * vi.exchange_rate, 2) AS mpp
+        CASE 
+            WHEN vi.currency = 'Ron' THEN unit_price 
+            ELSE ROUND(unit_price * vi.exchange_rate, 2) 
+        END AS mpp
     FROM 
         vendor_invoice_items vii
     JOIN 
