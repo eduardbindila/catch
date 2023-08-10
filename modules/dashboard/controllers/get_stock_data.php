@@ -108,6 +108,14 @@ function displayMonthlyTable($data)
 
         // echo $month.' - '.$latestRemainingStock[$productID].' / ' ;
 
+         $months[$month][$productID]['initial_stock_value'] = $months[$month][$productID]['initial_stock'] * $months[$month][$productID]['mpp'];
+
+         $months[$month][$productID]['month_entries_value'] = $months[$month][$productID]['month_entries'] * $months[$month][$productID]['mpp'];
+
+         $months[$month][$productID]['month_exits_value'] = $months[$month][$productID]['month_exits'] * $months[$month][$productID]['mpp'];
+
+         $months[$month][$productID]['remaining_stock_value'] = $months[$month][$productID]['remaining_stock'] * $months[$month][$productID]['mpp'];            
+
         $latestRemainingStock[$productID] = $months[$month][$productID]['remaining_stock'];
 
     }
@@ -115,20 +123,20 @@ function displayMonthlyTable($data)
   
 
     // Display the data in the table format for each month
-    echo "<table border='1'>
-        <tr>
-            <th>Month</th>
-            <th>Product ID</th>
-            <th>MPP</th>
-            <th>Initial Stock</th>
-            <th>Initial Value</th>
-            <th>Month Entries</th>
-            <th>Month Entries Value</th>
-            <th>Month Exits</th>
-            <th>Month Exits Value</th>
-            <th>Remaining Stock</th>
-            <th>Remaining Stock Value</th>
-        </tr>";
+    // echo "<table border='1'>
+    //     <tr>
+    //         <th>Month</th>
+    //         <th>Product ID</th>
+    //         <th>MPP</th>
+    //         <th>Initial Stock</th>
+    //         <th>Initial Value</th>
+    //         <th>Month Entries</th>
+    //         <th>Month Entries Value</th>
+    //         <th>Month Exits</th>
+    //         <th>Month Exits Value</th>
+    //         <th>Remaining Stock</th>
+    //         <th>Remaining Stock Value</th>
+    //     </tr>";
 
     foreach ($months as $month => $products) {
         foreach ($products as $productID => $stock) {
@@ -137,35 +145,90 @@ function displayMonthlyTable($data)
             $monthExits = $stock['month_exits'] ?? 0;
             $remainingStock = $stock['remaining_stock'] ?? 0;
             $mpp = $stock['mpp'] ?? 0;
-            $initialStockValue = $initialStock * $mpp;
-            $monthEntriesValue = $monthEntries * $mpp;
-            $monthExitsValue = $monthExits * $mpp;
-            $remainingStockValue = $remainingStock * $mpp;
+            $initialStockValue = $stock['initial_stock_value'] ?? 0;
+            $monthEntriesValue = $stock['month_entries_value'] ?? 0;
+            $monthExitsValue = $stock['month_exits_value'] ?? 0;
+            $remainingStockValue = $stock['remaining_stock_value'] ?? 0;
 
-
-            echo "<tr>
-                <td>$month</td>
-                <td>$productID</td>
-                <td>$mpp</td>
-                <td>$initialStock</td>
-                <td>$initialStockValue</td>
-                <td>$monthEntries</td>
-                <td>$monthEntriesValue</td>
-                <td>$monthExits</td>
-                <td>$monthExitsValue</td>
-                <td>$remainingStock</td>
-                <td>$remainingStockValue</td>
-              </tr>";
+            // echo "<tr>
+            //     <td>$month</td>
+            //     <td>$productID</td>
+            //     <td>$mpp</td>
+            //     <td>$initialStock</td>
+            //     <td>$initialStockValue</td>
+            //     <td>$monthEntries</td>
+            //     <td>$monthEntriesValue</td>
+            //     <td>$monthExits</td>
+            //     <td>$monthExitsValue</td>
+            //     <td>$remainingStock</td>
+            //     <td>$remainingStockValue</td>
+            //   </tr>";
         }
     }
 
-    echo "</table>";
+    //echo "</table>";
+
+
+    return $months;
 }
 
 // Retrieve the data from the database using the UNION ALL query
 $data = getDataFromDatabase($QueryBuilder, $conn);
 
 // Display the table for each month
-displayMonthlyTable($data);
+$monthsData = displayMonthlyTable($data);
+
+// Function to generate a CSV file for the given data
+function generateCSVFile($filename, $data)
+{
+    $csvFile = fopen($filename, 'w');
+    
+    // Write headers to the CSV file
+    $headers = array(
+        'ID',
+        'U.M.',
+        'Stoc Initial',
+        'Valore Stoc Initial Fara TVA',
+        'Intrari',
+        'Valoare Intrari Fara TVA',
+        'Iesiri',
+        'Valoare Iesiri Fara TVA',
+        'Stoc Final',
+        'Valoare Stoc Final Fara TVA'
+    );
+    fputcsv($csvFile, $headers);
+
+    // Write data rows to the CSV file
+    foreach ($data as $productID => $stock) {
+        $rowData = array(
+            $productID,
+            'buc.',
+            $stock['initial_stock'],
+            $stock['initial_stock_value'],
+            $stock['month_entries'],
+            $stock['month_entries_value'],
+            $stock['month_exits'],
+            $stock['month_exits_value'],
+            $stock['remaining_stock'],
+            $stock['remaining_stock_value']
+        );
+        fputcsv($csvFile, $rowData);
+    }
+
+    fclose($csvFile);
+}
+
+//printError($monthsData);
+
+/// Directory to save CSV files
+$uploadsDir = $_SERVER['DOCUMENT_ROOT']."/uploads/";
+
+// Generate CSV files for each month
+foreach ($monthsData as $month => $monthData) {
+    $filename = $uploadsDir . "monthly_data_$month.csv";
+    generateCSVFile($filename, $monthData);
+    $downloadLink = "/download?f=" . urlencode("monthly_data_$month.csv");
+    echo "<p><a href='$downloadLink'>Click here to download the CSV file for $month</a></p>";
+}
 
 ?>
