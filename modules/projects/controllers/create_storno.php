@@ -32,6 +32,9 @@ unset($packageQuery[0]['invoice_number']);
 unset($packageQuery[0]['invoice_date']);
 unset($packageQuery[0]['invoice_due_date']);
 unset($packageQuery[0]['other_details']);
+unset($packageQuery[0]['is_unified_package']);
+unset($packageQuery[0]['unified_package_id']);
+unset($packageQuery[0]['original_package_id']);
 
 
 $package_keys = array_keys($packageQuery[0]);
@@ -49,6 +52,8 @@ $insertPackage = $QueryBuilder->insert(
 
 );
 
+
+
 if($insertPackage) {
 	$packageItemsQuery = $QueryBuilder->select(
 		$conn,
@@ -62,9 +67,8 @@ if($insertPackage) {
 
 	foreach ($packageItemsQuery as $key => $quoteItem) {
 
-		
-
 		unset($quoteItem['id']);
+		unset($quoteItem['original_package_id']);
 
 		$quoteItem['package_quantity'] = - $quoteItem['package_quantity'];
 
@@ -95,8 +99,6 @@ if($insertPackage) {
 	    )
 	);
 	}
-
-
 	
 }
 
@@ -105,7 +107,8 @@ if($insertPackage) {
 
 	echo $conn->error;
 
-//echo json_encode($package_items_keys);
+// printError($package_items_keys);
+// printError($package_items_values);
 
 echo json_encode($package_values);
 
