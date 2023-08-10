@@ -23,7 +23,7 @@ FROM (
             vii.quantity AS quantity 
         FROM vendor_invoice_items vii
         JOIN vendor_invoices vi ON vi.id = vii.vendor_invoice_id
-        WHERE vi.date >= '2023-01-01'
+        WHERE vi.date >= '2023-01-01' and vii.product_id > ''
     UNION ALL
     SELECT qi.product_id,
             DATE_FORMAT(p.invoice_date, '%m-%y') AS month,
@@ -46,6 +46,7 @@ LEFT JOIN (
         vendor_invoice_items vii
     JOIN 
         vendor_invoices vi ON vi.id = vii.vendor_invoice_id 
+        where product_id > ''
     GROUP BY 
         product_id
 ) AS t2
