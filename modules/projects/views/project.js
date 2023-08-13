@@ -3104,6 +3104,35 @@ Dropzone.autoDiscover = false;
 });
 
 
+    // Get the current URL from the address bar
+    const currentURL = window.location.href;
+
+    // Extract the package_id and data-quote values from the URL
+    const url = new URL(currentURL);
+    const packageId = url.searchParams.get("package_id");
+
+    if (packageId) {
+        // Find the button with the matching data-quote value and trigger click
+        $('.viewPackages').click();
+
+        // Wrap the async code in an async function
+        (async function() {
+            // Wait for the new button with the provided selector to be loaded
+            const newButtonSelector = '.triggerPackageItems[data-package="' + packageId + '"]';
+            const newButton = await waitForElm(newButtonSelector);
+
+            console.log("New button found:", newButton);
+
+            // Trigger click on the new button
+            if (newButton) {
+                newButton.click();
+                console.log("New button clicked");
+            }
+        })();
+
+    }
+
+
 
 });
 

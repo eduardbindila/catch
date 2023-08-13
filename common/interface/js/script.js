@@ -224,3 +224,27 @@ function getLatestInvoiceNumber(params) {
         })
     return latestInvoiceNumber
 }
+
+
+function waitForElm(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            console.log("Element found immediately:", selector);
+            return resolve(document.querySelector(selector));
+        }
+
+        console.log("Observing for element:", selector);
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                console.log("Element found:", selector);
+                resolve(document.querySelector(selector));
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    });
+}

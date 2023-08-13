@@ -42,7 +42,7 @@ $conn = $QueryBuilder->dbConnection();
       p.invoice_number as document_number,
       'client_invoice' as document_type,
       p.quote_id as id,
-      qi.id as sub_id,
+      p.id as sub_id,
       -pi2.package_quantity AS units,
       qi.unit_price AS unit_price,
       qi.unit_price * pi2.package_quantity AS total_value

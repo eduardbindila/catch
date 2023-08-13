@@ -154,16 +154,16 @@ $(document).ready(function() {
                         if(row.document_type == "client_invoice") {
                             icon = 'account_circle';
                             iconClass = 'col-green';
-                            path = "quote";
+                            path = "quote/"+data+"?package_id="+row.sub_id;
                         } else {
                             icon = "local_shipping";
                             iconClass = 'col-blue';
-                            path = "logistics/vendor-invoices";
+                            path = "logistics/vendor-invoices/"+data;
                         }
 
                         return '<i class="material-icons document-type-position '+ iconClass +'">'
                             +icon+
-                            '</i><a href="/'+path+'/'+data+'" target="_blank">'+row.document_type+': '+data+'</a>'
+                            '</i><a href="/'+path+'" target="_blank">'+row.document_type+': '+data+'</a>'
                       } 
 
                 },
