@@ -61,6 +61,23 @@
                     </div>
                     <div class="body">
                         <div class="row">
+                            <div class="col-lg-12">
+                                <h2>Product History</h2>
+                                <table class="product_history_table table table-striped table-bordered table-hover dt-responsive display">
+                                    <thead>
+                                        <th>Date</th>
+                                        <th>Document Number</th>
+                                        <th>Document Type</th>
+                                        <th>Id</th>
+                                        <th>Units</th>
+                                        <th>Unit Price</th>
+                                        <th>Total Value</th>
+                                        <th>Intermediate Stock</th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-6">
                                 <img class="product-image" src="<?php echo $productImage?>" />
                             </div>

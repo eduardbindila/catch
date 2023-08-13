@@ -8964,3 +8964,13 @@ button.prevStatusButton.btn.btn-default.waves-effect i {
 .info-box.checked .content {
   display: none;
 }
+
+
+
+.document-type-position {
+  margin-right: 11px;
+  position: relative;
+  top: 5px;
+}
+
+    

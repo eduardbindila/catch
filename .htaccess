@@ -229,6 +229,8 @@ RewriteRule ^ajax/getDashboardLogisticData modules/dashboard/controllers/get_quo
 
 RewriteRule ^ajax/getStockData modules/dashboard/controllers/get_stock_data.php [L]
 
+RewriteRule ^ajax/getProductHistory modules/cart/controllers/get_product_history.php [L]
+
 RewriteRule ^ajax/getInvoicedPackages modules/dashboard/controllers/get_invoiced_packages.php [L]
 
 RewriteRule ^ajax/getLatestInvoiceNumber modules/dashboard/controllers/get_last_invoice_number.php [L]
