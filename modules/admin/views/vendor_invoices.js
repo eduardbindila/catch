@@ -172,7 +172,7 @@ $(document).ready(function() {
             pageLength: 100,
                 "paging":   true,
                 "ordering": false,
-                "searching": false,
+                "searching": true,
             rowId: 'category_slug',
               
             responsive: true,
