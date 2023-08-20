@@ -44,7 +44,7 @@ SELECT subquery.product_id,
 shop_ids.shop_id as shop_category_id,
     p.product_name,
     p.initial_price, 
-    p.initial_price/0.28 * 5 + 2 as selling_price, 
+    ROUND(p.initial_price / 0.28 * 5 + 2, 2) as selling_price, 
     p.product_image,
     p.saga_quantity  as stock
 FROM (
@@ -152,36 +152,42 @@ WHERE pf.product_id = '".$product['product_id']."'
         
  }
 
-printError($bulkProductData);
+//printError($bulkProductData);
 
 try {
     // Make the API request
     $response = $woocommerce->post($endpoint, $bulkProductData);
 
-    
+    //printError($response);
 
     foreach ($response->create as $thisProduct) {
-        if (isset($thisProduct->error)) {
-            $errorMessage = 'Error creating product: ' . $thisProduct->error->message;
-            if (isset($thisProduct->error->unique_sku)) {
-                $errorMessage .= ' (SKU: ' . $thisProduct->error->unique_sku . ')';
-            } else {
-                $errorMessage .= ' (Internal ID: ' . $thisProduct->sku . ')';
-            }
-            echo $errorMessage . PHP_EOL;
-        } else {
-            // Handle success response
+
+        //printError($thisProduct);
+
+    if (isset($thisProduct->error)) {
+        $errorMessage = 'Error creating product: ' . $thisProduct->error->message;
+        if (isset($thisProduct->error->data->unique_sku)) {
+            $errorMessage .= ' (SKU: ' . $thisProduct->error->data->unique_sku . ')';
+        }
+        echo $errorMessage . PHP_EOL;
+    } else {
+        // Debug statement to see the product response
+        //print_r($thisProduct);
+
+        // Handle success response
             echo 'Product created successfully! (ID: ' . $thisProduct->id . ')' . PHP_EOL;
 
-            $successQuery = "INSERT into shop_ids (internal_id, shop_id) values ('".$thisProduct->sku. "', '".$thisProduct->id. "')";
+            // Extract properties from the stdClass object
+            $internalId = $thisProduct->sku;
+            $shopId = $thisProduct->id;
+
+            $successQuery = "INSERT INTO shop_ids (internal_id, shop_id) VALUES ('$internalId', '$shopId')";
 
             // Execute the query and insert the shop_id into the database
-            $saveShopId = $QueryBuilder->customQuery(
-                $conn,
-                $query = $successQuery
-            );
-        }
+            $saveShopId = $QueryBuilder->customQuery($conn, $query = $successQuery);
+
     }
+}
 } catch (Automattic\WooCommerce\HttpClient\HttpClientException $e) {
     // Handle other exceptions
     if ($e->getMessage() === 'Error: A term with the name provided already exists with this parent. [term_exists]') {
