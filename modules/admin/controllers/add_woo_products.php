@@ -98,9 +98,12 @@ foreach ($products as $product) {
 
         $attributesQuery = " SELECT pf.*,
        si.shop_id,
+       fc.id as category_id,
        COALESCE(t.translation, fv.feature_value) AS translation
 FROM product_features pf
 JOIN shop_ids si ON si.internal_id = pf.feature_id
+join features f on pf.feature_id = f.id 
+join feature_categories fc on fc.id = f.feature_category_id 
 LEFT JOIN translations t ON pf.feature_value_id = t.translation_key_id AND t.language_code = 'ro'
 JOIN feature_values fv ON pf.feature_value_id = fv.id
 WHERE pf.product_id = '".$product['product_id']."' 
@@ -121,8 +124,16 @@ WHERE pf.product_id = '".$product['product_id']."'
 
             //printError($attribute);
 
+            if($attribute['category_id'] == 'general_data') {
+                $attributeVsibilty = 'true';
+            } else
+            {
+                $attributeVsibilty = 'false';
+            }
+
             $attributesArray[] = [
                     'id' => $attribute['shop_id'],
+                    "visible" =>  filter_var($attributeVsibilty, FILTER_VALIDATE_BOOLEAN),
                     'options' => [$attribute['translation']],
                 ];
             }  
@@ -135,6 +146,7 @@ WHERE pf.product_id = '".$product['product_id']."'
             "description" => $description[0]['translation'],
             "sku" => $product['product_id'],
             "stoc_quantity" => $product['stock'],
+            "manage_stock" => true,
             "categories" => [
                 [
                     'id' => $product['shop_category_id']
@@ -152,13 +164,13 @@ WHERE pf.product_id = '".$product['product_id']."'
         
  }
 
-//printError($bulkProductData);
+printError($bulkProductData);
 
 try {
     // Make the API request
     $response = $woocommerce->post($endpoint, $bulkProductData);
 
-    //printError($response);
+    printError($response);
 
     foreach ($response->create as $thisProduct) {
 
