@@ -161,6 +161,10 @@ RewriteRule ^ajax/getExchangeRate modules/admin/controllers/get_exchange_rate.ph
 
 RewriteRule ^ajax/updateWooCategories modules/admin/controllers/update_woo_categories.php [L]
 
+RewriteRule ^ajax/updateWooAttributes modules/admin/controllers/update_woo_attributes.php [L]
+
+RewriteRule ^ajax/addWooProducts modules/admin/controllers/add_woo_products.php [L]
+
 RewriteRule ^ajax/updateMaster modules/projects/controllers/update_master.php [L]
 
 RewriteRule ^ajax/uploadCustomProductImage modules/projects/controllers/upload_custom_product_image.php [L]
