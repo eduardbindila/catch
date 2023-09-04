@@ -118,8 +118,24 @@ $(document).ready(function() {
            }).success(function(json){
 
                 if(json == 3 && isc == false) {
+
+                    if(isc == false) {
+                        callQuoteSend(quoteId, thisClientId, 'quote')
+                    } else {
+                        $.ajax({
+                            url: "/ajax/updateMaster",
+                            type: "post",
+                            dataType: "json",
+                            data: {'quote_id': quoteID, 'isMaster': 1}
+                       }).success(function(json){
+                           $('.updateError').addClass('hidden');
+                           location.reload()
+                        }).error(function(xhr, status, error) {
+                           $('.updateError').removeClass('hidden');
+                        })
+                    }
                     
-                    callQuoteSend(quoteId, thisClientId, 'quote')
+                    
                 } else {
                    
                     location.reload();
@@ -902,7 +918,7 @@ socket.onmessage = function(event) {
 
             
 
-            quoteList[index].showOrderFields = (quoteList[index].quote_status == 2 || quoteList[index].quote_status == 5 || quoteList[index].quote_status > 9) ? 1 : 0;
+            quoteList[index].showOrderFields = (quoteList[index].quote_status == 2 || quoteList[index].quote_status == 5 || quoteList[index].quote_status > 9) && isc == false ? 1 : 0;
 
             //console.log(quoteList[index]);
 

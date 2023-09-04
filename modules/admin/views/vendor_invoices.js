@@ -79,7 +79,7 @@ $(document).ready(function() {
         rowId: 'category_slug',
           
         responsive: true,
-        order: [],
+        order: [0],
         "columns": [ 
             { 
                 "data": "id",
