@@ -251,9 +251,16 @@ Class QueryBuilder{
 
 		if($results) {
 				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-				    array_push($rows, $row);
+				if(is_bool($results)) {
+
+					$rows = (int)$results;
+
+				} else {
+					while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+					    array_push($rows, $row);
+					}
 				}
+				
 
 				//$this->logAction("selectFeatures", "", $query, $rows);
 
