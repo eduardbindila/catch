@@ -117,7 +117,7 @@ $(document).ready(function() {
                 data: {'quote': JSON.stringify(quote), 'quote_id': quoteId, 'quote_status': quoteStatus[quoteId], 'profit_low': getProfitLow(profitLow[quoteId]), 'afterApprove': afterApprove, 'jump_status': 0 }
            }).success(function(json){
 
-                if(json == 3) {
+                if(json == 3 && isc == false) {
                     
                     callQuoteSend(quoteId, thisClientId, 'quote')
                 } else {
@@ -1917,10 +1917,10 @@ socket.onmessage = function(event) {
                             "data": "id",
                         },
                         { 
-                            "data": "user_id",
+                            "data": "user_name",
                         },
                         { 
-                            "data": "status_id",
+                            "data": "status_name",
                         },
                         {
                             "data": "date",
