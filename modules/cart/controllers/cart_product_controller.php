@@ -44,10 +44,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		)
 	);
 
+	$rQuery = "SELECT SUM(reserved_stock) as reserved_stock from quote_items where product_id = '0010245'";
+
+
+	$reservedQuery = $QueryBuilder->customQuery(
+	    $conn,
+	    $query = $rQuery
+	);
+
 
 	$productName = $productQuery[0]['product_name'];
+
 	$aquisitionPrice = $productQuery[0]['initial_price'];
+
 	$stock = $productQuery[0]['saga_quantity'];
+
+	$reservedStock = $reservedQuery[0]['reserved_stock'];
 
 	if($_SESSION['client_discount'] > 0) {
 		$productPrice = $aquisitionPrice / $Pricing->listPercent ."* ". $_SESSION['client_discount']. " /100"; 

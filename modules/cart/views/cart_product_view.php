@@ -34,7 +34,11 @@
                         </ol>
                         <div class="clearfix">
                             <ul class="m-l-0 p-l-0 m-t-10 header-dropdown">
-                            
+                                 <li>
+                                 
+                                     <h2>Total Stock: <span class="label label-lg label-primary"><?php echo intval($stock) + intval($reservedStock)?> (F: <?php echo intval($stock)?> + R: <?php echo intval($reservedStock)?>)</span></h2>
+                                </li>
+
                                 <li >
                                     <h2>Price: <span class="label label-lg label-warning"><?php echo number_format((float)$productPrice, 2, '.', ''); ?></span></h2>
                                 </li>
