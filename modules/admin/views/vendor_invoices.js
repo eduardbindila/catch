@@ -293,14 +293,17 @@ $(document).ready(function() {
                         if(data > 0 && row.unit_price > 0 ) {
                             disabled = "disabled"
                         }
-                            
+
+                        if(row.reception > 0  ) {
+                            disabled = "disabled"
+                        }   
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
                                         '<input class="form-control vendor-invoice-input"' + 
                                         ' data-type="external_item_name" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" '+disabled+' name="quantity" placeholder="Quantity"  min=0 required>' + 
+                                        '" value="'+data+'" type="number" '+disabled+' name="quantity" placeholder="Quantity" required>' + 
                                     '</div>' + 
                                 '</div>'
                   }
@@ -311,13 +314,24 @@ $(document).ready(function() {
                     "render" : function(data, type, row, meta) {
                         var disabled = "disabled"
 
-                        if(row.quantity > 0) {
-                            disabled = ""
+                        // if(row.quantity > 0) {
+                        //     disabled = ""
+                        // }
+
+                        // if(row.delivered_quantity !== "" ) {
+                        //     disabled = "disabled"
+                        // }
+
+                        // console.log(row.reception, row.reception > 0);
+
+
+                         if(row.reception > 0  ) {
+                            disabled = "disabled"
+                        } else {
+                            disabled = "";
                         }
 
-                        if(row.delivered_quantity !== "" ) {
-                            disabled = "disabled"
-                        }
+                        
                             
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
@@ -341,7 +355,7 @@ $(document).ready(function() {
                                         ' data-type="total_price" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled  min=0 required>' + 
+                                        '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled required>' + 
                                     '</div>' + 
                                 '</div>'
                   }
@@ -359,6 +373,10 @@ $(document).ready(function() {
                         if(row.unit_price > 0 && row.reception == 0) {
                             disabled = ""
                         }
+
+                        if(row.reception > 0  ) {
+                            disabled = "disabled"
+                        } 
                             
                         return '<div class="form-group">' + 
                                     '<div class="form-line">' + 
@@ -366,7 +384,7 @@ $(document).ready(function() {
                                         ' data-type="external_item_name" data-row="'+meta.row+
                                         '" data-col="'+meta.col+
                                         '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" '+disabled+' name="delivered_quantity" placeholder="Delivered Quantity" min=0>' + 
+                                        '" value="'+data+'" type="number" '+disabled+' name="delivered_quantity" placeholder="Delivered Quantity">' + 
                                     '</div>' + 
                                 '</div>'
                   }
