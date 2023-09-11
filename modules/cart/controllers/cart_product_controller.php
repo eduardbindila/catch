@@ -44,7 +44,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		)
 	);
 
-	$rQuery = "SELECT SUM(reserved_stock) as reserved_stock from quote_items where product_id = '0010245'";
+	$rQuery = "SELECT SUM(reserved_stock) as reserved_stock from quote_items where product_id = '".$productID."'";
 
 
 	$reservedQuery = $QueryBuilder->customQuery(
