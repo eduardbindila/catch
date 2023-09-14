@@ -31,7 +31,7 @@ $conn = $QueryBuilder->dbConnection();
 				$conn,
 				$options = array(
 					"table" => "quote_items",
-					"columns" => "products.saga_quantity, quote_items.reserved_stock, quote_items.product_id, quote_items. id as quote_item_id",
+					"columns" => "products.saga_quantity, products.isService, quote_items.reserved_stock, quote_items.product_id, quote_items. id as quote_item_id",
 					"innerJoin" => 'products on quote_items.product_id = products.id',
 					"where" => "quote_items.id = '".$_POST['quote_item_id']."'"
 				)
@@ -43,10 +43,10 @@ $conn = $QueryBuilder->dbConnection();
 
 			$usable_stock = $saga_quantity + $reserved_stock;
 
-			if($package_item_quantity > $usable_stock) {
+			if(intval($getPackageItem[0]['isService']) == 0 && $package_item_quantity > $usable_stock) {
 				$updatePackageItem = 0;
 			} else {
-
+				
 				$updatePackageItem = $QueryBuilder->update(
 					$conn,
 					$options = array(
@@ -56,7 +56,12 @@ $conn = $QueryBuilder->dbConnection();
 					)
 				);
 
-				if(($package_item_quantity > $reserved_stock) && $updatePackageItem) {
+
+				$asd = (($package_item_quantity > $reserved_stock) && $updatePackageItem) || intval($getPackageItem[0]['isService']) == 1;
+				
+
+				if((($package_item_quantity > $reserved_stock) && $updatePackageItem) || intval($getPackageItem[0]['isService']) == 1) {
+
 
 					$product_stock = $GetDetails->productStock($product_id);
 
@@ -68,6 +73,12 @@ $conn = $QueryBuilder->dbConnection();
 
 					$new_product_stock = $product_stock - $quantity_dif;
 
+					if(intval($getPackageItem[0]['isService']) == 1) {
+						$new_product_stock = 0;
+						$new_reserved_stock = 0;
+					}
+
+
 					$updateQuoteItem = $QueryBuilder->update(
 						$conn,
 						$options = array(
@@ -76,6 +87,7 @@ $conn = $QueryBuilder->dbConnection();
 							"where" => "id = '".$quote_item_id."'"
 						)
 					);
+
 
 					if($updateQuoteItem) {
 						$updateProducts = $QueryBuilder->update(
