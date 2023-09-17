@@ -310,7 +310,7 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "unit_price",
-                    "className": 'invoiceTableInput',
+                    "className": 'invoiceTableInput, invoiceTableInput-unitPrice',
                     "render" : function(data, type, row, meta) {
                         var disabled = "disabled"
 
@@ -346,7 +346,7 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "total_price",
-                    "className": 'invoiceTableInput',
+                    "className": 'invoiceTableInput, invoiceTableInput-totalPrice',
                     "render" : function(data, type, row, meta) {
                             
                         return '<div class="form-group">' + 

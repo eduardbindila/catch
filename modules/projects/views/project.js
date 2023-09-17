@@ -1218,12 +1218,12 @@ socket.onmessage = function(event) {
                 },
                 { 
                     "data": "customer_description",
-                    "visible": islh
+                    "visible": iss
 
                 },
                 { 
                     "data": "destination",
-                    "visible": islh
+                    "visible": iss
 
                 },
                
@@ -1352,7 +1352,7 @@ socket.onmessage = function(event) {
                     },
                      {
                         "data": "reserved_stock",
-                        "visible": islh,
+                        "visible": iss,
                         "render" : function(data, type, row, meta) {
                             //console.log(row);
 

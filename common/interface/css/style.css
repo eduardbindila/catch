@@ -8973,4 +8973,13 @@ button.prevStatusButton.btn.btn-default.waves-effect i {
   top: 5px;
 }
 
+ 
+.invoiceTableInput-unitPrice {
+  width: 130px;
+}
+
+.invoiceTableInput-totalPrice {
+  width: 200px;
+}
+
     
