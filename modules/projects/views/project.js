@@ -959,6 +959,18 @@ socket.onmessage = function(event) {
                                 pageTotal = totalInitialPrice.toFixed(2);
                             }
 
+
+                            if(columnDataName == 'aquisition_price') {
+
+                                var totalAquisitionPrice = 0;
+
+                                data.forEach(function(row){
+                                    totalAquisitionPrice = totalAquisitionPrice + Number(row.aquisition_price) * Number(row.quantity); 
+                                })
+
+                                pageTotal = totalAquisitionPrice.toFixed(2);
+                            }
+
                             if(columnDataName == 'quantity') {
 
                                 var totalQuantity = 0;
@@ -1109,7 +1121,7 @@ socket.onmessage = function(event) {
 
                     quoteOptions[val['id']] = totalArray;
 
-                    //console.log(quoteOptions);
+                    console.log(quoteOptions);
 
 
                 },
