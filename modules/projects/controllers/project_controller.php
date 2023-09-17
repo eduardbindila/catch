@@ -363,7 +363,7 @@ function getImageBase($image_url, $_pageName)
 				$image_url = "http://ideyafoana.com/api/public/storage/photo/no-image.png";
 			}
 
-			$img = file_get_contents($image_url); 
+			$img = @file_get_contents($image_url); 
 			  
 			// Encode the image string data into base64 
 			$data = base64_encode($img); 

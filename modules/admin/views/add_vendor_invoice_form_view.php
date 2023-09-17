@@ -59,19 +59,30 @@
         </div>
         <div class="col-lg-6">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                      <div class="input-group">
                         <div class="form-line">
                             <input type="text" class="form-control" name="vat_value" placeholder="VAT Value">
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                     <div class="input-group">
-                        <div class="form-line">
-                            <input type="text" class="form-control" name="invoice_value" placeholder="Invoice Value (no VAT)" required>
+                <div class="col-lg-8">
+                     <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="invoice_value" placeholder="Invoice Val (-VAT)" required>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" disabled name="calculated_invoice_value" placeholder="Calculated Val" required>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
                 </div>
             </div>
         </div>

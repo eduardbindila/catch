@@ -435,7 +435,7 @@ $(document).ready(function() {
                 
             }, 
             "drawCallback": function(settings, json) {
-
+                calculateInvoiceValue();
             }
 
         });
@@ -544,7 +544,11 @@ $(document).ready(function() {
         };
 
 
-        //console.log(orderDetail);
+
+
+        //console.log($('input[name="total_price"]'));
+
+        calculateInvoiceValue();
 
          $.ajax({
             url: "/ajax/updateVendorInvoiceItems",
@@ -972,4 +976,27 @@ function getPossibleQuantity(params){
 
     return Number(params.stock) + Number(params.delivered) - Number(params.connected)
 
+}
+
+
+function calculateInvoiceValue() {
+    var sum = 0;
+            
+    $('input[name="total_price"]').each(function() {
+        sum += parseFloat($(this).val()) || 0;
+    });
+
+
+    sum = sum.toFixed(2);
+
+    $('input[name="calculated_invoice_value"]').val(sum);
+
+    if($('input[name="invoice_value"]').val() == sum) {
+        $('input[name="invoice_value"]').addClass('validTotalPrice');
+        $('input[name="invoice_value"]').removeClass('invalidTotalPrice');
+
+    } else {
+        $('input[name="invoice_value"]').addClass('invalidTotalPrice');
+        $('input[name="invoice_value"]').removeClass('validTotalPrice');
+    }
 }

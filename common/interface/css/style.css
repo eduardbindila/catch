@@ -8983,3 +8983,10 @@ button.prevStatusButton.btn.btn-default.waves-effect i {
 }
 
     
+.validTotalPrice {
+  background-color: lightgreen!important;
+}
+
+.invalidTotalPrice {
+  background-color: red!important;
+}
