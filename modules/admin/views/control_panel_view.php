@@ -1,3 +1,7 @@
+<script type="text/javascript">
+    var insertResult = <?php echo $insertResult?>;
+</script>
+
 <section class="content projectPage">
     <div class="container-fluid">
         <div class="block-header">
@@ -53,7 +57,7 @@
                                     </div>
                                     <div class="input-group">
                                          <div class="form-line hidden">
-                                            <input id="optionId" type="text" class="form-control" name="id" disabled placeholder="
+                                            <input id="optionId" type="text" class="form-control" name="id" placeholder="
                                             Id" required>
                                         </div>
                                         <div class="form-line">
@@ -61,12 +65,14 @@
                                         </div>
                                         <div class="form-line hidden">
                                             <input id="optionKey" type="text" class="form-control" disabled name="key" placeholder="Key" required>
+
                                         </div>
                                     </div>
                                     <div class="input-group">
                                         <div class="form-line">
-                                            <input id="optionValue" type="text" class="form-control" name="value" placeholder="Value" required>
-                                        </div>
+                                            <!-- <input id="optionValue" type="text" class="form-control" name="value" placeholder="Value" required> -->
+                                            <textarea id="optionValue" class="form-control" name="value" placeholder="Value" > </textarea>
+                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12">

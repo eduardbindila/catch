@@ -60,4 +60,12 @@ $(document).ready(function() {
         	})
         }
     })
+
+console.log(insertResult);
+
+     if(insertResult) {
+        $('.addUserSuccess').removeClass('hidden')
+    } else if(insertResult == 0) {
+        $('.addUserError').removeClass('hidden')
+    }
 });
