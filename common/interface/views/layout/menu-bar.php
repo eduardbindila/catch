@@ -73,6 +73,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                             <span>Prices</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="/admin/control-panel">
+                                            <span>Control Panel</span>
+                                        </a>
+                                    </li>
                         </ul>
                     </li>
                     <?php }?>

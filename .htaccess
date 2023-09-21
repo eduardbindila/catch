@@ -19,7 +19,10 @@ RewriteRule ^viewFile view_file.php [L]
  RewriteRule ^projects/* projects.php [L]
  RewriteRule ^project/* project.php [L]
  RewriteRule ^admin/products/* products.php [L]
+ RewriteRule ^admin/control-panel/* control_panel.php [L]
  
+
+
  RewriteRule ^quotes/* quotes.php [L]
  RewriteRule ^quote/* project.php [L]
  RewriteRule ^offer/* quote.php [L]
@@ -119,6 +122,8 @@ RewriteRule ^ajax/updateOrderLine modules/admin/controllers/update_order_split.p
  RewriteRule ^ajax/getAllUsers modules/profiles/controllers/get_all_users.php [L]
 
  RewriteRule ^ajax/getUserTypes modules/profiles/controllers/get_user_types.php [L]
+
+RewriteRule ^ajax/getOptions modules/admin/controllers/get_options.php [L]
 
 RewriteRule ^ajax/updatePrices modules/cart/controllers/update_prices.php [L]
 
