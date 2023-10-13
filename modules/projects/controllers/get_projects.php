@@ -3,7 +3,7 @@
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-if(isset($_SESSION['user_access']['admin'])) {
+if(isset($_SESSION['user_access']['sales-grid'])) {
 	$restrictQuotesByProfile = "`owner_id` != 'NULL'";
 } else {
 	$restrictQuotesByProfile = "`owner_id` = '".$_SESSION['user_id']."'";
