@@ -43,7 +43,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
     //printError($product[2]);
 
 	$localArray = array(
-			'import_product_list_id' => "",
+			'import_product_list_id' => 0,
 			'product' => "",
 			'product_name' => "",
 			'saga_quantity' => 0,
@@ -62,7 +62,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 
 		$new_product_id = addslashes(trim($product[4]));
 
-		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
+		$localArray['import_product_list_id'] = intval($_POST['import_product_list_id']);
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['new_product_id'] = $new_product_id;
 		$localArray['active'] = $product[5] ? $product[5] : 0;
@@ -72,7 +72,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 
 		$product_id = addslashes(trim($product[0]));
 
-		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
+		$localArray['import_product_list_id'] = intval($_POST['import_product_list_id']);
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['saga_quantity'] = $product[5];
 		$localArray['saga_comment'] = isset($product[19]) ? addslashes(htmlspecialchars($product[19])) : "";
@@ -102,7 +102,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 		// 	'new_product_id' => ''
 		// );
 
-		$localArray['import_product_list_id'] = $_POST['import_product_list_id'];
+		$localArray['import_product_list_id'] = intval($_POST['import_product_list_id']);
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['product_name'] = $product_name;
 		$localArray['new_product_id'] = '';
