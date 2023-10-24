@@ -36,20 +36,20 @@ FROM (
 ) t1
 LEFT JOIN (
     select vii.product_id, 
-        CASE 
-                    WHEN vi.currency = 'Ron' THEN vii.unit_price 
-                    ELSE ROUND(vii.unit_price * vi.exchange_rate, 2) 
-                END AS mpp
-        from vendor_invoice_items vii
-        inner join (
-            select max(id) max_id
-            from vendor_invoice_items vii2 
-            group by product_id 
-        ) t on t.max_id = vii.id
-        join vendor_invoices vi ON vii.vendor_invoice_id  = vi.id
+    CASE 
+                WHEN vi.currency = 'Ron' THEN vii.unit_price 
+                ELSE ROUND(vii.unit_price * vi.exchange_rate, 2) 
+            END AS mpp
+    from vendor_invoice_items vii
+    inner join (
+        select max(id) max_id
+        from vendor_invoice_items vii2 
+        group by product_id 
+    ) t on t.max_id = vii.id
+    join vendor_invoices vi ON vii.vendor_invoice_id  = vi.id
 ) AS t2
 ON t1.product_id = t2.product_id
-WHERE t1.product_id = '0039735'
+-- WHERE t1.product_id = '0048915'
 GROUP BY t1.month, t1.product_id, t2.mpp
 ORDER BY t1.product_id, t1.month;
 
@@ -120,21 +120,21 @@ function displayMonthlyTable($data)
 
   
 
-    //Display the data in the table format for each month
-    echo "<table border='1'>
-        <tr>
-            <th>Month</th>
-            <th>Product ID</th>
-            <th>MPP</th>
-            <th>Initial Stock</th>
-            <th>Initial Value</th>
-            <th>Month Entries</th>
-            <th>Month Entries Value</th>
-            <th>Month Exits</th>
-            <th>Month Exits Value</th>
-            <th>Remaining Stock</th>
-            <th>Remaining Stock Value</th>
-        </tr>";
+    // Display the data in the table format for each month
+    // echo "<table border='1'>
+    //     <tr>
+    //         <th>Month</th>
+    //         <th>Product ID</th>
+    //         <th>MPP</th>
+    //         <th>Initial Stock</th>
+    //         <th>Initial Value</th>
+    //         <th>Month Entries</th>
+    //         <th>Month Entries Value</th>
+    //         <th>Month Exits</th>
+    //         <th>Month Exits Value</th>
+    //         <th>Remaining Stock</th>
+    //         <th>Remaining Stock Value</th>
+    //     </tr>";
 
     foreach ($months as $month => $products) {
         foreach ($products as $productID => $stock) {
@@ -148,19 +148,19 @@ function displayMonthlyTable($data)
             $monthExitsValue = $stock['month_exits_value'] ?? 0;
             $remainingStockValue = $stock['remaining_stock_value'] ?? 0;
 
-            echo "<tr>
-                <td>$month</td>
-                <td>$productID</td>
-                <td>$mpp</td>
-                <td>$initialStock</td>
-                <td>$initialStockValue</td>
-                <td>$monthEntries</td>
-                <td>$monthEntriesValue</td>
-                <td>$monthExits</td>
-                <td>$monthExitsValue</td>
-                <td>$remainingStock</td>
-                <td>$remainingStockValue</td>
-              </tr>";
+            // echo "<tr>
+            //     <td>$month</td>
+            //     <td>$productID</td>
+            //     <td>$mpp</td>
+            //     <td>$initialStock</td>
+            //     <td>$initialStockValue</td>
+            //     <td>$monthEntries</td>
+            //     <td>$monthEntriesValue</td>
+            //     <td>$monthExits</td>
+            //     <td>$monthExitsValue</td>
+            //     <td>$remainingStock</td>
+            //     <td>$remainingStockValue</td>
+            //   </tr>";
         }
     }
 
@@ -172,8 +172,6 @@ function displayMonthlyTable($data)
 
 // Retrieve the data from the database using the UNION ALL query
 $data = getDataFromDatabase($QueryBuilder, $conn);
-
-printError($data);
 
 // Display the table for each month
 $monthsData = displayMonthlyTable($data);
