@@ -2,7 +2,6 @@
 // Include the required files and setup the database connection
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
-error_reporting(E_ALL ^ E_NOTICE);  
 
 $conn = $QueryBuilder->dbConnection();
 
@@ -36,23 +35,25 @@ FROM (
         WHERE p.package_status_id = 4 AND p.invoice_date >= '2023-01-01'
 ) t1
 LEFT JOIN (
-    select vii.product_id, 
-    CASE 
-                WHEN vi.currency = 'Ron' THEN vii.unit_price 
-                ELSE ROUND(vii.unit_price * vi.exchange_rate, 2) 
-            END AS mpp
-    from vendor_invoice_items vii
-    inner join (
-        select max(id) max_id
-        from vendor_invoice_items vii2 
-        group by product_id 
-    ) t on t.max_id = vii.id
-    join vendor_invoices vi ON vii.vendor_invoice_id  = vi.id
+    SELECT 
+        product_id,
+        MAX(vii.id) AS max_id,
+        CASE 
+            WHEN vi.currency = 'Ron' THEN unit_price 
+            ELSE ROUND(unit_price * vi.exchange_rate, 2) 
+        END AS mpp
+    FROM 
+        vendor_invoice_items vii
+    JOIN 
+        vendor_invoices vi ON vi.id = vii.vendor_invoice_id 
+        where product_id > ''
+    GROUP BY 
+        product_id
 ) AS t2
 ON t1.product_id = t2.product_id
--- WHERE t1.product_id in ('0010211','0039735', '0022604', 'XTS4300-2')
+-- WHERE t1.product_id = '0048915'
 GROUP BY t1.month, t1.product_id, t2.mpp
-ORDER BY t1.month, t1.product_id;
+ORDER BY t1.product_id, t1.month;
 
     ";
 
@@ -77,6 +78,7 @@ function displayMonthlyTable($data)
 
     // Organize data by month
     foreach ($data as $row) {
+        //printError($row);
         $month = $row['month'];
         $productID = $row['product_id'];
         $mpp = $row['mpp'];
@@ -136,17 +138,17 @@ function displayMonthlyTable($data)
     //         <th>Remaining Stock Value</th>
     //     </tr>";
 
-    // foreach ($months as $month => $products) {
-    //     foreach ($products as $productID => $stock) {
-    //         $initialStock = $stock['initial_stock'] ?? 0;
-    //         $monthEntries = $stock['month_entries'] ?? 0;
-    //         $monthExits = $stock['month_exits'] ?? 0;
-    //         $remainingStock = $stock['remaining_stock'] ?? 0;
-    //         $mpp = $stock['mpp'] ?? 0;
-    //         $initialStockValue = $stock['initial_stock_value'] ?? 0;
-    //         $monthEntriesValue = $stock['month_entries_value'] ?? 0;
-    //         $monthExitsValue = $stock['month_exits_value'] ?? 0;
-    //         $remainingStockValue = $stock['remaining_stock_value'] ?? 0;
+    foreach ($months as $month => $products) {
+        foreach ($products as $productID => $stock) {
+            $initialStock = $stock['initial_stock'] ?? 0;
+            $monthEntries = $stock['month_entries'] ?? 0;
+            $monthExits = $stock['month_exits'] ?? 0;
+            $remainingStock = $stock['remaining_stock'] ?? 0;
+            $mpp = $stock['mpp'] ?? 0;
+            $initialStockValue = $stock['initial_stock_value'] ?? 0;
+            $monthEntriesValue = $stock['month_entries_value'] ?? 0;
+            $monthExitsValue = $stock['month_exits_value'] ?? 0;
+            $remainingStockValue = $stock['remaining_stock_value'] ?? 0;
 
             // echo "<tr>
             //     <td>$month</td>
@@ -161,13 +163,11 @@ function displayMonthlyTable($data)
             //     <td>$remainingStock</td>
             //     <td>$remainingStockValue</td>
             //   </tr>";
-    //     }
-    // }
+        }
+    }
 
     //echo "</table>";
 
-
-    //printError($months);
 
     return $months;
 }
@@ -177,57 +177,6 @@ $data = getDataFromDatabase($QueryBuilder, $conn);
 
 // Display the table for each month
 $monthsData = displayMonthlyTable($data);
-
-
-$prevMonth = null;
-
-$fullMonths = array();
-
-foreach ($monthsData as $monthKey => $month) {
-
-    $fullMonths[$monthKey] = $month;
-
-     //echo $monthKey. ' ';
-
-    if ($prevMonth !== null) {
-
-        //echo $prevMonth . ' vs ' . $monthKey;
-        // printError($fullMonths[$prevMonth]);
-        // printError($month);
-
-        $diff = array_diff_assoc($fullMonths[$prevMonth], $month); 
-
-        foreach ($diff as $product => $properties) {
-            //echo ' '.$product;
-            //printError($properties);
-
-            //printError($dif[$product]);
-
-            $diff[$product]['initial_stock'] = $properties['remaining_stock'];
-            $diff[$product]['initial_stock_value'] = $properties['remaining_stock_value'];
-
-            $diff[$product]['month_entries'] = 0;
-            $diff[$product]['month_entries_value'] = 0;
-            $diff[$product]['month_exits'] = 0;
-            $diff[$product]['month_exits_value'] = 0;
-
-            //printError($properties);
-        }
-
-        //printError($diff); 
-
-        $fullMonths[$monthKey] = array_merge($fullMonths[$monthKey], $diff) ; 
-
-    }
-
-    $prevMonth = $monthKey;        
-
-
-    
-}
-
-$monthsData = $fullMonths;
-
 
 // Function to generate a CSV file for the given data
 function generateCSVFile($filename, $data)
