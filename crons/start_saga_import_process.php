@@ -6,9 +6,9 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
  $vendorRequirements = [
         'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => false],
-        'DENUMIRE' => ['type' => 'Character', 'max_length' => 48, 'optional' => false],
-        'COD_FISCAL' => ['type' => 'Character', 'max_length' => 13, 'optional' => false],
-        'ANALITIC' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
+        'DENUMIRE' => ['type' => 'Character', 'max_length' => 48, 'optional' => true],
+        'COD_FISCAL' => ['type' => 'Character', 'max_length' => 13, 'optional' => true],
+        'ANALITIC' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
         'ZS' => ['type' => 'Numeric', 'max_length' => 3, 'decimals' => 0, 'optional' => true],
         'LOCALITATE' => ['type' => 'Character', 'max_length' => 46, 'optional' => true],
         'ADRESA' => ['type' => 'Character', 'max_length' => 48, 'optional' => true],
@@ -18,19 +18,19 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         'GRUPA' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
         'AGENT' => ['type' => 'Character', 'max_length' => 4, 'optional' => true],
         'DEN_AGENT' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
-        'TIP_TERT' => ['type' => 'Character', 'max_length' => 1, 'optional' => false],
-        'TARA' => ['type' => 'Character', 'max_length' => 2, 'optional' => false],
+        'TIP_TERT' => ['type' => 'Character', 'max_length' => 1, 'optional' => true],
+        'TARA' => ['type' => 'Character', 'max_length' => 2, 'optional' => true],
         'TEL' => ['type' => 'Character', 'max_length' => 20, 'optional' => true],
         'EMAIL' => ['type' => 'Character', 'max_length' => 100, 'optional' => true],
-        'IS_TVA' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => false],
+        'IS_TVA' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => true],
     ];
 
     $clientRequirements = [
         'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => false],
-        'DENUMIRE' => ['type' => 'Character', 'max_length' => 48, 'optional' => false],
-        'COD_FISCAL' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
-        'REG_COM' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
-        'ANALITIC' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
+        'DENUMIRE' => ['type' => 'Character', 'max_length' => 48, 'optional' => true],
+        'COD_FISCAL' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
+        'REG_COM' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
+        'ANALITIC' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
         'ZS' => ['type' => 'Numeric', 'max_length' => 3, 'decimals' => 0, 'optional' => true],
         'DISCOUNT' => ['type' => 'Numeric', 'max_length' => 5, 'decimals' => 2, 'optional' => true],
         'LOCALITATE' => ['type' => 'Character', 'max_length' => 46, 'optional' => true],
@@ -47,20 +47,20 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         'AGENT' => ['type' => 'Character', 'max_length' => 4, 'optional' => true],
         'DEN_AGENT' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
         'GRUPA' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
-        'TIP_TERT' => ['type' => 'Character', 'max_length' => 1, 'optional' => false],
-        'TARA' => ['type' => 'Character', 'max_length' => 2, 'optional' => false],
+        'TIP_TERT' => ['type' => 'Character', 'max_length' => 1, 'optional' => true],
+        'TARA' => ['type' => 'Character', 'max_length' => 2, 'optional' => true],
         'TEL' => ['type' => 'Character', 'max_length' => 20, 'optional' => true],
         'EMAIL' => ['type' => 'Character', 'max_length' => 100, 'optional' => true],
-        'IS_TVA' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => false],
+        'IS_TVA' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => true],
     ];
 
      $productRequirements = [
         'COD' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
-        'DENUMIRE' => ['type' => 'Character', 'max_length' => 60, 'optional' => false],
-        'UM' => ['type' => 'Character', 'max_length' => 5, 'optional' => false],
-        'TVA' => ['type' => 'Numeric', 'max_length' => 5, 'decimals' => 2, 'optional' => false],
-        'TIP' => ['type' => 'Character', 'max_length' => 2, 'optional' => false],
-        'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => false],
+        'DENUMIRE' => ['type' => 'Character', 'max_length' => 60, 'optional' => true],
+        'UM' => ['type' => 'Character', 'max_length' => 5, 'optional' => true],
+        'TVA' => ['type' => 'Numeric', 'max_length' => 5, 'decimals' => 2, 'optional' => true],
+        'TIP' => ['type' => 'Character', 'max_length' => 2, 'optional' => true],
+        'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
         'PRET_VANZ' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 4, 'optional' => true],
         'PRET_V_TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 4, 'optional' => true],
         'COD_BARE' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
@@ -72,59 +72,60 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
      $vendorInvoicesRequirements = [
         'NR_NIR' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
-        'NR_INTRARE' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
+        'NR_INTRARE' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
         'GESTIUNE' => ['type' => 'Character', 'max_length' => 4, 'optional' => true],
         'DEN_GEST' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
-        'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => false],
-        'DATA' => ['type' => 'Date', 'optional' => false],
-        'SCADENT' => ['type' => 'Date', 'optional' => false],
-        'TIP' => ['type' => 'Character', 'max_length' => 1, 'optional' => false],
-        'TVAI' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => false],
+        'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => true],
+        'DATA' => ['type' => 'Date', 'optional' => true],
+        'SCADENT' => ['type' => 'Date', 'optional' => true],
+        'TIP' => ['type' => 'Character', 'max_length' => 1, 'optional' => true],
+        'TVAI' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => true],
         'COD_ART' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
-        'DEN_ART' => ['type' => 'Character', 'max_length' => 60, 'optional' => false],
+        'DEN_ART' => ['type' => 'Character', 'max_length' => 60, 'optional' => true],
         'UM' => ['type' => 'Character', 'max_length' => 5, 'optional' => true],
-        'CANTITATE' => ['type' => 'Numeric', 'max_length' => 14, 'decimals' => 3, 'optional' => false],
+        'CANTITATE' => ['type' => 'Numeric', 'max_length' => 14, 'decimals' => 3, 'optional' => true],
         'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
-        'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => false],
-        'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => false],
-        'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => false],
-        'CONT' => ['type' => 'Character', 'max_length' => 20, 'optional' => false],
+        'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => true],
+        'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
+        'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
+        'CONT' => ['type' => 'Character', 'max_length' => 20, 'optional' => true],
         'PRET_VANZ' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'GRUPA' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
     ];
 
      $clientInvoicesRequirements = [
-        'NR_IESIRE' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
-        'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => false],
-        'DATA' => ['type' => 'Date', 'optional' => false],
-        'SCADENT' => ['type' => 'Date', 'optional' => false],
-        'TIP' => ['type' => 'Character', 'max_length' => 1, 'optional' => false],
-        'TVAI' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => false],
+        'NR_IESIRE' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
+        'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => true],
+        'DATA' => ['type' => 'Date', 'optional' => true],
+        'SCADENT' => ['type' => 'Date', 'optional' => true],
+        'TIP' => ['type' => 'Character', 'max_length' => 1, 'optional' => true],
+        'TVAI' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => true],
         'GESTIUNE' => ['type' => 'Character', 'max_length' => 4, 'optional' => true],
         'DEN_GEST' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
-        'COD_ART' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
-        'DEN_ART' => ['type' => 'Character', 'max_length' => 60, 'optional' => false],
-        'UM' => ['type' => 'Character', 'max_length' => 5, 'optional' => false],
-        'CANTITATE' => ['type' => 'Numeric', 'max_length' => 14, 'decimals' => 3, 'optional' => false],
+        'COD_ART' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
+        'DEN_ART' => ['type' => 'Character', 'max_length' => 60, 'optional' => true],
+        'UM' => ['type' => 'Character', 'max_length' => 5, 'optional' => true],
+        'CANTITATE' => ['type' => 'Numeric', 'max_length' => 14, 'decimals' => 3, 'optional' => true],
         'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
-        'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => false],
-        'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => false],
-        'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => false],
-        'CONT' => ['type' => 'Character', 'max_length' => 20, 'optional' => false],
-        'PRET_VANZ' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => false],
+        'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => true],
+        'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
+        'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
+        'CONT' => ['type' => 'Character', 'max_length' => 20, 'optional' => true],
+        'PRET_VANZ' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'GRUPA' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
     ];
 
 
-function validateData($list, $fieldRequirements) {
-   
-//var_dump($list);
+function validateData($list, $fieldRequirements, $requestType) {
+
     $validatedData = [];
 
     foreach ($list as $one) {
         $validatedOne = [];
 
         foreach ($fieldRequirements as $fieldName => $requirements) {
+
+            $camelCaseKey = lcfirst(str_replace('_', '', ucwords(strtolower($fieldName), '_')));
             
             if (array_key_exists($fieldName, $one)) {
                 $fieldValue = $one[$fieldName];
@@ -136,13 +137,14 @@ function validateData($list, $fieldRequirements) {
 
                 // Apply requirements for the 'Numeric' type
                 if ($requirements['type'] === 'Numeric') {
+                    $fieldValue = (float)$fieldValue;
                     $fieldValue = number_format($fieldValue, $requirements['decimals'], '.', '');
                 }
 
-                $validatedOne[$fieldName] = $fieldValue;
+                $validatedOne[$camelCaseKey] = $fieldValue;
             } elseif (!$requirements['optional']) {
                 // If the field is not present and it's not optional, set an empty string
-                $validatedOne[$fieldName] = "";
+                $validatedOne[$camelCaseKey] = "";
             }
         }
 
@@ -150,14 +152,22 @@ function validateData($list, $fieldRequirements) {
         $validatedData[] = $validatedOne;
     }
 
-    return $validatedData;
+    $validatedRequest[$requestType] = $validatedData;
+
+    return $validatedRequest;
 }
 
 $conn = $QueryBuilder->dbConnection();
 
-$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 10 WEEK AND vi.`date` < CURDATE()";
+$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 11 WEEK AND vi.`date` < CURDATE()";
+$clientInvoiceSelectionRule = "sii.invoice_id is null and id.`DATA` >= curdate() - interval 11 Week and id.`DATA` < curdate()";
 
-$clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND p.invoice_date  >= CURDATE() - INTERVAL 10 WEEK AND p.invoice_date < CURDATE()";
+
+/////////////////////
+//                //
+//VENDOR INVOICES//
+//              //
+/////////////////
 
 $vendorInvoicesQueryPart = "
 FROM vendor_invoices vi
@@ -168,21 +178,7 @@ LEFT JOIN saga_imported_invoices sii ON vi.id = sii.invoice_id AND sii.type = 'v
 WHERE ".$vendorInvoiceSelectionRule;
 
 
-$clientInvoicesQueryPart = "
-from packages p 
-join package_items pi1 on p.id = pi1.package_id and p.package_status_id = 4
-join quotes q on q.id = p.quote_id
-left join quote_items qi on pi1.quote_item_id = qi.id 
-JOIN products pr on pr.id = qi.product_id
-JOIN clients c on c.id = q.client_id
-LEFT JOIN saga_imported_invoices sii on pi1.id = sii.invoice_id AND sii.type = 'client'
-WHERE ". $clientInvoiceSelectionRule;
-
-
-//SQL Variables mapping
-
-
-//Vendors
+//Vendor Invoices Fields
 $vendorCode = "
 CASE
     WHEN v.code IS NOT NULL AND v.code <> '' THEN v.code
@@ -191,35 +187,7 @@ END AS COD
 ";
 $vendorName = "v.name as DENUMIRE";
 
-//Clients
-$clientCode = "
-CASE
-    WHEN c.saga_code IS NOT NULL AND c.saga_code <> '' THEN c.saga_code
-    ELSE CONCAT('B2B-', c.id)
-END AS COD
-";
-$clientName = "c.name as DENUMIRE";
 
-
-//Products
-$productCode = "prd.product_id as COD";
-$productName = "prd.product_name as DENUMIRE";
-$productVAT = "19 as TVA";
-$productTip = "
-CASE
-    WHEN prd.isService = 1 THEN 704
-    ELSE 371
-END AS TIP
-";
-$productTip = "
-CASE
-    WHEN prd.isService = 1 THEN 'Servicii vandute'
-    ELSE 'Marfuri'
-END AS DEN_TIP
-";
-
-
-//Vendor Invoices
 $vendorInvoiceNir = "vi.id  + 8000 as NR_NIR";
 $vendorInvoiceNo = "vi.invoice_no as NR_INTRARE";
 $vendorInvoiceCode = $vendorCode;
@@ -250,26 +218,7 @@ END AS TVA
 
 ";
 
-//Client Invoices
-$clientInvoiceNo = "
-CASE 
-    WHEN c.country = 'RO' THEN CONCAT('RON-', p.`Invoice Number`)
-    ELSE CONCAT('EXT-', p.`Invoice Number`)
-END
-";
-$clientInvoiceClientCode = $clientCode;
-$clientInvoiceDate = "p.invoice_date as DATA";
-$clientInvoiceDueDate = "p.due_date as SCADENT";
-$clientInvoiceProductCode = "product_id as COD_ART";
-$clientInvoiceProductName = "product_name as DEN_ART";
-$clientInvoiceProductQuantity = "pi1.package_quantity as CANTITATE";
-$clientInvoiceProductVAT = $vendorInvoiceProductVAT;
-// $clientInvoiceProductValue = " as DEN_ART";
-// $clientInvoiceVAT = "vii.total_price*19/100 AS TVA";
-
-
-
-//Querys
+//Vendor Invoices Query
 $selectVendorInvoicesQuery="SELECT  
     ".$vendorInvoiceNir.", 
     ".$vendorInvoiceNo.", 
@@ -283,36 +232,24 @@ $selectVendorInvoicesQuery="SELECT
     ".$vendorInvoiceProductValue.", 
     ".$vendorInvoiceVAT.",  
     ".$vendorInvoiceAccount."
-
-
     ".$vendorInvoicesQueryPart.";";
 
 
-$selectClientInvoicesQuery="
-    SELECT * 
-    ".$clientInvoicesQueryPart;
-
-$selectAllProductsQuery = "
- SELECT DISTINCT ".$productCode.", ".$productName.", ".$productTip.",  ".$productVAT."
-    FROM (
-         SELECT DISTINCT vii.product_id, pr.product_name, pr.isService 
-        ".$vendorInvoicesQueryPart."
-        UNION
-        SELECT DISTINCT qi.product_id, pr.product_name, pr.isService
-        ".$clientInvoicesQueryPart."
-    ) as prd;
-";
+$vendorInvoicesQuery = $QueryBuilder->customQuery(
+    $conn,
+    $selectVendorInvoicesQuery
+);
 
 
-$selectAllClientsQuery = "
-    SELECT distinct ".$clientName.", ".$clientCode."
-    FROM clients c
-    WHERE id IN (
-        
-        SELECT DISTINCT client_id
-       ".$clientInvoicesQueryPart."
-    );";
+$vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
 
+
+
+/////////////////////
+//                //
+//    VENDORS    //
+//              //
+/////////////////
 
 $selectAllVendorsQuery = "
     SELECT distinct ".$vendorName.", ".$vendorCode."
@@ -324,37 +261,34 @@ $selectAllVendorsQuery = "
     ";
 
 
-// // Use your custom query builder to execute the query
-// $vendorsQuery = $QueryBuilder->customQuery(
-//     $conn,
-//     $selectAllVendorsQuery
-// );
-// $vendorsData = validateData($vendorsQuery, $vendorRequirements);
-
-
-// // Use your custom query builder to execute the query
-// $clientsQuery = $QueryBuilder->customQuery(
-//     $conn,
-//     $selectAllClientsQuery
-// );
-//$clientsData = validateData($clientsQuery, $clientRequirements);
-
 
 // Use your custom query builder to execute the query
-// $productsQuery = $QueryBuilder->customQuery(
-//     $conn,
-//     $selectAllProductsQuery
-// );
+$vendorsQuery = $QueryBuilder->customQuery(
+    $conn,
+    $selectAllVendorsQuery
+);
+$vendorsData = validateData($vendorsQuery, $vendorRequirements, 'furnizori');
 
-// $productsData = validateData($productsQuery, $productRequirements);
-
-// // Use your custom query builder to execute the query
-// $vendorInvoicesQuery = $QueryBuilder->customQuery(
-//     $conn,
-//     $selectVendorInvoicesQuery
-// );
+//echo $selectClientInvoicesQuery;
+// printError($vendorsData);
 
 
+/////////////////////
+//                //
+//CLIENT INVOICES//
+//              //
+/////////////////
+
+
+$clientInvoicesQueryPart = "
+from invoiced_data id
+left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii.type = 'client'
+";
+
+$selectClientInvoicesQuery = "
+SELECT id.* ".
+$clientInvoicesQueryPart."
+WHERE ".$clientInvoiceSelectionRule;
 
 
 // Use your custom query builder to execute the query
@@ -363,13 +297,94 @@ $clientInvoicesQuery = $QueryBuilder->customQuery(
     $selectClientInvoicesQuery
 );
 
- $clientInvoicesData = validateData($clientInvoicesQuery, $clientInvoicesRequirements);
+ $clientInvoicesData = validateData($clientInvoicesQuery, $clientInvoicesRequirements, 'iesiri');
 
-echo $selectVendorInvoicesQuery;
-printError($clientInvoicesQuery);
+
+
+/////////////////////
+//                //
+//    CLIENTS    //
+//              //
+/////////////////
+
+$selectAllClientsQuery = "
+   SELECT 
+   distinct COD,
+   c.name as DENUMIRE,
+   c.fiscal_code as COD_FISCAL
+    ".
+$clientInvoicesQueryPart."
+JOIN clients c ON id.`COD` = CASE WHEN c.saga_code > 0 THEN c.saga_code ELSE CONCAT('B2B-', c.id) end
+WHERE ".$clientInvoiceSelectionRule;
+
+
+
+// Use your custom query builder to execute the query
+$clientsQuery = $QueryBuilder->customQuery(
+    $conn,
+    $selectAllClientsQuery
+);
+$clientsData = validateData($clientsQuery, $clientRequirements, 'clienti');
+
+
+
+/////////////////////
+//                //
+//    PRODUCTS   //
+//              //
+/////////////////
+
+//Products
+$productCode = "prd.product_id as COD";
+$productName = "prd.product_name as DENUMIRE";
+$productVAT = "19 as TVA";
+$productTip = "
+CASE
+    WHEN prd.isService = 1 THEN ''
+    ELSE 1
+END AS TIP
+";
+$productTipName = "
+CASE
+    WHEN prd.isService = 1 THEN ''
+    ELSE 'Marfuri'
+END AS DEN_TIP
+";
+
+
+$selectAllProductsQuery = "
+ SELECT DISTINCT COD_ART as COD, DENUMIRE, ".$productTip.",  ".$productVAT.", ".$productTipName."
+    FROM (
+         SELECT DISTINCT vii.product_id as COD_ART, pr.product_name as DENUMIRE, pr.isService 
+        ".$vendorInvoicesQueryPart."
+        UNION
+       
+         SELECT 
+           DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService
+            ".
+        $clientInvoicesQueryPart."
+        join products p on id.`COD_ART` = p.id 
+        WHERE ".$clientInvoiceSelectionRule."
+    ) as prd;
+";
+
+
+//Use your custom query builder to execute the query
+$productsQuery = $QueryBuilder->customQuery(
+    $conn,
+    $selectAllProductsQuery
+);
+
+
+
+$productsData = validateData($productsQuery, $productRequirements,'articole');
 
 $QueryBuilder->closeConnection();
 
+// printError($clientInvoicesData);
+
+
+echo json_encode($clientInvoicesData);
 
 	
 ?>
