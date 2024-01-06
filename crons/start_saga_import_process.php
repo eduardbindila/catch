@@ -120,6 +120,8 @@ function validateData($list, $fieldRequirements, $requestType) {
 
     $validatedData = [];
 
+    //printError($list);
+
     foreach ($list as $one) {
         $validatedOne = [];
 
@@ -159,8 +161,8 @@ function validateData($list, $fieldRequirements, $requestType) {
 
 $conn = $QueryBuilder->dbConnection();
 
-$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 11 WEEK AND vi.`date` < CURDATE()";
-$clientInvoiceSelectionRule = "sii.invoice_id is null and id.`DATA` >= curdate() - interval 11 Week and id.`DATA` < curdate()";
+$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 12 WEEK AND vi.`date` < CURDATE()";
+$clientInvoiceSelectionRule = "sii.invoice_id is null and id.`DATA` >= curdate() - interval 12 Week and id.`DATA` < curdate()";
 
 
 /////////////////////
@@ -379,12 +381,70 @@ $productsQuery = $QueryBuilder->customQuery(
 
 $productsData = validateData($productsQuery, $productRequirements,'articole');
 
-$QueryBuilder->closeConnection();
+
 
 // printError($clientInvoicesData);
 
 
-echo json_encode($clientInvoicesData);
+
+
+$productsJson = json_encode($productsData);
+
+$clientsJson = json_encode($clientsData);
+
+$vendorInvoicesJson = json_encode($vendorInvoicesData);
+
+$vendorsJson = json_encode($vendorsData);
+
+$clientInvoicesJson = json_encode($clientInvoicesData);
+
+
+
+
+
+$startProcess = $QueryBuilder->insert(
+    $conn,
+    $options = array(
+        "table" => "saga_import_processes",
+        "keys" => ["overall_status"],
+        "values" => [1]
+    )
+);
+
+
+if($startProcess) {
+
+
+
+    $insertArray = [
+        [$startProcess, 1, htmlspecialchars($clientsJson), 5],
+        [$startProcess, 2, htmlspecialchars($productsJson), 5],
+        [$startProcess, 3, htmlspecialchars($vendorsJson), 5],
+        [$startProcess, 4, htmlspecialchars($clientInvoicesJson), 5],
+        [$startProcess, 5, htmlspecialchars($vendorInvoicesJson), 5],
+    ];
+
+    $inserProcessDetails = $QueryBuilder->insert(
+        $conn,
+        $options = array(
+            "table" => "saga_import_details",
+            "keys" => ["saga_process_id", "request_type_id", "request", "status"],
+            "values" => $insertArray
+        ),
+        $multi = true
+    );
+
+
+    // echo $startProcess;
+
+}
+
+
+$QueryBuilder->closeConnection();
+
+
+
+
 
 	
 ?>
