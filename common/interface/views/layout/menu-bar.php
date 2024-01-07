@@ -48,6 +48,9 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                                         <a href="/admin/manage/products">Manage Products</a>
                                     </li>
                                     <li>
+                                        <a href="/admin/saga-processes">Saga Processes Overview</a>
+                                    </li>
+                                    <li>
                                         <a href="/admin/import/categories">Import Categories</a>
                                     </li>
                                     <li>
