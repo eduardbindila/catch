@@ -370,7 +370,7 @@ $(document).ready(function() {
 
                         //console.log(row.unit_price > 0 && row.reception == 0)
 
-                        if(row.unit_price > 0 && row.reception == 0) {
+                        if(row.reception == 0) {
                             disabled = ""
                         }
 
