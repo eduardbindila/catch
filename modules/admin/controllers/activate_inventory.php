@@ -13,6 +13,7 @@ JOIN vendor_invoice_items vii ON vii.product_id = p.id
 JOIN vendor_invoices vi ON vii.vendor_invoice_id = vi.id
 SET
   vii.delivered_quantity = vii.quantity - p.saga_quantity,
+  vii.reception = 1,
   p.saga_quantity = vii.quantity,
   vi.closed_invoice = 1,
   vi.closed_date = NOW()

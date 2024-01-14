@@ -63,6 +63,11 @@
                                 </button>
                             </li>
                             <li>
+                                <button class="btn btn-lg btn-primary waves-effect addInventoryData hidden"  data-toggle="modal"data-target="#addInventoryData-modal">
+                                    Add Inventory Data
+                                </button>
+                            </li>
+                            <li>
                                 <button class="addExternal btn btn-lg btn-default waves-effect" data-invoice="<?php echo $userId ?>" >
                                     Add External Items
                                 </button>
@@ -110,6 +115,30 @@
                 </div>
                 <div class="modal-body">
                             <?php include($_MPATH['CART_CONTROLLERS'].'cart_search_controller.php');?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Large Size -->
+    <div class="modal fade" id="addInventoryData-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title quoteTitle" >Add inventory data</h4>
+                </div>
+                <div class="modal-body">
+                            <h4>Copy here from XLS Product id and Quantity<h4>
+                              <textarea id="excel_data" rows="10" cols="50" placeholder=""></textarea>
+                            <br>
+                            <button id="submitBtn" class="btn btn-lg btn-primary waves-effect">Show Data</button>
+
+                            <button id="confirmBtn" class="btn btn-lg btn-success waves-effect " style="display: none;">Confirm and Add Inventory</button>
+
+                            <div id="tableContainer" ></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>

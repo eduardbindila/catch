@@ -127,6 +127,10 @@ $(document).ready(function() {
        if(invoiceData.inventory === '1') {
 
             $('.addExternal').addClass('hidden');
+
+
+            
+            $('.addNewItem').addClass('hidden');
             $('.inventorySwitch').prop('checked', true);
 
             $('.showInventory').removeClass('hidden');
@@ -135,6 +139,7 @@ $(document).ready(function() {
        if(invoiceData.inventory === '1' && invoiceData.closed_invoice === '0') {
 
             $('.activateInventory').removeClass('hidden');
+            $('.addInventoryData').removeClass('hidden');
        }
 
 
@@ -1032,6 +1037,84 @@ $(document).ready(function() {
 
         
     });
+
+    var excelData = []; // Declara variabila în afara funcțiilor
+
+$("#submitBtn").click(function() {
+    // Obține datele și procesează-le
+    var inputData = $("#excel_data").val();
+    excelData = processData(inputData);
+
+    // Afișează tabelul
+    showTable(excelData);
+
+     if (excelData.length > 0) {
+        $("#confirmBtn").show();
+    } else {
+        $("#confirmBtn").hide();
+    }
+});
+
+function processData(data) {
+    var rows = data.split(/\r\n|\r|\n/);
+
+    // Filtrare: Elimină rândurile care conțin cel puțin o valoare vidă
+    var filteredRows = rows.filter(function(row) {
+        return row.trim() !== "";
+    });
+
+    // Construiește array-ul de obiecte pentru datele procesate
+    var dataArray = [];
+
+    filteredRows.forEach(function(row) {
+        var values = row.split("\t");
+
+        // Verifică dacă coloana a doua conține o valoare numerică
+        if (!isNaN(values[1])) {
+            dataArray.push({ product_id: values[0], quantity: values[1] });
+        }
+    });
+
+    return dataArray;
+}
+
+
+function showTable(data) {
+    // Construiește tabelul
+    var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th></tr>";
+
+    data.forEach(function(row) {
+        tableHtml += "<tr><td>" + row.product_id + "</td><td>" + row.quantity + "</td></tr>";
+    });
+
+    tableHtml += "</table>";
+
+    // Afișează tabelul
+    $("#tableContainer").html(tableHtml);
+}
+
+$("#confirmBtn").click(function(e) {
+    // Aici poți adăuga codul pentru a trimite datele către server
+    // și a le salva în baza de date
+
+    e.preventDefault();
+
+    console.log('a');
+
+    $.ajax({
+        url: "/ajax/addInventoryData",
+        type: "POST",
+        data: { data: excelData, vendor_invoice_id: invoiceId },
+        success: function(response) {
+            //location.reload();
+        },
+        error: function() {
+            // Tratează eroare
+        }
+    });
+});
+
+
 
  });
 
