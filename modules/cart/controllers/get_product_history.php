@@ -28,7 +28,10 @@ $conn = $QueryBuilder->dbConnection();
       'vendor_invoice' as document_type,
       vii.vendor_invoice_id as id,
       vii.id as sub_id,
-      vii.quantity AS units,
+      CASE
+        WHEN vi.inventory = 1 THEN vii.delivered_quantity
+        ELSE vii.quantity
+      END AS units,
       vii.unit_price AS unit_price,
       vii.total_price AS total_value
     FROM

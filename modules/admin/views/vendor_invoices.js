@@ -121,6 +121,23 @@ $(document).ready(function() {
                 text : item.id
             }));
         });
+
+       
+
+       if(invoiceData.inventory === '1') {
+
+            $('.addExternal').addClass('hidden');
+            $('.inventorySwitch').prop('checked', true);
+
+            $('.showInventory').removeClass('hidden');
+       }
+
+       if(invoiceData.inventory === '1' && invoiceData.closed_invoice === '0') {
+
+            $('.activateInventory').removeClass('hidden');
+       }
+
+
        if(isDisabled)
         $("#invoiceData select[name=vendor]").val(invoiceData.vendor);
 
@@ -158,6 +175,27 @@ $(document).ready(function() {
             $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
         }      
     })
+
+
+
+     $('.inventorySwitch').change(function(e) {
+       var inventory = $(this).prop('checked');
+       $.ajax({
+            url: "/ajax/makeInventory",
+            type: "post",
+            dataType: "json",
+            data: {'vendor_invoice_id': invoiceId, 'inventory': inventory}
+        }).success(function(json){
+            location.reload();
+        }).error(function(xhr, status, error) {
+           
+        }).complete(function(data){
+ 
+
+        })
+
+    });
+
     
 
     if(isDisabled) {
@@ -217,7 +255,8 @@ $(document).ready(function() {
                                  ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product="'+row.product_id+'" data-delivered='+row.delivered_quantity+'>'+
                                     '<i class="material-icons">refresh</i>'+
                                 '</button>'
-                  }
+                  },
+                  "visible":  invoiceData.inventory === '1' ? false : true
                 },
                 { 
                     "data": "product_id", 
@@ -281,6 +320,7 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "saga_quantity",
+                    "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
                     
                 },
                 { 
@@ -331,6 +371,9 @@ $(document).ready(function() {
                             disabled = "";
                         }
 
+                        if(invoiceData.inventory === '1'  ) {
+                            disabled = "disabled"
+                        } 
                         
                             
                         return '<div class="form-group">' + 
@@ -376,6 +419,10 @@ $(document).ready(function() {
 
                         if(row.reception > 0  ) {
                             disabled = "disabled"
+                        }
+
+                         if(invoiceData.inventory === '1'  ) {
+                            disabled = "disabled"
                         } 
                             
                         return '<div class="form-group">' + 
@@ -390,7 +437,9 @@ $(document).ready(function() {
                   }
                 },
                 {
-                    "data": "connected_total"
+                    "data": "connected_total",
+                     "visible":  invoiceData.inventory === '1' ? false : true
+
                 },
 
                 { 
@@ -406,7 +455,8 @@ $(document).ready(function() {
                                             ' data-product="'+row.product_id+'" data-item="'+row.id+'" data-delivered="'+row.delivered_quantity+'" data-toggle="modal "data-target="#addConnection-modal">'+
                                                 '<i class="material-icons">add</i>'+
                                             '</button>'
-                      }
+                      },
+                       "visible":  invoiceData.inventory === '1' ? false : true
                 },
                 {
                     "data": null,
@@ -469,6 +519,30 @@ $(document).ready(function() {
             .animate( { color: 'black' } );
     });
 
+
+    $('.activateInventory').on('click', function () {
+
+        var invoiceId = $(this).attr('data-invoice');
+
+        $.ajax({
+            url: "/ajax/activateInventory",
+            type: "post",
+            dataType: "json",
+            data: {'vendor_invoice_id':invoiceId}
+        }).success(function(json){
+            location.reload();
+
+        }).error(function(xhr, status, error) {
+           
+        }).complete(function(data){
+
+            
+            
+
+        })
+
+        
+    });
 
     $('.body').on('click', '.removeItem', function(){
         var itemId = $(this).attr('data-item');

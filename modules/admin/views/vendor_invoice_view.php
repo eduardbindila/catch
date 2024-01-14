@@ -26,6 +26,11 @@
                                     Edit: <label>OFF<input name="edit" class="editSwitch" type="checkbox"><span class="lever"></span>ON</label>
                                 </div>
                             </li>
+                            <li>
+                                <div class="switch">
+                                    Inventory: <label>NO<input name="inventory" class="inventorySwitch" type="checkbox"><span class="lever switch-col-green"></span>YES</label>
+                                </div>
+                            </li>
                            
                         </ul>
                     </div>
@@ -62,6 +67,11 @@
                                     Add External Items
                                 </button>
                             </li>
+                            <li>
+                                <button class="activateInventory btn btn-lg btn-success waves-effect hidden" data-invoice="<?php echo $userId ?>" >
+                                    Activate Inventory
+                                </button>
+                            </li>
                         </ul>
                     </div>
                     <div class="body">
@@ -73,10 +83,10 @@
                                         <th>Product</th>
                                         <th>Type</th>
                                         <th>Free Stock</th>
-                                        <th>Quantity</th>
+                                        <th><span class="showInventory hidden">Inventory </span>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
-                                        <th>Delivered Quantity</th>
+                                        <th><span class="showInventory hidden">Inventory Difference </span>Delivered Quantity</th>
                                         <th>Connected Quantity</th>
                                         <th>Connect Orders</th>
                                         <th>Remove</th>
