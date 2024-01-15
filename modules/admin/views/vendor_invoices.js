@@ -328,6 +328,11 @@ $(document).ready(function() {
                     "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
                     
                 },
+                 { 
+                    "data": "total_reserved_quantity",
+                    "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
+                    
+                },
                 { 
                     "data": "quantity", 
                     "className": 'invoiceTableInput',

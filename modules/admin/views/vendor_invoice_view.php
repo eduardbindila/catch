@@ -88,6 +88,7 @@
                                         <th>Product</th>
                                         <th>Type</th>
                                         <th>Free Stock</th>
+                                        <th>Reserved Stock</th>
                                         <th><span class="showInventory hidden">Inventory </span>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
