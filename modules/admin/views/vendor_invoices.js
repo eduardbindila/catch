@@ -1119,10 +1119,11 @@ $("#confirmBtn").click(function(e) {
         type: "POST",
         data: { data: JSON.stringify(excelData), vendor_invoice_id: invoiceId },
         success: function(response) {
-            //location.reload();
+            location.reload();
         },
         error: function() {
             // Tratează eroare
+            $('.updateError').removeClass('hidden');
         }
     });
 });
