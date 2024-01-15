@@ -37,14 +37,14 @@ $conn = $QueryBuilder->dbConnection();
     // Elimină virgula finală
     $query = rtrim($query, ',');
 
-    //echo $query;
+    echo $query;
 
 	$projectsQuery = $QueryBuilder->customQuery(
 		$conn,
 		$query = $query
 	);
 
-	if($conn->error)
+	
       echo $conn->error;
 
 echo  json_decode($projectsQuery);
