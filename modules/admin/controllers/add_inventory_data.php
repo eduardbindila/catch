@@ -6,10 +6,12 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 $conn = $QueryBuilder->dbConnection();
 
 
-//printError($_POST);
+printError($_POST);
 
  $dataArray = $_POST["data"];
      $vendorInvoiceId = $_POST["vendor_invoice_id"];
+
+     echo $vendorInvoiceId;
 
     // $dataArray conține datele parsate în PHP, poți face orice ai nevoie cu ele
     // De exemplu, le poți salva într-o bază de date
