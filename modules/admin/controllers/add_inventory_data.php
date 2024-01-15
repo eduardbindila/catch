@@ -19,41 +19,32 @@ $conn = $QueryBuilder->dbConnection();
     $query = "INSERT INTO vendor_invoice_items (product_id, quantity, unit_price, total_price, vendor_invoice_id) VALUES ";
 
      foreach ($dataArray as $item) {
-        $product_id = $conn->real_escape_string($item['product_id']);
-        $quantity = $conn->real_escape_string($item['quantity']);
-        $unit_price = 0;  // Adaugă unit_price cu valoarea implicită 0
-        $total_price = 0; // Adaugă total_price cu valoarea implicită 0
-        $query .= "('$product_id', '$quantity', '$unit_price', '$total_price', '$vendorInvoiceId'),";
-    }
+       $product_id = $conn->real_escape_string($item['product_id']);
+       $quantity = $conn->real_escape_string($item['quantity']);
+       $exists = $conn->real_escape_string($item['exists']);
+
+       // Adaugă datele în query doar dacă exists este 1
+       if ($exists == '1') {
+           $unit_price = 0;  // Adaugă unit_price cu valoarea implicită 0
+           $total_price = 0; // Adaugă total_price cu valoarea implicită 0
+           $query .= "('$product_id', '$quantity', '$unit_price', '$total_price', '$vendorInvoiceId'),";
+       }
+   }
+
+   //echo $query;
+
 
     // Elimină virgula finală
     $query = rtrim($query, ',');
 
-    // Elimină virgula finală
-    $query = rtrim($query, ',');
-
-
-    echo $query;
-
-// $query = '
-// UPDATE products p
-// JOIN vendor_invoice_items vii ON vii.product_id = p.id
-// JOIN vendor_invoices vi ON vii.vendor_invoice_id = vi.id
-// SET
-//   vii.delivered_quantity = vii.quantity - p.saga_quantity,
-//   p.saga_quantity = vii.quantity,
-//   vi.closed_invoice = 1,
-//   vi.closed_date = NOW()
-// WHERE
-//   vi.id = '.$_POST['vendor_invoice_id'].';
-// ';
+    //echo $query;
 
 	$projectsQuery = $QueryBuilder->customQuery(
 		$conn,
 		$query = $query
 	);
 
-	echo $conn->error;
+	//echo $conn->error;
 
 echo  json_decode($projectsQuery);
 

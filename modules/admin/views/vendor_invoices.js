@@ -1045,6 +1045,8 @@ $("#submitBtn").click(function() {
     var inputData = $("#excel_data").val();
     excelData = processData(inputData);
 
+    //console.log(excelData);
+
     // Afișează tabelul
     showTable(excelData);
 
@@ -1066,12 +1068,18 @@ function processData(data) {
     // Construiește array-ul de obiecte pentru datele procesate
     var dataArray = [];
 
-    filteredRows.forEach(function(row) {
-        var values = row.split("\t");
-
-        // Verifică dacă coloana a doua conține o valoare numerică
-        if (!isNaN(values[1])) {
-            dataArray.push({ product_id: values[0], quantity: values[1] });
+   // Ajax call pentru a verifica existența produselor și a adăuga informații în dataArray
+    $.ajax({
+        url: "/ajax/checkProducts",  // înlocuiește cu calea corectă către scriptul PHP
+        type: "POST",
+        data: { data: JSON.stringify(filteredRows) },
+        async: false,  // așteaptă până când se completează verificarea existenței produselor
+        success: function(response) {
+            
+           dataArray = JSON.parse(response);
+        },
+        error: function() {
+            // Tratează eroare
         }
     });
 
@@ -1081,10 +1089,14 @@ function processData(data) {
 
 function showTable(data) {
     // Construiește tabelul
-    var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th></tr>";
-
+    var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th><th>Exist</th></tr>";
+console.log(data);
     data.forEach(function(row) {
-        tableHtml += "<tr><td>" + row.product_id + "</td><td>" + row.quantity + "</td></tr>";
+        // Adaugă clasa 'exists-yes' sau 'exists-no' în funcție de existența produsului
+        var existClass = row.exists === 1 ? '' : 'danger';
+
+        // Adaugă rândul în tabel cu background-ul corespunzător
+        tableHtml += "<tr class='" + existClass + "'><td>" + row.product_id + "</td><td>" + row.quantity + "</td><td>" + (row.exists === 1 ? 'Yes' : 'No') + "</td></tr>";
     });
 
     tableHtml += "</table>";
@@ -1092,6 +1104,7 @@ function showTable(data) {
     // Afișează tabelul
     $("#tableContainer").html(tableHtml);
 }
+
 
 $("#confirmBtn").click(function(e) {
     // Aici poți adăuga codul pentru a trimite datele către server
@@ -1106,7 +1119,7 @@ $("#confirmBtn").click(function(e) {
         type: "POST",
         data: { data: excelData, vendor_invoice_id: invoiceId },
         success: function(response) {
-            //location.reload();
+            location.reload();
         },
         error: function() {
             // Tratează eroare
