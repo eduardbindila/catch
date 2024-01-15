@@ -6,12 +6,15 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 $conn = $QueryBuilder->dbConnection();
 
 
-printError($_POST);
+//printError($_POST);
 
- $dataArray = $_POST["data"];
+$postSize = $_SERVER['CONTENT_LENGTH'];
+
+ $dataArray = json_decode($_POST['data'], true);;
+ // Obține datele postate de la client
      $vendorInvoiceId = $_POST["vendor_invoice_id"];
 
-     echo $vendorInvoiceId;
+    // echo $vendorInvoiceId;
 
     // $dataArray conține datele parsate în PHP, poți face orice ai nevoie cu ele
     // De exemplu, le poți salva într-o bază de date
@@ -39,7 +42,7 @@ printError($_POST);
     // Elimină virgula finală
     $query = rtrim($query, ',');
 
-    echo $query;
+    //echo $query;
 
 	$projectsQuery = $QueryBuilder->customQuery(
 		$conn,
@@ -47,7 +50,7 @@ printError($_POST);
 	);
 
 	
-      echo $conn->error;
+      //echo $conn->error;
 
 echo  json_decode($projectsQuery);
 

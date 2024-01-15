@@ -1117,7 +1117,7 @@ $("#confirmBtn").click(function(e) {
     $.ajax({
         url: "/ajax/addInventoryData",
         type: "POST",
-        data: { data: excelData, vendor_invoice_id: invoiceId },
+        data: { data: JSON.stringify(excelData), vendor_invoice_id: invoiceId },
         success: function(response) {
             //location.reload();
         },
