@@ -134,12 +134,14 @@ $(document).ready(function() {
             $('.inventorySwitch').prop('checked', true);
 
             $('.showInventory').removeClass('hidden');
+
        }
 
        if(invoiceData.inventory === '1' && invoiceData.closed_invoice === '0') {
 
             $('.activateInventory').removeClass('hidden');
             $('.addInventoryData').removeClass('hidden');
+            $('.addOutstandingProducts').removeClass('hidden');
        }
 
 
@@ -536,6 +538,30 @@ $(document).ready(function() {
 
         $.ajax({
             url: "/ajax/activateInventory",
+            type: "post",
+            dataType: "json",
+            data: {'vendor_invoice_id':invoiceId}
+        }).success(function(json){
+            location.reload();
+
+        }).error(function(xhr, status, error) {
+           
+        }).complete(function(data){
+
+            
+            
+
+        })
+
+        
+    });
+
+    $('.addOutstandingProducts').on('click', function () {
+
+        var invoiceId = $(this).attr('data-invoice');
+
+        $.ajax({
+            url: "/ajax/addOutstandingProducts",
             type: "post",
             dataType: "json",
             data: {'vendor_invoice_id':invoiceId}

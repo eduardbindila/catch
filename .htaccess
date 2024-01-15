@@ -87,6 +87,7 @@ RewriteRule ^viewFile view_file.php [L]
  RewriteRule ^ajax/activateInventory modules/admin/controllers/activate_inventory.php [L]
  RewriteRule ^ajax/addInventoryData modules/admin/controllers/add_inventory_data.php [L]
  RewriteRule ^ajax/checkProducts modules/admin/controllers/check_products.php [L]
+ RewriteRule ^ajax/addOutstandingProducts modules/admin/controllers/add_outstanding_products.php [L]
 
  RewriteRule ^ajax/addOrderLine modules/admin/controllers/add_order_line.php [L]
  RewriteRule ^ajax/itemReception modules/admin/controllers/item_reception.php [L]

@@ -73,6 +73,11 @@
                                 </button>
                             </li>
                             <li>
+                                <button class="addOutstandingProducts btn btn-lg btn-default waves-effect hidden" data-invoice="<?php echo $userId ?>" >
+                                    Add Outstanding Products
+                                </button>
+                            </li>
+                            <li>
                                 <button class="activateInventory btn btn-lg btn-success waves-effect hidden" data-invoice="<?php echo $userId ?>" >
                                     Activate Inventory
                                 </button>

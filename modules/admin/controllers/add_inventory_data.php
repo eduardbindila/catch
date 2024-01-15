@@ -8,8 +8,6 @@ $conn = $QueryBuilder->dbConnection();
 
 //printError($_POST);
 
-$postSize = $_SERVER['CONTENT_LENGTH'];
-
  $dataArray = json_decode($_POST['data'], true);;
  // Obține datele postate de la client
      $vendorInvoiceId = $_POST["vendor_invoice_id"];
