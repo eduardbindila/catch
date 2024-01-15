@@ -44,7 +44,8 @@ $conn = $QueryBuilder->dbConnection();
 		$query = $query
 	);
 
-	//echo $conn->error;
+	if($conn->error)
+      echo $conn->error;
 
 echo  json_decode($projectsQuery);
 
