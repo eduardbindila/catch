@@ -37,7 +37,7 @@ $conn = $QueryBuilder->dbConnection();
     FROM
       vendor_invoice_items vii
     LEFT JOIN vendor_invoices vi ON vii.vendor_invoice_id = vi.id
-    where vi.date >= '2023-01-01'
+    where YEAR(vi.date) = ".$_POST['year']."
     UNION ALL
     SELECT
       qi.product_id,
@@ -54,7 +54,7 @@ $conn = $QueryBuilder->dbConnection();
     JOIN quote_items qi ON pi2.quote_item_id = qi.id
     JOIN packages p ON pi2.package_id = p.id
     WHERE
-      p.package_status_id = 4 and p.invoice_date >= '2023-01-01'
+      p.package_status_id = 4 and  YEAR(p.invoice_date) = ".$_POST['year']."
   ) AS sub_inner
 ) AS sub
 WHERE sub.product_id = '".$_POST['product_id']."'

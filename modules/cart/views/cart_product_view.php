@@ -67,18 +67,62 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <h2>Product History</h2>
-                                <table class="product_history_table table table-striped table-bordered table-hover dt-responsive display">
-                                    <thead>
-                                        <th>Date</th>
-                                        <th>Document Number</th>
-                                        <th>Document Type</th>
-                                        <th>Id</th>
-                                        <th>Units</th>
-                                        <th>Unit Price</th>
-                                        <th>Total Value</th>
-                                        <th>Intermediate Stock</th>
-                                    </thead>
-                                </table>
+
+                                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading" role="tab" id="headingOne_1">
+                                                <h4 class="panel-title">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                                        2024
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+                                                <div class="panel-body">
+                                                    <table class="product_history_table table table-striped table-bordered table-hover dt-responsive display">
+                                                        <thead>
+                                                            <th>Date</th>
+                                                            <th>Document Number</th>
+                                                            <th>Document Type</th>
+                                                            <th>Id</th>
+                                                            <th>Units</th>
+                                                            <th>Unit Price</th>
+                                                            <th>Total Value</th>
+                                                            <th>Intermediate Stock</th>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading" role="tab" id="headingTwo_1">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseTwo_1" aria-expanded="false" aria-controls="collapseTwo_1">
+                                                        2023
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseTwo_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo_1" aria-expanded="false">
+                                                <div class="panel-body">
+                                                   <table class="product_history_table-2023 table table-striped table-bordered table-hover dt-responsive display">
+                                                        <thead>
+                                                            <th>Date</th>
+                                                            <th>Document Number</th>
+                                                            <th>Document Type</th>
+                                                            <th>Id</th>
+                                                            <th>Units</th>
+                                                            <th>Unit Price</th>
+                                                            <th>Total Value</th>
+                                                            <th>Intermediate Stock</th>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                
                             </div>
                         </div>
                         <div class="row">

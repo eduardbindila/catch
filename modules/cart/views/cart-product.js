@@ -123,7 +123,74 @@ $(document).ready(function() {
                 "url": "/ajax/getProductHistory/",
                 "dataSrc": "",
                 "type": 'POST',
-                "data": {'product_id': product_id}
+                "data": {'product_id': product_id, 'year': 2024}
+            },
+        
+            pageLength: 100,
+                "paging":   true,
+                "ordering": false,
+                "searching": true,
+            rowId: 'category_slug',
+              
+            responsive: true,
+            order: [1],
+            "columns": [ 
+              
+                { 
+                    "data": "date"
+                },
+                 { 
+                    "data": "document_number"
+                },
+                 { 
+                    "data": "document_type",
+                    "visible": false
+                },
+                 { 
+                    "data": "id",
+                     "render" : function(data, type, row) {
+
+
+                        if(row.document_type == "client_invoice") {
+                            icon = 'account_circle';
+                            iconClass = 'col-green';
+                            path = "quote/"+data+"?package_id="+row.sub_id;
+                        } else {
+                            icon = "local_shipping";
+                            iconClass = 'col-blue';
+                            path = "logistics/vendor-invoices/"+data;
+                        }
+
+                        return '<i class="material-icons document-type-position '+ iconClass +'">'
+                            +icon+
+                            '</i><a href="/'+path+'" target="_blank">'+row.document_type+': '+data+'</a>'
+                      } 
+
+                },
+                 { 
+                    "data": "units"
+                },
+                 { 
+                    "data": "unit_price"
+                },
+                 { 
+                    "data": "total_value"
+                },
+                 { 
+                    "data": "intermediate_stock"
+                },
+
+            ],
+            "initComplete": function(settings, json) {
+            }
+        });
+
+ var product_history_table = $('.product_history_table-2023').DataTable({
+            "ajax": {
+                "url": "/ajax/getProductHistory/",
+                "dataSrc": "",
+                "type": 'POST',
+                "data": {'product_id': product_id, 'year': 2023}
             },
         
             pageLength: 100,
