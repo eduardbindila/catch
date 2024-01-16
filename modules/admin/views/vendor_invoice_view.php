@@ -45,6 +45,12 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     Vendor invoice has been succesfully added.
                                 </div>
+
+                               
+                                <div class="alert updateError hidden bg-pink alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    There was an error. <b>Please contact the administrator</b>
+                                </div>
                                 <?php 
                                     include($_MPATH['ADMIN_VIEWS'].'add_vendor_invoice_form_view.php');
                                 ?>
@@ -72,11 +78,13 @@
                                     Add External Items
                                 </button>
                             </li>
+                            <?php  if(isset($_SESSION['user_access']['admin'])) {?>
                             <li>
-                                <button class="addOutstandingProducts btn btn-lg btn-default waves-effect hidden" data-invoice="<?php echo $userId ?>" >
-                                    Add Outstanding Products
+                                <button class="resetStocks btn btn-lg btn-danger waves-effect hidden" data-invoice="<?php echo $userId ?>" >
+                                    Reset Stocks and Reserved for all Products!
                                 </button>
                             </li>
+                            <?php }?>
                             <li>
                                 <button class="activateInventory btn btn-lg btn-success waves-effect hidden" data-invoice="<?php echo $userId ?>" >
                                     Activate Inventory
@@ -87,13 +95,16 @@
                     <div class="body">
                         <div class="row">
                             <div class="col-lg-12">
+                                 <div class="alert resetSuccess hidden alert-success alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    The stock has been reseted.
+                                </div>
                                 <table class="invoice_items_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
                                         <th></th>
                                         <th>Product</th>
                                         <th>Type</th>
                                         <th>Free Stock</th>
-                                        <th>Reserved Stock</th>
                                         <th><span class="showInventory hidden">Inventory </span>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>

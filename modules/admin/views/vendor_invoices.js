@@ -141,7 +141,7 @@ $(document).ready(function() {
 
             $('.activateInventory').removeClass('hidden');
             $('.addInventoryData').removeClass('hidden');
-            $('.addOutstandingProducts').removeClass('hidden');
+            $('.resetStocks').removeClass('hidden');
        }
 
 
@@ -327,11 +327,6 @@ $(document).ready(function() {
                 },
                 { 
                     "data": "saga_quantity",
-                    "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
-                    
-                },
-                 { 
-                    "data": "total_reserved_quantity",
                     "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
                     
                 },
@@ -556,20 +551,19 @@ $(document).ready(function() {
         
     });
 
-    $('.addOutstandingProducts').on('click', function () {
-
-        var invoiceId = $(this).attr('data-invoice');
+    $('.resetStocks').on('click', function () {
 
         $.ajax({
-            url: "/ajax/addOutstandingProducts",
+            url: "/ajax/resetStocks",
             type: "post",
             dataType: "json",
-            data: {'vendor_invoice_id':invoiceId}
+            data: {}
         }).success(function(json){
-            location.reload();
+            //location.reload();
+             $('.resetSuccess').removeClass('hidden');
 
         }).error(function(xhr, status, error) {
-           
+           $('.updateError').removeClass('hidden');
         }).complete(function(data){
 
             
