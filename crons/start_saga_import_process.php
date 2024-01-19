@@ -424,20 +424,22 @@ if($startProcess) {
         [$startProcess, 5, htmlspecialchars($vendorInvoicesJson), 5],
     ];
 
-    $inserProcessDetails = $QueryBuilder->insert(
-        $conn,
-        $options = array(
-            "table" => "saga_import_details",
-            "keys" => ["saga_process_id", "request_type_id", "request", "status"],
-            "values" => $insertArray
-        ),
-        $multi = true
-    );
+    // $inserProcessDetails = $QueryBuilder->insert(
+    //     $conn,
+    //     $options = array(
+    //         "table" => "saga_import_details",
+    //         "keys" => ["saga_process_id", "request_type_id", "request", "status"],
+    //         "values" => $insertArray
+    //     ),
+    //     $multi = true
+    // );
 
 
     // echo $startProcess;
 
 }
+
+echo $productsJson;
 
 
 $QueryBuilder->closeConnection();
