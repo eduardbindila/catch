@@ -161,8 +161,8 @@ function validateData($list, $fieldRequirements, $requestType) {
 
 $conn = $QueryBuilder->dbConnection();
 
-$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 12 WEEK AND vi.`date` < CURDATE()";
-$clientInvoiceSelectionRule = "sii.invoice_id is null and id.`DATA` >= curdate() - interval 12 Week and id.`DATA` < curdate()";
+$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 14 WEEK AND vi.`date` < CURDATE()";
+$clientInvoiceSelectionRule = "sii.invoice_id is null and id.`DATA` >= curdate() - interval 14 Week and id.`DATA` < curdate()";
 
 
 /////////////////////
@@ -381,13 +381,6 @@ $productsQuery = $QueryBuilder->customQuery(
 
 $productsData = validateData($productsQuery, $productRequirements,'articole');
 
-
-
-// printError($clientInvoicesData);
-
-
-
-
 $productsJson = json_encode($productsData);
 
 $clientsJson = json_encode($clientsData);
@@ -400,12 +393,10 @@ $clientInvoicesJson = json_encode($clientInvoicesData);
 
 
 
-
-
 $startProcess = $QueryBuilder->insert(
     $conn,
     $options = array(
-        "table" => "saga_import_processes",
+        "table" => "saga_import_processess",
         "keys" => ["overall_status"],
         "values" => [1]
     )
@@ -424,29 +415,25 @@ if($startProcess) {
         [$startProcess, 5, htmlspecialchars($vendorInvoicesJson), 5],
     ];
 
-    // $inserProcessDetails = $QueryBuilder->insert(
-    //     $conn,
-    //     $options = array(
-    //         "table" => "saga_import_details",
-    //         "keys" => ["saga_process_id", "request_type_id", "request", "status"],
-    //         "values" => $insertArray
-    //     ),
-    //     $multi = true
-    // );
+    $inserProcessDetails = $QueryBuilder->insert(
+        $conn,
+        $options = array(
+            "table" => "saga_import_details",
+            "keys" => ["saga_process_id", "request_type_id", "request", "status"],
+            "values" => $insertArray
+        ),
+        $multi = true
+    );
 
 
-    // echo $startProcess;
-
+    echo $conn->error;
 }
 
-echo $productsJson;
+echo $startProcess;
 
+//printError($insertArray);
 
 $QueryBuilder->closeConnection();
-
-
-
-
 
 	
 ?>

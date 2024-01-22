@@ -19,7 +19,7 @@ $conn = $QueryBuilder->dbConnection();
             "table" => "saga_import_details sid",
             "columns" => "sid.*, srt.name as request_type_name",
             "leftJoin" => 'saga_request_types srt ON srt.id = sid.request_type_id',
-            "where" => "status = 1"
+            "where" => "status = 5"
         )
     );
 
@@ -33,7 +33,7 @@ $conn = $QueryBuilder->dbConnection();
 
         $url = requestUrl($request['request_type_name']);
 
-        echo $url;
+        //echo $url;
 
         $json = htmlspecialchars_decode($request['request']);
 
@@ -63,7 +63,7 @@ $conn = $QueryBuilder->dbConnection();
             if (json_decode($response) !== null && json_last_error() === JSON_ERROR_NONE) {
                 // Decodificare JSON și afișare
                 $decodedData = json_decode($response, true);
-                //print_r($decodedData);
+                //print_r($decodedData['notificationId']);
 
                 // Verificare dacă există cheia 'notificationId'
                 if (isset($decodedData['notificationId'])) {
@@ -78,6 +78,8 @@ $conn = $QueryBuilder->dbConnection();
                 $notificationId = 0;
             }
         }
+
+        //echo $notificationId;
 
         curl_close($curl);
 
@@ -94,6 +96,8 @@ $conn = $QueryBuilder->dbConnection();
                 "where" => "id = " . $request['id']
             )
         );
+
+        //echo $conn->error;
 
     }
 

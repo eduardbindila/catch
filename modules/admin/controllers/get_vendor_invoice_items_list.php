@@ -19,10 +19,11 @@ $conn = $QueryBuilder->dbConnection();
 	            left join vendor_invoice_item_types on vendor_invoice_items.type = vendor_invoice_item_types.id",
 	        "where" => "vendor_invoice_id=".$_POST['vendor_invoice_id'],
 	        "orderBy" => "vendor_invoice_items.id",
-	        "orderType" => "ASC",
-	        "groupBy" => "vendor_invoice_items.product_id" 
+	        "orderType" => "ASC" 
 		)
 	);
+
+
 
 	echo json_encode(utf8ize($projectsQuery));
 
