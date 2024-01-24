@@ -923,11 +923,11 @@ class Invoices {
                             "data": "reserved_stock",
                             "render" : function(data, type, row, meta) {
                                 //console.log(meta.col);
-                                var disabled = '';
+                                var disabled = 'disabled';
 
-                                if(row.external_item_name !=='' || thisPackage.package_status_id == 4) {
-                                        disabled = "disabled"
-                                }
+                                // if(row.external_item_name !=='' || thisPackage.package_status_id == 4) {
+                                //         disabled = "disabled"
+                                // }
 
                                 return '<div class="form-group">' + 
                                             '<div class="form-line">' + 
@@ -949,11 +949,11 @@ class Invoices {
                             "data": "saga_quantity",
                             "render" : function(data, type, row, meta) {
                                 //console.log(meta.col);
-                                var disabled = '';
+                                var disabled = 'disabled';
 
-                                if(row.external_item_name !==''|| thisPackage.package_status_id == 4) {
-                                        disabled = "disabled"
-                                }
+                                // if(row.external_item_name !==''|| thisPackage.package_status_id == 4) {
+                                //         disabled = "disabled"
+                                // }
 
                                return '<div class="form-group">' + 
                                             '<div class="form-line">' + 

@@ -34,6 +34,16 @@
                         </ol>
                         <div class="clearfix">
                             <ul class="m-l-0 p-l-0 m-t-10 header-dropdown">
+                                <li>
+                                 
+                                     <h2>
+                                        <?php if($active) {?>
+                                        <span class="label label-lg label-success">Active</span>
+                                        <?php } else {?>
+                                        <span class="label label-lg label-danger">Inactive</span>
+                                        <?php }?>
+                                    </h2>
+                                </li>
                                  <li>
                                  
                                      <h2>Total Stock: <span class="label label-lg label-primary"><?php echo intval($stock) + intval($reservedStock)?> (F: <?php echo intval($stock)?> + R: <?php echo intval($reservedStock)?>)</span></h2>
@@ -190,10 +200,17 @@
                                 <input type="text" class="form-control" name="product_name" placeholder="Product Name" value="<?php echo $productName?>" required>
                             </div>
                             <div class="input-group">
+                                <select class="form-control productActiveSelector" required name="active">
+                                    <option value="" disabled>Active</option>
+                                    <option value="1" <?php echo ($active === '1') ? 'selected' : ''; ?>>Yes</option>
+                                    <option value="0" <?php echo ($active === '0') ? 'selected' : ''; ?>>No</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
                                 <input type="number" class="form-control" step="any" name="initial_price" placeholder="Aquisition Price" value="<?php echo $aquisitionPrice?>" required>
                             </div>
                             <div class="input-group">
-                                <input type="number" class="form-control" name="stock" placeholder="Stock" value="<?php echo $stock?>" required>
+                                <input type="number" disabled class="form-control" name="stock" placeholder="Stock" value="<?php echo $stock?>" required>
                             </div>
                             <textarea class="tinymce" name="product_description" placeholder="Product Description">
                                     <?php echo $productDescription?>
