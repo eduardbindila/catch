@@ -6,7 +6,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 
 function requestUrl($requestType) {
-    return "https://contabi.nukkon.com/".$requestType."/973B74EC-3A6E-400F-B30C-BC878D56ABE4/icatchdesign/0270";
+    return "https://contabi.nukkon.com/".$requestType."/973B74EC-3A6E-400F-B30C-BC878D56ABE4/icatchdesign/0271";
 }
 
 //echo 'aaa';

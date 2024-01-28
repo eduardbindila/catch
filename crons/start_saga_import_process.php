@@ -120,7 +120,9 @@ function validateData($list, $fieldRequirements, $requestType) {
 
     $validatedData = [];
 
-    //printError($list);
+    //echo $requestType;
+
+    //print_r($list);
 
     foreach ($list as $one) {
         $validatedOne = [];
@@ -151,18 +153,21 @@ function validateData($list, $fieldRequirements, $requestType) {
         }
 
         // Add the validated vendor data to the result array
-        $validatedData[] = $validatedOne;
+        $validatedData[] = $validatedOne; 
     }
 
     $validatedRequest[$requestType] = $validatedData;
+
+
+    //printError($validatedRequest);
 
     return $validatedRequest;
 }
 
 $conn = $QueryBuilder->dbConnection();
 
-$vendorInvoiceSelectionRule= "sii.invoice_id IS NULL AND vi.`date` >= CURDATE() - INTERVAL 14 WEEK AND vi.`date` < CURDATE()";
-$clientInvoiceSelectionRule = "sii.invoice_id is null and id.`DATA` >= curdate() - interval 14 Week and id.`DATA` < curdate()";
+$vendorInvoiceSelectionRule = "sii.invoice_id IS NULL AND vi.`date` >= '2024-01-01' and vi.inventory = 0 AND vi.`date` < CURDATE()";
+$clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2024-01-01' AND id.`DATA` < CURDATE()";
 
 
 /////////////////////
@@ -176,7 +181,7 @@ FROM vendor_invoices vi
 JOIN vendor_invoice_items vii ON vi.id = vii.vendor_invoice_id
 JOIN vendors v on vi.vendor = v.id
 JOIN products pr on pr.id = vii.product_id
-LEFT JOIN saga_imported_invoices sii ON vi.id = sii.invoice_id AND sii.type = 'vendor'
+LEFT JOIN saga_imported_invoices sii ON vi.invoice_no = sii.invoice_id AND sii.type = 'intrari'
 WHERE ".$vendorInvoiceSelectionRule;
 
 
@@ -242,6 +247,8 @@ $vendorInvoicesQuery = $QueryBuilder->customQuery(
     $selectVendorInvoicesQuery
 );
 
+//echo $selectVendorInvoicesQuery;
+
 
 $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
 
@@ -284,7 +291,7 @@ $vendorsData = validateData($vendorsQuery, $vendorRequirements, 'furnizori');
 
 $clientInvoicesQueryPart = "
 from invoiced_data id
-left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii.type = 'client'
+left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii.type = 'iesiri'
 ";
 
 $selectClientInvoicesQuery = "
@@ -298,6 +305,8 @@ $clientInvoicesQuery = $QueryBuilder->customQuery(
     $conn,
     $selectClientInvoicesQuery
 );
+
+//echo $selectClientInvoicesQuery;
 
  $clientInvoicesData = validateData($clientInvoicesQuery, $clientInvoicesRequirements, 'iesiri');
 
@@ -392,6 +401,37 @@ $vendorsJson = json_encode($vendorsData);
 $clientInvoicesJson = json_encode($clientInvoicesData);
 
 
+function parseJsonData($jsonData, $requestType) {
+    $data = json_decode($jsonData, true);
+
+    $result = [];
+
+    foreach ($data[$requestType] as $entry) {
+        $resultKey = ($requestType == 'iesiri') ? $entry['nrIesire'] : $entry['nrIntrare'];
+
+        if (!isset($result[$resultKey])) {
+            $result[$resultKey] = [
+                'type' => $requestType,
+                'code' => $entry['cod'],
+                'invoice_id' => $resultKey,
+                'date' => $entry['data']
+            ];
+        }
+    }
+
+    // Convertim rezultatul într-un array indexed
+    $result = array_values($result);
+
+    return $result;
+}
+
+
+if (empty($clientsData['clienti']) && empty($productsData['articole']) && empty($vendorsData['furnizori']) && empty($clientInvoicesData['iesiri']) && empty($vendorInvoicesData['intrari'])) {
+    $startProcess = 0;
+} else {
+
+
+
 
 $startProcess = $QueryBuilder->insert(
     $conn,
@@ -402,6 +442,7 @@ $startProcess = $QueryBuilder->insert(
     )
 );
 
+}
 
 if($startProcess) {
 
@@ -415,7 +456,7 @@ if($startProcess) {
         [$startProcess, 5, htmlspecialchars($vendorInvoicesJson), 5],
     ];
 
-    $inserProcessDetails = $QueryBuilder->insert(
+    $insertProcessDetails = $QueryBuilder->insert(
         $conn,
         $options = array(
             "table" => "saga_import_details",
@@ -425,8 +466,28 @@ if($startProcess) {
         $multi = true
     );
 
+    if($insertProcessDetails) {
 
-    echo $conn->error;
+        $combinedResult = array_merge(
+            parseJsonData($clientInvoicesJson, 'iesiri'), 
+            parseJsonData($vendorInvoicesJson, 'intrari'));
+
+
+
+        $insertImportInvoices = $QueryBuilder->insert(
+            $conn,
+            $options = array(
+                "table" => "saga_imported_invoices",
+                "keys" => ["type", "code", "invoice_id", "date"],
+                "values" => $combinedResult
+            ),
+            $multi = true
+        );
+
+    }
+
+
+    //echo $conn->error;
 }
 
 echo $startProcess;
