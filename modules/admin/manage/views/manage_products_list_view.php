@@ -29,6 +29,8 @@
                                         <th>New Price</th>
                                         <th>Old Price</th>
                                         <th>Comment</th>
+                                        <th>NC Code</th>
+                                        <th>Active</th>
                                         <th>Status ID </th>
                                         <th>Status</th>
                                     </thead>

@@ -40,7 +40,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 
     //for stocks 0, 5, 13
 
-    //printError($product[2]);
+    //printError($product);
 
 	$localArray = array(
 			'import_product_list_id' => 0,
@@ -52,10 +52,12 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 			'manufacturer' => "",
 			'active' => 0,
 			'new_product_id' => "",
+			'nc_code' => "",
 			'status' => $_POST['status'] == '6' ? '7' : 1
 		);
 
 
+	//Successfully Imported for updating Products
 	if($_POST['status'] == '6') {
 
 		$product_id = addslashes(trim($product[0]));
@@ -66,6 +68,7 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['new_product_id'] = $new_product_id;
 		$localArray['active'] = $product[5] ? $product[5] : 0;
+		$localArray['nc_code'] = $product[6] ? $product[6] : 0;;
 		
 
 	} else if($_POST['status'] == '7') {
@@ -102,13 +105,17 @@ while (($product = fgetcsv($f_pointer, 0, ",")) !== FALSE) {
 		// 	'new_product_id' => ''
 		// );
 
+
+		//echo $product[5];
+
 		$localArray['import_product_list_id'] = intval($_POST['import_product_list_id']);
 		$localArray['product'] = fixProductId($product_id);
 		$localArray['product_name'] = $product_name;
 		$localArray['new_product_id'] = '';
-		$localArray['active'] = $product[5] ? $product[5] : 0;;
+		$localArray['active'] = $product[5] ? $product[5] : 0;
 		$localArray['initial_price'] = $initial_price;
 		$localArray['manufacturer'] = $manufacturer;
+		$localArray['nc_code'] = $product[6] ? $product[6] : 0;;
 		
 		//printError($localArray);
 		
@@ -128,7 +135,7 @@ $conn = $QueryBuilder->dbConnection();
             $conn,
             $options = array(
                 "table" => "products_import",
-                "keys" => ["import_product_list_id", "product_id", "name", "saga_quantity", "saga_comment", "price", "manufacturer", "active", "new_product_id", "status",],
+                "keys" => ["import_product_list_id", "product_id", "name", "saga_quantity", "saga_comment", "price", "manufacturer", "active","new_product_id", "nc_code", "status",],
                 "values" => $valuesArray,
             ),
             $multi = true

@@ -90,6 +90,7 @@ while ($row = mysqli_fetch_assoc($empRecords)) {
       'legacy_id' => $row['legacy_id'],
       'isService' => $row['isService'],
       'active' => $row['active'],
+      'nc_code' => $row['nc_code'],
       'reserved_quantity' => isset($row['reserved_quantity']) ? $row['reserved_quantity'] : 0,  
       'saga_quantity' => isset($row['saga_quantity']) ? $row['saga_quantity'] : 0  
    );

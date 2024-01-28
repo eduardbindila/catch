@@ -255,7 +255,7 @@
                     <div class="modal-body">
                         <div class="m-t-10 m-b-10">
                             <a href="/download?f=update-prices.csv" class="btn btn-info waves-effect">Download Update Prices Format File</a>
-                            <a href="/download?f=stocks_update.csv" class="btn btn-info waves-effect">Download Stocks Update Format File</a>
+                            <!-- <a href="/download?f=stocks_update.csv" class="btn btn-info waves-effect">Download Stocks Update Format File</a> -->
                         </div>
                         
                         <div class="importFormWrapper dropzone dz-clickable">
@@ -270,7 +270,7 @@
                                     <select class="form-control" required name="status">
                                         <option value="1">Update or Add Product prices</option>
                                         <option value="6">Update product ID</option>
-                                        <option value="7">Update Stocks</option>
+                                        <!-- <option value="7">Update Stocks</option> -->
                                     </select>
                                 </div>
                                 <button class="btn btn-lg btn-block btn-success waves-effect filesToDB hidden" type="submit">Import Product List</button>

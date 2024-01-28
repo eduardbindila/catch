@@ -66,6 +66,9 @@ $(document).ready(function() {
                 "data": "legacy_id"
             },
             {
+                "data": "nc_code"
+            },
+            {
                 "data": "active"
             },
             {

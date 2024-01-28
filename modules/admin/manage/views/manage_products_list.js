@@ -49,6 +49,13 @@ $(document).ready(function() {
             { 
                 "data": "comment"
             },
+
+            { 
+                "data": "nc_code"
+            }, 
+            { 
+                "data": "active"
+            },            
             { 
                 "data": "status",
                 "visible": false

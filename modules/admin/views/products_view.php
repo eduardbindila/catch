@@ -34,6 +34,7 @@
                                         <th>Last Crawled Status</th>
                                         <th>Merged ID</th>
                                         <th>Legacy ID ID</th>
+                                        <th>NC Code</th>
                                         <th>Active</th>
                                         <th>Type</th>
                                     </thead>
