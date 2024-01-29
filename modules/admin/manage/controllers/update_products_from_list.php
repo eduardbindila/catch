@@ -80,12 +80,12 @@ foreach ($updateListsQuery as $product => $product_details) {
 
 	if($thisProductQuery && $status == 1) {
 
-		$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
+		$newStock = $product_details['saga_quantity'];
 		$updateQuery = $QueryBuilder->update(
 			$conn,
 			$options = array(
 				"table" => "products",
-				"set" => ["`initial_price`='".$product_details['price']."'", "`product_name`='".$product_details['name']."'", "`saga_quantity`='".$newStock."'", "`saga_comment`='".$product_details['saga_comment']."'","`nc_code`='".$product_details['nc_code']."'","`active`='".$product_details['active']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
+				"set" => ["`initial_price`='".$product_details['price']."'", "`product_name`='".$product_details['name']."'", "`saga_comment`='".$product_details['saga_comment']."'","`nc_code`='".$product_details['nc_code']."'","`active`='".$product_details['active']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
 				"where" => "id = '".$product_details['product_id']."'"
 			)
 		);
@@ -102,38 +102,42 @@ foreach ($updateListsQuery as $product => $product_details) {
 
 
 		//var_dump($conn-> error);
-	} else if(($thisProductQuery && $status == 10)) {
+	} 
 
-		//var_dump($thisProductQuery);
+	//else if(($thisProductQuery && $status == 10)) {
 
-		$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
+	// 	//var_dump($thisProductQuery);
 
-		$updateQuery = $QueryBuilder->update(
-			$conn,
-			$options = array(
-				"table" => "products",
-				"set" => [ "`saga_quantity`='".$newStock."'", "`saga_comment`='".$product_details['saga_comment']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
-				"where" => "id = '".$product_details['product_id']."'"
-			)
-		);
+	// 	$newStock = $product_details['saga_quantity'] - $thisProductQuery[0]['total_quote_reserved_quantity'];
 
-		//var_dump($updateQuery);
+	// 	$updateQuery = $QueryBuilder->update(
+	// 		$conn,
+	// 		$options = array(
+	// 			"table" => "products",
+	// 			"set" => [ "`saga_quantity`='".$newStock."'", "`saga_comment`='".$product_details['saga_comment']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
+	// 			"where" => "id = '".$product_details['product_id']."'"
+	// 		)
+	// 	);
 
-		if($updateQuery) {
-			$updateStatus = 5; //Succesfully Updated
-			$oldPrice = $thisProductQuery[0]['initial_price'];
-			$saga_quantity = $newStock;
-			$saga_comment = $thisProductQuery[0]['saga_comment'];
-		} else {
-			$updateStatus = 2; //Error
-			$comment = addslashes($conn->error);
-		}
+	// 	//var_dump($updateQuery);
 
-		//var_dump($comment);
+	// 	if($updateQuery) {
+	// 		$updateStatus = 5; //Succesfully Updated
+	// 		$oldPrice = $thisProductQuery[0]['initial_price'];
+	// 		$saga_quantity = $newStock;
+	// 		$saga_comment = $thisProductQuery[0]['saga_comment'];
+	// 	} else {
+	// 		$updateStatus = 2; //Error
+	// 		$comment = addslashes($conn->error);
+	// 	}
 
-		//var_dump($conn-> error);
+	// 	//var_dump($comment);
 
-	} else {
+	// 	//var_dump($conn-> error);
+
+	// } 
+
+	else {
 
 		$insertQuery = $QueryBuilder->insert(
 			$conn,

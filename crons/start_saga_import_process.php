@@ -87,6 +87,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
         'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => true],
         'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
+        'TOTAL' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'CONT' => ['type' => 'Character', 'max_length' => 20, 'optional' => true],
         'PRET_VANZ' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
@@ -109,6 +110,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
         'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => true],
         'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
+        'TOTAL' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'CONT' => ['type' => 'Character', 'max_length' => 20, 'optional' => true],
         'PRET_VANZ' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
@@ -202,9 +204,16 @@ $vendorInvoiceDate = "vi.date as DATA";
 $vendorInvoiceDueDate = "vi.due_date as SCADENT";
 $vendorInvoiceProductCode = "product_id as COD_ART";
 $vendorInvoiceProductName = "product_name as DEN_ART";
+$vendorInvoiceGestiune = "CASE
+    WHEN vii.type = 1 THEN '0002'
+    ELSE ''
+END GESTIUNE";
 $vendorInvoiceProductQuantity = "quantity as CANTITATE";
-$vendorInvoiceProductVAT = "19 as TVA_ART";
-$vendorInvoiceProductValue = "vii.total_price";
+$vendorInvoiceProductVAT = "CASE
+    WHEN vi.vat = 0 THEN 0
+    ELSE 19
+END TVA_ART";
+$vendorInvoiceProductValue = "vii.total_price as VALOARE";
 $vendorInvoiceVAT = "
 CASE
     WHEN vi.vat = 0 THEN 0
@@ -221,9 +230,14 @@ CASE
             ELSE 371
         END
     )
-END AS TVA
+END AS CONT
 
 ";
+
+$vendorInvoiceProductTotal = "vii.total_price + CASE
+    WHEN vi.vat = 0 THEN 0
+    ELSE vii.total_price*19/100
+END as TOTAL";
 
 //Vendor Invoices Query
 $selectVendorInvoicesQuery="SELECT  
@@ -237,7 +251,9 @@ $selectVendorInvoicesQuery="SELECT
     ".$vendorInvoiceProductQuantity.",  
     ".$vendorInvoiceProductVAT.", 
     ".$vendorInvoiceProductValue.", 
-    ".$vendorInvoiceVAT.",  
+    ".$vendorInvoiceVAT.", 
+    ".$vendorInvoiceProductTotal.", 
+    ".$vendorInvoiceGestiune.", 
     ".$vendorInvoiceAccount."
     ".$vendorInvoicesQueryPart.";";
 
@@ -295,9 +311,9 @@ left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii
 ";
 
 $selectClientInvoicesQuery = "
-SELECT id.* ".
+SELECT id.*, id.VALOARE + id.TVA as TOTAL ".
 $clientInvoicesQueryPart."
-WHERE ".$clientInvoiceSelectionRule;
+WHERE ".$clientInvoiceSelectionRule."and id.nr_iesire = 'RON-5528'";
 
 
 // Use your custom query builder to execute the query
@@ -352,7 +368,7 @@ $productVAT = "19 as TVA";
 $productTip = "
 CASE
     WHEN prd.isService = 1 THEN ''
-    ELSE 1
+    ELSE '01'
 END AS TIP
 ";
 $productTipName = "
@@ -401,6 +417,9 @@ $vendorsJson = json_encode($vendorsData);
 $clientInvoicesJson = json_encode($clientInvoicesData);
 
 
+//printError($clientInvoicesData);
+
+
 function parseJsonData($jsonData, $requestType) {
     $data = json_decode($jsonData, true);
 
@@ -429,7 +448,6 @@ function parseJsonData($jsonData, $requestType) {
 if (empty($clientsData['clienti']) && empty($productsData['articole']) && empty($vendorsData['furnizori']) && empty($clientInvoicesData['iesiri']) && empty($vendorInvoicesData['intrari'])) {
     $startProcess = 0;
 } else {
-
 
 
 
