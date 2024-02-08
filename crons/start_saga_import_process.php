@@ -82,6 +82,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         'TVAI' => ['type' => 'Numeric', 'max_length' => 1, 'decimals' => 0, 'optional' => true],
         'COD_ART' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
         'DEN_ART' => ['type' => 'Character', 'max_length' => 60, 'optional' => true],
+        'MONEDA' => ['type' => 'Character', 'max_length' => 3, 'optional' => true],
+        'CURS' => ['type' => 'Numeric', 'max_length' => 6, 'decimals' => 4, 'optional' => true],
         'UM' => ['type' => 'Character', 'max_length' => 5, 'optional' => true],
         'CANTITATE' => ['type' => 'Numeric', 'max_length' => 14, 'decimals' => 3, 'optional' => true],
         'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
@@ -109,6 +111,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
         'CANTITATE' => ['type' => 'Numeric', 'max_length' => 14, 'decimals' => 3, 'optional' => true],
         'DEN_TIP' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
         'TVA_ART' => ['type' => 'Numeric', 'max_length' => 2, 'decimals' => 0, 'optional' => true],
+        'MONEDA' => ['type' => 'Character', 'max_length' => 3, 'optional' => true],
+        'CURS' => ['type' => 'Numeric', 'max_length' => 6, 'decimals' => 4, 'optional' => true],
         'VALOARE' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'TOTAL' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
         'TVA' => ['type' => 'Numeric', 'max_length' => 15, 'decimals' => 2, 'optional' => true],
@@ -239,6 +243,18 @@ $vendorInvoiceProductTotal = "vii.total_price + CASE
     ELSE vii.total_price*19/100
 END as TOTAL";
 
+$vendorInvoiceCurrency = "CASE
+    WHEN vi.currency = 'RON' then ''
+    ELSE vi.currency
+END AS MONEDA";
+
+
+
+$vendorInvoiceExchangeRate = "CASE
+    WHEN vi.currency = 'RON' then ''
+    ELSE vi.exchange_rate
+END AS CURS";
+
 //Vendor Invoices Query
 $selectVendorInvoicesQuery="SELECT  
     ".$vendorInvoiceNir.", 
@@ -251,6 +267,8 @@ $selectVendorInvoicesQuery="SELECT
     ".$vendorInvoiceProductQuantity.",  
     ".$vendorInvoiceProductVAT.", 
     ".$vendorInvoiceProductValue.", 
+    ".$vendorInvoiceCurrency.",
+    ".$vendorInvoiceExchangeRate.",
     ".$vendorInvoiceVAT.", 
     ".$vendorInvoiceProductTotal.", 
     ".$vendorInvoiceGestiune.", 
@@ -417,7 +435,7 @@ $vendorsJson = json_encode($vendorsData);
 $clientInvoicesJson = json_encode($clientInvoicesData);
 
 
-//printError($clientInvoicesData);
+printError($vendorInvoicesData);
 
 
 function parseJsonData($jsonData, $requestType) {
