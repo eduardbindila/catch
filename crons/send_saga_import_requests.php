@@ -5,11 +5,17 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 
-function requestUrl($requestType) {
-    return "https://contabi.nukkon.com/".$requestType."/973B74EC-3A6E-400F-B30C-BC878D56ABE4/icatchdesign/0271";
+$target =  isset($_GET['target']) ? $_GET['target'] : '0271';
+
+function requestUrl($requestType, $target) {
+    return "https://contabi.nukkon.com/".$requestType."/973B74EC-3A6E-400F-B30C-BC878D56ABE4/icatchdesign/".$target;
 }
 
 //echo 'aaa';
+
+ $url = requestUrl('intrari', $target);
+
+ echo $url;
 
 $conn = $QueryBuilder->dbConnection();
 
@@ -31,9 +37,7 @@ $conn = $QueryBuilder->dbConnection();
         // printError($request);
 
 
-        $url = requestUrl($request['request_type_name']);
-
-        //echo $url;
+        echo $url;
 
         $json = htmlspecialchars_decode($request['request']);
 
