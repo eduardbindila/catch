@@ -35,7 +35,7 @@ $conn = $QueryBuilder->dbConnection();
         // printError($request);
 
 
-        $url = requestUrl($request['request_type_name']);
+        $url = requestUrl($request['request_type_name'], $target);
 
         echo $url;
 
