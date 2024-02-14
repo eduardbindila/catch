@@ -331,7 +331,7 @@ left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii
 $selectClientInvoicesQuery = "
 SELECT id.*, id.VALOARE + id.TVA as TOTAL ".
 $clientInvoicesQueryPart."
-WHERE ".$clientInvoiceSelectionRule."and id.nr_iesire = 'RON-5528'";
+WHERE ".$clientInvoiceSelectionRule;
 
 
 // Use your custom query builder to execute the query
