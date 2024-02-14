@@ -207,7 +207,12 @@ $vendorInvoiceCode = $vendorCode;
 $vendorInvoiceDate = "vi.date as DATA";
 $vendorInvoiceDueDate = "vi.due_date as SCADENT";
 $vendorInvoiceProductCode = "product_id as COD_ART";
-$vendorInvoiceProductName = "product_name as DEN_ART";
+$vendorInvoiceProductName = "case 
+when vii.product_id IS NULL or vii.product_id = ''
+            then vii.external_item_name
+            else 
+            product_name
+       end as DEN_ART";
 $vendorInvoiceGestiune = "CASE
     WHEN vii.type = 1 THEN '0002'
     ELSE ''
@@ -283,7 +288,7 @@ $vendorInvoicesQuery = $QueryBuilder->customQuery(
     $selectVendorInvoicesQuery
 );
 
-echo $selectVendorInvoicesQuery;
+//echo $selectVendorInvoicesQuery;
 
 
 $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
@@ -437,7 +442,7 @@ $vendorsJson = json_encode($vendorsData);
 $clientInvoicesJson = json_encode($clientInvoicesData);
 
 
-printError($vendorInvoicesData);
+//printError($vendorInvoicesData);
 
 
 function parseJsonData($jsonData, $requestType) {
