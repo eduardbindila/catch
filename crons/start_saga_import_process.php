@@ -218,6 +218,7 @@ $vendorInvoiceProductVAT = "CASE
     ELSE 19
 END TVA_ART";
 $vendorInvoiceProductValue = "vii.total_price as VALOARE";
+$vendorInvoiceProductPrice = "vii.unit_price as PRET_VANZ";
 $vendorInvoiceVAT = "
 CASE
     WHEN vi.vat = 0 THEN 0
@@ -271,6 +272,7 @@ $selectVendorInvoicesQuery="SELECT
     ".$vendorInvoiceExchangeRate.",
     ".$vendorInvoiceVAT.", 
     ".$vendorInvoiceProductTotal.", 
+     ".$vendorInvoiceProductPrice.",
     ".$vendorInvoiceGestiune.", 
     ".$vendorInvoiceAccount."
     ".$vendorInvoicesQueryPart.";";
@@ -281,7 +283,7 @@ $vendorInvoicesQuery = $QueryBuilder->customQuery(
     $selectVendorInvoicesQuery
 );
 
-//echo $selectVendorInvoicesQuery;
+echo $selectVendorInvoicesQuery;
 
 
 $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
