@@ -172,7 +172,7 @@ function validateData($list, $fieldRequirements, $requestType) {
 
 $conn = $QueryBuilder->dbConnection();
 
-$vendorInvoiceSelectionRule = "sii.invoice_id IS NULL AND vi.`date` >= '2024-01-01' and vi.inventory = 0 AND vi.`date` < CURDATE()";
+$vendorInvoiceSelectionRule = "sii.invoice_id IS NULL AND vi.`date` >= '2024-01-01' and vi.inventory = 0 AND vi.`date` < CURDATE() and vii.reception = 1";
 $clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2024-01-01' AND id.`DATA` < CURDATE()";
 
 
