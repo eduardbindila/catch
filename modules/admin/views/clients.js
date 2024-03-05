@@ -173,6 +173,7 @@ $(document).ready(function() {
         $("#userData input[name=bank]").val(userDetails.bank);
         $("#userData input[name=registry]").val(userDetails.registry);
         $("#userData input[name=discount]").val(userDetails.discount);
+        $("#userData input[name=saga_code]").val(userDetails.saga_code);
     }
 
      $('.editSwitch').change(function() {

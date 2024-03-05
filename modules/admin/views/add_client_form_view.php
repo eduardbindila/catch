@@ -73,6 +73,11 @@
             <input type="number" class="form-control" min="0" max="72" required name="discount" placeholder="Discount*" >
         </div>
     </div>
+     <div class="input-group">
+        <div class="form-line">
+            <input type="text" class="form-control"  name="saga_code" placeholder="Saga Code" >
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <button id="submitUserData" class="btn btn-lg btn-block btn-success waves-effect" type="submit">Submit client data</button>

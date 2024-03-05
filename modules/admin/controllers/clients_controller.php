@@ -28,7 +28,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					"`bank_account`='".$_POST['bank_account']."'",
 					"`registry`='".$_POST['registry']."'",
 					"`bank`='".$_POST['bank']."'",
-					"`discount`='".$discount."'"
+					"`discount`='".$discount."'",
+					"`saga_code`='".$_POST['saga_code']."'"
 					],
 				"where" => "id =".$userId
 			)
@@ -39,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$options = array(
 				"table" => "clients",
 				"keys" => ["name", "poi", "user_id", "email", "fiscal_code", "country", "registry", "phone", "state", "address", "bank", "discount"],
-				"values" => [$_POST["name"],$_POST["poi"], $_POST["user"], $_POST["email"], $_POST["fiscal_code"], $_POST["country"], $_POST["registry"], $_POST["phone"], $_POST["state"], $_POST["address"], $_POST["bank"], $_POST['discount']? $_POST['discount'] : '0.00']
+				"values" => [$_POST["name"],$_POST["poi"], $_POST["user"], $_POST["email"], $_POST["fiscal_code"], $_POST["country"], $_POST["registry"], $_POST["phone"], $_POST["state"], $_POST["address"], $_POST["bank"], $_POST['discount']? $_POST['discount'] : '0.00', $_POST["saga_code"]]
 			),
 			$multi = false
 		);
