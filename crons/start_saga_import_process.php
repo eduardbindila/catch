@@ -214,7 +214,7 @@ when vii.product_id IS NULL or vii.product_id = ''
             product_name
        end as DEN_ART";
 $vendorInvoiceGestiune = "CASE
-    WHEN vii.type = 1 THEN '0002'
+    WHEN vii.type = 1 THEN '0025'
     ELSE ''
 END GESTIUNE";
 $vendorInvoiceProductQuantity = "quantity as CANTITATE";
@@ -280,7 +280,7 @@ $selectVendorInvoicesQuery="SELECT
      ".$vendorInvoiceProductPrice.",
     ".$vendorInvoiceGestiune.", 
     ".$vendorInvoiceAccount."
-    ".$vendorInvoicesQueryPart.";";
+    ".$vendorInvoicesQueryPart." Order by NR_INTRARE ASC;";
 
 
 $vendorInvoicesQuery = $QueryBuilder->customQuery(
@@ -288,7 +288,7 @@ $vendorInvoicesQuery = $QueryBuilder->customQuery(
     $selectVendorInvoicesQuery
 );
 
-//echo $selectVendorInvoicesQuery;
+echo $selectVendorInvoicesQuery;
 
 
 $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
@@ -338,7 +338,7 @@ left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii
 $selectClientInvoicesQuery = "
 SELECT id.*, id.VALOARE + id.TVA as TOTAL ".
 $clientInvoicesQueryPart."
-WHERE ".$clientInvoiceSelectionRule;
+WHERE ".$clientInvoiceSelectionRule." Order by NR_IESIRE ASC";
 
 
 // Use your custom query builder to execute the query
