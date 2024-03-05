@@ -66,10 +66,18 @@ if(is_numeric($userId)) {
 		$conn,
 		$options = array(
 			"table" => "vendor_invoices",
-			"columns" => "*",
-			"where" => 'id = '.$userId
+			"columns" => "vendor_invoices.*, vendors.code as saga_code",
+			"innerJoin" => "vendors on vendor_invoices.vendor = vendors.id",
+			"where" => 'vendor_invoices.id = '.$userId
 		)
 	);
+
+	$invoiceGET = [
+		"typeNo"=>"4",
+		"typeName"=>"intrari",
+		"invoice"=>$invoiceQuery[0]['invoice_no'],
+		"code"=>$invoiceQuery[0]['saga_code']
+	];
 
 	$QueryBuilder->closeConnection();
 

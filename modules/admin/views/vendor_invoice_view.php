@@ -31,6 +31,9 @@
                                     Inventory: <label>NO<input name="inventory" class="inventorySwitch" type="checkbox"><span class="lever switch-col-green"></span>YES</label>
                                 </div>
                             </li>
+                            <li>
+                                <?php include($_MPATH['ADMIN_CONTROLLERS'].'import_invoice_controller.php');?>
+                            </li>
                            
                         </ul>
                     </div>
