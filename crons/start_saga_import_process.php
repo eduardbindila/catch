@@ -175,6 +175,14 @@ $conn = $QueryBuilder->dbConnection();
 $vendorInvoiceSelectionRule = "sii.invoice_id IS NULL AND vi.`date` >= '2024-01-01' and vi.inventory = 0 AND vi.`date` < CURDATE() and vii.reception = 1";
 $clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2024-01-01' AND id.`DATA` < CURDATE()";
 
+//var_dump($_GET);
+
+if ($_GET["type"] == 4 && isset($_GET["invoice"])) {
+    $clientInvoiceSelectionRule .= " AND NR_IESIRE = '{$_GET["invoice"]}' AND COD = '{$_GET["code"]}'";
+} elseif ($_GET["type"] == 5 && isset($_GET["invoice"])) {
+    $vendorInvoiceSelectionRule .= " AND vi.invoice_no = '{$_GET["invoice"]}' AND v.code = '{$_GET["code"]}'";
+}
+
 
 /////////////////////
 //                //
@@ -198,8 +206,8 @@ CASE
     ELSE CONCAT('B2B-', v.id)
 END AS COD
 ";
-$vendorName = "v.name as DENUMIRE";
 
+$vendorName = "v.name as DENUMIRE";
 
 $vendorInvoiceNir = "vi.id  + 8000 as NR_NIR";
 $vendorInvoiceNo = "vi.invoice_no as NR_INTRARE";
@@ -288,11 +296,10 @@ $vendorInvoicesQuery = $QueryBuilder->customQuery(
     $selectVendorInvoicesQuery
 );
 
-echo $selectVendorInvoicesQuery;
+//echo $selectVendorInvoicesQuery;
 
 
 $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
-
 
 
 /////////////////////
@@ -445,7 +452,7 @@ $clientInvoicesJson = json_encode($clientInvoicesData);
 //printError($vendorInvoicesData);
 
 
-function parseJsonData($jsonData, $requestType) {
+function parseJsonData($jsonData, $requestType, $processId) {
     $data = json_decode($jsonData, true);
 
     $result = [];
@@ -458,7 +465,8 @@ function parseJsonData($jsonData, $requestType) {
                 'type' => $requestType,
                 'code' => $entry['cod'],
                 'invoice_id' => $resultKey,
-                'date' => $entry['data']
+                'date' => $entry['data'],
+                'process_id' => $processId
             ];
         }
     }
@@ -489,8 +497,22 @@ $startProcess = $QueryBuilder->insert(
 
 if($startProcess) {
 
+  $insertArray = [];
+
+  
 
 
+if ($_GET["type"] == 4) {
+    $insertArray[] = [$startProcess, 4, htmlspecialchars($clientInvoicesJson), 5];
+    $combinedResult = parseJsonData($clientInvoicesJson, 'iesiri', $startProcess);
+
+
+} elseif ($_GET["type"] == 5) {
+
+    $insertArray[] = [$startProcess, 5, htmlspecialchars($vendorInvoicesJson), 5];
+    $combinedResult =  parseJsonData($vendorInvoicesJson, 'intrari', $startProcess);
+
+} else {
     $insertArray = [
         [$startProcess, 1, htmlspecialchars($clientsJson), 5],
         [$startProcess, 2, htmlspecialchars($productsJson), 5],
@@ -498,6 +520,12 @@ if($startProcess) {
         [$startProcess, 4, htmlspecialchars($clientInvoicesJson), 5],
         [$startProcess, 5, htmlspecialchars($vendorInvoicesJson), 5],
     ];
+
+     $combinedResult = array_merge(
+            parseJsonData($clientInvoicesJson, 'iesiri', $startProcess), 
+            parseJsonData($vendorInvoicesJson, 'intrari', $startProcess));
+}
+
 
     $insertProcessDetails = $QueryBuilder->insert(
         $conn,
@@ -511,17 +539,13 @@ if($startProcess) {
 
     if($insertProcessDetails) {
 
-        $combinedResult = array_merge(
-            parseJsonData($clientInvoicesJson, 'iesiri'), 
-            parseJsonData($vendorInvoicesJson, 'intrari'));
-
-
+        //var_dump($insertArray);
 
         $insertImportInvoices = $QueryBuilder->insert(
             $conn,
             $options = array(
                 "table" => "saga_imported_invoices",
-                "keys" => ["type", "code", "invoice_id", "date"],
+                "keys" => ["type", "code", "invoice_id", "date", "process_id"],
                 "values" => $combinedResult
             ),
             $multi = true

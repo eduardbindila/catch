@@ -80,7 +80,7 @@
                             </li>
                             <?php  if(isset($_SESSION['user_access']['admin'])) {?>
                             <li>
-                                <button class="resetStocks btn btn-lg btn-danger waves-effect hidden" data-invoice="<?php echo $userId ?>" >
+                                <button class="resetStocks btn btn-lg btn-danger waves-effect hidden" disabled data-invoice="<?php echo $userId ?>" >
                                     Reset Stocks and Reserved for all Products!
                                 </button>
                             </li>
