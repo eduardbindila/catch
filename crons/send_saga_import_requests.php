@@ -17,15 +17,27 @@ function requestUrl($requestType, $target) {
 
 $conn = $QueryBuilder->dbConnection();
 
+if(isset($_GET['request'])) {
+
+    $where = "sid.id = ".$_GET['request'];
+
+} else {
+
+     $where = "status = 5";
+
+}
+
     $sagaRequests = $QueryBuilder->select(
         $conn,
         $options = array(
             "table" => "saga_import_details sid",
             "columns" => "sid.*, srt.name as request_type_name",
             "leftJoin" => 'saga_request_types srt ON srt.id = sid.request_type_id',
-            "where" => "status = 5"
+            "where" => $where
         )
     );
+
+
 
     //printError($sagaRequests);
 
@@ -37,7 +49,7 @@ $conn = $QueryBuilder->dbConnection();
 
         $url = requestUrl($request['request_type_name'], $target);
 
-        echo $url;
+        //echo $url;
 
         $json = htmlspecialchars_decode($request['request']);
 
@@ -83,7 +95,7 @@ $conn = $QueryBuilder->dbConnection();
             }
         }
 
-        //echo $notificationId;
+        echo $notificationId;
 
         curl_close($curl);
 

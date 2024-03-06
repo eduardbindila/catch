@@ -1,4 +1,4 @@
-<?php
+\<?php
 
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
@@ -73,7 +73,7 @@ if(is_numeric($userId)) {
 	);
 
 	$invoiceGET = [
-		"typeNo"=>"4",
+		"typeNo"=>"5",
 		"typeName"=>"intrari",
 		"invoice"=>$invoiceQuery[0]['invoice_no'],
 		"code"=>$invoiceQuery[0]['saga_code']

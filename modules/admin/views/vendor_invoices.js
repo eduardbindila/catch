@@ -101,6 +101,9 @@ $(document).ready(function() {
             },
             { 
                 "data": "invoice_value"
+            },
+            { 
+                "data": "saga_status"
             }
         ],
         "initComplete": function(settings, json) {

@@ -1,14 +1,14 @@
 <?php
 
-$invoiceData = array(
-    "invoiceDate" => "",
-    "dueDate" => "",
-    "exchangeRate" => "",
-    "invoiceNumber" => "",
-    "packageId" => "",
-    "otherDetails" => ""
+// $invoiceData = array(
+//     "invoiceDate" => "",
+//     "dueDate" => "",
+//     "exchangeRate" => "",
+//     "invoiceNumber" => "",
+//     "packageId" => "",
+//     "otherDetails" => ""
 
-);
+// );
 
 //print_R($_POST['isStorno']);
 

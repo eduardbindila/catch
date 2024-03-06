@@ -9,19 +9,19 @@
 <section class="content projectPage">
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2>Vendor Invoices</h2>
+			<h2>Client Invoices</h2>
 		</div>
 		<div class="row">
 	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2>Vendor Invoices List</h2>
+                        <h2>Client Invoices List</h2>
                         <ul class="header-dropdown m-r-0">
-                            <li>
+                            <!-- <li>
                                 <button class="btn btn-success waves-effect" data-toggle="modal"data-target="#addNew-modal">
                                     Add Vendor Invoice
                                 </button>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <div class="body">
@@ -37,12 +37,13 @@
                                 </div>
                                <table class="invoices_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
-                                        <th>Invoice ID</th>
+                                        <th>Package ID</th>
+                                        <th>Quote ID</th>
                                         <th>Invoice No</th>
-                                        <th>Invoice Vendor</th>
+                                        <th>Client </th>
                                         <th>Invoice Date</th>
                                         <th>Invoice Due Date</th>
-                                        <th>Invoice Price</th>
+                                        <th>Client Saga Code</th>
                                         <th>Saga Import Status</th>
 
                                 </table>
