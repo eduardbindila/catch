@@ -39,7 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			$conn,
 			$options = array(
 				"table" => "clients",
-				"keys" => ["name", "poi", "user_id", "email", "fiscal_code", "country", "registry", "phone", "state", "address", "bank", "discount"],
+				"keys" => ["name", "poi", "user_id", "email", "fiscal_code", "country", "registry", "phone", "state", "address", "bank", "discount", "saga_code"],
 				"values" => [$_POST["name"],$_POST["poi"], $_POST["user"], $_POST["email"], $_POST["fiscal_code"], $_POST["country"], $_POST["registry"], $_POST["phone"], $_POST["state"], $_POST["address"], $_POST["bank"], $_POST['discount']? $_POST['discount'] : '0.00', $_POST["saga_code"]]
 			),
 			$multi = false
