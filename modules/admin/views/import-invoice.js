@@ -18,7 +18,7 @@ $(document).ready(function() {
             thisUrl = "/cron/startSagaImport?type="+type+"&invoice="+invoice+"&code="+code;
             break;
           case 'sendToSaga':
-            thisUrl = "/cron/sendSagaRequests?request="+request;
+            thisUrl = "/cron/sendSagaRequests?request="+request+"&target=0269";
             break;
           case 'checkRequest':
             thisUrl = "/cron/checkSagaRequests?notificationId="+notification;
