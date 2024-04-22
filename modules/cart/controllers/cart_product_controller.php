@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			"table" => "products",
 			"set" => [
 				"`product_name`='".$_POST['product_name']."'",
-				"`product_description`='". htmlspecialchars($_POST['product_description'])."'",
+				"`product_description`='". htmlspecialchars(preg_replace("/'/","ߴ",$_POST['product_description']),ENT_QUOTES) ."'",
 				"`initial_price`='".$_POST['initial_price']."'",
 				// "`saga_quantity`='".$_POST['stock']."'",
 				"`active`='".$_POST['active']."'",
@@ -32,6 +32,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			"where" => "id ='".$productID."'"
 		)
 	);
+echo $conn->error;
+
 	
 }
 
