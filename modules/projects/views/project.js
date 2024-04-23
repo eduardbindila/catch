@@ -492,32 +492,86 @@ $(document).ready(function() {
                             className: 'btn btn-lg btn-primary waves-effect',
                         },
                         {
+
                             extend: 'selected',
-                            className: 'deleteSelected btn btn-lg btn-danger waves-effect',
-                            text: 'Delete Selected',
-                            action: function ( e, dt, button, config ) {
+    className: 'deleteSelected btn btn-lg btn-danger waves-effect',
+    titleAttr: "Only Items without Reserved Stock will be deleted",
+    text: 'Delete Selected',
+    action: function (e, dt, button, config) {
+        var selectedItems = [];
+        var selection = dt.rows({ selected: true }).data();
+        var hasReservedStock = false;
 
-                                var selection = dt.rows( { selected: true } ).data();
-                                var i;
-                            
-                                for ( i = 0; i < selection.length; i++) {
-                                    selectedItems.push(selection[i].quote_item_id);
-                                }
-                             
+        // Default confirmation message
+        var confirmationMessage = "Are you sure you want to delete the selected items?";
 
-                                $.ajax({
-                                    url: "/ajax/removeItemsFromQuote",
-                                    type: "post",
-                                    dataType: "json",
-                                    data: {'quote_item_id': selectedItems, 'quote_id': val['id']}
-                               }).success(function(json){
-                                   location.reload();
+        // Check each selected row for reserved stock
+        for (var i = 0; i < selection.length; i++) {
+            if (selection[i].reserved_stock === "" || selection[i].reserved_stock === 0) {
+                // Add only if the item has no reserved stock
+                selectedItems.push(selection[i].quote_item_id);
+            } else {
+                // Set hasReservedStock to true if any item has reserved stock
+                hasReservedStock = true;
+            }
+        }
 
-                                }).error(function(xhr, status, error) {
-                                   //$('.addNewTemporaryProduct').removeClass('hidden');
-                                })
-                            }
-                        },
+        // Modify the confirmation message if reserved stock is found
+        if (hasReservedStock) {
+            confirmationMessage = "You have selected items that have reserved stock. Those will not be deleted! To delete those, please update the reserve stock to 0.\n\nAre you sure you want to delete the remaining items?";
+        }
+
+        // If there are no selectedItems because all selected items have reserved stock
+        if (selectedItems.length === 0) {
+            swal({
+                title: "Items with Reserved Stock",
+                text: "All selected items have reserved stock and cannot be deleted.",
+                icon: "warning",
+                buttons: {
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger"
+                    }
+                },
+            });
+            return; // Exit the action function
+        }
+
+        // Show SweetAlert confirmation dialog
+        swal({
+            title: "Confirm Deletion",
+            text: confirmationMessage,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                // Proceed with the deletion process (AJAX call)
+                $.ajax({
+                    url: "/ajax/removeItemsFromQuote",
+                    type: "post",
+                    dataType: "json",
+                    data: { 'quote_item_id': selectedItems, 'quote_id': val['id'] },
+                    success: function (json) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error if necessary
+                    }
+                });
+            } else {
+                // User clicked cancel, no action required
+            }
+        });
+    }
+                           
+                                         },
 {
         text: 'Get Delivery Date',
         className: 'deliveryDate btn btn-lg btn-warning waves-effect',
