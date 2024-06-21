@@ -22,9 +22,10 @@ RewriteRule ^viewFile view_file.php [L]
  RewriteRule ^admin/control-panel/* control_panel.php [L]
  
 
-
  RewriteRule ^quotes/* quotes.php [L]
  RewriteRule ^quote/* project.php [L]
+ RewriteRule ^packages/quote/* packages.php [L]
+ 
  RewriteRule ^offer/* quote.php [L]
  RewriteRule ^admin/import/categories import_categories.php [L]
  RewriteRule ^admin/import/products import_products.php [L]
@@ -276,6 +277,8 @@ RewriteRule ^ajax/getQuotePackages modules/projects/controllers/get_quote_packag
 RewriteRule ^ajax/getInvoicesList modules/projects/controllers/get_invoices_list.php [L]
 
 RewriteRule ^ajax/getPackageItems modules/projects/controllers/get_package_items.php [L]
+
+RewriteRule ^ajax/getPackageData modules/projects/controllers/get_package_data.php [L]
 
 RewriteRule ^ajax/getLastPrices modules/projects/controllers/get_last_prices.php [L]
 

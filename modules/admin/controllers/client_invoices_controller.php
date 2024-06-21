@@ -28,7 +28,9 @@ order by id desc";
 
 // printError($invoiceQuery);
 
-$_POST['packageId'] = $invoiceQuery[0]['id'];
+ $packageID = $invoiceQuery[0]['id'];
+
+$_POST['packageId'] = $packageID;
 
 $_POST['isStorno'] = $invoiceQuery[0]['isStorno'];
 
@@ -41,12 +43,12 @@ $_POST['isStorno'] = $invoiceQuery[0]['isStorno'];
         "otherDetails" =>  $invoiceQuery[0]['other_details']
     );
 
-
+$invoiceNumber = ($invoiceQuery[0]['country'] == "RO" ? 'RON-' : 'EXT-').$invoiceQuery[0]['invoice_number'];
 
 	$invoiceGET = [
 		"typeNo"=>"4",
 		"typeName"=>"iesiri",
-		"invoice"=>($invoiceQuery[0]['country'] == "RO" ? 'RON-' : 'EXT-').$invoiceQuery[0]['invoice_number'],
+		"invoice"=>$invoiceNumber,
 		"code"=>$invoiceQuery[0]['saga_code']
 	];
 

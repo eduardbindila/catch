@@ -248,3 +248,25 @@ function waitForElm(selector) {
         });
     });
 }
+
+function getLastFolderFromUrl(url) {
+     url = url.replace(/\/+$/, "");
+     
+    // Divizează URL-ul în bucăți folosind "/"
+    var urlParts = url.split("/");
+    
+    // Parcurge bucățile URL-ului de la dreapta la stânga
+    for (var i = urlParts.length - 1; i >= 0; i--) {
+        // Verifică dacă bucata curentă este un număr
+        if (!isNaN(urlParts[i])) {
+            // Returnează numărul găsit (posibil ID)
+            return parseInt(urlParts[i]);
+        }
+        // Dacă nu este un număr și nu este un șir gol, se consideră că este ultimul folder
+        else if (urlParts[i].trim() !== "") {
+            return urlParts[i];
+        }
+    }
+    // Dacă nu se găsește niciun folder sau număr, se returnează null
+    return null;
+}
