@@ -24,6 +24,11 @@ $(document).ready(function() {
                     return '<a href="client-invoices/'+data+'" target="_blank">'+data+'</a>'
                   } 
             },
+
+            { 
+                "data": "status" 
+            },
+
             { 
                 "data": "quote_id",
                 "render" : function(data, type, row) {
@@ -50,6 +55,31 @@ $(document).ready(function() {
             }
         ],
         "initComplete": function(settings, json) {
+           var api = this.api();
+        
+            // Create a header row for the filters
+            var filterRow = $('<tr class="filter-row"></tr>').appendTo($(api.table().header()));
+
+            // For each column, add a select input to the filter row
+            api.columns().every(function(index) {
+                var column = this;
+                var select = $('<select><option value="">' + $(column.header()).text() + '</option></select>')
+                    .appendTo($('<td></td>').appendTo(filterRow))
+                    .on('change', function() {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
+
+                column.data().unique().sort().each(function(d) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+
+
+                // Pre-select "Invoiced" for the status column
+                if (index === 1) { // Assuming the status column is the second column (index 1)
+                    select.val('Invoiced').trigger('change');
+                }
+            });
         }
 
     });

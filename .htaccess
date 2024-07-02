@@ -24,7 +24,7 @@ RewriteRule ^viewFile view_file.php [L]
 
  RewriteRule ^quotes/* quotes.php [L]
  RewriteRule ^quote/* project.php [L]
- RewriteRule ^packages/quote/* packages.php [L]
+ 
  
  RewriteRule ^offer/* quote.php [L]
  RewriteRule ^admin/import/categories import_categories.php [L]
@@ -45,6 +45,8 @@ RewriteRule ^viewFile view_file.php [L]
  RewriteRule ^logistics/vendor-invoices/* vendor_invoices.php [L]
  RewriteRule ^logistics/client-invoices invoices.php [L]
  RewriteRule ^logistics/client-invoices/* invoices.php [L]
+ RewriteRule ^logistics/packages/* packages.php [L]
+ RewriteRule ^logistics/packages/quote/* packages.php [L]
  RewriteRule ^logistics/import_stocks import_stocks.php [L]
  RewriteRule ^admin/regions regions.php [L]
  RewriteRule ^admin/countries/* countries.php [L]

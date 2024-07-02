@@ -9,6 +9,7 @@ $conn = $QueryBuilder->dbConnection();
 
 $query = "SELECT 
     p.id, 
+    ps.name as status,
     quote_id, 
     invoice_number, 
     invoice_date, 
@@ -22,6 +23,7 @@ JOIN
     quotes q ON q.id = p.quote_id 
 JOIN 
     clients c ON c.id = q.client_id
+join package_status ps on ps.id = p.package_status_id
 left JOIN 
     saga_imported_invoices sii ON sii.invoice_id = 
     CASE 
@@ -30,8 +32,6 @@ left JOIN
     end
 left join saga_import_details sid on sid.saga_process_id = sii.process_id and sid.request_type_id = 4
 left join saga_import_status sis on sis.id = sid.status 
-WHERE 
-    package_status_id = 4
 ORDER BY 
     p.id DESC;
 ";
