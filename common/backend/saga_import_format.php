@@ -338,6 +338,35 @@ $productsVendorInvoiceSelection = " SELECT DISTINCT vii.product_id as COD_ART, p
 
     $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
     $vendorInvoicesJson = json_encode($vendorInvoicesData);
+
+
+
+    /////////////////////
+//                //
+//    VENDORS    //
+//              //
+/////////////////
+
+$selectAllVendorsQuery = "
+    SELECT distinct ".$vendorName.", ".$vendorCode."
+    FROM vendors v
+    WHERE id IN (
+        SELECT DISTINCT vendor
+        ".$vendorInvoicesQueryPart."
+    );
+    ";
+
+
+
+
+//Use your custom query builder to execute the query
+$vendorsQuery = $QueryBuilder->customQuery(
+    $conn,
+    $selectAllVendorsQuery
+);
+$vendorsData = validateData($vendorsQuery, $vendorRequirements, 'furnizori');
+
+$vendorsJson = json_encode($vendorsData);
 }
 
 
@@ -367,7 +396,15 @@ END AS DEN_TIP
 
 
 if ($_GET["type"] == '4' && isset($_GET["invoice"])) {
-    $clientInvoiceSelectionRule .= " AND NR_IESIRE = '{$_GET["invoice"]}'";
+
+
+ $clientInvoiceSelectionRule .= " AND NR_IESIRE = '{$_GET["invoice"]}'";
+
+$productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
+join products p on id.`COD_ART` = p.id and id.`COD_ART` != ''
+        WHERE ".$clientInvoiceSelectionRule."";
+
+   
     $productsVendorInvoiceSelection = "";
     $productsUnionQuery = "";
 
@@ -436,7 +473,7 @@ $selectAllProductsQuery = "
 // echo $productsClientInvoiceSelection;
 
 
-$selectAllProductsQuery;
+//echo $selectAllProductsQuery;
 
 
 //Use your custom query builder to execute the query
@@ -467,32 +504,7 @@ $productsJson = json_encode($productsData);
 
 
 
-/////////////////////
-//                //
-//    VENDORS    //
-//              //
-/////////////////
 
-$selectAllVendorsQuery = "
-    SELECT distinct ".$vendorName.", ".$vendorCode."
-    FROM vendors v
-    WHERE id IN (
-        SELECT DISTINCT vendor
-        ".$vendorInvoicesQueryPart."
-    );
-    ";
-
-
-
-
-//Use your custom query builder to execute the query
-$vendorsQuery = $QueryBuilder->customQuery(
-    $conn,
-    $selectAllVendorsQuery
-);
-$vendorsData = validateData($vendorsQuery, $vendorRequirements, 'furnizori');
-
-$vendorsJson = json_encode($vendorsData);
 
 //printError($vendorsJson);
 
