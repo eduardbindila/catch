@@ -422,7 +422,7 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
 
     $clientInvoicesJson = json_encode($clientInvoicesData);
 
-
+echo $selectClientInvoicesQuery;
 
 
         /////////////////////

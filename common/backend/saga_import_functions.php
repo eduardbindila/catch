@@ -97,7 +97,7 @@ function checkJson($data, $requestType) {
         $tip = "FUR";
     }
 
-    $result['lista'][] = ["tip" => $tip, "cod" => $entry["cod"]];
+    $result['lista'][] = ["tip" => $tip, "cod" => isset($entry["cod"]) ? $entry["cod"] : [] ];
 
     //var_dump($result);
 
