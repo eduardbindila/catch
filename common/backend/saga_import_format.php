@@ -204,7 +204,7 @@ left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii
 $productsUnionQuery = " UNION ";
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
-join products p on id.`COD_ART` = p.id and id.`COD_ART` != ''
+join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
         WHERE ".$clientInvoiceSelectionRule."";
 
 
@@ -401,7 +401,7 @@ if ($_GET["type"] == '4' && isset($_GET["invoice"])) {
  $clientInvoiceSelectionRule .= " AND NR_IESIRE = '{$_GET["invoice"]}'";
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
-join products p on id.`COD_ART` = p.id and id.`COD_ART` != ''
+join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
         WHERE ".$clientInvoiceSelectionRule."";
 
    
