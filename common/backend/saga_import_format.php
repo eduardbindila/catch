@@ -473,7 +473,7 @@ $selectAllProductsQuery = "
 // echo $productsClientInvoiceSelection;
 
 
-echo $selectAllProductsQuery;
+//echo $selectAllProductsQuery;
 
 
 //Use your custom query builder to execute the query
