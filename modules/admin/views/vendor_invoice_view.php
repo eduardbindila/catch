@@ -17,6 +17,9 @@
 		</div>
 		<div class="row">
 	       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                
+                <?php include($_MPATH['ADMIN_CONTROLLERS'].'import_invoice_controller.php');?>
+
                 <div class="card">
                     <div class="header">
                         <h2>Vendor Invoice Details</h2>
@@ -32,7 +35,7 @@
                                 </div>
                             </li>
                             <li>
-                                <?php include($_MPATH['ADMIN_CONTROLLERS'].'import_invoice_controller.php');?>
+                               
                             </li>
                            
                         </ul>

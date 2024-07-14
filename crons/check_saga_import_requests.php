@@ -53,7 +53,7 @@ $status = '';
                     elseif($decodedData['status'] == "KO")
                     {
                         $status = 3; 
-                        $response_error = $decodedData['error'];
+                        $response_error = $decodedData['message'];
                     }
                         
                     elseif($decodedData['status'] == "pending")
@@ -65,24 +65,24 @@ $status = '';
         curl_close($curl);
 
         echo $status;
-        // echo $response_error;
-        // echo $response_notification;
+         echo $response_error;
+         echo $response_notification;
 
 
         $conn = $QueryBuilder->dbConnection();
 
-        //Actualizare în baza de date
-        $updateRequests = $QueryBuilder->update(
-            $conn,
-            $options = array(
-                "table" => "saga_import_details",
-                "set" => [
-                    "`status`=" . $status,
-                    "`response_error`='" . $response_error . "'"
-                ],
-                "where" =>  "`response_notification`='" . $notificationId . "'"
-            )
-        );
+        // //Actualizare în baza de date
+        // $updateRequests = $QueryBuilder->update(
+        //     $conn,
+        //     $options = array(
+        //         "table" => "saga_import_details",
+        //         "set" => [
+        //             "`status`=" . $status,
+        //             "`response_error`='" . $response_error . "'"
+        //         ],
+        //         "where" =>  "`response_notification`='" . $notificationId . "'"
+        //     )
+        // );
 
         //echo $conn->error;
 

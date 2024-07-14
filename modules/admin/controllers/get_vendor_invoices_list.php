@@ -20,7 +20,7 @@ $conn = $QueryBuilder->dbConnection();
    join vendors v on v.id = vi.vendor 
    left JOIN 
     saga_imported_invoices sii ON sii.invoice_id = 
-    vi.invoice_no  and sii.type = 'intrari'
+    vi.invoice_no  and sii.type = 5
 left join saga_import_details sid on sid.saga_process_id = sii.process_id and sid.request_type_id = 5
 left join saga_import_status sis on sis.id = sid.status order by vi.id desc";
 
