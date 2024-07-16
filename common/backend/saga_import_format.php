@@ -489,7 +489,7 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
 
     // printError($clientInvoicesData);
 
-echo $selectClientInvoicesQuery;
+//echo $selectClientInvoicesQuery;
 
 
         /////////////////////
