@@ -81,7 +81,7 @@ function checkJson($data, $requestType) {
     $result = ["lista" => []];
 
     foreach ($data[$requestType] as $entry) {
-        if (!empty($entry['codArt'])) {
+        if (!empty(trim($entry['codArt']))) {
             $result['lista'][] = [
                 "tip" => "ART",
                 "cod" => $entry['codArt']
@@ -99,7 +99,7 @@ function checkJson($data, $requestType) {
 
     $result['lista'][] = ["tip" => $tip, "cod" => isset($entry["cod"]) ? $entry["cod"] : [] ];
 
-    printError($result);
+    //printError($result);
 
     return $result;
 }
