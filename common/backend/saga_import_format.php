@@ -231,15 +231,10 @@ select
         else concat('B2B-', client_id)
     end as 'COD',
     case 
---      internal product
         when type = 1 and isService = 0 then '707'
---      advance & reversal
         when type in (2,3) then '419'
---      discounts
         when type = 5 or id = '100000001' then '707'
---      services
         when type = 6 or (type = 1 and isService = 1) then '704.02'
---      green tax
         when id = '100000000' then '704.01'
     end as 'CONT',
     case
