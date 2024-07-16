@@ -204,7 +204,7 @@ left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii
 $productsUnionQuery = " UNION ";
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
-join products p on id.`COD_ART` = p.id  and id.`COD_ART` <> ''
+join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
         WHERE ".$clientInvoiceSelectionRule."";
 
 
@@ -398,11 +398,11 @@ END AS DEN_TIP
 if ($_GET["type"] == '4' && isset($_GET["invoice"])) {
 
 
- $clientInvoiceSelectionRule .= " AND NR_IESIRE = '{$_GET["invoice"]}'";
+ $clientInvoiceSelectionRule .= " AND COD_ART <> '' AND NR_IESIRE = '{$_GET["invoice"]}'";
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
 join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
-        WHERE  COD_ART <> '' AND ".$clientInvoiceSelectionRule."";
+        WHERE ".$clientInvoiceSelectionRule."";
 
    
     $productsVendorInvoiceSelection = "";
@@ -488,7 +488,7 @@ $productsData = validateData($productsQuery, $productRequirements,'articole');
 
 $productsJson = json_encode($productsData);
 
-//printError($productsData);
+// printError($productsJson);
 
 
 
