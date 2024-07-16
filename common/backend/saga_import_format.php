@@ -136,14 +136,16 @@ function validateData($list, $fieldRequirements, $requestType) {
 
     //echo $requestType;
 
-    // printError($list);
+    //printError($list);
 
     foreach ($list as $one) {
         $validatedOne = [];
 
-        //printError($one);
+        // printError($one);
 
         foreach ($fieldRequirements as $fieldName => $requirements) {
+
+
 
             $camelCaseKey = lcfirst(str_replace('_', '', ucwords(strtolower($fieldName), '_')));
             
@@ -166,7 +168,11 @@ function validateData($list, $fieldRequirements, $requestType) {
                 // If the field is not present and it's not optional, set an empty string
                 $validatedOne[$camelCaseKey] = "";
             }
+
+             // echo $fieldName.'='.$one[$fieldName];
         }
+
+        // echo $fieldValue;
 
         // Add the validated vendor data to the result array
         $validatedData[] = $validatedOne; 
@@ -195,10 +201,60 @@ $clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2023-03-
 /////////////////
 
 
+$clientInvoicePackageQuery = "
+select 
+    product_id as 'COD_ART',
+    quantity as 'CANTITATE',
+    invoice_due_date as 'SCADENT',
+    invoice_date as 'DATA',
+    total_line_vat as 'TVA',
+    product_name as 'DEN_ART',
+    invoice_no as 'NR_IESIRE',
+    exchange_rate as 'CURS',
+    total_line_price 'PRET_VANZ',
+    unit_price_with_exchange_rate as 'VALOARE',
+    0 as 'TVAI',
+    '' as 'UM',
+    '' as 'TIP',
+    '' as 'GRUPA',
+    '' as 'DEN_GEST',
+    case
+        when country = 'RO' then 'RON'
+        else 'EURO'
+    end as 'MONEDA',
+    case
+        when country = 'RO' then '0.19'
+        else '0'
+    end as 'TVA_ART',
+    case
+        when saga_code <> '' or saga_code is null then saga_code
+        else concat('B2B-', client_id)
+    end as 'COD',
+    case 
+--      internal product
+        when type = 1 and isService = 0 then '707'
+--      advance & reversal
+        when type in (2,3) then '419'
+--      discounts
+        when type = 5 or id = '100000001' then '707'
+--      services
+        when type = 6 or (type = 1 and isService = 1) then '704.02'
+--      green tax
+        when id = '100000000' then '704.01'
+    end as 'CONT',
+    case
+        when product_id is null then ''
+        else '0025'
+    end as 'GESTIUNE'
+from packages_data pd
+";
+
+
 $clientInvoicesQueryPart = "
-from invoiced_data id
+from  (".$clientInvoicePackageQuery.")  id
 left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii.type = 'iesiri'
 ";
+
 
 
 $productsUnionQuery = " UNION ";
@@ -434,7 +490,7 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
 
     $clientInvoicesJson = json_encode($clientInvoicesData);
 
-    //printError($clientInvoicesData);
+    // printError($clientInvoicesData);
 
 //echo $selectClientInvoicesQuery;
 
