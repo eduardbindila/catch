@@ -288,9 +288,14 @@ END as TOTAL";
 
 $vendorInvoiceCurrency = "CASE
     WHEN vi.currency = 'RON' then ''
-    ELSE vi.currency
+    ELSE UPPER(vi.currency)
 END AS MONEDA";
 
+
+$vendorInvoiceType = "CASE
+    WHEN vi.currency = 'RON' then ''
+    ELSE 'T'
+END AS TIP";
 
 
 $vendorInvoiceExchangeRate = "CASE
@@ -313,6 +318,7 @@ $selectVendorInvoicesQuery="SELECT
     ".$vendorInvoiceCurrency.",
     ".$vendorInvoiceExchangeRate.",
     ".$vendorInvoiceVAT.", 
+    ".$vendorInvoiceType.", 
     ".$vendorInvoiceProductTotal.", 
      ".$vendorInvoiceProductPrice.",
     ".$vendorInvoiceGestiune.", 
@@ -339,6 +345,9 @@ $productsVendorInvoiceSelection = " SELECT DISTINCT vii.product_id as COD_ART, p
     $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
     $vendorInvoicesJson = json_encode($vendorInvoicesData);
 
+
+
+//printError($vendorInvoicesData);
 
 
     /////////////////////
@@ -368,6 +377,9 @@ $vendorsData = validateData($vendorsQuery, $vendorRequirements, 'furnizori');
 
 $vendorsJson = json_encode($vendorsData);
 }
+
+
+
 
 
 /////////////////////
