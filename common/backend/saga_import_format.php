@@ -473,7 +473,7 @@ $selectAllProductsQuery = "
 // echo $productsClientInvoiceSelection;
 
 
-//echo $selectAllProductsQuery;
+echo $selectAllProductsQuery;
 
 
 //Use your custom query builder to execute the query
@@ -488,7 +488,7 @@ $productsData = validateData($productsQuery, $productRequirements,'articole');
 
 $productsJson = json_encode($productsData);
 
-// printError($productsJson);
+printError($productsData);
 
 
 
