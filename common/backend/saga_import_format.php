@@ -486,13 +486,15 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
         $selectClientInvoicesQuery
     );
 
+
+
      $clientInvoicesData = validateData($clientInvoicesQuery, $clientInvoicesRequirements, 'iesiri');
 
     $clientInvoicesJson = json_encode($clientInvoicesData);
 
     // printError($clientInvoicesData);
 
-//echo $selectClientInvoicesQuery;
+echo $selectClientInvoicesQuery;
 
 
         /////////////////////
