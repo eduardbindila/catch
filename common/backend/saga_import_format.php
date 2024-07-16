@@ -204,7 +204,7 @@ left join saga_imported_invoices sii  on id.`NR_IESIRE` = sii.invoice_id and sii
 $productsUnionQuery = " UNION ";
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
-join products p on id.`COD_ART` = p.id and id.`COD_ART` is not null
+join products p on id.`COD_ART` = p.id
         WHERE ".$clientInvoiceSelectionRule."";
 
 
@@ -401,7 +401,7 @@ if ($_GET["type"] == '4' && isset($_GET["invoice"])) {
  $clientInvoiceSelectionRule .= " AND NR_IESIRE = '{$_GET["invoice"]}'";
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
-join products p on id.`COD_ART` = p.id and id.`COD_ART` is not null
+join products p on id.`COD_ART` = p.id
         WHERE ".$clientInvoiceSelectionRule."";
 
    
@@ -460,7 +460,7 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` is not null
 $selectAllProductsQuery = "
  SELECT DISTINCT COD_ART as COD, DENUMIRE, ".$productTip.",  ".$productVAT.", ".$productTipName."
     FROM (
-         ".$productsVendorInvoiceSelection.$productsUnionQuery.$productsClientInvoiceSelection."
+         ".$productsVendorInvoiceSelection.$productsUnionQuery.$productsClientInvoiceSelection." and id.`COD_ART` <> ''
     ) as prd;
 ";
 
@@ -473,7 +473,7 @@ $selectAllProductsQuery = "
 // echo $productsClientInvoiceSelection;
 
 
-echo $selectAllProductsQuery;
+//echo $selectAllProductsQuery;
 
 
 //Use your custom query builder to execute the query
@@ -488,7 +488,7 @@ $productsData = validateData($productsQuery, $productRequirements,'articole');
 
 $productsJson = json_encode($productsData);
 
-printError($productsData);
+//printError($productsData);
 
 
 
