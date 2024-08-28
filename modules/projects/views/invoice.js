@@ -594,9 +594,9 @@ class Invoices {
                             name:"4", 
                             enabled: enableInvoiceCreation,
                             text: 'Generate Invoice',
-                            //filename: 'Invoice-'+ packageDetails.invoiceNumber + '-' + Date.now(),
+                            filename: 'Invoice-'+ packageDetails.invoiceNumber + '-' + Date.now(),
                             filename: function () {
-         return that.getExportFileName(params);
+         return that.getExportFileName(packageDetails.invoiceNumber, params);
       },
                             className: 'btn btn-lg btn-primary waves-effect',
                              exportOptions: {
@@ -607,7 +607,7 @@ class Invoices {
                               fileData: {
                                  "quote_id": thisPackage.quote_id,
                                 //"file_name": 'Invoice-'+ packageDetails.invoiceNumber + '-' + Date.now(),
-                                "file_name": that.getExportFileName(),
+                                "file_name": that.getExportFileName(packageDetails.invoiceNumber, params),
                                 "file_type": 1,
                                 "file_extension": "pdf"
                               },
@@ -2136,8 +2136,8 @@ class Invoices {
 
     }
 
-    getExportFileName(params){
-        //console.log('a',this, params )
+    getExportFileName(invoiceNumber,params){
+        //console.log('a', invoiceNumber )
 
         var prefix = "RON";
 
@@ -2145,7 +2145,7 @@ class Invoices {
                 prefix = "EXT"
         }
 
-        return prefix+'-'+this.packageDetails.invoiceNumber+'-'+Date.now();
+        return prefix+'-'+invoiceNumber+'-'+Date.now();
     }
 }
 
