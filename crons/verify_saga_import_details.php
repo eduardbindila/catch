@@ -39,10 +39,6 @@ if($notificationId > 0) {
 $sagaCheckImportStatus = json_decode($sagaCheckImportStatus, true);
 $productsJson = json_decode($productsJson, true);
 
-
-// Verifică dacă decodarea a fost cu succes
-if (json_last_error() === JSON_ERROR_NONE && json_last_error() === JSON_ERROR_NONE) {
-    // Creează array-ul de răspuns
     $response = [
         'checkJson' => $sagaCheckImportStatus,
         'productsJson' => $productsJson,
@@ -52,9 +48,5 @@ if (json_last_error() === JSON_ERROR_NONE && json_last_error() === JSON_ERROR_NO
 
     // Encodează array-ul de răspuns în JSON
     echo json_encode($response);
-} else {
-    // Gestionează eroarea de decodare JSON
-    echo json_encode(['error' => 'Invalid JSON format']);
-}
 
 ?>
