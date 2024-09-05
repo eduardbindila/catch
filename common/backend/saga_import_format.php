@@ -553,9 +553,11 @@ $productsQuery = $QueryBuilder->customQuery(
 
 $productsData = validateData($productsQuery, $productRequirements,'articole');
 
-$productsJson = json_encode($productsData);
+$productsData = utf8ize($productsData);
 
-// printError($productsJson);
+$productsJson = json_encode($productsData, JSON_PARTIAL_OUTPUT_ON_ERROR);
+
+//printError($productsJson);
 
 
 
