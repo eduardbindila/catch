@@ -105,7 +105,9 @@ $response = array(
   "aaData" => $data
 );
 
-echo json_encode($response);
+//printError($response);
+
+echo json_encode($response, JSON_PARTIAL_OUTPUT_ON_ERROR);
 
 
 	$QueryBuilder->closeConnection();
