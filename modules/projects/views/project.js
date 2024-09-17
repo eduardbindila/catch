@@ -672,7 +672,7 @@ $(document).ready(function() {
                 exportOptions: {
                     stripHtml: true,
                     orthogonal: null,
-                    columns: [1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 18, 19, 29]
+                    columns: [1, 2, 3, 4, 5, 6, 7, 13, 14, 15, 18, 19, 29, 26]
                 },
                 customize: function(doc) {
 
