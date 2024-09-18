@@ -212,7 +212,7 @@ select
     invoice_no as 'NR_IESIRE',
     exchange_rate as 'CURS',
      unit_price_with_exchange_rate as 'PRET_VANZ', 
-     total_line_price as 'VALOARE',
+     total_novat_line_price as 'VALOARE',
     0 as 'TVAI',
     '' as 'UM',
     '' as 'TIP',
