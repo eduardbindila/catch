@@ -159,6 +159,8 @@ $(document).ready(function() {
 
     if(isDisabled) {
 
+        console.log(userDetails);
+
         $('#userData').find('input, textarea, button, select').attr('disabled','disabled');
         userDetails = userDetails[0];
         $("#userData input[name=name]").val(userDetails.name);
@@ -166,7 +168,7 @@ $(document).ready(function() {
         $("#userData input[name=fiscal_code]").val(userDetails.fiscal_code);
         $("#userData input[name=email]").val(userDetails.email);
         $("#userData input[name=phone]").val(userDetails.phone);
-        $("#userData input[name=country]").val(userDetails.country);
+        $("#userData select[name=country]").val(userDetails.country);
         $("#userData input[name=state]").val(userDetails.state);
         $("#userData input[name=address]").val(userDetails.address);
         $("#userData input[name=bank_account]").val(userDetails.bank_account);
@@ -174,6 +176,9 @@ $(document).ready(function() {
         $("#userData input[name=registry]").val(userDetails.registry);
         $("#userData input[name=discount]").val(userDetails.discount);
         $("#userData input[name=saga_code]").val(userDetails.saga_code);
+        $("#userData input[name=invoicing_email]").val(userDetails.invoicing_email);
+        $("#userData input[name=exchange_rate_deviation]").val(userDetails.exchange_rate_deviation);
+        $("#userData select[name=invoice_due_days]").val(userDetails.invoice_due_days).trigger('change');
     }
 
      $('.editSwitch').change(function() {

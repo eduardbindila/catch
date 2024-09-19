@@ -17,6 +17,11 @@
     </div>
     <div class="input-group">
         <div class="form-line">
+            <input type="email" class="form-control" name="invoicing_email" required placeholder="Invoicing Email*" >
+        </div>
+    </div>
+    <div class="input-group">
+        <div class="form-line">
             <input type="text" class="form-control" name="phone" required placeholder="Phone*" >
         </div>
     </div>
@@ -73,7 +78,21 @@
             <input type="number" class="form-control" min="0" max="72" required name="discount" placeholder="Discount*" >
         </div>
     </div>
-     <div class="input-group">
+    <div class="input-group">
+        <div class="form-line">
+            <input type="number" class="form-control" min="0" max="100" step="0.1" required name="exchange_rate_deviation" placeholder="Exchange Rate Deviation Percent*" value="0">
+        </div>
+    </div>
+    <div class="input-group">
+        <select class="form-control " required name="invoice_due_days">
+            <option value="">Select Invoice Due Days*</option>
+            <option value="30" selected>30</option>
+            <option value="45">45</option>
+            <option value="60">60</option>
+            <option value="90">90</option>
+        </select>
+    </div>
+    <div class="input-group">
         <div class="form-line">
             <input type="text" class="form-control"  name="saga_code" placeholder="Saga Code" >
         </div>
