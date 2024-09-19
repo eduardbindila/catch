@@ -22,7 +22,8 @@ if(empty($_POST['invoice_no'])) {
 				"`invoice_date`='".$_POST['date']."'",
 				"`invoice_due_date`='".$_POST['due_date']."'",
 				"`exchange_rate`=".$_POST['exchange_rate']."",
-				"`other_details`='".addslashes(htmlspecialchars($_POST['other_details']))."'"
+				"`other_details`='".addslashes(htmlspecialchars($_POST['other_details']))."'",
+				"`exchange_rate_deviation`=".$_POST['exchange_rate_deviation']."",
 			],
 			"where" => "id = ".$_POST['package_id']
 		)

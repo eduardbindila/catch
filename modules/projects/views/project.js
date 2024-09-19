@@ -2127,6 +2127,8 @@ $(document).ready(function() {
 
             Invoice.setPackages(packagesObject);
 
+             $('.invoice-date').trigger('change');
+
         }).error(function(xhr, status, error) {
 
         })
@@ -2837,11 +2839,9 @@ $(document).ready(function() {
 
         var isStorno = $(this).attr('data-isStorno');
 
-
+        var packageId = $(this).closest('form').attr('data-package-id');
 
         var date = $(this).val();
-
-        console.log(isStorno);
 
         if (isStorno == 0) {
             $.ajax({
@@ -2854,7 +2854,7 @@ $(document).ready(function() {
             }).success(function(json) {
                 //$('.updateError').addClass('hidden');
                 //console.log(json)
-                $('.viewPackages-modal.in input[name="exchange_rate"]').val(json[0]);
+                $('.viewPackages-modal.in form[data-package-id="'+packageId+'"] input[name="exchange_rate"]').val(json[0]);
                 $('.viewPackages-modal.in .exchange_rate_preloader').addClass('hidden');
 
             }).error(function(xhr, status, error) {

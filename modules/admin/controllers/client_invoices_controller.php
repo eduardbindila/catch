@@ -11,7 +11,7 @@ if(is_numeric($userId)) {
 
 	$conn = $QueryBuilder->dbConnection();
 
-	$query = "select p.id, p.isStorno, p.other_details, p.exchange_rate, quote_id, invoice_number, invoice_date, invoice_due_date, c.name, c.saga_code, c.country  from packages p
+	$query = "select p.id, p.isStorno, p.other_details, p.exchange_rate, quote_id, invoice_number, invoice_date, invoice_due_date, c.name, c.saga_code, c.country, p.exchange_rate_deviation, p.package_status_id, p.exchange_rate_deviation  from packages p
 join quotes q on q.id = p.quote_id 
 join clients c on c.id = q.client_id
 where p.id = ".$userId."
@@ -34,10 +34,18 @@ $_POST['packageId'] = $packageID;
 
 $_POST['isStorno'] = $invoiceQuery[0]['isStorno'];
 
+$_POST['packageStatus'] = $invoiceQuery[0]['package_status_id'];
+
+$_POST['exchange_rate_deviation'] = $invoiceQuery[0]['exchange_rate_deviation'];
+
+
+ $clientExchangeRate = round($invoiceQuery[0]['exchange_rate'] * (1 + ($invoiceQuery[0]['exchange_rate_deviation'] / 100)), 4);
+
  $invoiceData = array(
         "invoiceDate" => $invoiceQuery[0]['invoice_date'],
         "dueDate" => $invoiceQuery[0]['invoice_due_date'],
         "exchangeRate" => $invoiceQuery[0]['exchange_rate'],
+        "exchangeRateDeviation" => $invoiceQuery[0]['exchange_rate_deviation'],
         "invoiceNumber" => $invoiceQuery[0]['invoice_number'],
         "packageId" => $_POST['packageId'],
         "otherDetails" =>  $invoiceQuery[0]['other_details']
@@ -52,7 +60,7 @@ $invoiceNumber = ($invoiceQuery[0]['country'] == "RO" ? 'RON-' : 'EXT-').$invoic
 		"code"=>$invoiceQuery[0]['saga_code']
 	];
 
-	//printError($invoiceGET);
+	//printError($invoiceData);
 
 	$QueryBuilder->closeConnection();
 

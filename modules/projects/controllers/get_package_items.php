@@ -11,13 +11,20 @@ $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $green_tax_value_field = $_POST['invoice_date'] > '2023-02-28' ? "value_2023" : "value";
 
+if(isset($_POST['client_exchange_rate']) && $_POST['client_exchange_rate'] != 0) {
+	$exchange_rate = $_POST['client_exchange_rate'];
+} else
+{
+	$exchange_rate = $_POST['exchange_rate'];
+}
+
 if($_POST['isRon'] == 1) {
 	$exchange_rate = 1;
 } else{
 	if($_POST['country'] !== 'RO') {
 		$exchange_rate =  1;
 	} else {
-		$exchange_rate =  floatVal($_POST['exchange_rate']);
+		$exchange_rate =  $exchange_rate;
 	}	
 }
 

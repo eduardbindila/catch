@@ -290,6 +290,8 @@ class Invoices {
          
          //console.log(thisPackage, params);
 
+         //console.log(packages[index]);
+
          var packageDetails = {
             'packageId': thisPackage.id,
             'packageDate': thisPackage.created_date,
@@ -300,6 +302,7 @@ class Invoices {
             'invoiceDate': packages[index].invoice_date,
             'pos_date': packages[index].pos_date,
             'awb_date': packages[index].awb_date,
+            'exchange_rate_deviation': packages[index].exchange_rate_deviation,
             'is_unified_package': packages[index].is_unified_package,
             'unified_package_id': packages[index].unified_package_id,
             'other_details': packages[index].other_details,
@@ -312,7 +315,8 @@ class Invoices {
             'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== '' ? "Ron" : "Euro",
             'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19" : "0%",
             'vat_value':   quoteList[params.quoteIndex].client_details.country == "RO" ? 0.19 : 0,
-            'totals' : {}
+            'totals' : {},
+            'client_exchange_rate': (packages[index].exchange_rate_deviation != 0) ? parseFloat(packages[index].exchange_rate * (1 + packages[index].exchange_rate_deviation/100)).toFixed(4) : 0
          }
         
         that.packageDetails = packageDetails;
@@ -392,6 +396,7 @@ class Invoices {
                             d.package_id = thisPackage.id;
                             d.country = quoteList[params.quoteIndex].client_details.country;
                             d.exchange_rate = packageDetails.exchangeRate == '' ? 1 : packageDetails.exchangeRate;
+                            d.client_exchange_rate = packageDetails.client_exchange_rate;
                             d.vat = packageDetails.vat;
                             d.isRon = thisPackage.isRon;
                             d.invoice_date = thisPackage.invoice_date;
@@ -804,8 +809,9 @@ class Invoices {
                                                     [
                                                         {text: that.getTranslation('Due_Date',packageDetails.currency)+
                                                         ": " + convertMysqlDate(packageDetails.dueDate), style: 'dueDate'}, 
-                                                        {text: that.getTranslation('Exchange_Rate',packageDetails.currency) +
-                                                         ": " + packageDetails.exchangeRate, style: 'dueDateValue'}
+                                                        {text: that.getTranslation('BNRExchange_Rate',packageDetails.currency) +
+                                                         ": " + packageDetails.exchangeRate + ' / ' + that.getTranslation('Exchange_Rate',packageDetails.currency) +
+                                                         ": " + (packageDetails.client_exchange_rate != 0 ? packageDetails.client_exchange_rate  : packageDetails.exchangeRate)  , style: 'dueDateValue'}
                                                     ],
                                                      [
                                                         {text:packageDetails.other_details, colSpan: 2}, 
@@ -1943,8 +1949,12 @@ class Invoices {
                 "Euro": "Due Date"
             },
             "Exchange_Rate": {
-                "Ron": "Curs Valutar",
-                "Euro": "Exchange Rate"
+                "Ron": "Curs Valutar Factura",
+                "Euro": "Invoice Exchange Rate"
+            },
+            "BNRExchange_Rate": {
+                "Ron": "Curs Valutar BNR",
+                "Euro": "BNR Exchange Rate"
             },
             "AWB_Number": {
                 "Ron": "Numar Aviz",

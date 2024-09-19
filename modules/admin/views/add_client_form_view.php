@@ -86,7 +86,8 @@
     <div class="input-group">
         <select class="form-control " required name="invoice_due_days">
             <option value="">Select Invoice Due Days*</option>
-            <option value="30" selected>30</option>
+            <option value="0" selected>0</option>
+            <option value="30">30</option>
             <option value="45">45</option>
             <option value="60">60</option>
             <option value="90">90</option>
