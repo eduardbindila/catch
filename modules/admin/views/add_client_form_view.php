@@ -80,7 +80,7 @@
     </div>
     <div class="input-group">
         <div class="form-line">
-            <input type="text" pattern="^\d*(\.\d{0,4})?$" class="form-control" min="0" max="100" required name="exchange_rate_deviation" placeholder="Exchange Rate Deviation Percent*" value="0">
+            <input type="number" class="form-control" min="0" max="100" step="0.1" required name="exchange_rate_deviation" placeholder="Exchange Rate Deviation Percent*" value="0">
         </div>
     </div>
     <div class="input-group">
