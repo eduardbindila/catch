@@ -14,9 +14,9 @@ if(empty($_POST['invoice_no'])) {
 }
 
 if(isset($_POST['exchange_rate_deviation'])) {
-	$exchange_rate_deviation = $_POST['exchange_rate_deviation']
+	$exchange_rate_deviation = $_POST['exchange_rate_deviation'];
 } else {
-	$exchange_rate_deviation = 0
+	$exchange_rate_deviation = 0;
 }
 
 	$updatePackageItem = $QueryBuilder->update(
