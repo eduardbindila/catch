@@ -13,6 +13,12 @@ if(empty($_POST['invoice_no'])) {
 	$invoiceString = "`invoice_number`=".$_POST['invoice_no']."";
 }
 
+if(isset($_POST['exchange_rate_deviation'])) {
+	$exchange_rate_deviation = $_POST['exchange_rate_deviation']
+} else {
+	$exchange_rate_deviation = 0
+}
+
 	$updatePackageItem = $QueryBuilder->update(
 		$conn,
 		$options = array(
@@ -23,7 +29,7 @@ if(empty($_POST['invoice_no'])) {
 				"`invoice_due_date`='".$_POST['due_date']."'",
 				"`exchange_rate`=".$_POST['exchange_rate']."",
 				"`other_details`='".addslashes(htmlspecialchars($_POST['other_details']))."'",
-				"`exchange_rate_deviation`=".$_POST['exchange_rate_deviation']."",
+				"`exchange_rate_deviation`=".$exchange_rate_deviation."",
 			],
 			"where" => "id = ".$_POST['package_id']
 		)
