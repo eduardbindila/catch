@@ -5,7 +5,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
-printError($_POST);
+// printError($_POST);
 
 if(empty($_POST['invoice_no'])) {
 	$invoiceString = "`invoice_number`= NULL";
