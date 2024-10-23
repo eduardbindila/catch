@@ -451,6 +451,8 @@ socket.onmessage = function(event) {
                      "render" : function(data, type, row, meta) {
                         //console.log(index);
 
+                        console.log(row);
+
                          if(!row.from_db) {
                             return "-";
                         }
@@ -461,12 +463,11 @@ socket.onmessage = function(event) {
                                 messageContent = row.quantity + ' pieces available in local stock';
                                 colorClass = 'col-green';
 
-                            } else if (row.manufacturer.toLowerCase() == 'syl' ) {
+                            } else if (row.manufacturer && row.manufacturer.toLowerCase() == 'syl' ) {
                                 stockIcon = 'flight';
                                 messageTitle = 'Remote Stock';
                                 messageContent = 'Click Get Delivery Date';
                                 colorClass = 'col-blue';
-
                             } else {
                                 stockIcon = 'schedule';
                                 messageTitle = 'Stock info not Available';
@@ -474,7 +475,7 @@ socket.onmessage = function(event) {
                                 colorClass = '';
                             }
 
-                                if(row.manufacturer.toLowerCase() !== 'syl') {
+                                if(row.manufacturer && row.manufacturer.toLowerCase() !== 'syl') {
                                     html = '<button class="btn btn-xs btn-link waves-effect editQuoteItem" data-toggle="modal" data-target="#editItem-modal"  data-row="'+ meta.row +'"><i class="material-icons">mode_edit</i></button>'
                                 }
                                 else {
