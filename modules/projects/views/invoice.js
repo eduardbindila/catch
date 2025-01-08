@@ -1447,7 +1447,7 @@ class Invoices {
             JSON.parse(json).forEach(function(val, index){
                 greenTaxDropDown = greenTaxDropDown + 
                   '<li class=""><a class="addGreenTax waves-effect waves-block" data-green_tax_id="'+ val.id +'">'+
-                             val.ee_category+' '+ val.name + ': '+ val.value_2023 +
+                             val.ee_category+' '+ val.name + ': '+ val.value_2025 +
                                 '</a>'+
                             '</li>'
            })

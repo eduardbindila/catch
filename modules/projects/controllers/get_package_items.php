@@ -9,7 +9,9 @@ $conn = $QueryBuilder->dbConnection();
 
 $vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
-$green_tax_value_field = $_POST['invoice_date'] > '2023-02-28' ? "value_2023" : "value";
+$green_tax_value_field = $_POST['invoice_date'] > '2025-01-01' 
+    ? "value_2025" 
+    : ($_POST['invoice_date'] > '2023-02-28' ? "value_2023" : "value");
 
 if(isset($_POST['client_exchange_rate']) && $_POST['client_exchange_rate'] != 0) {
 	$exchange_rate = $_POST['client_exchange_rate'];
