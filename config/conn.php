@@ -2,7 +2,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
 
-$_VERSION = '0.1.98944';
+$_VERSION = '0.1.98943';
 
 
 function getPage(){
@@ -99,7 +99,7 @@ Class QueryBuilder{
 
 	function dbConnection(){
 
-		$conn = mysqli_connect($this->db['host'], $this->db['user'], $this->db['password'], $this->db['db_name']) or die("Couldn't connect");
+		$conn = mysqli_connect($this->db['host'], $this->db['user'], $this->db['password'], $this->db['db_name'], $this->db['port'] ) or die("Couldn't connect");
         
 
         return $conn;
