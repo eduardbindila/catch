@@ -118,7 +118,7 @@ $(document).ready(function() {
             }
         });
 
- var product_history_table = $('.product_history_table').DataTable({
+ var product_history_table = $('.product_history_table_2024').DataTable({
             "ajax": {
                 "url": "/ajax/getProductHistory/",
                 "dataSrc": "",
@@ -185,12 +185,12 @@ $(document).ready(function() {
             }
         });
 
- var product_history_table = $('.product_history_table-2023').DataTable({
+ var product_history_table = $('.product_history_table').DataTable({
             "ajax": {
                 "url": "/ajax/getProductHistory/",
                 "dataSrc": "",
                 "type": 'POST',
-                "data": {'product_id': product_id, 'year': 2023}
+                "data": {'product_id': product_id, 'year': 2025}
             },
         
             pageLength: 100,
