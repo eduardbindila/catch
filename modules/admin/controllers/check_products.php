@@ -16,6 +16,7 @@ $data = json_decode($_POST['data'], true);
 // Extrage array-ul de produse din datele primite
 $filteredRows = $data;
 
+
 // Construiește array-ul de ID-uri de produse pentru verificare
 $productIdsForCheck = array_map(function ($row) {
     return explode("\t", $row)[0];
@@ -59,8 +60,11 @@ foreach ($filteredRows as $row) {
     $values = explode("\t", $row);
     $product_id = $values[0];
     $quantity = $values[1];
+    $price = $values[2];
+    $total_price = $price * $quantity;
+
     $exists = isset($existingProductIds[$product_id]) ? $existingProductIds[$product_id] : 0;
-    $dataArray[] = ['product_id' => $product_id, 'quantity' => $quantity, 'exists' => $exists];
+    $dataArray[] = ['product_id' => $product_id, 'quantity' => $quantity,'price' => $price,'total_price' => $total_price, 'exists' => $exists];
 }
 
 usort($dataArray, function($a, $b) {

@@ -111,6 +111,7 @@
                                         <th>Product</th>
                                         <th>Type</th>
                                         <th>Free Stock</th>
+                                        <th>Total Reserved Stock</th>
                                         <th><span class="showInventory hidden">Inventory </span>Quantity</th>
                                         <th>Unit Price</th>
                                         <th>Total Price</th>
@@ -154,7 +155,7 @@
                     <h4 class="modal-title quoteTitle" >Add inventory data</h4>
                 </div>
                 <div class="modal-body">
-                            <h4>Copy here from XLS Product id and Quantity<h4>
+                            <h4>Copy here from XLS with the format: Product id | Quantity | Unit Price<h4>
                               <textarea id="excel_data" rows="10" cols="50" placeholder=""></textarea>
                             <br>
                             <button id="submitBtn" class="btn btn-lg btn-primary waves-effect">Show Data</button>

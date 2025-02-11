@@ -291,6 +291,7 @@ $(document).ready(function() {
                   }
 
                 },
+                
                 {
                     "data": "type_name",
                     "render" : function(data, type, row, meta) {
@@ -332,6 +333,9 @@ $(document).ready(function() {
                     "data": "saga_quantity",
                     "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
                     
+                },
+                {
+                    "data": "total_reserved_stock",
                 },
                 { 
                     "data": "quantity", 
@@ -432,7 +436,9 @@ $(document).ready(function() {
                         }
 
                          if(invoiceData.inventory === '1'  ) {
-                            disabled = "disabled"
+                            disabled = "disabled";
+                            data = (Number(row.quantity) || 0) - (Number(row.total_reserved_stock) || 0);
+                            
                         } 
                             
                         return '<div class="form-group">' + 
@@ -1117,14 +1123,21 @@ function processData(data) {
 
 function showTable(data) {
     // Construiește tabelul
-    var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th><th>Exist</th></tr>";
-console.log(data);
+    var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th><th>Price</th><th>Total Price</th><th>Exist</th></tr>";
+    console.log(data);
+    
     data.forEach(function(row) {
         // Adaugă clasa 'exists-yes' sau 'exists-no' în funcție de existența produsului
         var existClass = row.exists === 1 ? '' : 'danger';
 
         // Adaugă rândul în tabel cu background-ul corespunzător
-        tableHtml += "<tr class='" + existClass + "'><td>" + row.product_id + "</td><td>" + row.quantity + "</td><td>" + (row.exists === 1 ? 'Yes' : 'No') + "</td></tr>";
+        tableHtml += "<tr class='" + existClass + "'>" +
+                     "<td>" + row.product_id + "</td>" +
+                     "<td>" + row.quantity + "</td>" +
+                     "<td>" + row.price + "</td>" +
+                     "<td>" + row.total_price.toFixed(2) + "</td>" +
+                     "<td>" + (row.exists === 1 ? 'Yes' : 'No') + "</td>" +
+                     "</tr>";
     });
 
     tableHtml += "</table>";

@@ -25,11 +25,12 @@ $conn = $QueryBuilder->dbConnection();
        $product_id = $conn->real_escape_string($item['product_id']);
        $quantity = $conn->real_escape_string($item['quantity']);
        $exists = $conn->real_escape_string($item['exists']);
+       $unit_price = $conn->real_escape_string($item['price']);
+        $total_price = $conn->real_escape_string($item['total_price']);
 
        // Adaugă datele în query doar dacă exists este 1
        if ($exists == '1') {
-           $unit_price = 0;  // Adaugă unit_price cu valoarea implicită 0
-           $total_price = 0; // Adaugă total_price cu valoarea implicită 0
+           
            $query .= "('$product_id', '$quantity', '$unit_price', '$total_price', '$vendorInvoiceId'),";
        }
    }
