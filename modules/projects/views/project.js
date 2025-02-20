@@ -2505,7 +2505,7 @@ $(document).ready(function() {
             type: "post",
             dataType: "json",
             data: {
-                'quote': JSON.stringify(quote),
+                'isMaster': quote.isMaster,
                 'quote_id': quoteId,
                 'quote_status': quoteStatus[quoteId],
                 'profit_low': getProfitLow(profitLow[quoteId]),

@@ -3,7 +3,7 @@
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-$isMaster = json_decode($_POST['quote'])->isMaster;
+$isMaster = json_decode($_POST['isMaster']);
 
 //var_dump($isMaster);
 
