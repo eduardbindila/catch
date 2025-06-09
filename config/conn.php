@@ -630,54 +630,21 @@ Class SessionState {
         $this->pageName =& $_pageName;
     }
 
-	// function sessionStart() {
-	// 	// server should keep session data for AT LEAST 1 hour
-	// 	ini_set('session.gc_maxlifetime', 36000);
-
-	// 	// each client should remember their session id for EXACTLY 1 hour
-	// 	session_set_cookie_params(36000);
-	// 	session_start();
-		
-	// 	// // 
-	// 	// if(($this->pageName  !== 'offer') && ($this->pageName  !== 'updateQuote') && ($this->pageName  !== 'getRejectionReason') && ($this->pageName  !== 'confirmQuote')) {
-	// 	// 	//$this->redirectLogin();
-	// 	// }
-		
-		
-	// }
-
 	function sessionStart() {
-	    // Setează durata maximă a sesiunii pe server (ex. 10 ore)
-	    ini_set('session.gc_maxlifetime', 36000); // 10 ore
+		// server should keep session data for AT LEAST 1 hour
+		ini_set('session.gc_maxlifetime', 36000);
 
-	    // Detectează domeniul curent
-	    $host = $_SERVER['HTTP_HOST'];
-
-	    // Extrage subdomeniul (dacă este cazul)
-	    $domainParts = explode('.', $host);
-	    if (count($domainParts) > 2) {
-	        // Asigură-te că domeniul principal rămâne constant
-	        $domain = '.' . implode('.', array_slice($domainParts, -2));
-	    } else {
-	        // Dacă nu există subdomenii, folosește domeniul complet
-	        $domain = $host;
-	    }
-
-	    // Setează parametrii cookie-ului pentru sesiune
-	    session_set_cookie_params([
-	        'lifetime' => 0, // Timpul de expirare al cookie-ului (10 ore)
-	        'path' => '/', // Cookie-ul este valid pentru întregul domeniu
-	        'domain' => '.'.$domain, // Permite partajarea sesiunii între subdomenii
-	        'secure' => true, // Asigură că cookie-ul este trimis doar prin HTTPS
-	        'httponly' => true, // Previne accesul la cookie prin JavaScript
-	        'samesite' => 'none' // Sau 'None' dacă trebuie să permită cross-site requests
-	    ]);
-
-	    // Începe sesiunea
-	    session_start();
-
+		// each client should remember their session id for EXACTLY 1 hour
+		session_set_cookie_params(36000);
+		session_start();
+		
+		// // 
+		// if(($this->pageName  !== 'offer') && ($this->pageName  !== 'updateQuote') && ($this->pageName  !== 'getRejectionReason') && ($this->pageName  !== 'confirmQuote')) {
+		// 	//$this->redirectLogin();
+		// }
+		
+		
 	}
-
 
 	function redirectLoggedIn(){
 		header("location: https://".$_SERVER['HTTP_HOST']."/dashboard");
@@ -685,9 +652,7 @@ Class SessionState {
 
 	function redirectLogin(){
 		if($_SERVER["REQUEST_URI"] !== "/auth/login")
-			//header("location: https://".$_SERVER['HTTP_HOST']."/auth/login");
-			
-			header("location: https://core.icatch.ro");
+			header("location: https://".$_SERVER['HTTP_HOST']."/auth/login");
 	}
 
 	function logout(){
