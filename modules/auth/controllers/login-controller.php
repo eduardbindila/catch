@@ -3,6 +3,10 @@
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
+if ($_SESSION['isLoggedIn'] = true)
+	$SessionState->redirectLoggedIn();
+
+
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 

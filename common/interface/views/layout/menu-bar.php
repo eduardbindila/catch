@@ -233,11 +233,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                         </ul>
                     </li>
                     <?php }?>
-                    <li>
+                    <!-- <li>
                         <a href="/ajax/logout">
                             <span>Logout</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar viewWishlistProducts" data-close="true">Wishlist<i class="material-icons">more_vert</i> <span class="label-count">7</span></a></li>
                 </ul>
             </div>
