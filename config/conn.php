@@ -650,6 +650,11 @@ Class SessionState {
 	    // Setează durata maximă a sesiunii pe server (ex. 10 ore)
 	    ini_set('session.gc_maxlifetime', 36000); // 10 ore
 
+	    // Setăm handlerul Redis DOAR pentru acest proiect
+		ini_set('session.save_handler', 'redis');
+		//ini_set('session.save_path', 'tcp://127.0.0.1:6379'); //local
+		ini_set('session.save_path', 'tcp://192.168.1.26:6379');
+
 	    // Detectează domeniul curent
 	    $host = $_SERVER['HTTP_HOST'];
 
@@ -675,7 +680,6 @@ Class SessionState {
 
 	    // Începe sesiunea
 	    session_start();
-
 	}
 
 

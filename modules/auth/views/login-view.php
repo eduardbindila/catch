@@ -9,7 +9,7 @@
         </div>
         <div class="card">
             <div class="body">
-                <form id="sign_in" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form id="sign_in" method="POST" action="">
                     <div class="msg">Sign in to start your session</div>
                     <div class="alert login-error-alert bg-pink alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>

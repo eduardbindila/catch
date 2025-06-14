@@ -41,7 +41,7 @@ $conn = $QueryBuilder->dbConnection();
     UNION ALL
     SELECT
       qi.product_id,
-      p.created_date AS date,
+      p.invoice_date AS date,
       p.invoice_number as document_number,
       'client_invoice' as document_type,
       p.quote_id as id,
