@@ -1720,7 +1720,46 @@ $(document).ready(function() {
 
                 QuotePricing[quoteIndex][rowId].updateStocks(params);
 
-                $('.stockData[data-product="' + productId + '"]').text(json.stock)
+                $('.stockData[data-product="' + productId + '"]').text(json.stock);
+
+                
+
+                $.ajax({
+                    url: "/ajax/getProductHistory",
+                    type: "post",
+                    dataType: "json",
+                    data: { 'product_id': productId, 'year': 2025 }
+                }).done(function(response) {
+                    const history = response.history || [];
+                    const reserved = Number(response.reserved_stock || 0);
+                    const total = Number(response.total_stock || 0);
+                    const free = Number(response.free_stock || 0);
+
+                    if (history.length > 0) {
+                        const last = history[history.length - 1];
+                        const lastIntermediate = Number(last.intermediate_stock || 0);
+
+                        if (lastIntermediate !== total) {
+                            alert(
+                                "⚠️ Diferență detectată:\n" +
+                                "Stoc intermediar final: " + lastIntermediate + "\n" +
+                                "Free stock: " + free + "\n" +
+                                "Reserved stock: " + reserved + "\n" +
+                                "Stoc total (calculat): " + total
+                            );
+                        } else {
+                            console.log("✅ Stocurile sunt sincronizate.");
+                        }
+                    } else {
+                        console.warn("Nu există istoric pentru produsul " + productId);
+                    }
+                }).fail(function(xhr, status, error) {
+                    console.error("Eroare la getProductHistory:", error);
+                });
+
+
+
+
 
 
             }

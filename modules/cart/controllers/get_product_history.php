@@ -8,7 +8,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
-	$query ="
+	$historyQuery ="
 	SELECT
   sub.*,
   SUM(sub.units) OVER (PARTITION BY sub.product_id ORDER BY sub.date, sub.document_type, sub.sub_id) AS intermediate_stock
@@ -63,18 +63,45 @@ ORDER BY
 ";
 
 
-    // Use your custom query builder to execute the query
-    $projectsQuery = $QueryBuilder->customQuery(
-        $conn,
-        $query
-    );
-
+// Executăm query-ul principal
+$historyData = $QueryBuilder->customQuery($conn, $historyQuery);
 
 	//printError($query);
 
-	echo json_encode($projectsQuery);
 
-	$QueryBuilder->closeConnection();
+
+
+// Query pentru reserved_stock
+$rQuery = "SELECT SUM(reserved_stock) as reserved_stock FROM quote_items WHERE product_id = '".$_POST['product_id']."'";
+$reservedQuery = $QueryBuilder->customQuery($conn, $rQuery);
+$reservedStock = isset($reservedQuery[0]['reserved_stock']) ? (int)$reservedQuery[0]['reserved_stock'] : 0;
+
+// Query pentru total_stock (saga_quantity) din tabela products
+$productQuery = $QueryBuilder->select(
+    $conn,
+    $options = array(
+        "table" => 'products',
+        "columns" => "*",
+        "where" => "id = '".$_POST['product_id']."'"
+    )
+);
+
+$freeStock = isset($productQuery[0]['saga_quantity']) ? (int)$productQuery[0]['saga_quantity'] : 0;
+$totalStock = $freeStock + $reservedStock;
+
+// Răspuns final
+$response = [
+    'history' => $historyData,
+    'reserved_stock' => $reservedStock,
+    'free_stock' => $freeStock,
+    'total_stock' => $totalStock
+];
+
+echo json_encode($response);
+
+$QueryBuilder->closeConnection();
+
+
 
 
 ?>

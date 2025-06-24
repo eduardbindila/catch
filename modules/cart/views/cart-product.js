@@ -121,7 +121,10 @@ $(document).ready(function() {
  var product_history_table = $('.product_history_table_2024').DataTable({
             "ajax": {
                 "url": "/ajax/getProductHistory/",
-                "dataSrc": "",
+                "dataSrc": function(json) {
+                    return json.history || []; // dacă history nu e setat, întoarce un array gol
+                },
+
                 "type": 'POST',
                 "data": {'product_id': product_id, 'year': 2024}
             },
@@ -188,7 +191,10 @@ $(document).ready(function() {
  var product_history_table = $('.product_history_table').DataTable({
             "ajax": {
                 "url": "/ajax/getProductHistory/",
-                "dataSrc": "",
+                "dataSrc": function(json) {
+                    return json.history || []; // dacă history nu e setat, întoarce un array gol
+                },
+
                 "type": 'POST',
                 "data": {'product_id': product_id, 'year': 2025}
             },
