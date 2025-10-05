@@ -71,45 +71,136 @@ $(document).ready(function() {
             "url": "/ajax/getVendorInvoicesList/",
             "dataSrc": "",
         },
-    
+
         pageLength: 100,
-            "paging":   true,
-            "ordering": true,
-            "searching": true,
+        "paging":   true,
+        "ordering": true,
+        "searching": true,
         rowId: 'category_slug',
-          
         responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'selected',
+                className: ' btn btn-lg waves-effect',
+                text: 'Generate XMLs',
+                action: function ( e, dt, button, config ) {
+
+                    // salvează textul original al butonului
+                    var btnNode = dt.button(button).node();     // <- corect
+                    var $btn = $(btnNode);
+                    var originalText = $btn.text();
+
+                    // afișează "Generating.." și dezactivează butonul
+                    $btn.text('Generating..').prop('disabled', true).addClass('disabled');
+
+                   // 1) Ia TOATE invoice_no din selecția curentă (fără projectsTable!)
+                    var selectedData = dt.rows({ selected: true }).data().toArray();
+                    var selectedItems = selectedData.map(function(row){ return row.id; });
+
+                    // opțional: de-dup
+                    selectedItems = Array.from(new Set(selectedItems));
+
+                    if (!selectedItems.length) {
+                      alert('Selectează cel puțin o factură.');
+                      $btn.text(originalText).prop('disabled', false).removeClass('disabled');
+                      return;
+                    }
+
+                    // 2) Construiește query-ul doar din ce ai deja
+                    var params = selectedItems.map(function(id){
+                      return "invoice[]=" + encodeURIComponent(id);
+                    }).join("&");
+                    // compui URL
+                    var thisUrl = "/cron/verifySagaInvoiceDetails?type=5&code=&"+params;
+
+                    fetch(thisUrl, { credentials: 'same-origin' })
+                      .then(function(r){
+                        if(!r.ok) throw new Error('Eroare ' + r.status);
+                        return r.blob();
+                      })
+                      .then(function(blob){
+                        // încearcă să detectezi numele din header (dacă îl pui în PHP)
+                        var dispo = ''; 
+                        var fname = 'F_INTRARI_' + new Date().toISOString().slice(0,19).replace(/[:T]/g,'-') + '.xml';
+
+                        try {
+                          // dacă folosești jQuery ajax, r.headers nu e accesibil ușor; pe fetch e ok:
+                          // exemplu de extras numele din Content-Disposition
+                          // (asigură-te că backend trimite: Content-Disposition: attachment; filename="file.xml")
+                          // NOTĂ: aici e pseudo, pentru că r nu mai e accesibil. Dacă vrei nume exact, folosește fetch mai sus.
+                        } catch(e) {}
+
+                        var url = URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = fname; // va fi ignorat dacă serverul forțează alt nume prin header
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        URL.revokeObjectURL(url);
+                      })
+                      .catch(function(err){
+                        $('.updateError').removeClass('hidden').text(err.message || 'Eroare la descărcare');
+                      })
+                      .finally(function(){
+                        // readuce butonul la starea inițială
+                        $btn.text(originalText).prop('disabled', false).removeClass('disabled');
+                      });
+
+
+                      // $.ajax({
+                      //       url: thisUrl,
+                      //       beforeSend: function() {
+                      //           // Înainte de a face request-ul AJAX, afișăm preloader-ul și ascundem eventuala eroare
+                      //           $('.verify_preloader').removeClass('hidden');
+                      //       },
+                      //   })
+
+
+                 }
+            },
+        ],
+        columnDefs : [
+            {
+                orderable : false,
+                className : 'select-checkbox',
+                targets : 0
+            },
+        ],
+         select: {
+            style:    'multi',
+            selector: 'td:first-child'
+        },
         order: [0],
         "columns": [ 
+            { 
+                "data": null, 
+                defaultContent: '' 
+            },
             { 
                 "data": "id",
                 "render" : function(data, type, row) {
                     return '<a href="vendor-invoices/'+data+'" target="_blank">'+data+'</a>'
-                  } 
+                } 
             },
-            { 
-                "data": "invoice_no"
-            },
-            { 
-                "data": "vendor"
-            },
-            { 
-                "data": "date"
-            },
-            { 
-                "data": "due_date"
-            },
-            { 
-                "data": "invoice_value"
-            },
-            { 
-                "data": "saga_status"
-            }
+            { "data": "invoice_no" },
+            { "data": "vendor" },
+            { "data": "date" },
+            { "data": "due_date" },
+            { "data": "invoice_value" },
+            { "data": "saga_status" }
         ],
         "initComplete": function(settings, json) {
         }
-
     });
+
+
+    var selected = [];
+    $('.row-select:checked').each(function(){
+        selected.push($(this).val());
+    });
+    console.log("Facturi selectate:", selected);
 
 
     $.ajax({
@@ -474,6 +565,10 @@ $(document).ready(function() {
                       },
                        "visible":  invoiceData.inventory === '1' ? false : true
                 },
+                {
+                    "data": "id",
+                },
+
                 {
                     "data": null,
                     "render" : function(data, type, row, meta) {
@@ -910,6 +1005,9 @@ $(document).ready(function() {
                                 '</div>'
                         }
                     }
+                },
+                { 
+                    "data": "other_invoice_connections"
                 },
                 {
                     "data": null,

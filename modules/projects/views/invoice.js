@@ -292,6 +292,8 @@ class Invoices {
 
          //console.log(packages[index]);
 
+         var isNewVat = new Date(packages[index].invoice_date) >= new Date("2025-08-01");
+
          var packageDetails = {
             'packageId': thisPackage.id,
             'packageDate': thisPackage.created_date,
@@ -313,8 +315,14 @@ class Invoices {
             'country': quoteList[params.quoteIndex].client_details.country,
             'showRon':  (quoteList[params.quoteIndex].client_details.country == "RO"),
             'currency':   quoteList[params.quoteIndex].client_details.country == "RO" && packages[index].exchange_rate !== '' ? "Ron" : "Euro",
-            'vat':   quoteList[params.quoteIndex].client_details.country == "RO" ? "19" : "0%",
-            'vat_value':   quoteList[params.quoteIndex].client_details.country == "RO" ? 0.19 : 0,
+
+            'vat': quoteList[params.quoteIndex].client_details.country == "RO"
+                ? (isNewVat ? "21" : "19")
+                : "0%",
+
+            'vat_value': quoteList[params.quoteIndex].client_details.country == "RO"
+                ? (isNewVat ? 0.21 : 0.19)
+                : 0,
             'totals' : {},
             'client_exchange_rate': (packages[index].exchange_rate_deviation != 0) ? parseFloat(packages[index].exchange_rate * (1 + packages[index].exchange_rate_deviation/100)).toFixed(4) : 0
          }

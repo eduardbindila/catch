@@ -617,7 +617,7 @@ $(document).ready(function() {
                             $('#getDeliveryStatus-modal').modal('show');
 
                     $.ajax({
-                        url: 'https://puppet.icatch.ro/getPromiseDate', // URL-ul serverului Node.js
+                        url: window.env.PUPPET_URL+'/getPromiseDate', // URL-ul serverului Node.js
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(productsForDeliveryDate), // Trimitem array-ul ca JSON

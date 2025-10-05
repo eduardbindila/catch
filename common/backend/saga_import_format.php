@@ -80,6 +80,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
      $vendorInvoicesRequirements = [
         'NR_NIR' => ['type' => 'Character', 'max_length' => 16, 'optional' => false],
+        'DENUMIRE' => ['type' => 'Character', 'max_length' => 48, 'optional' => true],
         'NR_INTRARE' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
         'GESTIUNE' => ['type' => 'Character', 'max_length' => 4, 'optional' => true],
         'DEN_GEST' => ['type' => 'Character', 'max_length' => 36, 'optional' => true],
@@ -106,6 +107,7 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
      $clientInvoicesRequirements = [
         'NR_IESIRE' => ['type' => 'Character', 'max_length' => 16, 'optional' => true],
+        'DENUMIRE' => ['type' => 'Character', 'max_length' => 48, 'optional' => true],
         'COD' => ['type' => 'Character', 'max_length' => 8, 'optional' => true],
         'DATA' => ['type' => 'Date', 'optional' => true],
         'SCADENT' => ['type' => 'Date', 'optional' => true],
@@ -188,8 +190,14 @@ function validateData($list, $fieldRequirements, $requestType) {
 
 $conn = $QueryBuilder->dbConnection();
 
-$vendorInvoiceSelectionRule = "sii.invoice_id IS NULL AND vi.`date` >= '2023-03-01' and vi.inventory = 0 AND vi.`date` <= CURDATE() and vii.reception = 1";
-$clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2023-03-01' AND id.`DATA` <= CURDATE()";
+//$vendorInvoiceSelectionRule = "sii.invoice_id IS NULL AND vi.`date` >= '2023-03-01' and vi.inventory = 0 AND vi.`date` <= CURDATE() and vii.reception = 1";
+//$clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2023-03-01' AND id.`DATA` <= CURDATE()";
+
+$vendorInvoiceSelectionRule = "";
+
+$clientInvoiceSelectionRule = "";
+
+
 
 //var_dump($_GET);
 
@@ -204,9 +212,10 @@ $clientInvoiceSelectionRule = "sii.invoice_id IS NULL AND id.`DATA` >= '2023-03-
 $clientInvoicePackageQuery = "
 select 
     product_id as 'COD_ART',
+    client_name as 'DENUMIRE',
     quantity as 'CANTITATE',
-    invoice_due_date as 'SCADENT',
-    invoice_date as 'DATA',
+    DATE_FORMAT(STR_TO_DATE(invoice_due_date, '%Y-%m-%d'),    '%d.%m.%Y')   as 'SCADENT',
+    DATE_FORMAT(STR_TO_DATE(invoice_date, '%Y-%m-%d'),    '%d.%m.%Y')   as 'DATA',
     total_line_vat as 'TVA',
     product_name as 'DEN_ART',
     invoice_no as 'NR_IESIRE',
@@ -223,8 +232,8 @@ select
         else 'EURO'
     end as 'MONEDA',
     case
-        when country = 'RO' then '0.19'
-        else '0'
+        when country = 'RO' then '21'
+    else '0'
     end as 'TVA_ART',
     case
         when saga_code <> '' or saga_code is null then saga_code
@@ -262,7 +271,27 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
 
 if($_GET["type"] == '5' && isset($_GET["invoice"])) {
 
-    $vendorInvoiceSelectionRule .= " AND vi.invoice_no = '{$_GET["invoice"]}'";
+    // $vendorInvoiceSelectionRule .= " AND vi.invoice_no = '{$_GET["invoice"]}'";
+
+    if (!empty($_GET['invoice']) && is_array($_GET['invoice'])) {
+    // curățăm și escapăm valorile ca stringuri
+    $invoice = array_map(function($v) {
+        return "'" . addslashes(trim($v)) . "'";
+    }, $_GET['invoice']);
+
+    $invoiceList = implode(',', $invoice);
+
+    // debug
+    //var_dump($invoiceList);
+
+    $vendorInvoiceSelectionRule .= "  vi.id IN ($invoiceList)";
+} elseif (!empty($_GET['invoice'])) {
+    // fallback pe invoice_no (tot ca string)
+    $invoice = addslashes(trim($_GET['invoice']));
+    $vendorInvoiceSelectionRule .= "  vi.invoice_no = '{$invoice}'";
+}
+
+
 
 /////////////////////
 //                //
@@ -292,8 +321,8 @@ $vendorName = "v.name as DENUMIRE";
 $vendorInvoiceNir = "vi.id  + 8000 as NR_NIR";
 $vendorInvoiceNo = "vi.invoice_no as NR_INTRARE";
 $vendorInvoiceCode = $vendorCode;
-$vendorInvoiceDate = "vi.date as DATA";
-$vendorInvoiceDueDate = "vi.due_date as SCADENT";
+$vendorInvoiceDate = "DATE_FORMAT(STR_TO_DATE(vi.date, '%Y-%m-%d'),    '%d.%m.%Y')   as 'DATA'";
+$vendorInvoiceDueDate = "DATE_FORMAT(STR_TO_DATE(vi.due_date, '%Y-%m-%d'),    '%d.%m.%Y')  as SCADENT";
 $vendorInvoiceProductCode = "product_id as COD_ART";
 $vendorInvoiceProductName = "case 
 when vii.product_id IS NULL or vii.product_id = ''
@@ -307,15 +336,15 @@ $vendorInvoiceGestiune = "CASE
 END GESTIUNE";
 $vendorInvoiceProductQuantity = "quantity as CANTITATE";
 $vendorInvoiceProductVAT = "CASE
-    WHEN vi.vat = 0 THEN 0
-    ELSE 19
+    WHEN vi.currency = 'Euro' THEN 0
+    ELSE 21
 END TVA_ART";
 $vendorInvoiceProductValue = "vii.total_price as VALOARE";
 $vendorInvoiceProductPrice = "vii.unit_price as PRET_VANZ";
 $vendorInvoiceVAT = "
 CASE
-    WHEN vi.vat = 0 THEN 0
-    ELSE vii.total_price*19/100
+    WHEN vi.currency = 'Euro' THEN 0
+    ELSE vii.total_price*21/100
 END AS TVA
 
 ";
@@ -333,12 +362,12 @@ END AS CONT
 ";
 
 $vendorInvoiceProductTotal = "vii.total_price + CASE
-    WHEN vi.vat = 0 THEN 0
-    ELSE vii.total_price*19/100
+    WHEN vi.currency = 'Euro' THEN 0
+    ELSE vii.total_price*21/100
 END as TOTAL";
 
 $vendorInvoiceCurrency = "CASE
-    WHEN vi.currency = 'RON' then ''
+    WHEN vi.currency = 'RON' then 'RON'
     ELSE UPPER(vi.currency)
 END AS MONEDA";
 
@@ -394,11 +423,11 @@ $productsVendorInvoiceSelection = " SELECT DISTINCT vii.product_id as COD_ART, p
 
 
     $vendorInvoicesData = validateData($vendorInvoicesQuery, $vendorInvoicesRequirements, 'intrari');
-    $vendorInvoicesJson = json_encode($vendorInvoicesData);
+    $vendorInvoicesJson = json_encode($vendorInvoicesData, JSON_PARTIAL_OUTPUT_ON_ERROR);
 
 
 
-//printError($vendorInvoicesData);
+//echo $selectVendorInvoicesQuery;
 
 
     /////////////////////
@@ -408,7 +437,7 @@ $productsVendorInvoiceSelection = " SELECT DISTINCT vii.product_id as COD_ART, p
 /////////////////
 
 $selectAllVendorsQuery = "
-    SELECT distinct ".$vendorName.", ".$vendorCode."
+    SELECT distinct ".$vendorName.", ".$vendorCode.", 0 as COD_FISCAL
     FROM vendors v
     WHERE id IN (
         SELECT DISTINCT vendor
@@ -426,7 +455,7 @@ $vendorsQuery = $QueryBuilder->customQuery(
 );
 $vendorsData = validateData($vendorsQuery, $vendorRequirements, 'furnizori');
 
-$vendorsJson = json_encode($vendorsData);
+$vendorsJson = json_encode($vendorsData, JSON_PARTIAL_OUTPUT_ON_ERROR);
 }
 
 
@@ -442,7 +471,7 @@ $vendorsJson = json_encode($vendorsData);
 //Products
 $productCode = "prd.product_id as COD";
 $productName = "prd.product_name as DENUMIRE";
-$productVAT = "19 as TVA";
+$productVAT = "21 as TVA";
 $productTip = "
 CASE
     WHEN prd.isService = 1 THEN ''
@@ -461,7 +490,30 @@ END AS DEN_TIP
 if ($_GET["type"] == '4' && isset($_GET["invoice"])) {
 
 
- $clientInvoiceSelectionRule .= "AND NR_IESIRE = '{$_GET["invoice"]}'";
+
+
+ //$clientInvoiceSelectionRule .= "AND NR_IESIRE = '{$_GET["invoice"]}'";
+
+    if (!empty($_GET['invoice']) && is_array($_GET['invoice'])) {
+        // curățăm și escapăm valorile ca stringuri
+        $invoice = array_map(function($v) {
+            return "'" . addslashes(trim($v)) . "'";
+        }, $_GET['invoice']);
+
+        $invoiceList = implode(',', $invoice);
+
+        // debug
+        //var_dump($invoiceList);
+
+        $clientInvoiceSelectionRule .= "  NR_IESIRE IN ($invoiceList)";
+    } elseif (!empty($_GET['invoice'])) {
+        // fallback pe invoice_no (tot ca string)
+        $invoice = addslashes(trim($_GET['invoice']));
+       $clientInvoiceSelectionRule .= "  NR_IESIRE = '{$invoice}'";
+    }
+
+
+
 
 $productsClientInvoiceSelection = " SELECT DISTINCT COD_ART, p.product_name as DENUMIRE, p.isService".$clientInvoicesQueryPart."
 join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
@@ -485,7 +537,7 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
 
      $clientInvoicesData = validateData($clientInvoicesQuery, $clientInvoicesRequirements, 'iesiri');
 
-    $clientInvoicesJson = json_encode($clientInvoicesData);
+    $clientInvoicesJson = json_encode($clientInvoicesData, JSON_PARTIAL_OUTPUT_ON_ERROR);
 
     // printError($clientInvoicesData);
 
@@ -519,7 +571,7 @@ join products p on id.`COD_ART` = p.id and id.`COD_ART` <> ''
     );
     $clientsData = validateData($clientsQuery, $clientRequirements, 'clienti');
 
-    $clientsJson = json_encode($clientsData);
+    $clientsJson = json_encode($clientsData, JSON_PARTIAL_OUTPUT_ON_ERROR);
 
 
 }  

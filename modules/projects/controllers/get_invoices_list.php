@@ -11,7 +11,10 @@ $query = "SELECT
     p.id, 
     ps.name as status,
     quote_id, 
-    invoice_number, 
+     CASE 
+        WHEN c.country = 'ro' THEN CONCAT('RON-', invoice_number)
+        ELSE CONCAT('EXT-', invoice_number)
+    end as invoice_number, 
     invoice_date, 
     invoice_due_date, 
     c.name, 

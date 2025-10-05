@@ -118,6 +118,7 @@
                                         <th><span class="showInventory hidden">Inventory Difference </span>Delivered Quantity</th>
                                         <th>Connected Quantity</th>
                                         <th>Connect Orders</th>
+                                        <th>Vendor Invoice Item ID</th>
                                         <th>Remove</th>
 
                                 </table>
@@ -267,6 +268,7 @@
                                         <th>Needed for Quote</th>
                                         <th>Distributed</th>
                                         <th>Line Status</th>
+                                        <th>Other</th>
                                         <th>Connect</th>
                                     </thead>
                                 </table>

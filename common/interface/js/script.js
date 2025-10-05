@@ -269,4 +269,5 @@ function getLastFolderFromUrl(url) {
     }
     // Dacă nu se găsește niciun folder sau număr, se returnează null
     return null;
+
 }

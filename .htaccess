@@ -3,8 +3,8 @@
  RewriteEngine On
  RewriteBase /
 
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteRule ^download download.php [L]
 
@@ -70,6 +70,7 @@ RewriteRule ^viewFile view_file.php [L]
  RewriteRule ^ajax/insertCategory modules/admin/import/categories/controllers/insert_category.php [L]
  #RewriteRule ^ajax/getProduct modules/admin/import/products/controllers/get_product.php [L]
  RewriteRule ^cron/updateSylvaniaProductDetails crons/update_sylvania_product_details.php [L]
+ RewriteRule ^cron/aiUpdateSylvaniaProductDetails crons/ai_update_sylvania_product_details.php [L]
  RewriteRule ^cron/startSagaImport crons/start_saga_import_process.php [L]
  RewriteRule ^cron/verifySagaInvoiceDetails crons/verify_saga_import_details.php [L]
  RewriteRule ^cron/sendSagaRequests crons/send_saga_import_requests.php [L]

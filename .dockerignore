@@ -1,0 +1,21 @@
+.git
+.gitignore
+.vscode
+.idea
+*.log
+**/.DS_Store
+**/Thumbs.db
+
+# Build/artifacts
+node_modules
+tmp
+cache
+**/cache
+**/tmp
+
+# Local/dev files
+docker-compose*.yml
+.env
+
+# EN: Exclude Windows junction/volume mount; causes "invalid file request" on Docker Desktop
+uploads

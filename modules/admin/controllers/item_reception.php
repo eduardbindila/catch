@@ -39,20 +39,18 @@ if(isset($_POST['quoteItems'])) {
 		$freeStock = $value['delivered_quantity'] - ($value['connected_total'] ? $value['connected_total'] : 0);
 
 		if($_POST['is_inverse']) {
+			$newReservedStock = $value['reserved_stock'] - $value['split_quantity'];
 			$newStock = $value['saga_quantity'] - $freeStock;
 		} else {
+			$newReservedStock = $value['reserved_stock'] + $value['split_quantity'];
 			$newStock = $value['saga_quantity'] + $freeStock;
 		}
 
 
 		$remainingStock = $freeStock;
-
-
-		if($_POST['is_inverse']){
-			$whens = $whens.' when '.$value['id'].' then GREATEST(qi.quantity - qi.ordered_quantity, 0)' ;
-		} else {
-			$whens = $whens.' when '.$value['id'].' then '.$newReservedStock;
-		}
+		
+		$whens = $whens.' when '.$value['id'].' then '.$newReservedStock;
+		
 
 	}
 

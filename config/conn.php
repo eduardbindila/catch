@@ -1,8 +1,28 @@
 <?php
+require_once __DIR__ . '/secret_loader.php';
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/config/db.php');
+//printError(SECRETS);
 
-$_VERSION = '0.1.989521';
+//printError($_ENV);
+//printError($_SERVER);
+
+//=======================================
+
+
+$_DB = array(
+	"host" => $_ENV['DATABASE_HOST'],
+	"user" => $_ENV['DATABASE_USER'],
+	"password" => SECRETS['DATABASE_PASSWORD'],
+	"db_name" => $_ENV['DATABASE_NAME'],
+	"port" => $_ENV['DATABASE_PORT']
+);
+
+
+//printError($_DB);
+
+
+
+$_VERSION = '0.1.9895211';
 
 
 function getPage(){
@@ -653,7 +673,7 @@ Class SessionState {
 	    // Setăm handlerul Redis DOAR pentru acest proiect
 		ini_set('session.save_handler', 'redis');
 		//ini_set('session.save_path', 'tcp://127.0.0.1:6379'); //local
-		ini_set('session.save_path', 'tcp://192.168.1.26:6379');
+		ini_set('session.save_path', $_ENV['REDIS_TCP'] );
 
 	    // Detectează domeniul curent
 	    $host = $_SERVER['HTTP_HOST'];
@@ -689,9 +709,9 @@ Class SessionState {
 
 	function redirectLogin(){
 		if($_SERVER["REQUEST_URI"] !== "/auth/login")
-			//header("location: https://".$_SERVER['HTTP_HOST']."/auth/login");
-			
-			header("location: https://core.icatch.ro");
+			header("location: https://".$_SERVER['HTTP_HOST']."/auth/login");
+
+			header("location: ".$_ENV['CORE_URL']);
 	}
 
 	function logout(){

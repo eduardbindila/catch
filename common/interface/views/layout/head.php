@@ -58,6 +58,8 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
         var ownerName = <?php echo json_encode($_SESSION['name']); ?>;
 
+        window.env = <?php echo json_encode($_ENV); ?>;
+
     </script>
 
 </head>

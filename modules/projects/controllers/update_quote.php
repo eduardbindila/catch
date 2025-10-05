@@ -5,6 +5,9 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
 $conn = $QueryBuilder->dbConnection();
 
+
+//var_dump($_POST);
+
 if(isset($_POST['extra_discount'])) {
 	$projectsQuery = $QueryBuilder->update(
 		$conn,
@@ -14,6 +17,7 @@ if(isset($_POST['extra_discount'])) {
 			"where" => "id = ".$_POST['quote_id']
 		)
 	);
+	echo $conn->error;
 } elseif(isset($_POST['hide_discount'])) {
 
 	//var_dump((int)($_POST['hide_discount'] === "true"));
@@ -27,10 +31,11 @@ if(isset($_POST['extra_discount'])) {
 			"where" => "id = ".$_POST['quote_id']
 		)
 	);
+	echo $conn->error;
 }
 	else {
 
-//var_dump($_POST);
+
 
 	if(isset($_POST['options']['flag'])) {
 
@@ -42,6 +47,8 @@ if(isset($_POST['extra_discount'])) {
 				"where" => "id = ".$_POST['quote_id']
 			)
 		);
+
+		echo $conn->error;
 
 
 	} else {
@@ -71,11 +78,15 @@ if(isset($_POST['extra_discount'])) {
 				"where" => "id = ".$_POST['quote_id']
 			)
 		);
+
+		echo $conn->error;
 	}
 }
 
 
+echo $conn->error;
 
+//echo 'asd';
 
 
 	echo json_encode($projectsQuery);

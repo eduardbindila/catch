@@ -159,6 +159,8 @@ $(document).ready(function() {
 
       fileStatus = data.status;
 
+      console.log(data);
+
       $.ajax({
             url: "/ajax/importProductList",
             type: "post",
@@ -278,7 +280,7 @@ $(function() {
     var myDropzone = new Dropzone(".dropzone", {
         url: "/ajax/uploadFile",
         paramName: "file",
-        maxFilesize: 5,
+        maxFilesize: 10,
         maxFiles: 1,
         acceptedFiles: ".csv",
         autoProcessQueue: true,

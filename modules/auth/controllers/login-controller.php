@@ -3,7 +3,7 @@
 require_once('config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-if ($_SESSION['isLoggedIn'] = true)
+if (isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn'] === true)
 	$SessionState->redirectLoggedIn();
 
 

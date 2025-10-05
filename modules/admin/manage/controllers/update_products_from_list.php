@@ -85,7 +85,7 @@ foreach ($updateListsQuery as $product => $product_details) {
 			$conn,
 			$options = array(
 				"table" => "products",
-				"set" => ["`initial_price`='".$product_details['price']."'", "`product_name`='".$product_details['name']."'", "`saga_comment`='".$product_details['saga_comment']."'","`nc_code`='".$product_details['nc_code']."'","`active`='".$product_details['active']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
+				"set" => ["`manufacturer`='".$product_details['manufacturer']."'","`initial_price`='".$product_details['price']."'", "`product_name`='".$product_details['name']."'", "`saga_comment`='".$product_details['saga_comment']."'","`nc_code`='".$product_details['nc_code']."'","`active`='".$product_details['active']."'", "`imported_list_id`='".$_POST['import_product_list_id']."'", "`last_updated_date`='".$date."'"],
 				"where" => "id = '".$product_details['product_id']."'"
 			)
 		);

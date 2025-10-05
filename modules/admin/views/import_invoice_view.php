@@ -17,7 +17,7 @@
             <li>
                 <span id="sagaButtons" class="btn-group btn-group-sm" role="group" data-type="<?php echo $invoiceGET['typeNo']?>" data-invoice="<?php echo $invoiceGET['invoice']?>" data-code="<?php echo $invoiceGET['code']?>" data-request="<?php echo $requestId?>" data-process="<?php echo $processId?>">
 
-                    <button id="verifySagaInvoiceDetails" type="button" class="btn btn-primary waves-effect">
+                    <button id="verifySagaInvoiceDetails" disabled type="button" class="btn btn-primary waves-effect">
                     Verify Saga Invoice Details
                     </button>
 

@@ -37,6 +37,7 @@
                                 </div>
                                <table class="invoices_table table table-striped table-bordered table-hover dt-responsive display">
                                     <thead>
+                                        <th></th>
                                         <th>Package ID</th>
                                         <th>Package Status</th>
                                         <th>Quote ID</th>

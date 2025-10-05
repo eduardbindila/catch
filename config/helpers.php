@@ -110,5 +110,4 @@ $_WMPATH["MANAGE_VIEWS"] = $_WMPATH["MODULES"]."admin/manage/views/";
 $_THEME['COLOR'] = 'blue';
 
 
-
 ?>

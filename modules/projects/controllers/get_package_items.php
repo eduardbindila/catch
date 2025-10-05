@@ -7,7 +7,16 @@ $conn = $QueryBuilder->dbConnection();
 
 //var_dump($_POST);
 
-$vat = $_POST['country'] == 'RO' ? 0.19 : 0;
+$invoiceDate = new DateTime($_POST['invoice_date']);
+$vatChangeDate = new DateTime('2025-08-01');
+$isNewVat = $invoiceDate >= $vatChangeDate;
+
+$vat = $_POST['country'] == 'RO'
+    ? ($isNewVat ? 0.21 : 0.19)
+    : 0;
+
+
+//$vat = $_POST['country'] == 'RO' ? 0.19 : 0;
 
 $green_tax_value_field = $_POST['invoice_date'] > '2025-01-01' 
     ? "value_2025" 
