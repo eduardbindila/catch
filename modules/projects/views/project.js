@@ -66,7 +66,7 @@ $(document).ready(function() {
 
         assigneeId = data.owner_id;
 
-        var updatedOption = quoteOptions[thisQuoteId]
+        var updatedOption = $.extend(true, {}, quoteOptions[thisQuoteId] || {});
 
         updatedOption['client_id'] = data.client_id;
 
@@ -74,11 +74,28 @@ $(document).ready(function() {
 
         updatedOption['assignee_id'] = data.owner_id;
 
+        quoteOptions[thisQuoteId] = updatedOption;
 
 
-        updateQuote(thisQuoteId, updatedOption);
 
-        location.reload();
+        var $submitButton = $(this).find('button[type=submit]');
+        var $submitLoader = $(this).find('.edit-quote-preloader');
+
+        $submitButton.prop('disabled', true);
+        $('.updateError').addClass('hidden');
+        $submitLoader.removeClass('hidden');
+
+        updateQuote(thisQuoteId, updatedOption)
+            .then(function() {
+                $submitLoader.addClass('hidden');
+                window.location.reload();
+            })
+            .catch(function(err) {
+                console.error('Update-ul pentru ofertă a eșuat', err);
+                $submitButton.prop('disabled', false);
+                $('.updateError').removeClass('hidden');
+                $submitLoader.addClass('hidden');
+            });
 
     })
 
@@ -3492,7 +3509,7 @@ class PriceDetails {
 
 function updateQuote(quoteID, options) {
 
-    $.ajax({
+    return $.ajax({
         url: "/ajax/updateQuote",
         type: "post",
         dataType: "json",
@@ -3500,12 +3517,12 @@ function updateQuote(quoteID, options) {
             'quote_id': quoteID,
             'options': options
         }
-    }).success(function(json) {
+    }).done(function() {
         $('.updateError').addClass('hidden');
 
-    }).error(function(xhr, status, error) {
+    }).fail(function() {
         $('.updateError').removeClass('hidden');
-    })
+    });
 }
 
 

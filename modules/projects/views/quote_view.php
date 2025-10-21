@@ -99,11 +99,9 @@ $quoteLockedClass = "";
                         <?php  if(!isset($_SESSION['user_access']['client-grid'])) {?>
                         <li>
                             <button class="btn btn-lg btn-default waves-effect editQuoteTrigger" data-toggle="modal" data-target="#edit-modal" data-quote="<?php echo $quote['id']?>">
-                                Old Edit
+                                Edit
                             </button>
-                            <a class="btn btn-lg btn-primary waves-effect" href="<?php echo $_CORE["ROOT"]?>/quotes/<?php echo $quote['id']?>/edit?page=1" data-quote="<?php echo $quote['id']?>">
-                                New Edit
-                            </a>
+                            
                         </li>
                         <li>
                             <button class="btn btn-lg btn-default waves-effect addNewItem"  data-toggle="modal"data-target="#addNew-modal" data-quote="<?php echo $quote['id']?>">
