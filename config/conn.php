@@ -22,10 +22,11 @@ $_DB = array(
 
 
 
-$_VERSION = '0.1.9895211';
+$_VERSION = '0.1.989521134';
 
 
-function getPage(){
+function getPage()
+{
 	$pageLink = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
 	$urlArray = parse_url($pageLink);
@@ -35,23 +36,23 @@ function getPage(){
 
 	$section = $explodeArray[1];
 
-	if(isset($explodeArray[2])) {
+	if (isset($explodeArray[2])) {
 		$subsection = $explodeArray[2];
 	} else {
 		$subsection = "";
 	}
 
-		
+
 
 	$pageName =  basename($urlArray['path']);
 
-	if(is_numeric($pageName)) {
-		$pageRemoval = ((strlen($pageName)) + 1) *-1;
-		
+	if (is_numeric($pageName)) {
+		$pageRemoval = ((strlen($pageName)) + 1) * -1;
+
 		$pageName = basename(substr($path, 0, $pageRemoval));
 	}
 
-	$page  = array('pageName' => $pageName, 'section' => $section, 'subsection' => $subsection );
+	$page  = array('pageName' => $pageName, 'section' => $section, 'subsection' => $subsection);
 
 	return $page;
 }
@@ -72,24 +73,26 @@ $consumer_secret = 'cs_442198654f8dfd30cc06a29773708deeaf3966d7';
 $store_url = 'https://shop.icatch.ro';
 
 
-Class QueryBuilder{
+class QueryBuilder
+{
 
-	public function __construct() {
-        global $_pageName;
-        $this->pageName =& $_pageName;
+	public function __construct()
+	{
+		global $_pageName;
+		$this->pageName = &$_pageName;
 
-        global $_DB;
-        $this->db =&$_DB;
-    }
+		global $_DB;
+		$this->db = &$_DB;
+	}
 
-    function logAction($action, $table, $query, $results){
+	function logAction($action, $table, $query, $results)
+	{
 
-    	if(($table !== "logs") && ($this->pageName !== "favicon.ico")) {
+		if (($table !== "logs") && ($this->pageName !== "favicon.ico")) {
 
-	    	if((($table == "users") || ($table == "projects") || ($table == "clients")) && ($action == "select"))
-	    	{
-	    		$results = "sensitive or too long";
-	    	}
+			if ((($table == "users") || ($table == "projects") || ($table == "clients")) && ($action == "select")) {
+				$results = "sensitive or too long";
+			}
 
 			$logArray = array(
 				"date" => strtotime("now"),
@@ -114,154 +117,148 @@ Class QueryBuilder{
 			//var_dump($logQuery);
 
 
-    	}
+		}
 	}
 
-	function dbConnection(){
+	function dbConnection()
+	{
 
-		$conn = mysqli_connect($this->db['host'], $this->db['user'], $this->db['password'], $this->db['db_name'] ) or die("Couldn't connect");
-        
+		$conn = mysqli_connect($this->db['host'], $this->db['user'], $this->db['password'], $this->db['db_name']) or die("Couldn't connect");
 
-        return $conn;
-    }
 
-    function closeConnection() {
-    	mysqli_close($this->dbConnection()); 
-    }
+		return $conn;
+	}
 
-	function select($conn, $options, $returnType = 'array'){
+	function closeConnection()
+	{
+		mysqli_close($this->dbConnection());
+	}
+
+	function select($conn, $options, $returnType = 'array')
+	{
 
 		$table = $options['table'];
 		$columns = $options['columns'];
 
-		$where = isset($options['where']) ? ' WHERE '.$options['where'] : "";
+		$where = isset($options['where']) ? ' WHERE ' . $options['where'] : "";
 
-		$innerJoin = isset($options['innerJoin']) ? ' INNER JOIN '.$options['innerJoin'] : "";
+		$innerJoin = isset($options['innerJoin']) ? ' INNER JOIN ' . $options['innerJoin'] : "";
 
 
-		$leftJoin = isset($options['leftJoin']) ? ' LEFT JOIN '.$options['leftJoin'] : "";
+		$leftJoin = isset($options['leftJoin']) ? ' LEFT JOIN ' . $options['leftJoin'] : "";
 
-		$limit = isset($options['limit']) ? ' LIMIT '.$options['limit'] : "";
+		$limit = isset($options['limit']) ? ' LIMIT ' . $options['limit'] : "";
 
-		$offset = isset($options['offset']) ? ' OFFSET '.$options['offset'] : "";
+		$offset = isset($options['offset']) ? ' OFFSET ' . $options['offset'] : "";
 
-		$orderBy = isset($options['orderBy']) ? ' Order BY '.$options['orderBy'] : "";
+		$orderBy = isset($options['orderBy']) ? ' Order BY ' . $options['orderBy'] : "";
 
-		$groupBy = isset($options['groupBy']) ? ' Group BY '.$options['groupBy'] : "";
+		$groupBy = isset($options['groupBy']) ? ' Group BY ' . $options['groupBy'] : "";
 
-		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
+		$orderType = isset($options['orderType']) ? ' ' . $options['orderType'] : "";
 
-		$orderType = isset($options['orderType']) ? ' '.$options['orderType'] : "";
+		$orderType = isset($options['orderType']) ? ' ' . $options['orderType'] : "";
 
 		$columnAsArray = isset($options['columnAsArray']) ? $options['columnAsArray'] : "";
 
 		$columnAsGroup = isset($options['columnAsGroup']) ? $options['columnAsGroup'] : "";
 
-		$allQueryParams = $innerJoin.$leftJoin.$where.$offset.$groupBy.$orderBy.$orderType.$limit;
+		$allQueryParams = $innerJoin . $leftJoin . $where . $offset . $groupBy . $orderBy . $orderType . $limit;
 
-		$query = 'SELECT '.$columns.' FROM '.$table.' '.$allQueryParams;
+		$query = 'SELECT ' . $columns . ' FROM ' . $table . ' ' . $allQueryParams;
 
 		//echo $query;
 
 		$results = mysqli_query($conn, $query);
 
-		if($results) {
-			if($returnType == 'array'){
+		if ($results) {
+			if ($returnType == 'array') {
 				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
 					$row = array_map('utf8_encode', $row);
-				    array_push($rows, $row);
+					array_push($rows, $row);
 				}
 
 
 				//$this->logAction("select", $table, $query, $rows);
 
 				return $rows;
-			}
-			else if($returnType == 'bol'){
-				if(mysqli_num_rows($results) > 0)
-			      	return true;
+			} else if ($returnType == 'bol') {
+				if (mysqli_num_rows($results) > 0)
+					return true;
 				else
-				    return false;
-			} else if($returnType == 'insertedProducts'){
+					return false;
+			} else if ($returnType == 'insertedProducts') {
 				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-				    $rows[$row['id']] = 1;
-				    
+				while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+					$rows[$row['id']] = 1;
 				}
 				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
-			} else if($returnType == 'idAsArray') {
+			} else if ($returnType == 'idAsArray') {
 				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
 
 					$rows[$row['id']] = $row;
-				    
-				}			
+				}
 				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
-
-			} else if($returnType == 'columnAsArray' && isset($options['columnAsArray'])) {
+			} else if ($returnType == 'columnAsArray' && isset($options['columnAsArray'])) {
 				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
 
 					$rows[$row[$columnAsArray]] = $row;
-				    
-				}			
+				}
 				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
-
-			} else if($returnType == 'columnAsGroup' && isset($options['columnAsGroup'])) {
+			} else if ($returnType == 'columnAsGroup' && isset($options['columnAsGroup'])) {
 				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
 
-					if(!isset($rows[$row[$columnAsGroup]]))
+					if (!isset($rows[$row[$columnAsGroup]]))
 						$rows[$row[$columnAsGroup]] = array();
 
 					array_push($rows[$row[$columnAsGroup]], $row);
-				    
-				}			
+				}
 				//$this->logAction("select", $table, $query, $rows);
 				return $rows;
-
 			}
-		}
-		else {
+		} else {
 			return mysqli_error($conn);
-		}		
+		}
 	}
 
-	function selectFeatures($conn, $productID, $keyFeatures = array()){
+	function selectFeatures($conn, $productID, $keyFeatures = array())
+	{
 
-		if($keyFeatures) {
+		if ($keyFeatures) {
 			$keyFeaturesArray = $this->arrayToSql($keyFeatures, "'");
 
-			$additionalWhere = " AND features.id in (".$keyFeaturesArray.")";
-		}
-		else {
+			$additionalWhere = " AND features.id in (" . $keyFeaturesArray . ")";
+		} else {
 			$additionalWhere = '';
 		}
 
-		$query = "SELECT Distinct features.feature_name, features.id, feature_values.feature_value, feature_categories.feature_category_name FROM feature_values INNER JOIN product_features ON feature_values.id = product_features.feature_value_id INNER JOIN features ON features.id = product_features.feature_id INNER JOIN feature_categories ON feature_categories.id = features.feature_category_id WHERE product_features.product_id ='".$productID."'".$additionalWhere.";";
+		$query = "SELECT Distinct features.feature_name, features.id, feature_values.feature_value, feature_categories.feature_category_name FROM feature_values INNER JOIN product_features ON feature_values.id = product_features.feature_value_id INNER JOIN features ON features.id = product_features.feature_id INNER JOIN feature_categories ON feature_categories.id = features.feature_category_id WHERE product_features.product_id ='" . $productID . "'" . $additionalWhere . ";";
 
 		$results = mysqli_query($conn, $query);
 
-		if($results) {
-				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-				    array_push($rows, $row);
-				}
+		if ($results) {
+			$rows = array();
+			while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				array_push($rows, $row);
+			}
 
-				//$this->logAction("selectFeatures", "", $query, $rows);
+			//$this->logAction("selectFeatures", "", $query, $rows);
 
-				return $rows;
-		}
-		else {
+			return $rows;
+		} else {
 			return mysqli_error($conn);
-		}		
+		}
 	}
 
-	function customQuery($conn, $query){
+	function customQuery($conn, $query)
+	{
 
 		$results = mysqli_query($conn, $query);
 
@@ -269,26 +266,24 @@ Class QueryBuilder{
 
 		$this->logAction("customQuery", '', $query, "");
 
-		if($results) {
-				$rows = array();
-				if(is_bool($results)) {
+		if ($results) {
+			$rows = array();
+			if (is_bool($results)) {
 
-					$rows = (int)$results;
-
-				} else {
-					while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-					    array_push($rows, $row);
-					}
+				$rows = (int)$results;
+			} else {
+				while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+					array_push($rows, $row);
 				}
-				
+			}
 
-				//$this->logAction("selectFeatures", "", $query, $rows);
 
-				return $rows;
-		}
-		else {
+			//$this->logAction("selectFeatures", "", $query, $rows);
+
+			return $rows;
+		} else {
 			return mysqli_error($conn);
-		}			
+		}
 	}
 
 	function orderProcessingUpdateStocks($conn, $quote_id)
@@ -334,33 +329,32 @@ Class QueryBuilder{
 
 		$results = mysqli_query($conn, $query);
 
-		if($results) {
-				$rows = array();
-		
-				$this->logAction("reserveStock", "", $query, $rows);
+		if ($results) {
+			$rows = array();
 
-				return $rows;
-		}
-		else {
+			$this->logAction("reserveStock", "", $query, $rows);
+
+			return $rows;
+		} else {
 			return mysqli_error($conn);
-		}		
+		}
 	}
 
-	function selectProjectsData($conn, $isLocked, $thisSession,  $keyFeatures = array() ){
+	function selectProjectsData($conn, $isLocked, $thisSession,  $keyFeatures = array())
+	{
 
-		if($keyFeatures) {
+		if ($keyFeatures) {
 			$keyFeaturesArray = $this->arrayToSql($keyFeatures, "'");
 
-			$additionalWhere = " AND features.id in (".$keyFeaturesArray.")";
-		}
-		else {
+			$additionalWhere = " AND features.id in (" . $keyFeaturesArray . ")";
+		} else {
 			$additionalWhere = '';
 		}
 
-		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
+		if (isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 			$restrictQuotesByProfile = "";
 		} else {
-			$restrictQuotesByProfile = " where `assignee_id` = ".$thisSession['user_id'];
+			$restrictQuotesByProfile = " where `assignee_id` = " . $thisSession['user_id'];
 		}
 
 		$query = "SELECT 
@@ -399,40 +393,40 @@ Class QueryBuilder{
 			       LEFT JOIN specifyer_designer 
 			              ON quotes.specifyer_designer = specifyer_designer.id 
 			       LEFT JOIN clients 
-			              ON quotes.client_id = clients.id".$restrictQuotesByProfile;
+			              ON quotes.client_id = clients.id" . $restrictQuotesByProfile;
 
 		$results = mysqli_query($conn, $query);
 
 		//echo $query;
 
-		
 
-		if($results) {
-				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-				    array_push($rows, $row);
-				}
 
-				//$this->logAction("selectProjectsData", "", $query, $rows);
+		if ($results) {
+			$rows = array();
+			while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				array_push($rows, $row);
+			}
 
-				return $rows;
-		}
-		else {
+			//$this->logAction("selectProjectsData", "", $query, $rows);
+
+			return $rows;
+		} else {
 			return mysqli_error($conn);
-		}		
+		}
 	}
 
-	function selectQuotesData($conn, $client_id, $thisSession){
+	function selectQuotesData($conn, $client_id, $thisSession)
+	{
 
-		if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 3) {
-			
-			if(isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
+		if (isset($_SESSION['user_type']) && $_SESSION['user_type'] != 3) {
+
+			if (isset($_SESSION['user_type']) && $_SESSION['user_type'] != 6) {
 				$where = "";
 			} else {
-				$where = " WHERE `assignee_id` = ".$_SESSION['user_id'];
+				$where = " WHERE `assignee_id` = " . $_SESSION['user_id'];
 			}
 		} else {
-			$where = "WHERE quotes.client_id =".$client_id." AND quotes.quote_status != 4 OR quotes.assignee_id=".$_SESSION['user_id'];
+			$where = "WHERE quotes.client_id =" . $client_id . " AND quotes.quote_status != 4 OR quotes.assignee_id=" . $_SESSION['user_id'];
 		}
 
 		$query = "
@@ -458,7 +452,7 @@ Class QueryBuilder{
 		       left join specifyer_designer 
 		              ON quotes.specifyer_designer = specifyer_designer.id 
 		       left join clients 
-		              ON quotes.client_id = clients.id ".$where;
+		              ON quotes.client_id = clients.id " . $where;
 
 		// echo $client_id;
 
@@ -466,24 +460,24 @@ Class QueryBuilder{
 
 		$results = mysqli_query($conn, $query);
 
-		
 
-		if($results) {
-				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-				    array_push($rows, $row);
-				}
 
-				//$this->logAction("selectQuotesData", "", $query, $rows);
+		if ($results) {
+			$rows = array();
+			while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				array_push($rows, $row);
+			}
 
-				return $rows;
-		}
-		else {
+			//$this->logAction("selectQuotesData", "", $query, $rows);
+
+			return $rows;
+		} else {
 			return mysqli_error($conn);
-		}	
+		}
 	}
 
-	function getCategoryBreadcrumbs($conn, $parent_id){
+	function getCategoryBreadcrumbs($conn, $parent_id)
+	{
 
 
 		$query = "
@@ -491,7 +485,7 @@ Class QueryBuilder{
 			with recursive parent_users (id, parent_id, category_name, level) AS (
 			  SELECT id, parent_id, category_name, 1 level
 			  FROM categories
-			  WHERE id = '".$parent_id."'
+			  WHERE id = '" . $parent_id . "'
 			  union all
 			  SELECT t.id, t.parent_id, t.category_name, level + 1
 			  FROM categories t INNER JOIN parent_users pu
@@ -501,30 +495,29 @@ Class QueryBuilder{
 		";
 
 		$results = mysqli_query($conn, $query);
-		
-		if($results) {
-				$rows = array();
-				while($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
-				    array_push($rows, $row);
-				}
 
-				return $rows;
-		}
-		else {
+		if ($results) {
+			$rows = array();
+			while ($row = mysqli_fetch_array($results, MYSQLI_ASSOC)) {
+				array_push($rows, $row);
+			}
+
+			return $rows;
+		} else {
 			return mysqli_error($conn);
-		}	
+		}
 	}
 
-	function arrayToSql($thisArray, $sep){
+	function arrayToSql($thisArray, $sep)
+	{
 		$sqlString = '';
-		$i=1;
+		$i = 1;
 		foreach ($thisArray as $key => $value) {
 
-			if(count($thisArray) == $i) {
-				$sqlString = $sqlString.$sep.$value.$sep;
-			}
-			else {
-				$sqlString = $sqlString.$sep.$value.$sep.", ";
+			if (count($thisArray) == $i) {
+				$sqlString = $sqlString . $sep . $value . $sep;
+			} else {
+				$sqlString = $sqlString . $sep . $value . $sep . ", ";
 			}
 
 			$i++;
@@ -533,16 +526,17 @@ Class QueryBuilder{
 		return $sqlString;
 	}
 
-	function update($conn, $options) {
+	function update($conn, $options)
+	{
 		$table = $options['table'];
 
 		$set = $this->arrayToSql($options['set'], "");
 
-		$where = isset($options['where']) ? 'WHERE '.$options['where'] : "";
+		$where = isset($options['where']) ? 'WHERE ' . $options['where'] : "";
 
-		$join = isset($options['join']) ? ' JOIN '.$options['join'] : "";
+		$join = isset($options['join']) ? ' JOIN ' . $options['join'] : "";
 
-		$query = 'UPDATE '.$table.$join.' SET '.$set.' '.$where;
+		$query = 'UPDATE ' . $table . $join . ' SET ' . $set . ' ' . $where;
 
 		//echo $query;
 
@@ -553,28 +547,30 @@ Class QueryBuilder{
 
 	//DELETE from tablename WHERE id IN (1,2,3,...,254);
 
-	function delete($conn, $options) {
+	function delete($conn, $options)
+	{
 		$table = $options['table'];
 
 		$in = $this->arrayToSql($options['in'], "'");
 
 		$column = $options['column'];
 
-		$and = isset($options['and']) ? 'AND '.$options['and'] : "";
+		$and = isset($options['and']) ? 'AND ' . $options['and'] : "";
 
-		$where = isset($options['where']) ? 'WHERE '.$options['where'] : "";
+		$where = isset($options['where']) ? 'WHERE ' . $options['where'] : "";
 
-		$query = 'DELETE from '.$table.' WHERE '.$column.' IN ('.$in.') '.$and;
+		$query = 'DELETE from ' . $table . ' WHERE ' . $column . ' IN (' . $in . ') ' . $and;
 
 		//echo $query;
-		
+
 
 		$this->logAction("delete", $table, $query, "");
 
 		return $conn->query($query);
 	}
 
-	function insert($conn, $options, $multi=false){
+	function insert($conn, $options, $multi = false)
+	{
 
 		$table = $options['table'];
 
@@ -582,32 +578,30 @@ Class QueryBuilder{
 
 		$keys = $this->arrayToSql($options['keys'], "`");
 
-		if($multi) {
+		if ($multi) {
 
 			$values = '';
 
-			$i=1;
-				
+			$i = 1;
+
 			foreach ($options['values'] as $key => $value) {
-				if(count($options['values']) == $i) {
+				if (count($options['values']) == $i) {
 					$sep = '';
-				}
-				else {
+				} else {
 					$sep = ", ";
 				}
 
-				$values = $values.'('.$this->arrayToSql($value, '"').')'.$sep;
+				$values = $values . '(' . $this->arrayToSql($value, '"') . ')' . $sep;
 
 				$i++;
 			};
-		}
-		else {
-			$values = '('.$this->arrayToSql($options['values'], '"').')';
+		} else {
+			$values = '(' . $this->arrayToSql($options['values'], '"') . ')';
 
 			//echo $values;
 		}
 
-		$query = 'INSERT INTO '.$table.' ('.$keys.') VALUES '.$values.$duplicateKey;
+		$query = 'INSERT INTO ' . $table . ' (' . $keys . ') VALUES ' . $values . $duplicateKey;
 
 		//echo $query;
 
@@ -616,17 +610,15 @@ Class QueryBuilder{
 		$this->logAction("insert", $table, $query, $result);
 
 		if ($result === TRUE) {
-			if($conn->insert_id) {
+			if ($conn->insert_id) {
 				return $conn->insert_id;
 			} else {
 				return $result;
 			}
-		    
 		} else {
-		    return 0;
+			return 0;
 		}
 	}
-
 }
 
 
@@ -643,12 +635,14 @@ Class QueryBuilder{
 // echo "<pre/>";print_r($data->getUserInfo(3));
 
 
-Class SessionState {
+class SessionState
+{
 
-	 public function __construct() {
-        global $_pageName;
-        $this->pageName =& $_pageName;
-    }
+	public function __construct()
+	{
+		global $_pageName;
+		$this->pageName = &$_pageName;
+	}
 
 	// function sessionStart() {
 	// 	// server should keep session data for AT LEAST 1 hour
@@ -657,84 +651,88 @@ Class SessionState {
 	// 	// each client should remember their session id for EXACTLY 1 hour
 	// 	session_set_cookie_params(36000);
 	// 	session_start();
-		
+
 	// 	// // 
 	// 	// if(($this->pageName  !== 'offer') && ($this->pageName  !== 'updateQuote') && ($this->pageName  !== 'getRejectionReason') && ($this->pageName  !== 'confirmQuote')) {
 	// 	// 	//$this->redirectLogin();
 	// 	// }
-		
-		
+
+
 	// }
 
-	function sessionStart() {
-	    // Setează durata maximă a sesiunii pe server (ex. 10 ore)
-	    ini_set('session.gc_maxlifetime', 36000); // 10 ore
+	function sessionStart()
+	{
+		// Setează durata maximă a sesiunii pe server (ex. 10 ore)
+		ini_set('session.gc_maxlifetime', 36000); // 10 ore
 
-	    // Setăm handlerul Redis DOAR pentru acest proiect
+		// Setăm handlerul Redis DOAR pentru acest proiect
 		ini_set('session.save_handler', 'redis');
 		//ini_set('session.save_path', 'tcp://127.0.0.1:6379'); //local
-		ini_set('session.save_path', $_ENV['REDIS_TCP'] );
+		ini_set('session.save_path', $_ENV['REDIS_TCP']);
 
-	    // Detectează domeniul curent
-	    $host = $_SERVER['HTTP_HOST'];
+		// Detectează domeniul curent
+		$host = $_SERVER['HTTP_HOST'];
 
-	    // Extrage subdomeniul (dacă este cazul)
-	    $domainParts = explode('.', $host);
-	    if (count($domainParts) > 2) {
-	        // Asigură-te că domeniul principal rămâne constant
-	        $domain = '.' . implode('.', array_slice($domainParts, -2));
-	    } else {
-	        // Dacă nu există subdomenii, folosește domeniul complet
-	        $domain = $host;
-	    }
+		// Extrage subdomeniul (dacă este cazul)
+		$domainParts = explode('.', $host);
+		if (count($domainParts) > 2) {
+			// Asigură-te că domeniul principal rămâne constant
+			$domain = '.' . implode('.', array_slice($domainParts, -2));
+		} else {
+			// Dacă nu există subdomenii, folosește domeniul complet
+			$domain = $host;
+		}
 
-	    // Setează parametrii cookie-ului pentru sesiune
-	    session_set_cookie_params([
-	        'lifetime' => 0, // Timpul de expirare al cookie-ului (10 ore)
-	        'path' => '/', // Cookie-ul este valid pentru întregul domeniu
-	        'domain' => '.'.$domain, // Permite partajarea sesiunii între subdomenii
-	        'secure' => true, // Asigură că cookie-ul este trimis doar prin HTTPS
-	        'httponly' => true, // Previne accesul la cookie prin JavaScript
-	        'samesite' => 'none' // Sau 'None' dacă trebuie să permită cross-site requests
-	    ]);
+		// Setează parametrii cookie-ului pentru sesiune
+		session_set_cookie_params([
+			'lifetime' => 0, // Timpul de expirare al cookie-ului (10 ore)
+			'path' => '/', // Cookie-ul este valid pentru întregul domeniu
+			'domain' => '.' . $domain, // Permite partajarea sesiunii între subdomenii
+			'secure' => true, // Asigură că cookie-ul este trimis doar prin HTTPS
+			'httponly' => true, // Previne accesul la cookie prin JavaScript
+			'samesite' => 'none' // Sau 'None' dacă trebuie să permită cross-site requests
+		]);
 
-	    // Începe sesiunea
-	    session_start();
+		// Începe sesiunea
+		session_start();
 	}
 
 
-	function redirectLoggedIn(){
-		header("location: https://".$_SERVER['HTTP_HOST']."/dashboard");
+	function redirectLoggedIn()
+	{
+		header("location: https://" . $_SERVER['HTTP_HOST'] . "/dashboard");
 	}
 
-	function redirectLogin(){
-		if($_SERVER["REQUEST_URI"] !== "/auth/login")
-			header("location: https://".$_SERVER['HTTP_HOST']."/auth/login");
+	function redirectLogin()
+	{
+		if ($_SERVER["REQUEST_URI"] !== "/auth/login")
+			header("location: https://" . $_SERVER['HTTP_HOST'] . "/auth/login");
 
-			header("location: ".$_ENV['CORE_URL']);
+		header("location: " . $_ENV['CORE_URL']);
 	}
 
-	function logout(){
+	function logout()
+	{
 		session_destroy();
 
 		$this->redirectLogin();
 	}
 
-	function isLoggedIn(){
-		if(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"] === true){
-		    return true;
-		}
-		else
-		{
+	function isLoggedIn()
+	{
+		if (isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"] === true) {
+			return true;
+		} else {
 			return false;
 		}
 	}
 
 
-	function destroy(){
+	function destroy()
+	{
 		//remove PHPSESSID from browser
-		if ( isset( $_COOKIE[session_name()] ) )
-		setcookie( session_name(), "", time()-3600, "/" );
+		if (isset($_COOKIE[session_name()]))
+			setcookie(session_name(), "", time() - 3600, "/");
 		//clear session from globals
 		$_SESSION = array();
 		//clear session from disk
@@ -748,7 +746,8 @@ Class SessionState {
 
 
 
-Class LoadHTMLArtefacts{
+class LoadHTMLArtefacts
+{
 
 	public $links = array();
 
@@ -757,69 +756,76 @@ Class LoadHTMLArtefacts{
 	public $bodyClasses = array();
 
 
-	public function __construct() {
-        global $_VERSION;
-        $this->version =& $_VERSION;
-    }
+	public function __construct()
+	{
+		global $_VERSION;
+		$this->version = &$_VERSION;
+	}
 
 	//Set&Get Links
 	//====================
-	function setLink($href) {
-		array_push($this->links, $href.'?v='.$this->version);
+	function setLink($href)
+	{
+		array_push($this->links, $href . '?v=' . $this->version);
 	}
 
 
-	function printLinks(){
+	function printLinks()
+	{
 		foreach ($this->links as $link => $value) {
-			echo '<link href="'.$value.'" rel="stylesheet">';
+			echo '<link href="' . $value . '" rel="stylesheet">';
 		}
 	}
-	
+
 
 	//Set&Get Scripts
 	//====================
-	function setScript($src) {
-		array_push($this->scripts, $src.'?v='.$this->version);
+	function setScript($src)
+	{
+		array_push($this->scripts, $src . '?v=' . $this->version);
 	}
 
 
-	function printScripts(){
+	function printScripts()
+	{
 		foreach ($this->scripts as $script => $value) {
-			echo '<script src="'.$value.'"></script>';
+			echo '<script src="' . $value . '"></script>';
 		}
 	}
 
 	//Set&Get Body Class
 	//====================
-	function setBodyClass($class) {
+	function setBodyClass($class)
+	{
 		array_push($this->bodyClasses, $class);
 	}
 
 
-	function printBodyClasses(){
+	function printBodyClasses()
+	{
 
 		foreach ($this->bodyClasses as $class => $value) {
 			echo $value;
 		}
 	}
-
-
-
 }
 
 
-Class Pricing {
+class Pricing
+{
 	public $minPercent = 0.7;
 	public $listPercent = 0.28;
 
-	function getListPrice($paPrice) {
-		$listPrice = $paPrice/$this->listPercent;
+	function getListPrice($paPrice)
+	{
+		$listPrice = $paPrice / $this->listPercent;
 
 		return  number_format((float)$listPrice, 2, '.', '');
 	}
 
-	function getMinPrice($paPrice) {
-		$minPrice = $paPrice/$this->minPercent;
+	function getMinPrice($paPrice)
+	{
+		$minPrice = $paPrice / $this->minPercent;
 
 		return number_format((float)$minPrice, 2, '.', '');
 	}
@@ -827,17 +833,19 @@ Class Pricing {
 
 
 
-Class GetDetails {
+class GetDetails
+{
 
 	private $QueryBuilder;
 
-    public function __construct()
-    {
-        $this->QueryBuilder = new QueryBuilder();
-    }
+	public function __construct()
+	{
+		$this->QueryBuilder = new QueryBuilder();
+	}
 
 
-	function userDetails($id) {
+	function userDetails($id)
+	{
 
 		$conn = $this->QueryBuilder->dbConnection();
 
@@ -846,7 +854,7 @@ Class GetDetails {
 			$options = array(
 				"table" => "users",
 				"columns" => "id, name, email, role, phone",
-				"where" => "id = '".$id."'"
+				"where" => "id = '" . $id . "'"
 			)
 		);
 
@@ -855,7 +863,8 @@ Class GetDetails {
 		return $usersQuery;
 	}
 
-	function quoteStatus($id) {
+	function quoteStatus($id)
+	{
 
 		$conn = $this->QueryBuilder->dbConnection();
 
@@ -864,7 +873,7 @@ Class GetDetails {
 			$options = array(
 				"table" => "quote_status",
 				"columns" => "id, name",
-				"where" => "id = '".$id."'"
+				"where" => "id = '" . $id . "'"
 			)
 		);
 
@@ -873,55 +882,54 @@ Class GetDetails {
 		return $usersQuery[0]['name'];
 	}
 
-	function userName($id){
-		
+	function userName($id)
+	{
 
-		if($id > 0) {
+
+		if ($id > 0) {
 			$userInfo = $this->userDetails($id);
 			return $userInfo[0]['name'];
-		} else 
-		{
+		} else {
 			return '';
 		}
 	}
 
-	function userEmail($id){
-		if($id > 0) {
+	function userEmail($id)
+	{
+		if ($id > 0) {
 			$userInfo = $this->userDetails($id);
 			return $userInfo[0]['email'];
-		} else 
-		{
+		} else {
 			return '';
 		}
-
-			
 	}
 
-	function userRole($id){
-		
-		if($id > 0) {
+	function userRole($id)
+	{
+
+		if ($id > 0) {
 			$userInfo = $this->userDetails($id);
 
 			return $userInfo[0]['role'];
-		} else 
-		{
+		} else {
 			return '';
 		}
 	}
 
-	function userPhone($id){
+	function userPhone($id)
+	{
 
-		if($id > 0) {
+		if ($id > 0) {
 			$userInfo = $this->userDetails($id);
 
 			return $userInfo[0]['phone'];
-		} else 
-		{
+		} else {
 			return '';
 		}
 	}
 
-	function clientDetails($id) {
+	function clientDetails($id)
+	{
 
 		$conn = $this->QueryBuilder->dbConnection();
 
@@ -930,22 +938,21 @@ Class GetDetails {
 			$options = array(
 				"table" => "clients",
 				"columns" => "*",
-				"where" => "id = '".$id."'"
+				"where" => "id = '" . $id . "'"
 			)
 		);
 
 		$this->QueryBuilder->closeConnection();
 
-		if(empty($usersQuery)) {
+		if (empty($usersQuery)) {
 			return 'No Client Assigned';
 		} else {
 			return $usersQuery[0]['name'];
 		}
-
-		
 	}
 
-	function isClientValid($id) {
+	function isClientValid($id)
+	{
 
 		$conn = $this->QueryBuilder->dbConnection();
 
@@ -954,7 +961,7 @@ Class GetDetails {
 			$options = array(
 				"table" => "clients",
 				"columns" => "*",
-				"where" => "id = '".$id."' and
+				"where" => "id = '" . $id . "' and
 				(name is not null and name <> '') and 
 				(poi is not null and poi <> '') and 
 				(email is not null and email <> '') and 
@@ -974,17 +981,15 @@ Class GetDetails {
 
 		$this->QueryBuilder->closeConnection();
 
-		if(empty($usersQuery)) {
+		if (empty($usersQuery)) {
 			return 0;
 		} else {
 			return 1;
 		}
-
-
-		
 	}
 
-	function productStock($product_id) {
+	function productStock($product_id)
+	{
 
 		$conn = $this->QueryBuilder->dbConnection();
 
@@ -993,7 +998,7 @@ Class GetDetails {
 			$options = array(
 				"table" => "products",
 				"columns" => "saga_quantity",
-				"where" => "id = '".$product_id."'"
+				"where" => "id = '" . $product_id . "'"
 			)
 		);
 
@@ -1002,7 +1007,8 @@ Class GetDetails {
 		return $productStock[0]['saga_quantity'];
 	}
 
-	function reservedStock($quote_item_id) {
+	function reservedStock($quote_item_id)
+	{
 
 		$conn = $this->QueryBuilder->dbConnection();
 
@@ -1011,7 +1017,7 @@ Class GetDetails {
 			$options = array(
 				"table" => "quote_items",
 				"columns" => "reserved_stock",
-				"where" => "id = '".$quote_item_id."'"
+				"where" => "id = '" . $quote_item_id . "'"
 			)
 		);
 
@@ -1022,23 +1028,24 @@ Class GetDetails {
 }
 
 
-function getIDByName($name, $list) {
+function getIDByName($name, $list)
+{
 
 	$biggest_percent = 0;
 	$id = 0;
 	$userName = '';
 
-	foreach($list as $key=>$list_itemn) {
+	foreach ($list as $key => $list_itemn) {
 		similar_text(strtolower($name), strtolower($list_itemn['name']), $percent);
 
-		if($percent > $biggest_percent) {
+		if ($percent > $biggest_percent) {
 			$biggest_percent = $percent;
 			$id = $list_itemn['id'];
 			$userName = $list_itemn['name'];
-		} 
+		}
 	}
 
-	if($biggest_percent < 80) {
+	if ($biggest_percent < 80) {
 		$id = 1;
 	}
 
@@ -1046,48 +1053,51 @@ function getIDByName($name, $list) {
 }
 
 
-function getMatch($agent, $users_list) {
+function getMatch($agent, $users_list)
+{
 
 	$biggest_percent = 0;
 	$user_ID = 0;
 	$user_name = '';
 
-	foreach($users_list as $key=>$user) {
+	foreach ($users_list as $key => $user) {
 		similar_text(strtolower($agent), strtolower($user['name']), $percent);
 
-		if($percent > $biggest_percent) {
+		if ($percent > $biggest_percent) {
 			$biggest_percent = $percent;
 			$user_ID = $user['id'];
 			$user_name = $user['name'];
-		} 
+		}
 	}
 
 	return $biggest_percent;
 }
 
 
-function utf8ize($d) {
-    if (is_array($d)) {
-        foreach ($d as $k => $v) {
-            $d[$k] = utf8ize($v);
-        }
-    } else if (is_string ($d)) {
-        return utf8_encode($d);
-    }
-    return $d;
+function utf8ize($d)
+{
+	if (is_array($d)) {
+		foreach ($d as $k => $v) {
+			$d[$k] = utf8ize($v);
+		}
+	} else if (is_string($d)) {
+		return utf8_encode($d);
+	}
+	return $d;
 }
 
 
-function showError($message) {
+function showError($message)
+{
 
-	?>
+?>
 
-	 <div class="alert generalError bg-pink alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <?php echo $message ?> <b>Please contact the administrator</b>
-    </div>
+	<div class="alert generalError bg-pink alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+		<?php echo $message ?> <b>Please contact the administrator</b>
+	</div>
 
-	<?php
+<?php
 
 
 }
@@ -1111,20 +1121,21 @@ $winning_chance = array(
 
 
 
-function printError($val) {
-	
-	?>
+function printError($val)
+{
 
-	 <div class="alert generalError bg-pink alert-dismissible" role="alert">
-    <?php 
-    	echo "<pre>";
+?>
+
+	<div class="alert generalError bg-pink alert-dismissible" role="alert">
+		<?php
+		echo "<pre>";
 		var_dump($val);
 		echo "</pre>";
 
-    ?>
-    </div>
+		?>
+	</div>
 
-	<?php
+<?php
 }
 
 

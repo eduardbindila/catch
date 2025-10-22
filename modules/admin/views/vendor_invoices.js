@@ -1,8 +1,8 @@
 
-$(document).ready(function() {
+$(document).ready(function () {
 
 
-    function itemTypesList(){
+    function itemTypesList() {
 
         var itemTypesList = "";
 
@@ -10,20 +10,20 @@ $(document).ready(function() {
             url: "/ajax/getVendorItemTypesList",
             type: "post",
             dataType: "text",
-            async:false
-        }).success(function(json){
-           $('.updateError').addClass('hidden');
+            async: false
+        }).success(function (json) {
+            $('.updateError').addClass('hidden');
 
-            JSON.parse(json).forEach(function(val, index){
-                itemTypesList = itemTypesList + 
-                  '<li class=""><a class="setItemType waves-effect waves-block" data-item_type_id="'+ val.id +'">'+
-                            val.name +
-                                '</a>'+
-                            '</li>'
-           })
-           
-        }).error(function(xhr, status, error) {
-           $('.updateError').removeClass('hidden');
+            JSON.parse(json).forEach(function (val, index) {
+                itemTypesList = itemTypesList +
+                    '<li class=""><a class="setItemType waves-effect waves-block" data-item_type_id="' + val.id + '">' +
+                    val.name +
+                    '</a>' +
+                    '</li>'
+            })
+
+        }).error(function (xhr, status, error) {
+            $('.updateError').removeClass('hidden');
         })
 
         //console.log(itemTypesList);
@@ -31,29 +31,29 @@ $(document).ready(function() {
         return itemTypesList
     }
 
-    $('body').on('click', '.setItemType', function(e){
+    $('body').on('click', '.setItemType', function (e) {
 
-      itemTypesData = {
-        'product_id' : $(this).parents('ul').attr('data-product'),
-        'item_type_id' : $(this).attr('data-item_type_id'),
-        
-        'vendor_item' : $(this).parents('ul').attr('data-vendor_item')
-      }
+        itemTypesData = {
+            'product_id': $(this).parents('ul').attr('data-product'),
+            'item_type_id': $(this).attr('data-item_type_id'),
 
-      //console.log(itemTypesData)
+            'vendor_item': $(this).parents('ul').attr('data-vendor_item')
+        }
+
+        //console.log(itemTypesData)
 
 
-      $.ajax({
+        $.ajax({
             url: "/ajax/updateVendorItemType",
             type: "post",
             dataType: "json",
             data: itemTypesData
-        }).success(function(json){
-           $('.updatePackageItemError').addClass('hidden');
-           //console.log(json);
-           itemsTable.ajax.reload()
+        }).success(function (json) {
+            $('.updatePackageItemError').addClass('hidden');
+            //console.log(json);
+            itemsTable.ajax.reload()
 
-        }).error(function(xhr, status, error) {
+        }).error(function (xhr, status, error) {
             $('.updatePackageItemError').removeClass('hidden');
         })
 
@@ -73,7 +73,7 @@ $(document).ready(function() {
         },
 
         pageLength: 100,
-        "paging":   true,
+        "paging": true,
         "ordering": true,
         "searching": true,
         rowId: 'category_slug',
@@ -84,7 +84,7 @@ $(document).ready(function() {
                 extend: 'selected',
                 className: ' btn btn-lg waves-effect',
                 text: 'Generate XMLs',
-                action: function ( e, dt, button, config ) {
+                action: function (e, dt, button, config) {
 
                     // salvează textul original al butonului
                     var btnNode = dt.button(button).node();     // <- corect
@@ -94,95 +94,95 @@ $(document).ready(function() {
                     // afișează "Generating.." și dezactivează butonul
                     $btn.text('Generating..').prop('disabled', true).addClass('disabled');
 
-                   // 1) Ia TOATE invoice_no din selecția curentă (fără projectsTable!)
+                    // 1) Ia TOATE invoice_no din selecția curentă (fără projectsTable!)
                     var selectedData = dt.rows({ selected: true }).data().toArray();
-                    var selectedItems = selectedData.map(function(row){ return row.id; });
+                    var selectedItems = selectedData.map(function (row) { return row.id; });
 
                     // opțional: de-dup
                     selectedItems = Array.from(new Set(selectedItems));
 
                     if (!selectedItems.length) {
-                      alert('Selectează cel puțin o factură.');
-                      $btn.text(originalText).prop('disabled', false).removeClass('disabled');
-                      return;
+                        alert('Selectează cel puțin o factură.');
+                        $btn.text(originalText).prop('disabled', false).removeClass('disabled');
+                        return;
                     }
 
                     // 2) Construiește query-ul doar din ce ai deja
-                    var params = selectedItems.map(function(id){
-                      return "invoice[]=" + encodeURIComponent(id);
+                    var params = selectedItems.map(function (id) {
+                        return "invoice[]=" + encodeURIComponent(id);
                     }).join("&");
                     // compui URL
-                    var thisUrl = "/cron/verifySagaInvoiceDetails?type=5&code=&"+params;
+                    var thisUrl = "/cron/verifySagaInvoiceDetails?type=5&code=&" + params;
 
                     fetch(thisUrl, { credentials: 'same-origin' })
-                      .then(function(r){
-                        if(!r.ok) throw new Error('Eroare ' + r.status);
-                        return r.blob();
-                      })
-                      .then(function(blob){
-                        // încearcă să detectezi numele din header (dacă îl pui în PHP)
-                        var dispo = ''; 
-                        var fname = 'F_INTRARI_' + new Date().toISOString().slice(0,19).replace(/[:T]/g,'-') + '.xml';
+                        .then(function (r) {
+                            if (!r.ok) throw new Error('Eroare ' + r.status);
+                            return r.blob();
+                        })
+                        .then(function (blob) {
+                            // încearcă să detectezi numele din header (dacă îl pui în PHP)
+                            var dispo = '';
+                            var fname = 'F_INTRARI_' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-') + '.xml';
 
-                        try {
-                          // dacă folosești jQuery ajax, r.headers nu e accesibil ușor; pe fetch e ok:
-                          // exemplu de extras numele din Content-Disposition
-                          // (asigură-te că backend trimite: Content-Disposition: attachment; filename="file.xml")
-                          // NOTĂ: aici e pseudo, pentru că r nu mai e accesibil. Dacă vrei nume exact, folosește fetch mai sus.
-                        } catch(e) {}
+                            try {
+                                // dacă folosești jQuery ajax, r.headers nu e accesibil ușor; pe fetch e ok:
+                                // exemplu de extras numele din Content-Disposition
+                                // (asigură-te că backend trimite: Content-Disposition: attachment; filename="file.xml")
+                                // NOTĂ: aici e pseudo, pentru că r nu mai e accesibil. Dacă vrei nume exact, folosește fetch mai sus.
+                            } catch (e) { }
 
-                        var url = URL.createObjectURL(blob);
-                        var a = document.createElement('a');
-                        a.href = url;
-                        a.download = fname; // va fi ignorat dacă serverul forțează alt nume prin header
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        URL.revokeObjectURL(url);
-                      })
-                      .catch(function(err){
-                        $('.updateError').removeClass('hidden').text(err.message || 'Eroare la descărcare');
-                      })
-                      .finally(function(){
-                        // readuce butonul la starea inițială
-                        $btn.text(originalText).prop('disabled', false).removeClass('disabled');
-                      });
-
-
-                      // $.ajax({
-                      //       url: thisUrl,
-                      //       beforeSend: function() {
-                      //           // Înainte de a face request-ul AJAX, afișăm preloader-ul și ascundem eventuala eroare
-                      //           $('.verify_preloader').removeClass('hidden');
-                      //       },
-                      //   })
+                            var url = URL.createObjectURL(blob);
+                            var a = document.createElement('a');
+                            a.href = url;
+                            a.download = fname; // va fi ignorat dacă serverul forțează alt nume prin header
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            URL.revokeObjectURL(url);
+                        })
+                        .catch(function (err) {
+                            $('.updateError').removeClass('hidden').text(err.message || 'Eroare la descărcare');
+                        })
+                        .finally(function () {
+                            // readuce butonul la starea inițială
+                            $btn.text(originalText).prop('disabled', false).removeClass('disabled');
+                        });
 
 
-                 }
+                    // $.ajax({
+                    //       url: thisUrl,
+                    //       beforeSend: function() {
+                    //           // Înainte de a face request-ul AJAX, afișăm preloader-ul și ascundem eventuala eroare
+                    //           $('.verify_preloader').removeClass('hidden');
+                    //       },
+                    //   })
+
+
+                }
             },
         ],
-        columnDefs : [
+        columnDefs: [
             {
-                orderable : false,
-                className : 'select-checkbox',
-                targets : 0
+                orderable: false,
+                className: 'select-checkbox',
+                targets: 0
             },
         ],
-         select: {
-            style:    'multi',
+        select: {
+            style: 'multi',
             selector: 'td:first-child'
         },
         order: [0],
-        "columns": [ 
-            { 
-                "data": null, 
-                defaultContent: '' 
+        "columns": [
+            {
+                "data": null,
+                defaultContent: ''
             },
-            { 
+            {
                 "data": "id",
-                "render" : function(data, type, row) {
-                    return '<a href="vendor-invoices/'+data+'" target="_blank">'+data+'</a>'
-                } 
+                "render": function (data, type, row) {
+                    return '<a href="vendor-invoices/' + data + '" target="_blank">' + data + '</a>'
+                }
             },
             { "data": "invoice_no" },
             { "data": "vendor" },
@@ -191,13 +191,13 @@ $(document).ready(function() {
             { "data": "invoice_value" },
             { "data": "saga_status" }
         ],
-        "initComplete": function(settings, json) {
+        "initComplete": function (settings, json) {
         }
     });
 
 
     var selected = [];
-    $('.row-select:checked').each(function(){
+    $('.row-select:checked').each(function () {
         selected.push($(this).val());
     });
     console.log("Facturi selectate:", selected);
@@ -207,54 +207,54 @@ $(document).ready(function() {
         url: "/ajax/getVendors",
         type: "post",
         dataType: "json",
-    }).done(function(json){
-       $.each(json, function (i, item) {
-        //console.log(json, $('.vendorTypesSelector'));
-            $('.vendorTypesSelector').append($('<option>', { 
+    }).done(function (json) {
+        $.each(json, function (i, item) {
+            //console.log(json, $('.vendorTypesSelector'));
+            $('.vendorTypesSelector').append($('<option>', {
                 value: item.id,
-                text : item.id
+                text: item.id
             }));
         });
 
-       
 
-       if(invoiceData.inventory === '1') {
+
+        if (invoiceData.inventory === '1') {
 
             $('.addExternal').addClass('hidden');
 
 
-            
+
             $('.addNewItem').addClass('hidden');
             $('.inventorySwitch').prop('checked', true);
 
             $('.showInventory').removeClass('hidden');
 
-       }
+        }
 
-       if(invoiceData.inventory === '1' && invoiceData.closed_invoice === '0') {
+        if (invoiceData.inventory === '1' && invoiceData.closed_invoice === '0') {
 
             $('.activateInventory').removeClass('hidden');
             $('.addInventoryData').removeClass('hidden');
             $('.resetStocks').removeClass('hidden');
-       }
+        }
 
 
-       if(isDisabled)
-        $("#invoiceData select[name=vendor]").val(invoiceData.vendor);
+        if (isDisabled)
+            $("#invoiceData select[name=vendor]").val(invoiceData.vendor);
 
-    }).error(function(xhr, status, error) {
+    }).error(function (xhr, status, error) {
         $('.vendorTypesSelectorError').removeClass('hidden');
     })
 
 
-    if(insertResult) {
+    if (insertResult) {
         $('.addUserSuccess').removeClass('hidden')
-    } else if(insertResult == 0) {
+    } else if (insertResult == 0) {
         $('.addUserError').removeClass('hidden')
     }
 
-    if(isDisabled) {
-        $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
+    if (isDisabled) {
+        $('#invoiceData').find('input, textarea, button, select').attr('disabled', 'disabled');
         invoiceData = invoiceData[0];
         console.log(invoiceData);
         $("#invoiceData input[name=invoice_no]").val(invoiceData.invoice_no);
@@ -268,60 +268,60 @@ $(document).ready(function() {
         $("input[name=currency][value=" + invoiceData.currency + "]").prop('checked', true);
     }
 
-     $('.editSwitch').change(function() {
+    $('.editSwitch').change(function () {
         isDisabled = !isDisabled;
-        if(!isDisabled) {
+        if (!isDisabled) {
             $('#invoiceData').find('input, textarea, button, select').prop("disabled", false);;
         } else {
-            $('#invoiceData').find('input, textarea, button, select').attr('disabled','disabled');
-        }      
+            $('#invoiceData').find('input, textarea, button, select').attr('disabled', 'disabled');
+        }
     })
 
 
 
-     $('.inventorySwitch').change(function(e) {
-       var inventory = $(this).prop('checked');
-       $.ajax({
+    $('.inventorySwitch').change(function (e) {
+        var inventory = $(this).prop('checked');
+        $.ajax({
             url: "/ajax/makeInventory",
             type: "post",
             dataType: "json",
-            data: {'vendor_invoice_id': invoiceId, 'inventory': inventory}
-        }).success(function(json){
+            data: { 'vendor_invoice_id': invoiceId, 'inventory': inventory }
+        }).success(function (json) {
             location.reload();
-        }).error(function(xhr, status, error) {
-           
-        }).complete(function(data){
- 
+        }).error(function (xhr, status, error) {
+
+        }).complete(function (data) {
+
 
         })
 
     });
 
-    
 
-    if(isDisabled) {
-         var itemsTable = $('.invoice_items_table').DataTable({
+
+    if (isDisabled) {
+        var itemsTable = $('.invoice_items_table').DataTable({
             "ajax": {
                 "url": "/ajax/getVendorInvoiceItemsList/",
-                "dataSrc":"",
+                "dataSrc": "",
                 "type": "POST",
-                "data": {'vendor_invoice_id': invoiceId}
+                "data": { 'vendor_invoice_id': invoiceId }
             },
-        
+
             pageLength: 100,
-                "paging":   true,
-                "ordering": false,
-                "searching": true,
+            "paging": true,
+            "ordering": false,
+            "searching": true,
             rowId: 'category_slug',
-              
+
             responsive: true,
             order: [],
-            "columns": [ 
+            "columns": [
 
-                { 
+                {
                     "data": "reception",
                     "className": "invoiceTableInput",
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         //console.log(data)
 
@@ -330,133 +330,133 @@ $(document).ready(function() {
                         var disabled = '';
                         var editClass = 'hidden';
 
-                        if(data == 1) {
+                        if (data == 1) {
                             btnClass = 'btn-success';
                             icon = 'lock'
                             disabled = 'disabled';
                             editClass = '';
 
                         } else {
-                            if(Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity)) && Number(row.saga_quantity) > 0) {
+                            if (Number(row.connected_total) > (Number(row.saga_quantity) + Number(row.delivered_quantity)) && Number(row.saga_quantity) > 0) {
                                 btnClass = 'btn-danger';
                                 icon = 'lock'
                                 disabled = 'disabled';
-                                
+
                             }
                         }
 
-                        
 
-                            
-                        return '<button type="button" '+disabled+' class="reception btn '+btnClass+' btn-xs waves-effect"'+
-                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product="'+row.product_id+'" data-delivered='+row.delivered_quantity+'>'+
-                                    '<i class="material-icons">'+icon+'</i>'+
-                                '</button> ' +
-                                '<button type="button" class="reverseReception '+editClass+' btn btn-default btn-circle waves-effect waves-circle waves-float"'+
-                                 ' data-item='+row.id+' data-invoice='+invoiceId+' data-stock="'+row.saga_quantity+'" data-product="'+row.product_id+'" data-delivered='+row.delivered_quantity+'>'+
-                                    '<i class="material-icons">refresh</i>'+
-                                '</button>'
-                  },
-                  "visible":  invoiceData.inventory === '1' ? false : true
+
+
+                        return '<button type="button" ' + disabled + ' class="reception btn ' + btnClass + ' btn-xs waves-effect"' +
+                            ' data-item=' + row.id + ' data-invoice=' + invoiceId + ' data-stock="' + row.saga_quantity + '" data-product="' + row.product_id + '" data-delivered=' + row.delivered_quantity + '>' +
+                            '<i class="material-icons">' + icon + '</i>' +
+                            '</button> ' +
+                            '<button type="button" class="reverseReception ' + editClass + ' btn btn-default btn-circle waves-effect waves-circle waves-float"' +
+                            ' data-item=' + row.id + ' data-invoice=' + invoiceId + ' data-stock="' + row.saga_quantity + '" data-product="' + row.product_id + '" data-delivered=' + row.delivered_quantity + '>' +
+                            '<i class="material-icons">refresh</i>' +
+                            '</button>'
+                    },
+                    "visible": invoiceData.inventory === '1' ? false : true
                 },
-                { 
-                    "data": "product_id", 
+                {
+                    "data": "product_id",
                     "className": 'invoiceTableInput',
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
                         var product = data;
 
-                        if(product == 0 && row.external_item_name=='') {
+                        if (product == 0 && row.external_item_name == '') {
                             console.log('asd')
-                            product = '<div class="form-group">' + 
-                                    '<div class="form-line">' + 
-                                        '<input class="form-control vendor-invoice-external-input"' + 
-                                        ' data-type="quantity" data-row="'+meta.row+
-                                        '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="" type="text" name="external_item_name" placeholder="New Item" required>' + 
-                                    '</div>' + 
+                            product = '<div class="form-group">' +
+                                '<div class="form-line">' +
+                                '<input class="form-control vendor-invoice-external-input"' +
+                                ' data-type="quantity" data-row="' + meta.row +
+                                '" data-col="' + meta.col +
+                                '" data-item="' + row.id +
+                                '" value="" type="text" name="external_item_name" placeholder="New Item" required>' +
+                                '</div>' +
                                 '</div>'
-                        } else if(!product) { product = row.external_item_name }
+                        } else if (!product) { product = row.external_item_name }
 
                         return product
-                  }
+                    }
 
                 },
-                
+
                 {
                     "data": "type_name",
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         var value = data;
 
-                         if(!row.product_id )  {
+                        if (!row.product_id) {
 
-                             value = value + 
-                                            ' <div class="btn-group">'+
-                                                '<button class="btn btn-default btn-xs "' + 
-                                                ' data-row="'+meta.row+
-                                                '" data-col="'+meta.col+
-                                                '" data-package="'+invoiceId+
-                                               
-                                                '" data-vendor_item="'+row.id+
-                                                '" data-product="'+row.product_id+'" data-toggle="dropdown'+
-                                                '" aria-haspopup="true" aria-expanded="true">'+
-                                                        '<i class="material-icons">edit</i>'+ 
-                                                '</button>'+
-                                                '<ul class="dropdown-menu"'+
-                                                ' data-row="'+meta.row+
-                                                '" data-col="'+meta.col+
-                                                '" data-package="'+invoiceId+
-                                                
-                                                '" data-vendor_item="'+row.id+
-                                                '" data-product="'+row.product_id+'" data-toggle="dropdown">'+
-                                                        itemTypesDropDown
-                                                '</ul>'
-                                            '</div>';
+                            value = value +
+                                ' <div class="btn-group">' +
+                                '<button class="btn btn-default btn-xs "' +
+                                ' data-row="' + meta.row +
+                                '" data-col="' + meta.col +
+                                '" data-package="' + invoiceId +
+
+                                '" data-vendor_item="' + row.id +
+                                '" data-product="' + row.product_id + '" data-toggle="dropdown' +
+                                '" aria-haspopup="true" aria-expanded="true">' +
+                                '<i class="material-icons">edit</i>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu"' +
+                                ' data-row="' + meta.row +
+                                '" data-col="' + meta.col +
+                                '" data-package="' + invoiceId +
+
+                                '" data-vendor_item="' + row.id +
+                                '" data-product="' + row.product_id + '" data-toggle="dropdown">' +
+                                itemTypesDropDown
+                            '</ul>'
+                            '</div>';
                         }
-                       
-                            return  value
-                         
-                      }
+
+                        return value
+
+                    }
 
                 },
-                { 
+                {
                     "data": "saga_quantity",
                     "visible": invoiceData.inventory === '1' && invoiceData.closed_invoice === '1' ? false : true
-                    
+
                 },
                 {
                     "data": "total_reserved_stock",
                 },
-                { 
-                    "data": "quantity", 
+                {
+                    "data": "quantity",
                     "className": 'invoiceTableInput',
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         var disabled = ""
 
-                        if(data > 0 && row.unit_price > 0 ) {
+                        if (data > 0 && row.unit_price > 0) {
                             disabled = "disabled"
                         }
 
-                        if(row.reception > 0  ) {
+                        if (row.reception > 0) {
                             disabled = "disabled"
-                        }   
-                        return '<div class="form-group">' + 
-                                    '<div class="form-line">' + 
-                                        '<input class="form-control vendor-invoice-input"' + 
-                                        ' data-type="external_item_name" data-row="'+meta.row+
-                                        '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" '+disabled+' name="quantity" placeholder="Quantity" required>' + 
-                                    '</div>' + 
-                                '</div>'
-                  }
+                        }
+                        return '<div class="form-group">' +
+                            '<div class="form-line">' +
+                            '<input class="form-control vendor-invoice-input"' +
+                            ' data-type="external_item_name" data-row="' + meta.row +
+                            '" data-col="' + meta.col +
+                            '" data-item="' + row.id +
+                            '" value="' + data + '" type="number" ' + disabled + ' name="quantity" placeholder="Quantity" required>' +
+                            '</div>' +
+                            '</div>'
+                    }
                 },
-                { 
+                {
                     "data": "unit_price",
                     "className": 'invoiceTableInput, invoiceTableInput-unitPrice',
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
                         var disabled = "disabled"
 
                         // if(row.quantity > 0) {
@@ -470,100 +470,100 @@ $(document).ready(function() {
                         // console.log(row.reception, row.reception > 0);
 
 
-                         if(row.reception > 0  ) {
+                        if (row.reception > 0) {
                             disabled = "disabled"
                         } else {
                             disabled = "";
                         }
 
-                        if(invoiceData.inventory === '1'  ) {
+                        if (invoiceData.inventory === '1') {
                             disabled = "disabled"
-                        } 
-                        
-                            
-                        return '<div class="form-group">' + 
-                                    '<div class="form-line">' + 
-                                        '<input class="form-control vendor-invoice-input"' + 
-                                        ' data-type="unit_price" data-row="'+meta.row+
-                                        '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" '+disabled+' placeholder="Unit Price" name="unit_price"  min=0 required>' + 
-                                    '</div>' + 
-                                '</div>'
                         }
+
+
+                        return '<div class="form-group">' +
+                            '<div class="form-line">' +
+                            '<input class="form-control vendor-invoice-input"' +
+                            ' data-type="unit_price" data-row="' + meta.row +
+                            '" data-col="' + meta.col +
+                            '" data-item="' + row.id +
+                            '" value="' + data + '" type="number" ' + disabled + ' placeholder="Unit Price" name="unit_price"  min=0 required>' +
+                            '</div>' +
+                            '</div>'
+                    }
                 },
-                { 
+                {
                     "data": "total_price",
                     "className": 'invoiceTableInput, invoiceTableInput-totalPrice',
-                    "render" : function(data, type, row, meta) {
-                            
-                        return '<div class="form-group">' + 
-                                    '<div class="form-line">' + 
-                                        '<input class="form-control vendor-invoice-input"' + 
-                                        ' data-type="total_price" data-row="'+meta.row+
-                                        '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" placeholder="Total Price" name="total_price" disabled required>' + 
-                                    '</div>' + 
-                                '</div>'
-                  }
+                    "render": function (data, type, row, meta) {
+
+                        return '<div class="form-group">' +
+                            '<div class="form-line">' +
+                            '<input class="form-control vendor-invoice-input"' +
+                            ' data-type="total_price" data-row="' + meta.row +
+                            '" data-col="' + meta.col +
+                            '" data-item="' + row.id +
+                            '" value="' + data + '" type="number" placeholder="Total Price" name="total_price" disabled required>' +
+                            '</div>' +
+                            '</div>'
+                    }
                 },
 
-                { 
-                    "data": "delivered_quantity", 
+                {
+                    "data": "delivered_quantity",
                     "className": 'invoiceTableInput',
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         var disabled = "disabled"
 
                         //console.log(row.unit_price > 0 && row.reception == 0)
 
-                        if(row.reception == 0) {
+                        if (row.reception == 0) {
                             disabled = ""
                         }
 
-                        if(row.reception > 0  ) {
+                        if (row.reception > 0) {
                             disabled = "disabled"
                         }
 
-                         if(invoiceData.inventory === '1'  ) {
+                        if (invoiceData.inventory === '1') {
                             disabled = "disabled";
                             data = (Number(row.quantity) || 0) - (Number(row.total_reserved_stock) || 0);
-                            
-                        } 
-                            
-                        return '<div class="form-group">' + 
-                                    '<div class="form-line">' + 
-                                        '<input class="form-control vendor-invoice-input delivery"' + 
-                                        ' data-type="external_item_name" data-row="'+meta.row+
-                                        '" data-col="'+meta.col+
-                                        '" data-item="'+row.id+
-                                        '" value="'+data+'" type="number" '+disabled+' name="delivered_quantity" placeholder="Delivered Quantity">' + 
-                                    '</div>' + 
-                                '</div>'
-                  }
+
+                        }
+
+                        return '<div class="form-group">' +
+                            '<div class="form-line">' +
+                            '<input class="form-control vendor-invoice-input delivery"' +
+                            ' data-type="external_item_name" data-row="' + meta.row +
+                            '" data-col="' + meta.col +
+                            '" data-item="' + row.id +
+                            '" value="' + data + '" type="number" ' + disabled + ' name="delivered_quantity" placeholder="Delivered Quantity">' +
+                            '</div>' +
+                            '</div>'
+                    }
                 },
                 {
                     "data": "connected_total",
-                     "visible":  invoiceData.inventory === '1' ? false : true
+                    "visible": invoiceData.inventory === '1' ? false : true
 
                 },
 
-                { 
-                        "data": null,
-                        className: 'connect_quotes_td',
-                        "render" : function(data, type, row, meta) {
+                {
+                    "data": null,
+                    className: 'connect_quotes_td',
+                    "render": function (data, type, row, meta) {
 
-                               //OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
+                        //OrderSplit[row.id] = new OrderSplit(row.id, row.product_id);
 
-                            // return OrderSplit[row.id].setWrapper(this);
+                        // return OrderSplit[row.id].setWrapper(this);
 
-                                    return '<button type="button" class="btn addConnection btn-default btn-xs waves-effect"'+
-                                            ' data-product="'+row.product_id+'" data-item="'+row.id+'" data-delivered="'+row.delivered_quantity+'" data-toggle="modal "data-target="#addConnection-modal">'+
-                                                '<i class="material-icons">add</i>'+
-                                            '</button>'
-                      },
-                       "visible":  invoiceData.inventory === '1' ? false : true
+                        return '<button type="button" class="btn addConnection btn-default btn-xs waves-effect"' +
+                            ' data-product="' + row.product_id + '" data-item="' + row.id + '" data-delivered="' + row.delivered_quantity + '" data-toggle="modal "data-target="#addConnection-modal">' +
+                            '<i class="material-icons">add</i>' +
+                            '</button>'
+                    },
+                    "visible": invoiceData.inventory === '1' ? false : true
                 },
                 {
                     "data": "id",
@@ -571,31 +571,31 @@ $(document).ready(function() {
 
                 {
                     "data": null,
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         var disabled = ""
 
-                        if(row.connected_total > 0 ) {
+                        if (row.connected_total > 0) {
                             disabled = "disabled"
                         }
 
-                       
-                            return  ' <button type="button" data-item='+row.id+'  '+disabled+' class="removeItem  btn btn-danger btn-xs waves-effect">'+
-                                    '<i class="material-icons">close</i>'+
-                                '</button>'
-                        
 
-                         
-                      }
+                        return ' <button type="button" data-item=' + row.id + '  ' + disabled + ' class="removeItem  btn btn-danger btn-xs waves-effect">' +
+                            '<i class="material-icons">close</i>' +
+                            '</button>'
+
+
+
+                    }
 
                 },
-                 
+
             ],
-            "initComplete": function(settings, json) {
+            "initComplete": function (settings, json) {
                 //console.log(json);
-                
-            }, 
-            "drawCallback": function(settings, json) {
+
+            },
+            "drawCallback": function (settings, json) {
                 calculateInvoiceValue();
             }
 
@@ -604,30 +604,35 @@ $(document).ready(function() {
     }
 
     var table = $('.invoice_items_table').DataTable();
- 
+
     $('.addExternal').on('click', function () {
 
         var invoiceId = $(this).attr('data-invoice');
 
         var rowNode = table
-        .row.add( {
-            "id": "",
-            "vendor_invoice_id": "10000",
-            "product_id": "0",
-            "quantity": "1",
-            "unit_price": "",
-            "total_price": "",
-            "date_added": "",
-            "reception": "0",
-            "remaining_stock": "",
-            "external_item_name": ""
-        } )
+            .row.add({
+                "id": "",
+                "vendor_invoice_id": invoiceId,
+                "product_id": "0",
+                "type_name": "",
+                "saga_quantity": "",
+                "total_reserved_stock": "",
+                "quantity": "1",
+                "unit_price": "",
+                "total_price": "",
+                "delivered_quantity": "",
+                "connected_total": "0",
+                "date_added": "",
+                "reception": "0",
+                "remaining_stock": "",
+                "external_item_name": ""
+            })
             .draw()
             .node();
-         
-        $( rowNode )
-            .css( 'color', 'red' )
-            .animate( { color: 'black' } );
+
+        $(rowNode)
+            .css('color', 'red')
+            .animate({ color: 'black' });
     });
 
 
@@ -639,20 +644,20 @@ $(document).ready(function() {
             url: "/ajax/activateInventory",
             type: "post",
             dataType: "json",
-            data: {'vendor_invoice_id':invoiceId}
-        }).success(function(json){
+            data: { 'vendor_invoice_id': invoiceId }
+        }).success(function (json) {
             location.reload();
 
-        }).error(function(xhr, status, error) {
-           
-        }).complete(function(data){
+        }).error(function (xhr, status, error) {
 
-            
-            
+        }).complete(function (data) {
+
+
+
 
         })
 
-        
+
     });
 
     $('.resetStocks').on('click', function () {
@@ -662,48 +667,48 @@ $(document).ready(function() {
             type: "post",
             dataType: "json",
             data: {}
-        }).success(function(json){
+        }).success(function (json) {
             //location.reload();
-             $('.resetSuccess').removeClass('hidden');
+            $('.resetSuccess').removeClass('hidden');
 
-        }).error(function(xhr, status, error) {
-           $('.updateError').removeClass('hidden');
-        }).complete(function(data){
+        }).error(function (xhr, status, error) {
+            $('.updateError').removeClass('hidden');
+        }).complete(function (data) {
 
-            
-            
+
+
 
         })
 
-        
+
     });
 
-    $('.body').on('click', '.removeItem', function(){
+    $('.body').on('click', '.removeItem', function () {
         var itemId = $(this).attr('data-item');
 
         //console.log(itemId);
-        
-         $.ajax({
+
+        $.ajax({
             url: "/ajax/removeInvoiceItem",
             type: "post",
             dataType: "json",
-            data: {'id':itemId}
-        }).success(function(json){
+            data: { 'id': itemId }
+        }).success(function (json) {
 
-        }).error(function(xhr, status, error) {
-           
-        }).complete(function(data){
+        }).error(function (xhr, status, error) {
+
+        }).complete(function (data) {
 
             table.ajax.reload();
-            
+
 
         })
     });
 
-    $('body').on('change', '.vendor-invoice-input', function(){
+    $('body').on('change', '.vendor-invoice-input', function () {
 
         //console.log($(this).attr('name'));
-       
+
 
         var parent = $(this).closest('tr');
 
@@ -718,21 +723,21 @@ $(document).ready(function() {
 
         var unitPrice = unitPriceElement.val();
 
-        var totalPrice = quantity*unitPrice;
+        var totalPrice = quantity * unitPrice;
 
-         if($(this).attr('name') != 'total_price') {
+        if ($(this).attr('name') != 'total_price') {
 
             parent.find('input[name="total_price"]').val(totalPrice).change()
         }
 
 
-        if(quantity !== "") {
+        if (quantity !== "") {
             unitPriceElement.prop('disabled', false)
         } else {
             unitPriceElement.prop('disabled', true)
         }
 
-        if(unitPrice !== "") {
+        if (unitPrice !== "") {
             deliveredQuantityElement.prop('disabled', false)
         } else {
             deliveredQuantityElement.prop('disabled', true)
@@ -758,18 +763,18 @@ $(document).ready(function() {
 
         calculateInvoiceValue();
 
-         $.ajax({
+        $.ajax({
             url: "/ajax/updateVendorInvoiceItems",
             type: "post",
             dataType: "json",
             data: orderDetail
-        }).success(function(json){
-           //$('.updateError').addClass('hidden');
+        }).success(function (json) {
+            //$('.updateError').addClass('hidden');
 
-           table.ajax.reload()
+            table.ajax.reload()
 
-        }).error(function(xhr, status, error) {
-           //$('.updateError').removeClass('hidden');
+        }).error(function (xhr, status, error) {
+            //$('.updateError').removeClass('hidden');
         })
 
 
@@ -777,25 +782,25 @@ $(document).ready(function() {
     })
 
 
-    $('body').on('change', '.invoice-date', function(){
+    $('body').on('change', '.invoice-date', function () {
 
         var date = $(this).val();
 
-         $.ajax({
+        $.ajax({
             url: "/ajax/getExchangeRate",
             type: "post",
             dataType: "json",
-            data: {'date': date}
-        }).success(function(json){
-           //$('.updateError').addClass('hidden');
-           $("#invoiceData input[name=exchange_rate]").val(json[0]);
+            data: { 'date': date }
+        }).success(function (json) {
+            //$('.updateError').addClass('hidden');
+            $("#invoiceData input[name=exchange_rate]").val(json[0]);
 
-        }).error(function(xhr, status, error) {
-           //$('.updateError').removeClass('hidden');
+        }).error(function (xhr, status, error) {
+            //$('.updateError').removeClass('hidden');
         })
     })
 
-    $('body').on('change', '.reserve-new-stock', function(){
+    $('body').on('change', '.reserve-new-stock', function () {
 
         var quantity = $(this).val();
 
@@ -807,21 +812,21 @@ $(document).ready(function() {
             url: "/ajax/updateOrderLine",
             type: "post",
             dataType: "json",
-            data: {'id':splitId,'quantity': quantity}
-        }).success(function(json){
+            data: { 'id': splitId, 'quantity': quantity }
+        }).success(function (json) {
 
             connectionsTable.ajax.reload();
 
-        }).error(function(xhr, status, error) {
-           
-        }).complete(function(data){
+        }).error(function (xhr, status, error) {
+
+        }).complete(function (data) {
 
         })
 
     })
 
 
-    $('body').on('change', '.toggleConnect', function(){
+    $('body').on('change', '.toggleConnect', function () {
 
 
         var splitId = $(this).attr('data-split_id');
@@ -843,40 +848,40 @@ $(document).ready(function() {
         }
 
 
-        if(this.checked) {
+        if (this.checked) {
             $.ajax({
                 url: "/ajax/addOrderLine",
                 type: "post",
                 dataType: "json",
                 data: orderLine
-            }).success(function(json){
-                 connectionsTable.ajax.reload();
-            }).error(function(xhr, status, error) {
-               $('.updateError').removeClass('hidden');
+            }).success(function (json) {
+                connectionsTable.ajax.reload();
+            }).error(function (xhr, status, error) {
+                $('.updateError').removeClass('hidden');
             })
         } else {
-             $.ajax({
+            $.ajax({
                 url: "/ajax/removeOrderLine",
                 type: "post",
                 dataType: "json",
-                data: {'id':splitId}
-            }).success(function(json){
+                data: { 'id': splitId }
+            }).success(function (json) {
                 connectionsTable.ajax.reload();
-            }).error(function(xhr, status, error) {
-               $('.updateError').removeClass('hidden');
+            }).error(function (xhr, status, error) {
+                $('.updateError').removeClass('hidden');
             })
         }
 
     })
 
 
-    $('#addConnection-modal').on('hide.bs.modal', function(e){
-//console.log('a')
-             table.ajax.reload()
-        })
+    $('#addConnection-modal').on('hide.bs.modal', function (e) {
+        //console.log('a')
+        table.ajax.reload()
+    })
 
 
-    $('body').on('click', '.addConnection', function(){
+    $('body').on('click', '.addConnection', function () {
 
         var product_id = $(this).attr('data-product');
 
@@ -891,75 +896,75 @@ $(document).ready(function() {
                 "url": "/ajax/getVendorInvoiceItemQuotes/",
                 "dataSrc": "",
                 "type": 'POST',
-                data: {'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id}
+                data: { 'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id }
             },
             "bDestroy": true,
             pageLength: 100,
-                "paging":   true,
-                "ordering": true,
-                "searching": true,
+            "paging": true,
+            "ordering": true,
+            "searching": true,
             rowId: 'category_slug',
-              
+
             responsive: true,
             order: [],
-            "columns": [ 
-                { 
+            "columns": [
+                {
                     "data": "id"
                 },
-                { 
+                {
                     "data": "quote_id"
                 },
-                { 
+                {
                     "data": "quoteQuantity"
                 },
-                { 
+                {
                     "data": "reserved_stock"
                 },
-                { 
+                {
                     "data": "order_number"
                 },
-                { 
+                {
                     "data": "ordered_quantity"
                 },
                 {
                     "data": null,
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         return '<span class="label label-warning">' +
-                             row.needed_quantity +
-                        '</label>'
+                            row.needed_quantity +
+                            '</label>'
                     }
                 },
-                { 
+                {
                     "data": "split_quantity",
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         var disabled = "disabled"
 
-                            if(row.split_id && row.reception == 0) {
-                                disabled = ""
-                            }
-                                
-                            return '<div class="form-group">' + 
-                                        '<div class="form-line">' + 
-                                            '<input class="form-control reserve-new-stock"' + 
-                                            ' data-type="reserve-new-stock" data-row="'+meta.row+
-                                            '" data-col="'+meta.col+
-                                            '" data-quote_item_id="'+row.id+
-                                            '" data-split_id="'+ row.split_id +
-                                            '" value="'+ data +'" type="number" '+ disabled +' name="reserve-new-stock" placeholder="Add" min=0>' + 
-                                        '</div>' + 
-                                    '</div>'
-                      }
+                        if (row.split_id && row.reception == 0) {
+                            disabled = ""
+                        }
+
+                        return '<div class="form-group">' +
+                            '<div class="form-line">' +
+                            '<input class="form-control reserve-new-stock"' +
+                            ' data-type="reserve-new-stock" data-row="' + meta.row +
+                            '" data-col="' + meta.col +
+                            '" data-quote_item_id="' + row.id +
+                            '" data-split_id="' + row.split_id +
+                            '" value="' + data + '" type="number" ' + disabled + ' name="reserve-new-stock" placeholder="Add" min=0>' +
+                            '</div>' +
+                            '</div>'
+                    }
                 },
                 {
                     "data": "split_quantity",
                     "className": "line-status",
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
 
                         var possibleQuantity = Number(row.saga_quantity) + Number(row.delivered_quantity) - Number(row.connected_total);
-                        
+
                         var infoBoxClass = "";
                         var infoBoxIcon = "";
 
@@ -969,73 +974,73 @@ $(document).ready(function() {
                         var delivered = Number(row.delivered_quantity);
 
                         //console.log(connected);
-                        
+
 
                         if (row.split_id == "" || row.reception == 1) {
                             return ""
                         } else {
 
-                            if(possibleQuantity < 0) {
+                            if (possibleQuantity < 0) {
                                 infoBoxClass = "bg-red";
                                 infoBoxIcon = "error";
                                 infoBoxMessage = "Stock unavailable";
                             } else {
-                                if(split_quantity < needed_quantity) {
+                                if (split_quantity < needed_quantity) {
                                     infoBoxClass = "bg-blue";
                                     infoBoxIcon = "arrow_downward";
                                     infoBoxMessage = "Less than quote";
-                                } else if (split_quantity > needed_quantity){
+                                } else if (split_quantity > needed_quantity) {
                                     infoBoxClass = "bg-orange";
                                     infoBoxIcon = "arrow_upward";
                                     infoBoxMessage = "More than quote";
-                                } else if (split_quantity == needed_quantity){
+                                } else if (split_quantity == needed_quantity) {
                                     infoBoxClass = "bg-green";
                                     infoBoxIcon = "check_circle";
                                     infoBoxMessage = "As in quote";
-                                }  
+                                }
                             }
 
-                             return '<div class="info-box info-box-xs">' +
-                                    '<div class="icon '+ infoBoxClass +'">' +
-                                        '<i class="material-icons">'+ infoBoxIcon +'</i>' +
-                                    '</div>' +
-                                    '<div class="content">' +
-                                        '<div class="text">'+ infoBoxMessage +'</div>' +
-                                    '</div>' +
+                            return '<div class="info-box info-box-xs">' +
+                                '<div class="icon ' + infoBoxClass + '">' +
+                                '<i class="material-icons">' + infoBoxIcon + '</i>' +
+                                '</div>' +
+                                '<div class="content">' +
+                                '<div class="text">' + infoBoxMessage + '</div>' +
+                                '</div>' +
                                 '</div>'
                         }
                     }
                 },
-                { 
+                {
                     "data": "other_invoice_connections"
                 },
                 {
                     "data": null,
-                    "render" : function(data, type, row, meta) {
+                    "render": function (data, type, row, meta) {
 
                         var checked = "";
                         var disabled = "";
 
-                            if(row.split_id ) {
-                                checked = "checked"
-                            }
+                        if (row.split_id) {
+                            checked = "checked"
+                        }
 
-                            if(row.reception == 1) {
-                                disabled = "disabled";
-                            }
-                                
-                            return '<input '+ disabled +' type="checkbox" id="connectItem-'+ row.id +
-                            '" data-item = "'+ row.id +'" data-vendor-item="'+ vendor_invoice_item_id +'" " data-split_id = "'+ row.split_id +'" data-neededQuantity = "'+ row.needed_quantity +'" class="filled-in chk-col-light-green toggleConnect" '+ checked +' >' +
-                            '<label for="connectItem-'+ row.id +'">Connect</label>'
-                      }
+                        if (row.reception == 1) {
+                            disabled = "disabled";
+                        }
+
+                        return '<input ' + disabled + ' type="checkbox" id="connectItem-' + row.id +
+                            '" data-item = "' + row.id + '" data-vendor-item="' + vendor_invoice_item_id + '" " data-split_id = "' + row.split_id + '" data-neededQuantity = "' + row.needed_quantity + '" class="filled-in chk-col-light-green toggleConnect" ' + checked + ' >' +
+                            '<label for="connectItem-' + row.id + '">Connect</label>'
+                    }
                 }
             ],
-            "preDraw": function(settings, json) {
-                
+            "preDraw": function (settings, json) {
+
                 //console.log('a')
             },
 
-            "drawCallback": function(settings, json) {
+            "drawCallback": function (settings, json) {
                 var api = this.api();
                 var json = api.ajax.json();
                 //connected = 0;
@@ -1047,7 +1052,7 @@ $(document).ready(function() {
 
                 //console.log(json)
 
-                if(json) {
+                if (json) {
                     $('.info-box-productID').html(product_id);
                     $('.info-box-stock').html(json[0]['saga_quantity']);
                     $('.info-box-deliveredQuantity').html(delivered_quantity);
@@ -1057,29 +1062,29 @@ $(document).ready(function() {
 
                     var usedFromDelivery = delivered_quantity - json[0]['connected_total'];
 
-                    if(usedFromDelivery < 0) {
+                    if (usedFromDelivery < 0) {
                         $('.info-box-from-stock').html(-usedFromDelivery);
                         $('.info-box-to-stock').html(0);
-                    }else {
+                    } else {
                         $('.info-box-to-stock').html(usedFromDelivery);
                         $('.info-box-from-stock').html(0);
                     }
                 }
-                
+
 
                 //console.log(connected)
             }
 
-                   
+
 
         });
     })
 
 
-     $('body').on('change', '.vendor-invoice-external-input', function(){
+    $('body').on('change', '.vendor-invoice-external-input', function () {
 
         //console.log($(this).attr('name'));
-       
+
 
         var parent = $(this).closest('tr');
 
@@ -1099,24 +1104,24 @@ $(document).ready(function() {
 
         //console.log(orderDetail);
 
-         $.ajax({
+        $.ajax({
             url: "/ajax/addVendorInvoiceItems",
             type: "post",
             dataType: "json",
             data: itemDetail
-        }).success(function(json){
-           //$('.updateError').addClass('hidden');
-           location.reload()
+        }).success(function (json) {
+            //$('.updateError').addClass('hidden');
+            location.reload()
 
-        }).error(function(xhr, status, error) {
-           //$('.updateError').removeClass('hidden');
+        }).error(function (xhr, status, error) {
+            //$('.updateError').removeClass('hidden');
         })
 
 
 
     })
 
-    $('.body').on('click', '.reception, .reverseReception', function(){
+    $('.body').on('click', '.reception, .reverseReception', function () {
 
         var vendor_invoice_item_id = $(this).attr('data-item');
 
@@ -1126,7 +1131,7 @@ $(document).ready(function() {
 
         var isInverse = 0;
 
-        if($(this).hasClass('reverseReception')) {
+        if ($(this).hasClass('reverseReception')) {
             isInverse = 1;
         }
 
@@ -1135,144 +1140,144 @@ $(document).ready(function() {
             type: "post",
             dataType: "json",
             async: false,
-            data: {'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id}
-        }).success(function(json){
-           $('.updateError').addClass('hidden');
+            data: { 'product_id': product_id, 'vendor_invoice_item_id': vendor_invoice_item_id }
+        }).success(function (json) {
+            $('.updateError').addClass('hidden');
 
-           var quoteItems = json;
+            var quoteItems = json;
 
-           var itemDetails = {
-            "item_id": vendor_invoice_item_id,
-            "product_id": product_id,
-            "quoteItems": quoteItems,
-            "is_inverse": isInverse
-           }
+            var itemDetails = {
+                "item_id": vendor_invoice_item_id,
+                "product_id": product_id,
+                "quoteItems": quoteItems,
+                "is_inverse": isInverse
+            }
 
-           $.ajax({
+            $.ajax({
                 url: "/ajax/itemReception",
                 type: "post",
                 dataType: "json",
                 data: itemDetails
-            }).success(function(json){
-               $('.updateError').addClass('hidden');
+            }).success(function (json) {
+                $('.updateError').addClass('hidden');
 
-               table.ajax.reload();
-  
+                table.ajax.reload();
 
-            }).error(function(xhr, status, error) {
-               $('.updateError').removeClass('hidden');
+
+            }).error(function (xhr, status, error) {
+                $('.updateError').removeClass('hidden');
             })
 
-        }).error(function(xhr, status, error) {
-           $('.updateError').removeClass('hidden');
-        }) 
+        }).error(function (xhr, status, error) {
+            $('.updateError').removeClass('hidden');
+        })
 
-        
+
     });
 
     var excelData = []; // Declara variabila în afara funcțiilor
 
-$("#submitBtn").click(function() {
-    // Obține datele și procesează-le
-    var inputData = $("#excel_data").val();
-    excelData = processData(inputData);
+    $("#submitBtn").click(function () {
+        // Obține datele și procesează-le
+        var inputData = $("#excel_data").val();
+        excelData = processData(inputData);
 
-    //console.log(excelData);
+        //console.log(excelData);
 
-    // Afișează tabelul
-    showTable(excelData);
+        // Afișează tabelul
+        showTable(excelData);
 
-     if (excelData.length > 0) {
-        $("#confirmBtn").show();
-    } else {
-        $("#confirmBtn").hide();
+        if (excelData.length > 0) {
+            $("#confirmBtn").show();
+        } else {
+            $("#confirmBtn").hide();
+        }
+    });
+
+    function processData(data) {
+        var rows = data.split(/\r\n|\r|\n/);
+
+        // Filtrare: Elimină rândurile care conțin cel puțin o valoare vidă
+        var filteredRows = rows.filter(function (row) {
+            return row.trim() !== "";
+        });
+
+        // Construiește array-ul de obiecte pentru datele procesate
+        var dataArray = [];
+
+        // Ajax call pentru a verifica existența produselor și a adăuga informații în dataArray
+        $.ajax({
+            url: "/ajax/checkProducts",  // înlocuiește cu calea corectă către scriptul PHP
+            type: "POST",
+            data: { data: JSON.stringify(filteredRows) },
+            async: false,  // așteaptă până când se completează verificarea existenței produselor
+            success: function (response) {
+
+                dataArray = JSON.parse(response);
+            },
+            error: function () {
+                // Tratează eroare
+            }
+        });
+
+        return dataArray;
     }
+
+
+    function showTable(data) {
+        // Construiește tabelul
+        var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th><th>Price</th><th>Total Price</th><th>Exist</th></tr>";
+        console.log(data);
+
+        data.forEach(function (row) {
+            // Adaugă clasa 'exists-yes' sau 'exists-no' în funcție de existența produsului
+            var existClass = row.exists === 1 ? '' : 'danger';
+
+            // Adaugă rândul în tabel cu background-ul corespunzător
+            tableHtml += "<tr class='" + existClass + "'>" +
+                "<td>" + row.product_id + "</td>" +
+                "<td>" + row.quantity + "</td>" +
+                "<td>" + row.price + "</td>" +
+                "<td>" + row.total_price.toFixed(2) + "</td>" +
+                "<td>" + (row.exists === 1 ? 'Yes' : 'No') + "</td>" +
+                "</tr>";
+        });
+
+        tableHtml += "</table>";
+
+        // Afișează tabelul
+        $("#tableContainer").html(tableHtml);
+    }
+
+
+    $("#confirmBtn").click(function (e) {
+        // Aici poți adăuga codul pentru a trimite datele către server
+        // și a le salva în baza de date
+
+        e.preventDefault();
+
+        console.log('a');
+
+        $.ajax({
+            url: "/ajax/addInventoryData",
+            type: "POST",
+            data: { data: JSON.stringify(excelData), vendor_invoice_id: invoiceId },
+            success: function (response) {
+                location.reload();
+            },
+            error: function () {
+                // Tratează eroare
+                $('.updateError').removeClass('hidden');
+            }
+        });
+    });
+
+
+
 });
-
-function processData(data) {
-    var rows = data.split(/\r\n|\r|\n/);
-
-    // Filtrare: Elimină rândurile care conțin cel puțin o valoare vidă
-    var filteredRows = rows.filter(function(row) {
-        return row.trim() !== "";
-    });
-
-    // Construiește array-ul de obiecte pentru datele procesate
-    var dataArray = [];
-
-   // Ajax call pentru a verifica existența produselor și a adăuga informații în dataArray
-    $.ajax({
-        url: "/ajax/checkProducts",  // înlocuiește cu calea corectă către scriptul PHP
-        type: "POST",
-        data: { data: JSON.stringify(filteredRows) },
-        async: false,  // așteaptă până când se completează verificarea existenței produselor
-        success: function(response) {
-            
-           dataArray = JSON.parse(response);
-        },
-        error: function() {
-            // Tratează eroare
-        }
-    });
-
-    return dataArray;
-}
-
-
-function showTable(data) {
-    // Construiește tabelul
-    var tableHtml = "<table class='table table-striped table-bordered table-hover dt-responsive display'><tr><th>Product ID</th><th>Final Quantity</th><th>Price</th><th>Total Price</th><th>Exist</th></tr>";
-    console.log(data);
-    
-    data.forEach(function(row) {
-        // Adaugă clasa 'exists-yes' sau 'exists-no' în funcție de existența produsului
-        var existClass = row.exists === 1 ? '' : 'danger';
-
-        // Adaugă rândul în tabel cu background-ul corespunzător
-        tableHtml += "<tr class='" + existClass + "'>" +
-                     "<td>" + row.product_id + "</td>" +
-                     "<td>" + row.quantity + "</td>" +
-                     "<td>" + row.price + "</td>" +
-                     "<td>" + row.total_price.toFixed(2) + "</td>" +
-                     "<td>" + (row.exists === 1 ? 'Yes' : 'No') + "</td>" +
-                     "</tr>";
-    });
-
-    tableHtml += "</table>";
-
-    // Afișează tabelul
-    $("#tableContainer").html(tableHtml);
-}
-
-
-$("#confirmBtn").click(function(e) {
-    // Aici poți adăuga codul pentru a trimite datele către server
-    // și a le salva în baza de date
-
-    e.preventDefault();
-
-    console.log('a');
-
-    $.ajax({
-        url: "/ajax/addInventoryData",
-        type: "POST",
-        data: { data: JSON.stringify(excelData), vendor_invoice_id: invoiceId },
-        success: function(response) {
-            location.reload();
-        },
-        error: function() {
-            // Tratează eroare
-            $('.updateError').removeClass('hidden');
-        }
-    });
-});
-
-
-
- });
 
 $(function () {
-    
+
     //Bootstrap datepicker plugin
     $('#bs_datepicker_container input').datepicker({
         format: 'dd/mm/yyyy',
@@ -1282,7 +1287,7 @@ $(function () {
 });
 
 
-function getPossibleQuantity(params){
+function getPossibleQuantity(params) {
 
     return Number(params.stock) + Number(params.delivered) - Number(params.connected)
 
@@ -1291,8 +1296,8 @@ function getPossibleQuantity(params){
 
 function calculateInvoiceValue() {
     var sum = 0;
-            
-    $('input[name="total_price"]').each(function() {
+
+    $('input[name="total_price"]').each(function () {
         sum += parseFloat($(this).val()) || 0;
     });
 
@@ -1301,7 +1306,7 @@ function calculateInvoiceValue() {
 
     $('input[name="calculated_invoice_value"]').val(sum);
 
-    if($('input[name="invoice_value"]').val() == sum) {
+    if ($('input[name="invoice_value"]').val() == sum) {
         $('input[name="invoice_value"]').addClass('validTotalPrice');
         $('input[name="invoice_value"]').removeClass('invalidTotalPrice');
 
