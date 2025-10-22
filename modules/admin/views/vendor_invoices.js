@@ -1081,69 +1081,42 @@ $(document).ready(function() {
     })
 
 
-     $('body').on('change', '.vendor-invoice-external-input', function(){
+     $('body').on('change', '.vendor-invoice-external-input', function () {
+        const $input = $(this);
+        const value = $input.val();
 
-        var $input = $(this);
-        var value = $.trim($input.val());
-
-        if(!value){
-            return;
-        }
-
-        var $formLine = $input.closest('.form-line');
-        var $loader = $formLine.find('.external-item-saving');
-
-        if(!$loader.length){
-            $loader = $('<span class="external-item-saving text-muted hidden" style="margin-left: 10px;">Se salvează...</span>');
-            $formLine.append($loader);
-        }
-
-        $('.updateError').addClass('hidden');
-        $input.prop('disabled', true);
-        $loader.removeClass('hidden');
-
-        var itemDetail = {
-            'vendor_invoice_id': invoiceId,
-            'external_item_name': value,
+        const itemDetail = {
+            vendor_invoice_id: invoiceId,
+            external_item_name: value,
         };
 
-        var shouldReload = false;
+        function addVendorInvoiceItems(data) {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: "/ajax/addVendorInvoiceItems",
+                    type: "POST",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                        resolve(response);
+                    },
+                    error: function (xhr, status, error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
 
-         $.ajax({
-            url: "/ajax/addVendorInvoiceItems",
-            type: "post",
-            dataType: "json",
-            data: itemDetail
-        }).done(function(response){
-            if(response && response.success){
-                shouldReload = true;
-                location.reload();
-                return;
-            }
-
-            var message = (response && response.error) ? response.error : 'Salvarea produsului extern a eșuat.';
-            $('.updateError').removeClass('hidden').text(message);
-        }).fail(function(xhr){
-            var message = 'Salvarea produsului extern a eșuat.';
-
-            if(xhr.responseJSON && xhr.responseJSON.error){
-                message = xhr.responseJSON.error;
-            } else if(xhr.responseText){
-                message = xhr.responseText;
-            }
-
-            $('.updateError').removeClass('hidden').text(message);
-        }).always(function(){
-            if(shouldReload){
-                return;
-            }
-
-            $input.prop('disabled', false);
-            $loader.addClass('hidden');
-        });
-
-
-    })
+        addVendorInvoiceItems(itemDetail)
+            .then(function (json) {
+                console.log("Item added successfully:", json);
+                window.location.reload();
+            })
+            .catch(function (err) {
+                console.error("Eroare la salvarea itemului:", err);
+                $('.updateError').removeClass('hidden');
+            });
+    });
 
     $('.body').on('click', '.reception, .reverseReception', function(){
 
