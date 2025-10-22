@@ -3,64 +3,74 @@
 require_once('../../../config/helpers.php');
 require_once($_PATH['COMMON_BACKEND'].'functions.php');
 
-	$valuesArray = [];
+header('Content-Type: application/json');
 
-	$multiple = true;
+$valuesArray = [];
+$multiple = true;
 
-//printError($_POST);
+if(!isset($_POST['products'])) {
 
-	if(!isset($_POST['products'])) {
+        $valuesArray = array(
+                'product_id' => '',
+                'vendor_invoice_id' => $_POST['vendor_invoice_id'],
+                'quantity' => 1,
+                'external_item_name' => $_POST['external_item_name']
+        );
 
-		$valuesArray = array(
-			'product_id' => '',
-			'vendor_invoice_id' => $_POST['vendor_invoice_id'],
-			'quantity' => 1,
-			'external_item_name' => $_POST['external_item_name']
-		);
-
-		$multiple = false;
-	} else {
-		
-
-		foreach ($_POST['products'] as $key => $value) {
-
-			//var_dump($value);
-			$localArray = array(
-				'product_id' => $value,
-				'vendor_invoice_id' => $_POST['vendor_invoice_id'],
-				'quantity' => $_POST['allProductsData'][$value]['quantity'],
-				'external_item_name' =>''
-			);
-
-			array_push($valuesArray, $localArray);
-		}
-	}
+        $multiple = false;
+} else {
 
 
+        foreach ($_POST['products'] as $key => $value) {
 
-	//printError($valuesArray);
+                $localArray = array(
+                        'product_id' => $value,
+                        'vendor_invoice_id' => $_POST['vendor_invoice_id'],
+                        'quantity' => $_POST['allProductsData'][$value]['quantity'],
+                        'external_item_name' =>''
+                );
 
-	
+                array_push($valuesArray, $localArray);
+        }
+}
+
+
 $conn = $QueryBuilder->dbConnection();
 
-	$query = $QueryBuilder->insert(
-		$conn,
-		$options = array(
-			"table" => "vendor_invoice_items",
-			"keys" => ["product_id", "vendor_invoice_id", 'quantity', 'external_item_name'],
-			"values" => $valuesArray
-		),
-		$multi = $multiple
-	);
+$query = $QueryBuilder->insert(
+        $conn,
+        $options = array(
+                "table" => "vendor_invoice_items",
+                "keys" => ["product_id", "vendor_invoice_id", 'quantity', 'external_item_name'],
+                "values" => $valuesArray
+        ),
+        $multi = $multiple
+);
 
+$response = [
+        'success' => false
+];
 
-// // printError($valuesArray);
- 		echo$conn->error;
+if($query){
+        $response['success'] = true;
 
+        if(is_numeric($query)) {
+                $response['insertId'] = (int)$query;
+        }
+} else {
+        $errorMessage = mysqli_error($conn);
 
-echo  json_decode($query);
+        if(empty($errorMessage)) {
+                $errorMessage = 'Unknown database error.';
+        }
 
-	$QueryBuilder->closeConnection();
+        http_response_code(500);
+        $response['error'] = $errorMessage;
+}
+
+echo json_encode($response);
+
+$QueryBuilder->closeConnection();
 
 
 ?>

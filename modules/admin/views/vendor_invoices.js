@@ -612,11 +612,16 @@ $(document).ready(function() {
         var rowNode = table
         .row.add( {
             "id": "",
-            "vendor_invoice_id": "10000",
+            "vendor_invoice_id": invoiceId,
             "product_id": "0",
+            "type_name": "",
+            "saga_quantity": "",
+            "total_reserved_stock": "",
             "quantity": "1",
             "unit_price": "",
             "total_price": "",
+            "delivered_quantity": "",
+            "connected_total": "0",
             "date_added": "",
             "reception": "0",
             "remaining_stock": "",
@@ -1078,40 +1083,64 @@ $(document).ready(function() {
 
      $('body').on('change', '.vendor-invoice-external-input', function(){
 
-        //console.log($(this).attr('name'));
-       
+        var $input = $(this);
+        var value = $.trim($input.val());
 
-        var parent = $(this).closest('tr');
+        if(!value){
+            return;
+        }
 
-        var name = $(this).attr('name');
+        var $formLine = $input.closest('.form-line');
+        var $loader = $formLine.find('.external-item-saving');
 
-        var value = $(this).val()
+        if(!$loader.length){
+            $loader = $('<span class="external-item-saving text-muted hidden" style="margin-left: 10px;">Se salvează...</span>');
+            $formLine.append($loader);
+        }
 
-        var inv
-
-
+        $('.updateError').addClass('hidden');
+        $input.prop('disabled', true);
+        $loader.removeClass('hidden');
 
         var itemDetail = {
             'vendor_invoice_id': invoiceId,
             'external_item_name': value,
         };
 
-
-        //console.log(orderDetail);
+        var shouldReload = false;
 
          $.ajax({
             url: "/ajax/addVendorInvoiceItems",
             type: "post",
             dataType: "json",
             data: itemDetail
-        }).success(function(json){
-           //$('.updateError').addClass('hidden');
-           location.reload()
+        }).done(function(response){
+            if(response && response.success){
+                shouldReload = true;
+                location.reload();
+                return;
+            }
 
-        }).error(function(xhr, status, error) {
-           //$('.updateError').removeClass('hidden');
-        })
+            var message = (response && response.error) ? response.error : 'Salvarea produsului extern a eșuat.';
+            $('.updateError').removeClass('hidden').text(message);
+        }).fail(function(xhr){
+            var message = 'Salvarea produsului extern a eșuat.';
 
+            if(xhr.responseJSON && xhr.responseJSON.error){
+                message = xhr.responseJSON.error;
+            } else if(xhr.responseText){
+                message = xhr.responseText;
+            }
+
+            $('.updateError').removeClass('hidden').text(message);
+        }).always(function(){
+            if(shouldReload){
+                return;
+            }
+
+            $input.prop('disabled', false);
+            $loader.addClass('hidden');
+        });
 
 
     })
