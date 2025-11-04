@@ -18,6 +18,12 @@ $SessionState = new SessionState();
 
 $SessionState->sessionStart();
 
+if (session_status() === PHP_SESSION_ACTIVE) {
+    $_SESSION['ping'] = time(); // mică modificare => forțează re-salvarea
+    session_write_close();
+}
+
+
 
 // echo "<pre>";
 // var_dump($_SESSION);
