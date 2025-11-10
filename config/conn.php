@@ -683,6 +683,9 @@ class SessionState
 			$domain = $host;
 		}
 
+		error_log('B2B PHPSESSID: ' . session_id());
+
+
 		// Setează parametrii cookie-ului pentru sesiune
 		session_set_cookie_params([
 			'lifetime' => 0, // Timpul de expirare al cookie-ului (10 ore)
@@ -705,10 +708,17 @@ class SessionState
 
 	function redirectLogin()
 	{
-		if ($_SERVER["REQUEST_URI"] !== "/auth/login")
-			header("location: https://" . $_SERVER['HTTP_HOST'] . "/auth/login");
+		$coreBase = rtrim((string) ($_ENV['CORE_URL'] ?? ''), '/');
+		$currentUrl = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
-		header("location: " . $_ENV['CORE_URL']);
+		if ($coreBase !== '') {
+			$reloginUrl = $coreBase . '/b2b/relogin?return=' . urlencode($currentUrl);
+			header('Location: ' . $reloginUrl);
+		} elseif ($_SERVER["REQUEST_URI"] !== "/auth/login") {
+			header("Location: https://" . $_SERVER['HTTP_HOST'] . "/auth/login");
+		}
+
+		exit;
 	}
 
 	function logout()
