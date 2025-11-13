@@ -29,6 +29,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                     ?>
                     <li>
                                 <a href="/admin/products">
+                                    <span>OLD Products</span>
+                                </a>
+                            </li>
+                    <li>
+                                <a href=<?php echo rtrim((string) ($_ENV['CORE_URL'] ?? ''), '/').'/products' ?>>
                                     <span>Products</span>
                                 </a>
                             </li>
