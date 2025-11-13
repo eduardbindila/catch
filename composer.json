@@ -1,0 +1,9 @@
+{
+    "name": "icatch/catch",
+    "description": "Catch B2B deployment helpers",
+    "type": "project",
+    "require": {},
+    "scripts": {
+        "release": "TAG=${RELEASE_TAG:-$(date +%Y%m%d)}; docker build -t harbor.icatch.ro/ice/catch:${TAG} . && docker push harbor.icatch.ro/ice/catch:${TAG}"
+    }
+}

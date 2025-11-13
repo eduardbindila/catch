@@ -23,6 +23,11 @@ require_once($_PATH['COMMON_BACKEND'].'functions.php');
                             <span>Home</span>
                         </a>
                     </li>
+                     <li>
+                                <a href=<?php echo rtrim((string) ($_ENV['CORE_URL'] ?? ''), '/').'/' ?>>
+                                    <span>New Dashboard</span>
+                                </a>
+                            </li>
                     <?php 
                         if(isset($_SESSION['user_access']['sales-grid'])) 
                         {
