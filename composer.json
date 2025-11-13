@@ -4,6 +4,6 @@
     "type": "project",
     "require": {},
     "scripts": {
-        "release": "TAG=${RELEASE_TAG:-$(date +%Y%m%d)}; docker build -t harbor.icatch.ro/ice/catch:${TAG} . && docker push harbor.icatch.ro/ice/catch:${TAG}"
+        "release": "TAG=${RELEASE_TAG:-7.4-$(date +%Y%m%d)}; docker build -t harbor.icatch.ro/ice/icatch-b2b:${TAG} . && docker push harbor.icatch.ro/ice/icatch-b2b:${TAG}"
     }
 }
