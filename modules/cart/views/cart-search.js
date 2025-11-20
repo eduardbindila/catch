@@ -143,74 +143,53 @@ $(document).ready(function() {
     });
   }
 
-  var socket = new WebSocket('wss://puppet.icatch.ro:3131');
+  $('#getDeliveryStatus-modal').modal('show');
 
-  //var socket = new WebSocket('wss://localhost:3131');
+  $.ajax({
+    url: window.env.PUPPET_URL + '/getPromiseDate',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(productsForDeliveryDate),
+    success: function(response) {
+      console.log('Received response:', response);
 
-  // WebSocket event: connection established
-  socket.onopen = function() {
-    console.log('WebSocket connection established');
-    socket.send(JSON.stringify(productsForDeliveryDate));
-  };
+      var timeline = document.getElementById('timeline');
+      if (!timeline) {
+        return;
+      }
 
-  // WebSocket event: message received
-  socket.onmessage = function(event) {
-    var data = event.data;
-    console.log('Received:', data);
+      timeline.innerHTML = '';
 
-    // Show the response in the modal window
-      
-      $('#getDeliveryStatus-modal').modal('show');
+      if (Array.isArray(response)) {
+        response.forEach(function(element) {
+          var listItem = document.createElement('li');
+          listItem.textContent = "Product: " + element.id + ", Quantity: " + element.quantity + ", Promise Date: " + element.promiseDate;
+          timeline.appendChild(listItem);
+        });
+      } else {
+        var listItem = document.createElement('li');
+        listItem.textContent = "Message: " + response;
+        timeline.appendChild(listItem);
+      }
 
-     
-    // WebSocket event: message received
-socket.onmessage = function(event) {
-  var data = event.data;
-  console.log('Received:', data);
+      timeline.scrollTop = timeline.scrollHeight;
+    },
+    error: function(error) {
+      console.error('Error:', error);
 
-  var messageObj;
+      var timeline = document.getElementById('timeline');
+      if (!timeline) {
+        return;
+      }
 
-  try {
-    messageObj = JSON.parse(data);
-
-    // Check if the received data is an array
-    if (Array.isArray(messageObj)) {
-      // Iterate over the array elements
-      messageObj.forEach(function(element) {
-        var thisElement = $('[data-id="' + element.id + '"][data-quantity="' + element.quantity + '"]');
-        thisElement.html(element.promiseDate);
-      });
+      var listItem = document.createElement('li');
+      listItem.textContent = 'Error, please try again.';
+      timeline.appendChild(listItem);
+    },
+    complete: function() {
+      $('#getDeliveryStatus-modal .preloader').addClass('hidden');
     }
-
-    // Process the received JSON data as needed
-    // ...
-
-  } catch (error) {
-    // Handle the case when the received message is not valid JSON
-    // This is a plain text message
-    console.log('Received message:', data);
-    // Show the message to the user
-    // ...
-
-    var listItem = document.createElement('li');
-    listItem.textContent = data;
-
-    var timeline = document.getElementById('timeline');
-    timeline.appendChild(listItem);
-
-    // Scroll to the bottom of the timeline
-    timeline.scrollTop = timeline.scrollHeight;
-  }
-};
-
-
-
-  };
-
-  // WebSocket event: connection closed
-  socket.onclose = function() {
-    console.log('WebSocket connection closed');
-  };
+  });
 }
 
       }
@@ -1054,4 +1033,3 @@ function redirectCounter(projectID){
       }
     }, 1000);
 };
-

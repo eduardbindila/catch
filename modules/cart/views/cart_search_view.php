@@ -316,6 +316,17 @@
                     </div>
                     <div class="modal-body">
 
+                         <div class="preloader pl-size-l verify_preloader">
+                            <div class="spinner-layer pl-red-grey">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+
                          <ul id="timeline" class="timeline"></ul>
                         
                     </div>
