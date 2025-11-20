@@ -827,10 +827,10 @@ $(document).ready(function() {
                             doc.content[1].table.body[row][5].text = "n/a"
                         }
 
-                        if (doc.content[1].table.body[row][12].text == "Syl") {
+                        if (doc.content[1].table.body[row][12].text.toLowerCase() === "syl") {
                             var linkID = 'https://www.sylvania-lighting.com/product/en-int/products/' + productId.text + '/';
                             doc.content[1].table.body[row][2] = {
-                                text: "Click",
+                                text: "View",
                                 link: linkID,
                                 style: 'link'
                             };
