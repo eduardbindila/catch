@@ -174,9 +174,10 @@ $conn = $QueryBuilder->dbConnection();
 				$quoteProductDetails = $QueryBuilder->select(
 					$conn,
 					$options = array(
-						"table" => "products",
-						"columns" => "id, product_name, product_image, initial_price, is_temporary, active, manufacturer, saga_quantity",
-						"where" => "id = '".$quoteValues['product_id']."'"
+						"table" => "products p",
+						"columns" => "p.id, product_name, pi.url as product_image, initial_price, is_temporary, active, manufacturer, saga_quantity",
+						"leftJoin" => "product_images pi on p.internal_id = pi.product_id and pi.sort_order = 1",
+						"where" => "p.id = '".$quoteValues['product_id']."'"
 					)
 				);
 
@@ -197,9 +198,6 @@ $conn = $QueryBuilder->dbConnection();
 
                 continue;
 			}
-
-			//var_dump($quoteProductDetails);	
-
 			
 			$temporary_product = isset($quoteProductDetails[0]['is_temporary']) ? $quoteProductDetails[0]['is_temporary'] : 0;
 

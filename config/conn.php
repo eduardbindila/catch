@@ -22,7 +22,7 @@ $_DB = array(
 
 
 
-$_VERSION = '0.1.989521134';
+$_VERSION = '0.1.99';
 
 
 function getPage()
