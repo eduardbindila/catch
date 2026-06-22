@@ -9,12 +9,12 @@ require_once($_PATH['COMMON_BACKEND'].'saga_import_functions.php');
 if ($_GET["type"] == 4) {
     $checkBody = checkJson($clientInvoicesData, 'iesiri');
     $clientJson = json_decode($clientsJson, true);
-    $requestJson = json_decode($clientInvoicesJson, true);
+    $requestJson = ['iesiri' => $clientInvoicesQuery];
 
 } elseif ($_GET["type"] == 5) {
      $checkBody = checkJson($vendorInvoicesData, 'intrari');
      $vendorJson = json_decode($vendorsJson, true);
-     $requestJson = json_decode($vendorInvoicesJson, true);
+     $requestJson = ['intrari' => $vendorInvoicesQuery];
 }
 
 
@@ -62,6 +62,14 @@ $COMPANY = [
 
 /* ==== HELPERS GENERALE ==== */
 function arr_get($a,$k,$d=''){ return isset($a[$k])?$a[$k]:$d; }
+function arr_get_any($a, array $keys, $default = ''){
+  foreach ($keys as $key) {
+    if (isset($a[$key])) {
+      return $a[$key];
+    }
+  }
+  return $default;
+}
 function ymd($s){ $t=strtotime($s); return $t?date('Y-m-d',$t):$s; }
 function normProcTva($v){ if($v===''||$v===null)return ''; $v=(float)$v; return $v<1? (string)round($v*100,2) : (string)$v; }
 function addEl(DOMDocument $doc, DOMElement $parent, string $name, $val){
@@ -135,33 +143,36 @@ function exportArticoleXML(array $articole, string $filePath){
 function groupInvoicesByNumber(array $rows, string $tip): array {
   $by = [];
   foreach ($rows as $r){
-    $nr = ($tip==='iesiri') ? arr_get($r,'nrIesire') : (arr_get($r,'nrIntrare', arr_get($r,'nrNir')));
+    $nr = ($tip==='iesiri')
+      ? arr_get_any($r, ['nrIesire', 'NR_IESIRE'])
+      : arr_get_any($r, ['nrIntrare', 'NR_INTRARE', 'nrNir', 'NR_NIR']);
     if(!$nr) continue;
     if(!isset($by[$nr])){
       $by[$nr] = [
         'numar'    => $nr,
-        'data'     => arr_get($r,'data',''),
-        'scadent'  => arr_get($r,'scadent',''),
-        'moneda'   => arr_get($r,'moneda',''),
-        'tip'      => arr_get($r,'tip',''),
-        'curs'     => arr_get($r,'curs',''),
-        'gestiune' => arr_get($r,'gestiune',''),
-        'cod'      => arr_get($r,'cod',''), // cod tert
-        'denumire'      => arr_get($r,'denumire',''), // cod tert
+        'data'     => arr_get_any($r, ['data', 'DATA']),
+        'scadent'  => arr_get_any($r, ['scadent', 'SCADENT']),
+        'moneda'   => arr_get_any($r, ['moneda', 'MONEDA']),
+        'tip'      => arr_get_any($r, ['tip', 'TIP']),
+        'curs'     => arr_get_any($r, ['curs', 'CURS']),
+        'gestiune' => arr_get_any($r, ['gestiune', 'GESTIUNE']),
+        'cod'      => arr_get_any($r, ['cod', 'COD']), // cod tert
+        'denumire' => arr_get_any($r, ['denumire', 'DENUMIRE']), // denumire tert
+        'facturaInformatiiSuplimentare' => arr_get_any($r, ['facturaInfSupl', 'FACTURA_INF_SUPL']),
         'linii'    => []
       ];
     }
     $by[$nr]['linii'][] = [
-      'descriere' => arr_get($r,'denArt','Articol'),
-      'codArt'    => arr_get($r,'codArt',''),
-      'um'        => arr_get($r,'um','buc'),
-      'cantitate' => arr_get($r,'cantitate','1.000'),
-      'pret'      => arr_get($r,'pretVanz', arr_get($r,'valoare','')),
-      'valoare'   => arr_get($r,'valoare',''),
-      'tva'       => arr_get($r,'tva',''),
-      'procTva'   => normProcTva(arr_get($r,'tvaArt','')),
-      'cont'      => arr_get($r,'cont',''),
-      'gestiune'  => arr_get($r,'gestiune',''),
+      'descriere' => arr_get_any($r, ['denArt', 'DEN_ART'], 'Articol'),
+      'codArt'    => arr_get_any($r, ['codArt', 'COD_ART']),
+      'um'        => arr_get_any($r, ['um', 'UM'], 'buc'),
+      'cantitate' => arr_get_any($r, ['cantitate', 'CANTITATE'], '1.000'),
+      'pret'      => arr_get_any($r, ['pretVanz', 'PRET_VANZ'], arr_get_any($r, ['valoare', 'VALOARE'])),
+      'valoare'   => arr_get_any($r, ['valoare', 'VALOARE']),
+      'tva'       => arr_get_any($r, ['tva', 'TVA']),
+      'procTva'   => normProcTva(arr_get_any($r, ['tvaArt', 'TVA_ART'])),
+      'cont'      => arr_get_any($r, ['cont', 'CONT']),
+      'gestiune'  => arr_get_any($r, ['gestiune', 'GESTIUNE']),
       //'pretVanzare' => ($tip==='intrari') ? arr_get($r,'pretVanz','') : '',
     ];
   }
@@ -183,7 +194,6 @@ function exportFacturiBulkXML(array $facturi, string $tip, array $company, array
     $ant=$fac->appendChild($doc->createElement('Antet'));
 
     if($tip==='iesiri'){
-      var_dump($f);
       $client = $mapTertiByCod[$f['cod']] ?? ['denumire'=>$f['denumire'],'codFiscal'=>''];
       addEl($doc,$ant,'FurnizorNume', $company['name']);
       addEl($doc,$ant,'FurnizorCIF',  $company['cif']);
@@ -201,6 +211,7 @@ function exportFacturiBulkXML(array $facturi, string $tip, array $company, array
     addEl($doc,$ant,'FacturaNumar', (string)$f['numar']);
     addEl($doc,$ant,'FacturaData', $f['data']);
     addEl($doc,$ant,'FacturaScadenta', $f['scadent']);
+    addEl($doc,$ant,'FacturaInformatiiSuplimentare', arr_get($f,'facturaInformatiiSuplimentare',''));
     addEl($doc,$ant,'FacturaMoneda', $f['moneda']);
     addEl($doc,$ant,'Cod', $company['cod']);
 
@@ -337,6 +348,9 @@ if (!function_exists('buildFacturiXmlString')) {
             $ant->appendChild($doc->createElement('FacturaNumar', (string)$f['numar']));
             $ant->appendChild($doc->createElement('FacturaData',  $data));
             $ant->appendChild($doc->createElement('FacturaScadenta', $scad));
+            if (!empty($f['facturaInformatiiSuplimentare'])) {
+                $ant->appendChild($doc->createElement('FacturaInformatiiSuplimentare', $f['facturaInformatiiSuplimentare']));
+            }
             if (!empty($f['moneda'])) $ant->appendChild($doc->createElement('FacturaMoneda', $f['moneda']));
             if (!empty($f['curs']))   $ant->appendChild($doc->createElement('FacturaCurs',   $f['curs']));
 

@@ -4,6 +4,6 @@
     "type": "project",
     "require": {},
     "scripts": {
-        "release": "TAG=${RELEASE_TAG:-7.4-$(date +%Y%m%d%H%M)}; docker build -t harbor.icatch.ro/ice/icatch-b2b:${TAG} . && docker push harbor.icatch.ro/ice/icatch-b2b:${TAG}"
+        "release": "TAG=${RELEASE_TAG:-7.4-$(date +%Y%m%d%H%M)}; IMAGE=harbor.icatch.ro/ice/icatch-b2b; PLATFORMS=${DOCKER_PLATFORMS:-linux/amd64,linux/arm64}; docker buildx build --pull --platform ${PLATFORMS} -t ${IMAGE}:${TAG} -t ${IMAGE}:7.4-latest --push ."
     }
 }

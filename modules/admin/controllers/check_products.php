@@ -67,10 +67,6 @@ foreach ($filteredRows as $row) {
     $dataArray[] = ['product_id' => $product_id, 'quantity' => $quantity,'price' => $price,'total_price' => $total_price, 'exists' => $exists];
 }
 
-usort($dataArray, function($a, $b) {
-    return $a['exists'] == 'Exists' ? -1 : 1;
-});
-
 // Întoarce rezultatul ca JSON
 echo json_encode($dataArray);
 
@@ -80,5 +76,4 @@ echo json_encode($dataArray);
 
 
 ?>
-
 

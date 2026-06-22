@@ -1584,7 +1584,7 @@ class Invoices {
                                                         columns: 
                                                         [
                                                             {text: that.getTranslation('Bank',packageDetails.currency)+':', width: 100},
-                                                            {text: 'BRD - Groupe Societe Generale S.A.'},
+                                                            {text: 'Raiffeisen Bank'},
                                                             
                                                         ],
                                                         style: 'separator'
@@ -1593,7 +1593,7 @@ class Invoices {
                                                         columns: 
                                                         [
                                                             {text: 'IBAN RON:',  width: 100},
-                                                            {text: 'RO11BRDE441SV22383144410'},
+                                                            {text: 'RO14RZBR0000060027758631'},
                                                             
                                                         ]
                                                     },
@@ -1601,7 +1601,7 @@ class Invoices {
                                                         columns: 
                                                         [
                                                             {text: 'SWIFT:',  width: 100},
-                                                            {text: 'BRDEROBUXXX'},
+                                                            {text: 'RZBRROBU'},
                                                             
                                                         ]
                                                     },
@@ -1609,7 +1609,7 @@ class Invoices {
                                                         columns: 
                                                         [
                                                             {text: 'IBAN EUR:',  width: 100},
-                                                            {text: 'RO07BRDE441SV22383224410'},
+                                                            {text: 'RO30RZBR0000060027758634'},
                                                             
                                                         ]
                                                     },

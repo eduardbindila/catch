@@ -249,7 +249,55 @@ select
     case
         when product_id is null then ''
         else '0025'
-    end as 'GESTIUNE'
+    end as 'GESTIUNE',
+    trim(concat(
+        case
+            when ifnull(trim((
+                select p.other_details
+                from packages p
+                where p.id = pd.package_id
+                limit 1
+            )), '') <> '' then trim((
+                select p.other_details
+                from packages p
+                where p.id = pd.package_id
+                limit 1
+            ))
+            else ''
+        end,
+        case
+            when ifnull(trim((
+                select p.other_details
+                from packages p
+                where p.id = pd.package_id
+                limit 1
+            )), '') <> ''
+             and ifnull(trim((
+                select q.name
+                from packages p
+                join quotes q on q.id = p.quote_id
+                where p.id = pd.package_id
+                limit 1
+            )), '') <> '' then ' | '
+            else ''
+        end,
+        case
+            when ifnull(trim((
+                select q.name
+                from packages p
+                join quotes q on q.id = p.quote_id
+                where p.id = pd.package_id
+                limit 1
+            )), '') <> '' then concat('Oferta: ', trim((
+                select q.name
+                from packages p
+                join quotes q on q.id = p.quote_id
+                where p.id = pd.package_id
+                limit 1
+            )))
+            else ''
+        end
+    )) as 'FACTURA_INF_SUPL'
 from packages_data pd
 ";
 
